@@ -1,0 +1,114 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: ${PROJECT_NAME}-nginx
+    image: nginx:alpine
+    working_dir: /app
+    volumes:
+#      - socket:/var/run
+      - ./docker/nginx/default.nginx:/etc/nginx/conf.d/default.conf
+      - ./app:/app
+      - ./docker/nginx/certs:/etc/nginx/certs
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    hostname: domagenta.local
+    depends_on:
+      - php-fpm
+    networks:
+      internal:
+        ipv4_address: ${PROJECT_IP}
+        aliases:
+          - ${PROJECT_NAME}.local
+
+  php-fpm:
+    container_name: ${PROJECT_NAME}-php-fpm
+    build:
+      context: ./docker/php-fpm
+      args:
+        - USER_ID
+        - GROUP_ID
+    volumes:
+#      - socket:/var/run
+      - ./docker/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ./docker/php-fpm/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-dev.ini
+      - ./docker/php-fpm/php.ini:/usr/local/etc/php/conf.d/40-custom.ini
+      - ./app:/app
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+#      - rabbit
+    env_file:
+      - .env
+    networks:
+      - internal
+    extra_hosts:
+      - "dockerhost:${DOCKERHOST}"
+
+  postgres:
+    container_name: ${PROJECT_NAME}-postgres
+    image: postgres:12
+    volumes:
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./docker/postgres/data:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    networks:
+      - internal
+
+  redis:
+    container_name: ${PROJECT_NAME}-redis
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./docker/redis/data:/data
+    networks:
+      - internal
+
+  rabbit:
+    container_name: ${PROJECT_NAME}-rabbit
+    hostname: rabbit
+    image: rabbitmq:3.6.6-management
+    volumes:
+      - ./docker/rabbit/data:/var/lib/rabbitmq/mnesia/
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    env_file:
+      - .env
+    networks:
+      - internal
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: ${PROJECT_NAME}-mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - internal
+
+
+#volumes:
+#  socket:
+
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: ${PROJECT_SUBNET}

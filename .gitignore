@@ -1,0 +1,4 @@
+.idea/
+docker/postgres/data/
+docker/redis/data/
+docker/rabbit/data/
