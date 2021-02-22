@@ -12,9 +12,8 @@ services:
       - ./docker/nginx/certs:/etc/nginx/certs
     restart: always
     ports:
-      - "80:80"
-      - "443:443"
-    hostname: domagenta.local
+      - ${NGINX_LOCAL_HTTP_PORT}:80
+      - ${NGINX_LOCAL_HTTPS_PORT}:443
     depends_on:
       - php-fpm
     networks:
@@ -41,12 +40,16 @@ services:
       - postgres
       - redis
 #      - rabbit
+    environment:
+      COMPOSER_MEMORY_LIMIT: -1
+      XDEBUG_CONFIG: client_host=${XDEBUG_CLIENT_HOST} client_port=${XDEBUG_CLIENT_PORT}
+      PHP_IDE_CONFIG: serverName=${XDEBUG_IDE_SERVER_NAME}
     env_file:
       - .env
     networks:
       - internal
     extra_hosts:
-      - "dockerhost:${DOCKERHOST}"
+      - dockerhost:${DOCKERHOST}
 
   postgres:
     container_name: ${PROJECT_NAME}-postgres
@@ -56,7 +59,7 @@ services:
       - ./docker/postgres/data:/var/lib/postgresql/data
     restart: always
     ports:
-      - "5432:5432"
+      - ${POSTGRES_LOCAL_PORT}:5432
     env_file:
       - .env
     networks:
@@ -67,7 +70,7 @@ services:
     image: redis:latest
     restart: always
     ports:
-      - "6379:6379"
+      - ${REDIS_LOCAL_PORT}:6379
     volumes:
       - ./docker/redis/data:/data
     networks:
@@ -80,8 +83,8 @@ services:
     volumes:
       - ./docker/rabbit/data:/var/lib/rabbitmq/mnesia/
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - ${RABBIT_LOCAL_PORT}:5672
+      - ${RABBIT_MANAGER_LOCAL_PORT}:15672
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
@@ -96,8 +99,8 @@ services:
     image: mailhog/mailhog
     container_name: ${PROJECT_NAME}-mailhog
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - ${MAILHOG_LOCAL_PORT}:1025
+      - ${MAILHOG_MANAGER_PORT}:8025
     networks:
       - internal
 
@@ -108,6 +111,7 @@ services:
 networks:
   internal:
     driver: bridge
+    name: ${PROJECT_NAME}_internal_network
     ipam:
       driver: default
       config:
