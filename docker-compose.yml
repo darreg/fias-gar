@@ -57,6 +57,7 @@ services:
     volumes:
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./docker/postgres/data:/var/lib/postgresql/data
+    shm_size: 512mb
     restart: always
     ports:
       - ${POSTGRES_LOCAL_PORT}:5432
