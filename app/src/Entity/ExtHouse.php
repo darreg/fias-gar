@@ -2,13 +2,20 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ExtHouse
  *
- * @ORM\Table(name="ext_house")
+ * @ORM\Table(
+ *     name="ext_house",
+ *     indexes={
+ *         @ORM\Index(name="ext_house__objectid__ind", columns={"objectid"})
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\ExtHouseRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class ExtHouse
 {
@@ -44,9 +51,14 @@ class ExtHouse
     private ?int $zoom;
 
     /**
-     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="created_at", type="datetime")
      */
-    private $updated_at;
+    private DateTime $createdAt;
+
+    /**
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private DateTime $updatedAt;
 
 
 
@@ -127,24 +139,34 @@ class ExtHouse
         return $this;
     }
 
-
-
-
-
-
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): DateTime
     {
-        return $this->updated_at;
+        return $this->createdAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setCreatedAt(): self
     {
-        $this->updated_at = $updated_at ?? new \DateTime();
+        $this->createdAt = new DateTime();
 
         return $this;
     }
 
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updatedAt;
+    }
 
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function setUpdatedAt(): self
+    {
+        $this->updatedAt = new DateTime();
 
-
+        return $this;
+    }
 }
