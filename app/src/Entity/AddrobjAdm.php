@@ -45,7 +45,7 @@ class AddrobjAdm
     private ?int $level;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private \DateTime $updatedate;
 
