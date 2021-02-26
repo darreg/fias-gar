@@ -130,6 +130,16 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_housetypes.enddate is \'Окончание действия записи\'');
         $this->addSql('comment on column fias_gar_housetypes.isactive is \'Статус активности\'');
 
+        $this->addSql('create table fias_gar_addhousetypes(id numeric(19) not null constraint fias_gar_addhousetypes_pkey primary key, name varchar(50)  default NULL::character varying,shortname  varchar(50)  default NULL::character varying,"desc" varchar(250) default NULL::character varying,updatedate date,startdate  date,enddate    date,isactive   boolean)');
+        $this->addSql('comment on column fias_gar_addhousetypes.id is \'Идентификатор\'');
+        $this->addSql('comment on column fias_gar_addhousetypes.name is \'Наименование\'');
+        $this->addSql('comment on column fias_gar_addhousetypes.shortname is \'Краткое наименование\'');
+        $this->addSql('comment on column fias_gar_addhousetypes."desc" is \'Описание\'');
+        $this->addSql('comment on column fias_gar_addhousetypes.updatedate is \'Дата внесения (обновления) записи\'');
+        $this->addSql('comment on column fias_gar_addhousetypes.startdate is \'Начало действия записи\'');
+        $this->addSql('comment on column fias_gar_addhousetypes.enddate is \'Окончание действия записи\'');
+        $this->addSql('comment on column fias_gar_addhousetypes.isactive is \'Статус активности\'');
+
         $this->addSql('create table fias_gar_houses(id numeric(19)  not null constraint fias_gar_houses_pkey primary key,objectid numeric(19),objectguid varchar(36) default NULL::character varying,changeid numeric(19),housenum varchar(50) default NULL::character varying,addnum1 varchar(50) default NULL::character varying,addnum2 varchar(50) default NULL::character varying,housetype integer,addtype1 integer,addtype2 integer,opertypeid integer,previd  numeric(19),nextid   numeric(19),startdate date,enddate   date,updatedate date,isactive  smallint,isactual smallint)');
         $this->addSql('comment on column fias_gar_houses.id is \'Уникальный идентификатор записи. Ключевое поле\'');
         $this->addSql('comment on column fias_gar_houses.objectid is \'Глобальный уникальный идентификатор объекта типа INTEGER\'');
