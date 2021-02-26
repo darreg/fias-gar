@@ -4,6 +4,7 @@ namespace App\Entity;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * AddrobjAdm
@@ -18,6 +19,12 @@ class AddrobjAdm
      * @ORM\Id()
      */
     private ?int $objectid;
+
+    /**
+     * @ORM\OneToOne(targetEntity=ExtAddrobj::class, fetch="EXTRA_LAZY")
+     * @JoinColumn(name="objectid", referencedColumnName="objectid")
+     */
+    private ?ExtAddrobj $extAddrobj;
 
     /**
      * @ORM\Column(type="string", length=36, nullable=true)
@@ -83,6 +90,18 @@ class AddrobjAdm
     public function setObjectid(?int $objectid): self
     {
         $this->objectid = $objectid;
+
+        return $this;
+    }
+
+    public function getExtAddrobj(): ?ExtAddrobj
+    {
+        return $this->extAddrobj;
+    }
+
+    public function setExtAddrobj(?ExtAddrobj $extAddrobj): self
+    {
+        $this->extAddrobj = $extAddrobj;
 
         return $this;
     }

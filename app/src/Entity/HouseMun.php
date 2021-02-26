@@ -4,6 +4,7 @@ namespace App\Entity;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * HouseMun
@@ -18,6 +19,12 @@ class HouseMun
      * @ORM\Id()
      */
     private ?int $objectid;
+
+    /**
+     * @ORM\OneToOne(targetEntity=ExtHouse::class, fetch="EXTRA_LAZY")
+     * @JoinColumn(name="objectid", referencedColumnName="objectid")
+     */
+    private ?ExtHouse $extHouse;
 
     /**
      * @ORM\Column(type="string", length=36, nullable=true)
@@ -78,6 +85,18 @@ class HouseMun
     public function setObjectid(?int $objectid): self
     {
         $this->objectid = $objectid;
+
+        return $this;
+    }
+
+    public function getExtHouse(): ?ExtHouse
+    {
+        return $this->extHouse;
+    }
+
+    public function setExtHouse(?ExtHouse $extHouse): self
+    {
+        $this->extHouse = $extHouse;
 
         return $this;
     }
