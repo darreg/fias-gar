@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,8 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ExtAddrobj
  *
- * @ORM\Table(name="ext_addrobj")
+ * @ORM\Table(
+ *     name="ext_addrobj",
+ *     indexes={
+ *         @ORM\Index(name="ext_addrobj__objectid__ind", columns={"objectid"})
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\ExtAddrobjRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class ExtAddrobj
 {
@@ -91,11 +98,6 @@ class ExtAddrobj
     private ?string $locative;
 
     /**
-     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
-     */
-    private ?\DateTime $updated_at;
-
-    /**
      * @ORM\OneToMany(targetEntity=ExtAddrobjPoint::class, mappedBy="extAddrobj", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
      */
@@ -107,10 +109,19 @@ class ExtAddrobj
      */
     private $synonym;
 
+    /**
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private DateTime $createdAt;
+
+    /**
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private DateTime $updatedAt;
+
 
     public function __construct()
     {
-        $this->updated_at = new \DateTime();
         $this->polygon = new ArrayCollection();
         $this->synonym = new ArrayCollection();
     }
@@ -174,12 +185,12 @@ class ExtAddrobj
 
         return $this;
     }
-    
+
     public function getZoom(): ?int
     {
         return $this->zoom;
     }
-    
+
     public function setZoom(?int $zoom): self
     {
         $this->zoom = $zoom;
@@ -295,18 +306,6 @@ class ExtAddrobj
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updated_at;
-    }
-
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
-    {
-        $this->updated_at = $updated_at ?? new \DateTime();
-
-        return $this;
-    }
-
     /**
      * @return Collection|ExtAddrobjPoint[]
      */
@@ -389,6 +388,37 @@ class ExtAddrobj
                 $synonym->setExtAddrobj(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setCreatedAt(): self
+    {
+        $this->createdAt = new DateTime();
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function setUpdatedAt(): self
+    {
+        $this->updatedAt = new DateTime();
 
         return $this;
     }
