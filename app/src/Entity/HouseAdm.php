@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 
@@ -49,7 +50,7 @@ class HouseAdm
     /**
      * @ORM\Column(type="date")
      */
-    private \DateTime $updatedate;
+    private DateTime $updatedate;
 
     /**
      * @ORM\Column(type="bigint", nullable=true)
@@ -149,12 +150,12 @@ class HouseAdm
         return $this;
     }
 
-    public function getUpdatedate(): \DateTime
+    public function getUpdatedate(): DateTime
     {
         return $this->updatedate;
     }
 
-    public function setUpdatedate(\DateTime $updatedate): self
+    public function setUpdatedate(DateTime $updatedate): self
     {
         $this->updatedate = $updatedate;
 

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\AddrobjAdm;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,6 +19,27 @@ class AddrobjAdmRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, AddrobjAdm::class);
     }
+
+    public function findAddrobjectTree(int $objectid): array
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata(AddrobjAdm::class, 'ctp');
+
+        $sql = 'WITH RECURSIVE child_to_parents AS (
+                SELECT addrobj.* FROM v_addrobj_adm as addrobj
+                WHERE addrobj.objectid = :objectid
+                UNION ALL
+                SELECT addrobj.* FROM v_addrobj_adm as addrobj, child_to_parents
+                WHERE addrobj.objectid = child_to_parents.parentobjid
+            ) SELECT ' . $rsm->generateSelectClause() . ' FROM child_to_parents AS ctp ORDER BY ctp.level';
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameter('objectid', $objectid);
+
+        return $query->getResult();
+    }
+
+
 
     // /**
     //  * @return AddrobjAdm[] Returns an array of AddrobjAdm objects

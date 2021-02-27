@@ -95,11 +95,6 @@ class ExtAddrobjPoint
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->latitude . ',' . $this->longitude;
-    }
-
     public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
@@ -129,5 +124,10 @@ class ExtAddrobjPoint
         $this->updatedAt = new DateTime();
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->latitude . ',' . $this->longitude;
     }
 }
