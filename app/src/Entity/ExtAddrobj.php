@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,6 +20,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ExtAddrobj
 {
+    use CreatedAtTrait, UpdatedAtTrait;
+
     /**
      * @ORM\Column(type="bigint")
      * @ORM\Id()
@@ -112,16 +113,6 @@ class ExtAddrobj
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
      */
     private $synonym;
-
-    /**
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private DateTime $createdAt;
-
-    /**
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private DateTime $updatedAt;
 
 
     public function __construct()
@@ -392,37 +383,6 @@ class ExtAddrobj
                 $synonym->setExtAddrobj(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @ORM\PrePersist()
-     */
-    public function setCreatedAt(): self
-    {
-        $this->createdAt = new DateTime();
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function setUpdatedAt(): self
-    {
-        $this->updatedAt = new DateTime();
 
         return $this;
     }

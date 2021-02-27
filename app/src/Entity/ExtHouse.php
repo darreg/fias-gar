@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ExtHouse
 {
+    use CreatedAtTrait, UpdatedAtTrait;
+
     /**
      * @ORM\Column(type="bigint")
      * @ORM\Id()
@@ -49,16 +50,6 @@ class ExtHouse
      * @ORM\Column(type="smallint", nullable=true)
      */
     private ?int $zoom;
-
-    /**
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private DateTime $createdAt;
-
-    /**
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private DateTime $updatedAt;
 
 
     public function getObjectid(): ?int
@@ -129,37 +120,6 @@ class ExtHouse
     public function setZoom(?int $zoom): self
     {
         $this->zoom = $zoom;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @ORM\PrePersist()
-     */
-    public function setCreatedAt(): self
-    {
-        $this->createdAt = new DateTime();
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function setUpdatedAt(): self
-    {
-        $this->updatedAt = new DateTime();
 
         return $this;
     }

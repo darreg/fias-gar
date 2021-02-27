@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,6 +19,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ExtAddrobjSynonym
 {
+    use CreatedAtTrait, UpdatedAtTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -38,15 +39,6 @@ class ExtAddrobjSynonym
      */
     private ?ExtAddrobj $extAddrobj;
 
-    /**
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private DateTime $createdAt;
-
-    /**
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private DateTime $updatedAt;
 
     public function getId(): ?int
     {
@@ -73,37 +65,6 @@ class ExtAddrobjSynonym
     public function setExtAddrobj(?ExtAddrobj $extAddrobj): self
     {
         $this->extAddrobj = $extAddrobj;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @ORM\PrePersist()
-     */
-    public function setCreatedAt(): self
-    {
-        $this->createdAt = new DateTime();
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function setUpdatedAt(): self
-    {
-        $this->updatedAt = new DateTime();
 
         return $this;
     }
