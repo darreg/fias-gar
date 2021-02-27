@@ -61,12 +61,6 @@ class ExtHouse
     private DateTime $updatedAt;
 
 
-
-    public function __construct()
-    {
-        $this->updated_at = new \DateTime();
-    }
-
     public function getObjectid(): ?int
     {
         return $this->objectid;
