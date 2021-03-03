@@ -99,7 +99,7 @@ class ExtAddrobj
     private ?string $locative;
 
     /**
-     * @var null|Collection|ExtAddrobjSynonym[]
+     * @var Collection|ExtAddrobjSynonym[]
      *
      * @ORM\OneToMany(targetEntity=ExtAddrobjPoint::class, mappedBy="extAddrobj", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
@@ -107,7 +107,7 @@ class ExtAddrobj
     private $polygon;
 
     /**
-     * @var null|Collection|ExtAddrobjSynonym[]
+     * @var Collection|ExtAddrobjSynonym[]
      *
      * @ORM\OneToMany(targetEntity=ExtAddrobjSynonym::class, mappedBy="extAddrobj", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
