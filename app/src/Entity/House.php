@@ -18,7 +18,7 @@ class House
     private ?int $objectid;
 
     /**
-     * @ORM\OneToOne(targetEntity=ExtHouse::class, fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity=ExtHouse::class, fetch="EAGER")
      * @JoinColumn(name="objectid", referencedColumnName="objectid")
      */
     private ?ExtHouse $extHouse;

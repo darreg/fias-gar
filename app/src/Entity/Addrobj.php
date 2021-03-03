@@ -18,7 +18,7 @@ class Addrobj
     private ?int $objectid;
 
     /**
-     * @ORM\OneToOne(targetEntity=ExtAddrobj::class, fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity=ExtAddrobj::class, fetch="EAGER")
      * @JoinColumn(name="objectid", referencedColumnName="objectid")
      */
     private ?ExtAddrobj $extAddrobj;
