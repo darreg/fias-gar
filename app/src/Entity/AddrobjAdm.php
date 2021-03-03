@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="v_addrobj_adm")
  * @ORM\Entity(readOnly=true, repositoryClass="App\Repository\AddrobjAdmRepository")
  */
-class AddrobjAdm
+class AddrobjAdm extends Addrobj
 {
-    use AddrobjTrait;
 }
