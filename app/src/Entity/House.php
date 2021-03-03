@@ -6,8 +6,10 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\MappedSuperclass;
 
-trait HouseTrait
+/** @MappedSuperclass */
+class House
 {
     /**
      * @ORM\Column(type="bigint")

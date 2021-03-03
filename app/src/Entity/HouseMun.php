@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="v_house_mun")
  * @ORM\Entity(readOnly=true, repositoryClass="App\Repository\HouseMunRepository")
  */
-class HouseMun
+class HouseMun extends House
 {
-    use HouseTrait;
 }
