@@ -99,7 +99,7 @@ class ExtAddrobj
     private ?string $locative;
 
     /**
-     * @var Collection|ExtAddrobjSynonym[]
+     * @var Collection|ExtAddrobjPoint[]
      *
      * @ORM\OneToMany(targetEntity=ExtAddrobjPoint::class, mappedBy="extAddrobj", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
@@ -303,8 +303,10 @@ class ExtAddrobj
 
     /**
      * @return Collection|ExtAddrobjPoint[]
+     *
+     * @psalm-return Collection|array<array-key, ExtAddrobjPoint>
      */
-    public function getPolygon(): Collection
+    public function getPolygon()
     {
         return $this->polygon;
     }
@@ -346,8 +348,10 @@ class ExtAddrobj
 
     /**
      * @return Collection|ExtAddrobjSynonym[]
+     *
+     * @psalm-return Collection|array<array-key, ExtAddrobjSynonym>
      */
-    public function getSynonym(): Collection
+    public function getSynonym()
     {
         return $this->synonym;
     }
