@@ -17,6 +17,8 @@
         "symfony/yaml": "5.2.*"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-master",
+        "squizlabs/php_codesniffer": "^3.5",
         "symfony/debug-bundle": "5.2.*",
         "symfony/maker-bundle": "^1.29",
         "symfony/stopwatch": "^5.2",
@@ -47,6 +49,9 @@
         "symfony/polyfill-php72": "*"
     },
     "scripts": {
+        "phpcs": "phpcs --standard=phpcs.xml",
+        "phpcbf": "phpcbf --standard=phpcs.xml",
+        "psalm": "psalm --config=psalm.xml",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
