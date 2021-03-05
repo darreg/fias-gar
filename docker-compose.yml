@@ -51,6 +51,32 @@ services:
     extra_hosts:
       - dockerhost:${DOCKERHOST}
 
+  php-cli:
+    container_name: ${PROJECT_NAME}-php-cli
+    user: "${USER_ID}:${GROUP_ID}"
+    build:
+      context: ./docker/php-fpm
+      args:
+        - USER_ID
+        - GROUP_ID
+    volumes:
+#      - socket:/var/run
+      - ./docker/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ./docker/php-fpm/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-dev.ini
+      - ./docker/php-fpm/php.ini:/usr/local/etc/php/conf.d/40-custom.ini
+      - ./app:/app
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+#      - rabbit
+    environment:
+      COMPOSER_MEMORY_LIMIT: -1
+    env_file:
+      - .env
+    networks:
+      - internal
+
   postgres:
     container_name: ${PROJECT_NAME}-postgres
     image: postgres:12
