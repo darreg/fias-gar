@@ -63,6 +63,7 @@ services:
 #      - socket:/var/run
       - ./docker/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
       - ./docker/php-fpm/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-dev.ini
+      - ./docker/php-fpm/error_log.ini:/usr/local/etc/php/conf.d/error_log.ini
       - ./docker/php-fpm/php.ini:/usr/local/etc/php/conf.d/40-custom.ini
       - ./app:/app
     restart: always

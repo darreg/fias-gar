@@ -5,7 +5,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-        cacheDirectory="/app/var/cache/.psalm"
+        cacheDirectory="./var/cache/.psalm"
 >
 
     <projectFiles>
@@ -13,7 +13,7 @@
         <directory name="config" />
         <directory name="public" />
         <directory name="src" />
-<!--        <directory name="tests" />-->
+        <directory name="tests" />
         <ignoreFiles>
             <directory name="vendor" />
         </ignoreFiles>

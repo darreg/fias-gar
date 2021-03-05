@@ -2,7 +2,7 @@
 <ruleset name="App coding standard">
     <arg value="p"/>
     <arg name="colors"/>
-    <arg name="cache" value="var/cache/.phpcs.json"/>
+    <arg name="cache" value="./var/cache/.phpcs.json"/>
 
     <rule ref="PSR12"/>
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
@@ -22,5 +22,5 @@
     <file>config</file>
     <file>public</file>
     <file>src</file>
-<!--    <file>tests</file>-->
+    <file>tests</file>
 </ruleset>

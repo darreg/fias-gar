@@ -9,5 +9,5 @@ install:
   - composer install
 
 script:
-  - ./vendor/bin/phpcs
-  - ./vendor/bin/psalm
+  - composer phpcs
+  - composer psalm
