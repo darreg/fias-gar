@@ -19,7 +19,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ExtAddrobjPoint
 {
-    use CreatedAtTrait, UpdatedAtTrait;
+    use CreatedAtTrait;
+    use UpdatedAtTrait;
 
     /**
      * @ORM\Id()

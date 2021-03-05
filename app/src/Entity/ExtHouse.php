@@ -18,7 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ExtHouse
 {
-    use CreatedAtTrait, UpdatedAtTrait;
+    use CreatedAtTrait;
+    use UpdatedAtTrait;
 
     /**
      * @ORM\Column(type="bigint")
@@ -32,7 +33,7 @@ class ExtHouse
     private ?string $objectguid;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true, options={"comment"="Код точности координат: 0 — точные координаты, 1 — ближайший дом, 2 — улица, 3 — населенный пункт, 4 — город, 5 — координаты не определены"})
+     * @ORM\Column(type="smallint", nullable=true, options={"comment"="Код точности координат"})
      */
     private ?int $precision;
 

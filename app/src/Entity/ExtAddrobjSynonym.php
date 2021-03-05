@@ -19,7 +19,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ExtAddrobjSynonym
 {
-    use CreatedAtTrait, UpdatedAtTrait;
+    use CreatedAtTrait;
+    use UpdatedAtTrait;
 
     /**
      * @ORM\Id()
