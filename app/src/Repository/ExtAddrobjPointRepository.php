@@ -11,6 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ExtAddrobjPoint|null findOneBy(array $criteria, array $orderBy = null)
  * @method ExtAddrobjPoint[]    findAll()
  * @method ExtAddrobjPoint[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-method list<ExtAddrobjPoint> findAll()
+ * @psalm-method list<ExtAddrobjPoint> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ExtAddrobjPointRepository extends ServiceEntityRepository
 {

@@ -101,6 +101,7 @@ class ExtAddrobj
 
     /**
      * @var Collection|ExtAddrobjPoint[]
+     * @psalm-var Collection<int, ExtAddrobjPoint>
      *
      * @ORM\OneToMany(targetEntity=ExtAddrobjPoint::class, mappedBy="extAddrobj", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
@@ -109,6 +110,7 @@ class ExtAddrobj
 
     /**
      * @var Collection|ExtAddrobjSynonym[]
+     * @psalm-var Collection<int, ExtAddrobjSynonym>
      *
      * @ORM\OneToMany(targetEntity=ExtAddrobjSynonym::class, mappedBy="extAddrobj", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
@@ -304,8 +306,7 @@ class ExtAddrobj
 
     /**
      * @return Collection|ExtAddrobjPoint[]
-     *
-     * @psalm-return Collection|array<array-key, ExtAddrobjPoint>
+     * @psalm-return Collection<int, ExtAddrobjPoint>
      */
     public function getPolygon()
     {
@@ -314,6 +315,7 @@ class ExtAddrobj
 
     /**
      * @param Collection|ExtAddrobjPoint[] $polygon
+     * @psalm-param Collection<int, ExtAddrobjPoint> $polygon
      *
      * @return $this
      */
@@ -349,8 +351,7 @@ class ExtAddrobj
 
     /**
      * @return Collection|ExtAddrobjSynonym[]
-     *
-     * @psalm-return Collection|array<array-key, ExtAddrobjSynonym>
+     * @psalm-return Collection<int, ExtAddrobjSynonym>
      */
     public function getSynonym()
     {
@@ -359,6 +360,7 @@ class ExtAddrobj
 
     /**
      * @param Collection|ExtAddrobjSynonym[] $synonyms
+     * @psalm-param Collection<int, ExtAddrobjSynonym> $synonyms
      *
      * @return $this
      */

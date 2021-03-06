@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5fe9e28e6c2dbc3aa8ad70ead3166b5",
+    "content-hash": "a4c9df52e9b14fdb7d464f3b8708a380",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1732,25 +1732,25 @@
         },
         {
             "name": "psr/container",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/container.git",
-                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
+                "reference": "9fc7aab7a78057a124384358ebae8a1711b6f6fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
-                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/9fc7aab7a78057a124384358ebae8a1711b6f6fc",
+                "reference": "9fc7aab7a78057a124384358ebae8a1711b6f6fc",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=7.2.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -1765,7 +1765,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common Container Interface (PHP FIG PSR-11)",
@@ -1779,9 +1779,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-fig/container/issues",
-                "source": "https://github.com/php-fig/container/tree/master"
+                "source": "https://github.com/php-fig/container/tree/1.1.0"
             },
-            "time": "2017-02-14T16:28:37+00:00"
+            "time": "2021-03-05T15:48:30+00:00"
         },
         {
             "name": "psr/event-dispatcher",
@@ -4809,6 +4809,89 @@
             "time": "2021-02-22T14:02:09+00:00"
         },
         {
+            "name": "lctrs/psalm-psr-container-plugin",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Lctrs/psalm-psr-container-plugin.git",
+                "reference": "a885e20d310225a53269d4322df9a0f3e58e6445"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Lctrs/psalm-psr-container-plugin/zipball/a885e20d310225a53269d4322df9a0f3e58e6445",
+                "reference": "a885e20d310225a53269d4322df9a0f3e58e6445",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "nikic/php-parser": "^4.10.2",
+                "php": "^7.3.0 || ^8.0.0",
+                "psr/container": "^1.0.0",
+                "vimeo/psalm": "^4.2.1"
+            },
+            "require-dev": {
+                "codeception/codeception": "^4.1.12",
+                "codeception/module-asserts": "^1.3.1",
+                "codeception/module-cli": "^1.1.0",
+                "codeception/module-filesystem": "^1.0.3",
+                "doctrine/coding-standard": "^8.2.0",
+                "ergebnis/composer-normalize": "^2.9.0",
+                "ergebnis/license": "^1.1.0",
+                "ergebnis/test-util": "^1.4.0",
+                "infection/infection": "^0.18.2",
+                "jangregor/phpstan-prophecy": "^0.8.1",
+                "phpspec/prophecy-phpunit": "^2.0.1",
+                "phpstan/extension-installer": "^1.0.5",
+                "phpstan/phpstan": "^0.12.57",
+                "phpstan/phpstan-deprecation-rules": "^0.12.5",
+                "phpstan/phpstan-phpunit": "^0.12.16",
+                "phpstan/phpstan-strict-rules": "^0.12.5",
+                "phpunit/phpunit": "^9.4.3",
+                "psalm/plugin-phpunit": "^0.13.0",
+                "symfony/yaml": "^5.1.8",
+                "thecodingmachine/safe": "^1.3.3",
+                "weirdan/codeception-psalm-module": "^0.12.0"
+            },
+            "type": "psalm-plugin",
+            "extra": {
+                "psalm": {
+                    "pluginClass": "Lctrs\\PsalmPsrContainerPlugin\\Plugin"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lctrs\\PsalmPsrContainerPlugin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jérôme Parmentier",
+                    "email": "jerome@prmntr.me"
+                }
+            ],
+            "description": "Let Psalm understand better psr11 containers",
+            "homepage": "https://github.com/Lctrs/psalm-psr-container-plugin",
+            "keywords": [
+                "code",
+                "container",
+                "inspection",
+                "php",
+                "psalm",
+                "psalm-plugin",
+                "psr",
+                "psr11"
+            ],
+            "support": {
+                "issues": "https://github.com/Lctrs/psalm-psr-container-plugin/issues",
+                "source": "https://github.com/Lctrs/psalm-psr-container-plugin"
+            },
+            "time": "2020-11-27T21:54:19+00:00"
+        },
+        {
             "name": "netresearch/jsonmapper",
             "version": "v2.1.0",
             "source": {
@@ -5125,6 +5208,70 @@
                 "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.4.0"
             },
             "time": "2020-09-17T18:55:26+00:00"
+        },
+        {
+            "name": "psalm/plugin-symfony",
+            "version": "v2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/psalm/psalm-plugin-symfony.git",
+                "reference": "69bc80d00d9cb484c0f3795775bcbbd70a853f2d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/psalm/psalm-plugin-symfony/zipball/69bc80d00d9cb484c0f3795775bcbbd70a853f2d",
+                "reference": "69bc80d00d9cb484c0f3795775bcbbd70a853f2d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "php": "^7.1 || ^8.0",
+                "symfony/framework-bundle": "^3.0 || ^4.0 || ^5.0",
+                "vimeo/psalm": "^4.6.1"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.7",
+                "phpunit/phpunit": "~7.5 || ~9.5",
+                "symfony/cache-contracts": "^1.0 || ^2.0",
+                "symfony/console": "*",
+                "symfony/form": "^4.0 || ^5.0",
+                "symfony/messenger": "^4.2 || ^5.0",
+                "symfony/security-guard": "^4.0 || ^5.0",
+                "symfony/serializer": "^4.0 || ^5.0",
+                "symfony/validator": "*",
+                "twig/twig": "^2.10 || ^3.0",
+                "weirdan/codeception-psalm-module": "^0.13.1"
+            },
+            "suggest": {
+                "weirdan/doctrine-psalm-plugin": "If Doctrine is used, it is recommended install this plugin"
+            },
+            "type": "psalm-plugin",
+            "extra": {
+                "psalm": {
+                    "pluginClass": "Psalm\\SymfonyPsalmPlugin\\Plugin"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psalm\\SymfonyPsalmPlugin\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Farhad Safarov",
+                    "email": "farhad.safarov@gmail.com"
+                }
+            ],
+            "description": "Psalm Plugin for Symfony",
+            "support": {
+                "issues": "https://github.com/psalm/psalm-plugin-symfony/issues",
+                "source": "https://github.com/psalm/psalm-plugin-symfony/tree/v2.2.1"
+            },
+            "time": "2021-03-03T06:31:41+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -6388,6 +6535,81 @@
                 "source": "https://github.com/webmozart/path-util/tree/2.3.0"
             },
             "time": "2015-12-17T08:42:14+00:00"
+        },
+        {
+            "name": "weirdan/doctrine-psalm-plugin",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/weirdan/doctrine-psalm-plugin.git",
+                "reference": "281dff0eabbba1459186ea8a6ab4041c9bdf4479"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/weirdan/doctrine-psalm-plugin/zipball/281dff0eabbba1459186ea8a6ab4041c9bdf4479",
+                "reference": "281dff0eabbba1459186ea8a6ab4041c9bdf4479",
+                "shasum": ""
+            },
+            "require": {
+                "composer/semver": "^1.4 || ^2.0 || ^3.0",
+                "doctrine/collections": "^1.0",
+                "doctrine/orm": "^2.6",
+                "php": "^7.2|^8",
+                "vimeo/psalm": "^4.3.2 || dev-master"
+            },
+            "conflict": {
+                "slevomat/coding-standard": "6.1.1"
+            },
+            "require-dev": {
+                "codeception/codeception": "^4.0",
+                "doctrine/coding-standard": "^8.1",
+                "doctrine/doctrine-bundle": "^1.11 || ^2.0",
+                "phly/keep-a-changelog": "^2.1",
+                "squizlabs/php_codesniffer": "^3.3",
+                "weirdan/codeception-psalm-module": "^0.13.1"
+            },
+            "type": "psalm-plugin",
+            "extra": {
+                "psalm": {
+                    "pluginClass": "Weirdan\\DoctrinePsalmPlugin\\Plugin"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Weirdan\\DoctrinePsalmPlugin\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bruce Weirdan",
+                    "email": "weirdan@gmail.com"
+                }
+            ],
+            "description": "Stubs to let Psalm understand Doctrine better",
+            "keywords": [
+                "code",
+                "dbal",
+                "doctrine",
+                "doctrine2",
+                "extension",
+                "inspection",
+                "orm",
+                "php",
+                "plugin",
+                "psalm",
+                "psalm-plugin",
+                "static analysis",
+                "static-analysis"
+            ],
+            "support": {
+                "issues": "https://github.com/weirdan/doctrine-psalm-plugin/issues",
+                "source": "https://github.com/weirdan/doctrine-psalm-plugin/tree/1.0.0"
+            },
+            "time": "2021-01-03T20:41:17+00:00"
         }
     ],
     "aliases": [],

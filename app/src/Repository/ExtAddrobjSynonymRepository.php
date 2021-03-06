@@ -11,6 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ExtAddrobjSynonym|null findOneBy(array $criteria, array $orderBy = null)
  * @method ExtAddrobjSynonym[]    findAll()
  * @method ExtAddrobjSynonym[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-method list<ExtAddrobjSynonym> findAll()
+ * @psalm-method list<ExtAddrobjSynonym> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ExtAddrobjSynonymRepository extends ServiceEntityRepository
 {
