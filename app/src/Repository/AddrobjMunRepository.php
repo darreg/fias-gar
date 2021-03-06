@@ -12,6 +12,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method AddrobjMun|null findOneBy(array $criteria, array $orderBy = null)
  * @method AddrobjMun[]    findAll()
  * @method AddrobjMun[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-method list<AddrobjMun> findAll()
+ * @psalm-method list<AddrobjMun> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class AddrobjMunRepository extends ServiceEntityRepository
 {

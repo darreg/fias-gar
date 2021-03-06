@@ -11,6 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method HouseAdm|null findOneBy(array $criteria, array $orderBy = null)
  * @method HouseAdm[]    findAll()
  * @method HouseAdm[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-method list<HouseAdm> findAll()
+ * @psalm-method list<HouseAdm> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class HouseAdmRepository extends ServiceEntityRepository
 {
