@@ -11,7 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ExtHouse|null findOneBy(array $criteria, array $orderBy = null)
  * @method ExtHouse[]    findAll()
  * @method ExtHouse[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @psalm-method list<ExtHouse> findAll() 
+ * @psalm-method list<ExtHouse> findAll()
  * @psalm-method list<ExtHouse> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ExtHouseRepository extends ServiceEntityRepository
