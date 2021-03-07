@@ -13,6 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method HouseAdm[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @psalm-method list<HouseAdm> findAll()
  * @psalm-method list<HouseAdm> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class HouseAdmRepository extends ServiceEntityRepository
 {

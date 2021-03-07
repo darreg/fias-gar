@@ -13,6 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ExtAddrobjSynonym[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @psalm-method list<ExtAddrobjSynonym> findAll()
  * @psalm-method list<ExtAddrobjSynonym> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class ExtAddrobjSynonymRepository extends ServiceEntityRepository
 {

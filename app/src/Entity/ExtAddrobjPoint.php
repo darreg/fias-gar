@@ -16,6 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\ExtAddrobjPointRepository")
  * @ORM\HasLifecycleCallbacks()
+ *
+ * @psalm-suppress MissingConstructor
  */
 class ExtAddrobjPoint
 {
@@ -89,6 +91,10 @@ class ExtAddrobjPoint
 
     public function __toString(): string
     {
+        if ($this->latitude === null || $this->longitude === null) {
+            return '';
+        }
+
         return $this->latitude . ',' . $this->longitude;
     }
 }
