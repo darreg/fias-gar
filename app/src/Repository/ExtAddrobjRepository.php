@@ -13,6 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ExtAddrobj[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @psalm-method list<ExtAddrobj> findAll()
  * @psalm-method list<ExtAddrobj> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class ExtAddrobjRepository extends ServiceEntityRepository
 {

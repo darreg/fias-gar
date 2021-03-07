@@ -14,6 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method AddrobjAdm[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @psalm-method list<AddrobjAdm> findAll()
  * @psalm-method list<AddrobjAdm> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class AddrobjAdmRepository extends ServiceEntityRepository
 {
@@ -22,6 +23,12 @@ class AddrobjAdmRepository extends ServiceEntityRepository
         parent::__construct($registry, AddrobjAdm::class);
     }
 
+    /**
+     * @param int $objectid
+     * @return AddrobjAdm[]
+     *
+     * @psalm-return array<int, AddrobjAdm>
+     */
     public function findAddrobjectTree(int $objectid): array
     {
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
@@ -38,6 +45,12 @@ class AddrobjAdmRepository extends ServiceEntityRepository
         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
         $query->setParameter('objectid', $objectid);
 
-        return $query->getResult();
+        /**
+         * @var AddrobjAdm[] $result
+         * @psalm-var array<int, AddrobjAdm> $result
+         */
+        $result = $query->getResult();
+
+        return $result;
     }
 }

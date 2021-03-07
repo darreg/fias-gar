@@ -17,6 +17,9 @@ use Doctrine\ORM\Mapping as ORM;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\ExtAddrobjRepository")
  * @ORM\HasLifecycleCallbacks()
+ *
+ * @psalm-suppress MissingConstructor
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class ExtAddrobj
 {

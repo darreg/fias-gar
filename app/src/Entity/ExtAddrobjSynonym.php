@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\ExtAddrobjSynonymRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @psalm-suppress MissingConstructor
  */
 class ExtAddrobjSynonym
 {
