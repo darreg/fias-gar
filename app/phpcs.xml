@@ -5,18 +5,8 @@
     <arg name="cache" value="./var/cache/.phpcs.json"/>
 
     <rule ref="PSR12"/>
+
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
-    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
-        <properties>
-            <property name="ignoreBlankLines" value="false"/>
-        </properties>
-    </rule>
-    <rule ref="Generic.Files.LineLength">
-        <exclude-pattern>src/Data/Migration</exclude-pattern>
-    </rule>
-    <rule ref="PSR12.Functions.ReturnTypeDeclaration.SpaceBeforeColon">
-        <exclude-pattern>src/Data/Migration</exclude-pattern>
-    </rule>
 
     <file>bin</file>
     <file>config</file>

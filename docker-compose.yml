@@ -24,6 +24,7 @@ services:
 
   php-fpm:
     container_name: ${PROJECT_NAME}-php-fpm
+    user: "${USER_ID}:${GROUP_ID}"
     build:
       context: ./docker/php-fpm
       args:
@@ -48,8 +49,6 @@ services:
       - .env
     networks:
       - internal
-    extra_hosts:
-      - dockerhost:${DOCKERHOST}
 
   php-cli:
     container_name: ${PROJECT_NAME}-php-cli
@@ -73,6 +72,8 @@ services:
 #      - rabbit
     environment:
       COMPOSER_MEMORY_LIMIT: -1
+      XDEBUG_CONFIG: client_host=${XDEBUG_CLIENT_HOST} client_port=${XDEBUG_CLIENT_PORT}
+      PHP_IDE_CONFIG: serverName=${XDEBUG_IDE_SERVER_NAME}
     env_file:
       - .env
     networks:

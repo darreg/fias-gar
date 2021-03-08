@@ -1,20 +1,33 @@
 include .env
 
-DOCKERHOST = $(shell ifconfig | grep -A3 docker | grep -Eo "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" | head -n1)
-
-
-.PHONY: start stop redis php
+check: lint phpcs psalm
+fix: phpcbf
 
 start:
 	@bash -c "if [ ! -f \"$(PHPINIFILE)\" ]; then cp \"$(PHPINIFILE).dist\" \"$(PHPINIFILE)\"; fi"
 	@bash -c "if [ ! -f \"$(XDEBUGINIFILE)\" ]; then cp \"$(XDEBUGINIFILE).dist\" \"$(XDEBUGINIFILE)\"; fi"
-	DOCKERHOST=$(DOCKERHOST) docker-compose up -d --build
+	docker-compose up -d --build
 
 stop:
-	DOCKERHOST=$(DOCKERHOST) docker-compose down
+	docker-compose down
 
 redis:
 	docker exec -it --user www-data $(PROJECT_NAME)-redis redis-cli
 
 php:
 	docker exec -it --user www-data $(PROJECT_NAME)-php-fpm bash
+
+php-cli:
+	docker exec -it --user www-data $(PROJECT_NAME)-php-cli bash
+
+lint:
+	docker-compose run --rm php-cli composer lint
+
+phpcs:
+	docker-compose run --rm php-cli composer phpcs
+
+phpcbf:
+	docker-compose run --rm php-cli composer phpcbf
+
+psalm:
+	docker-compose run --rm php-cli composer psalm
