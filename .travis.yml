@@ -9,5 +9,6 @@ install:
   - composer install
 
 script:
+  - composer lint
   - composer phpcs
   - composer psalm

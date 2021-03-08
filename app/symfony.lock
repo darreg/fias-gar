@@ -114,6 +114,9 @@
     "lctrs/psalm-psr-container-plugin": {
         "version": "1.1.0"
     },
+    "n98/junit-xml": {
+        "version": "1.0.0"
+    },
     "netresearch/jsonmapper": {
         "version": "v2.1.0"
     },
@@ -122,6 +125,9 @@
     },
     "openlss/lib-array2xml": {
         "version": "1.0.0"
+    },
+    "overtrue/phplint": {
+        "version": "2.3.5"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -289,6 +295,9 @@
     },
     "symfony/polyfill-php80": {
         "version": "v1.22.1"
+    },
+    "symfony/process": {
+        "version": "v5.2.4"
     },
     "symfony/profiler-pack": {
         "version": "v1.0.5"
