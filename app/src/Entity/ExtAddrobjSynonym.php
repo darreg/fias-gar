@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  *     indexes={
  *         @ORM\Index(name="ext_addrobj_synonym__id__ind", columns={"id"}),
  *         @ORM\Index(name="ext_addrobj_synonym__objectid__ind", columns={"objectid"})
+ *     },
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="ext_addrobj_synonym__unique__constraint", columns={"objectid", "name"})
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\ExtAddrobjSynonymRepository")
@@ -31,15 +34,15 @@ class ExtAddrobjSynonym
     private ?int $id;
 
     /**
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name", type="string", length=255)
      */
-    private ?string $name;
+    private string $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=ExtAddrobj::class, inversedBy="synonym")
-     * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
+     * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid")
      */
-    private ?ExtAddrobj $extAddrobj;
+    private ExtAddrobj $extAddrobj;
 
 
     public function getId(): ?int
@@ -59,15 +62,25 @@ class ExtAddrobjSynonym
         return $this;
     }
 
-    public function getExtAddrobj(): ?ExtAddrobj
+    public function getExtAddrobj(): ExtAddrobj
     {
         return $this->extAddrobj;
     }
 
-    public function setExtAddrobj(?ExtAddrobj $extAddrobj): self
+    public function setExtAddrobj(ExtAddrobj $extAddrobj): self
     {
         $this->extAddrobj = $extAddrobj;
 
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'objectid' => $this->getExtAddrobj()->getObjectid(),
+            'name' => $this->getName(),
+            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
+        ];
     }
 }

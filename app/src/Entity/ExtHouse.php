@@ -125,4 +125,18 @@ class ExtHouse
 
         return $this;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'objectid' => $this->getObjectid(),
+            'objectguid' => $this->getObjectguid(),
+            'precision' => $this->getPrecision(),
+            'latitude' => $this->getLatitude(),
+            'longitude' => $this->getLongitude(),
+            'zoom' => $this->getZoom(),
+            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
+        ];
+    }
 }

@@ -343,10 +343,6 @@ class ExtAddrobj
     {
         if ($this->polygon->contains($polygon)) {
             $this->polygon->removeElement($polygon);
-            // set the owning side to null (unless already changed)
-            if ($polygon->getExtAddrobj() === $this) {
-                $polygon->setExtAddrobj(null);
-            }
         }
 
         return $this;
@@ -388,12 +384,39 @@ class ExtAddrobj
     {
         if ($this->synonym->contains($synonym)) {
             $this->synonym->removeElement($synonym);
-            // set the owning side to null (unless already changed)
-            if ($synonym->getExtAddrobj() === $this) {
-                $synonym->setExtAddrobj(null);
-            }
         }
 
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'objectid' => $this->getObjectid(),
+            'objectguid' => $this->getObjectguid(),
+            'precision' => $this->getPrecision(),
+            'latitude' => $this->getLatitude(),
+            'longitude' => $this->getLongitude(),
+            'zoom' => $this->getZoom(),
+            'alias' => $this->getAlias(),
+            'anglicism' => $this->getAnglicism(),
+            'nominative' => $this->getNominative(),
+            'genitive' => $this->getGenitive(),
+            'dative' => $this->getDative(),
+            'accusative' => $this->getAccusative(),
+            'ablative' => $this->getAblative(),
+            'prepositive' => $this->getPrepositive(),
+            'locative' => $this->getLocative(),
+            'synonym' => array_map(
+                static fn(ExtAddrobjSynonym $extAddrobjSynonym) => $extAddrobjSynonym->toArray(),
+                $this->synonym->toArray()
+            ),
+            'polygon' => array_map(
+                static fn(ExtAddrobjPoint $extAddrobjPoint) => $extAddrobjPoint->toArray(),
+                $this->polygon->toArray()
+            ),
+            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
+        ];
     }
 }
