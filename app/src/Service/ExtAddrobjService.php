@@ -137,6 +137,40 @@ class ExtAddrobjService
         );
     }
 
+    /**
+     * @psalm-param array{
+     *     objectguid?: string,
+     *     precision?: int,
+     *     latitude?: float,
+     *     longitude?: float,
+     *     zoom?: int,
+     *     alias?: string,
+     *     anglicism?: string,
+     *     nominative?: string,
+     *     genitive?: string,
+     *     dative?: string,
+     *     accusative?: string,
+     *     ablative?: string,
+     *     prepositive?: string,
+     *     locative?: string,
+     * } $data
+     */
+    public function updateFieldsById(
+        int $objectid,
+        array $data
+    ): bool {
+
+        $extAddrobj = $this->extAddrobjManager->find($objectid);
+        if ($extAddrobj === null) {
+            return false;
+        }
+
+        return $this->updateFields(
+            $extAddrobj,
+            $data
+        );
+    }
+
     public function update(
         ExtAddrobj $extAddrobj,
         ?string $objectguid = null,
@@ -173,6 +207,37 @@ class ExtAddrobjService
             $locative
         );
     }
+
+    /**
+     * @psalm-param array{
+     *     objectguid?: string,
+     *     precision?: int,
+     *     latitude?: float,
+     *     longitude?: float,
+     *     zoom?: int,
+     *     alias?: string,
+     *     anglicism?: string,
+     *     nominative?: string,
+     *     genitive?: string,
+     *     dative?: string,
+     *     accusative?: string,
+     *     ablative?: string,
+     *     prepositive?: string,
+     *     locative?: string,
+     * } $data
+     */
+    public function updateFields(
+        ExtAddrobj $extAddrobj,
+        array $data
+    ): bool {
+
+        $this->extAddrobjManager->updateFields(
+            $extAddrobj,
+            $data
+        );
+
+        return true;
+    }    
 
     public function deleteById(int $objectid): bool
     {

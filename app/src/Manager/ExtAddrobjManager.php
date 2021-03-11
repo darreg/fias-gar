@@ -120,6 +120,40 @@ class ExtAddrobjManager
         );
     }
 
+    /**
+     * @psalm-param array{
+     *     objectguid?: string,
+     *     precision?: int,
+     *     latitude?: float,
+     *     longitude?: float,
+     *     zoom?: int,
+     *     alias?: string,
+     *     anglicism?: string,
+     *     nominative?: string,
+     *     genitive?: string,
+     *     dative?: string,
+     *     accusative?: string,
+     *     ablative?: string,
+     *     prepositive?: string,
+     *     locative?: string,
+     * } $data
+     */
+    public function updateFieldsById(
+        int $objectid,
+        array $data
+    ): bool {
+
+        $extAddrobj = $this->extAddrobjRepository->find($objectid);
+        if ($extAddrobj === null) {
+            return false;
+        }
+
+        return $this->updateFields(
+            $extAddrobj,
+            $data
+        );
+    }    
+
     public function update(
         ExtAddrobj $extAddrobj,
         ?string $objectguid = null,
@@ -154,6 +188,37 @@ class ExtAddrobjManager
             $ablative,
             $prepositive,
             $locative
+        );
+
+        return true;
+    }
+
+    /**
+     * @psalm-param array{
+     *     objectguid?: string,
+     *     precision?: int,
+     *     latitude?: float,
+     *     longitude?: float,
+     *     zoom?: int,
+     *     alias?: string,
+     *     anglicism?: string,
+     *     nominative?: string,
+     *     genitive?: string,
+     *     dative?: string,
+     *     accusative?: string,
+     *     ablative?: string,
+     *     prepositive?: string,
+     *     locative?: string,
+     * } $data
+     */
+    public function updateFields(
+        ExtAddrobj $extAddrobj,
+        array $data
+    ): bool {
+
+        $this->extAddrobjDao->updateFields(
+            $extAddrobj,
+            $data
         );
 
         return true;

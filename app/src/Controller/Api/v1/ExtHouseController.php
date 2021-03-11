@@ -38,7 +38,7 @@ class ExtHouseController
     }
 
     /**
-     * @Route("", methods={"GET"})
+     * @Route("/all", methods={"GET"})
      */
     public function getAll(Request $request): JsonResponse
     {
@@ -91,26 +91,21 @@ class ExtHouseController
      */
     public function updateFields(Request $request): JsonResponse
     {
-        /** @var int $objectid */
-        $objectid = $request->query->get('objectid');
-        /** @var string|null $objectguid */
-        $objectguid = $request->query->get('objectguid');
-        /** @var int|null $precision */
-        $precision = $request->query->get('precision');
-        /** @var float|null $latitude */
-        $latitude = $request->query->get('latitude');
-        /** @var float|null $longitude */
-        $longitude = $request->query->get('longitude');
-        /** @var int|null $zoom */
-        $zoom = $request->query->get('zoom');
+        $data = $request->query->all();
 
-        $result = $this->extHouseManager->updatePartById(
-            $objectid,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom
+        /**
+         * @psalm-var array{
+         *     objectid: int,
+         *     objectguid?: string,
+         *     precision?: int,
+         *     latitude?: float,
+         *     longitude?: float,
+         *     zoom?: int
+         * } $data
+         */
+        $result = $this->extHouseManager->updateFieldsById(
+            (int) $data['objectid'],
+            $data
         );
 
         return new JsonResponse(

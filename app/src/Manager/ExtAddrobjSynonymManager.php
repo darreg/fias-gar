@@ -61,6 +61,31 @@ class ExtAddrobjSynonymManager
         return true;
     }
 
+    /**
+     * @psalm-param array{
+     *     objectid?: int,
+     *     name?: string,
+     * } $data
+     */
+    public function updateFields(
+        ExtAddrobjSynonym $extAddrobjSynonym,
+        array $data
+    ): bool {
+
+        $extAddrobj = null;
+        if (isset($data['objectid'])) {
+            $extAddrobj = $this->extAddrobjRepository->find($data['objectid']);
+        }
+
+        $this->extAddrobjSynonymDao->updateFields(
+            $extAddrobjSynonym,
+            $data['name'] ?? null,
+            $extAddrobj
+        );
+
+        return true;
+    }
+
     public function deleteById(int $objectid): bool
     {
         $extAddrobjSynonym = $this->extAddrobjSynonymRepository->find($objectid);

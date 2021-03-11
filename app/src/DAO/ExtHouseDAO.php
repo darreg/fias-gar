@@ -68,7 +68,7 @@ class ExtHouseDAO
      *     zoom?: int
      * } $data
      */
-    public function updatePart(
+    public function updateFields(
         ExtHouse $extHouse,
         array $data
     ): ExtHouse {

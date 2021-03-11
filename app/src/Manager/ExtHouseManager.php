@@ -84,38 +84,26 @@ class ExtHouseManager
         );
     }
 
-    public function updatePartById(
+    /**
+     * @psalm-param array{
+     *     objectguid?: string,
+     *     precision?: int,
+     *     latitude?: float,
+     *     longitude?: float,
+     *     zoom?: int
+     * } $data
+     */    
+    public function updateFieldsById(
         int $objectid,
-        ?string $objectguid = null,
-        ?int $precision = null,
-        ?float $latitude = null,
-        ?float $longitude = null,
-        ?int $zoom = null
+        array $data
     ): bool {
 
         $extHouse = $this->extHouseRepository->find($objectid);
         if ($extHouse === null) {
             return false;
         }
-
-        $data = [];
-        if ($objectguid !== null) {
-            $data['objectguid'] = $objectguid;
-        }
-        if ($precision !== null) {
-            $data['precision'] = $precision;
-        }
-        if ($latitude !== null) {
-            $data['latitude'] = $latitude;
-        }
-        if ($longitude !== null) {
-            $data['longitude'] = $longitude;
-        }
-        if ($zoom !== null) {
-            $data['zoom'] = $zoom;
-        }
-
-        return $this->updatePart(
+        
+        return $this->updateFields(
             $extHouse,
             $data
         );
@@ -142,12 +130,21 @@ class ExtHouseManager
         return true;
     }
 
-    public function updatePart(
+    /**
+     * @psalm-param array{
+     *     objectguid?: string,
+     *     precision?: int,
+     *     latitude?: float,
+     *     longitude?: float,
+     *     zoom?: int
+     * } $data
+     */    
+    public function updateFields(
         ExtHouse $extHouse,
         array $data
     ): bool {
 
-        $this->extHouseDao->updatePart(
+        $this->extHouseDao->updateFields(
             $extHouse,
             $data
         );

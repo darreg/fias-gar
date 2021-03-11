@@ -93,7 +93,36 @@ class ExtAddrobjController
      */
     public function updateFields(Request $request): JsonResponse
     {
-        //TODO
+        /**
+         * @psalm-var array{
+         *     objectid: int,
+         *     objectguid?: string,
+         *     precision?: int,
+         *     latitude?: float,
+         *     longitude?: float,
+         *     zoom?: int,
+         *     alias?: string,
+         *     anglicism?: string,
+         *     nominative?: string,
+         *     genitive?: string,
+         *     dative?: string,
+         *     accusative?: string,
+         *     ablative?: string,
+         *     prepositive?: string,
+         *     locative?: string,
+         * } $data
+         */        
+        $data = $request->query->all();
+
+        $result = $this->extAddrobjService->updateFieldsById(
+            (int) $data['objectid'],
+            $data
+        );
+
+        return new JsonResponse(
+            ['result' => $result],
+            $result ? Response::HTTP_OK : Response::HTTP_NOT_FOUND
+        );
     }
 
     /**
