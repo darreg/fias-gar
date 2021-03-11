@@ -79,6 +79,43 @@ class ExtHouseManager
         );
     }
 
+    public function updatePartById(
+        int $objectid,
+        ?string $objectguid = null,
+        ?int $precision = null,
+        ?float $latitude = null,
+        ?float $longitude = null,
+        ?int $zoom = null
+    ): bool {
+
+        $extHouse = $this->extHouseRepository->find($objectid);
+        if ($extHouse === null) {
+            return false;
+        }
+
+        $data = [];
+        if ($objectguid !== null) {
+            $data['objectguid'] = $objectguid;
+        }
+        if ($precision !== null) {
+            $data['precision'] = $precision;
+        }
+        if ($latitude !== null) {
+            $data['latitude'] = $latitude;
+        }
+        if ($longitude !== null) {
+            $data['longitude'] = $longitude;
+        }
+        if ($zoom !== null) {
+            $data['zoom'] = $zoom;
+        }
+
+        return $this->updatePart(
+            $extHouse,
+            $data
+        );
+    }
+
     public function update(
         ExtHouse $extHouse,
         ?string $objectguid = null,
@@ -95,6 +132,19 @@ class ExtHouseManager
             $latitude,
             $longitude,
             $zoom
+        );
+
+        return true;
+    }
+
+    public function updatePart(
+        ExtHouse $extHouse,
+        array $data
+    ): bool {
+
+        $this->extHouseDao->updatePart(
+            $extHouse,
+            $data
         );
 
         return true;

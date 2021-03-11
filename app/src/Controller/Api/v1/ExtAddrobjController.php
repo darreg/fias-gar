@@ -91,6 +91,14 @@ class ExtAddrobjController
     /**
      * @Route("", methods={"PATCH"})
      */
+    public function updateFields(Request $request): JsonResponse
+    {
+        //TODO
+    }
+
+    /**
+     * @Route("", methods={"PUT"})
+     */
     public function update(Request $request): JsonResponse
     {
         /** @var int $objectid */
