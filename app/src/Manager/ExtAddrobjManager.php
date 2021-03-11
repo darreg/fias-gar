@@ -172,23 +172,28 @@ class ExtAddrobjManager
         ?string $locative = null
     ): bool {
 
-        $this->extAddrobjDao->update(
-            $extAddrobj,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom,
-            $alias,
-            $anglicism,
-            $nominative,
-            $genitive,
-            $dative,
-            $accusative,
-            $ablative,
-            $prepositive,
-            $locative
-        );
+        try {
+            $this->extAddrobjDao->update(
+                $extAddrobj,
+                $objectguid,
+                $precision,
+                $latitude,
+                $longitude,
+                $zoom,
+                $alias,
+                $anglicism,
+                $nominative,
+                $genitive,
+                $dative,
+                $accusative,
+                $ablative,
+                $prepositive,
+                $locative
+            );
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }
@@ -216,10 +221,15 @@ class ExtAddrobjManager
         array $data
     ): bool {
 
-        $this->extAddrobjDao->updateFields(
-            $extAddrobj,
-            $data
-        );
+        try {
+            $this->extAddrobjDao->updateFields(
+                $extAddrobj,
+                $data
+            );
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }
@@ -231,7 +241,12 @@ class ExtAddrobjManager
             return false;
         }
 
-        $this->extAddrobjDao->delete($exHouse);
+        try {
+            $this->extAddrobjDao->delete($exHouse);
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }

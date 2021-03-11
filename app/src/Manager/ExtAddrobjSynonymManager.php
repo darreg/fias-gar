@@ -33,10 +33,15 @@ class ExtAddrobjSynonymManager
             return false;
         }
 
-        $this->extAddrobjSynonymDao->create(
-            $name,
-            $extAddrobj
-        );
+        try {
+            $this->extAddrobjSynonymDao->create(
+                $name,
+                $extAddrobj
+            );
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }
@@ -52,11 +57,16 @@ class ExtAddrobjSynonymManager
             return false;
         }
 
-        $this->extAddrobjSynonymDao->update(
-            $extAddrobjSynonym,
-            $name,
-            $extAddrobj
-        );
+        try {
+            $this->extAddrobjSynonymDao->update(
+                $extAddrobjSynonym,
+                $name,
+                $extAddrobj
+            );
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }
@@ -77,11 +87,16 @@ class ExtAddrobjSynonymManager
             $extAddrobj = $this->extAddrobjRepository->find($data['objectid']);
         }
 
-        $this->extAddrobjSynonymDao->updateFields(
-            $extAddrobjSynonym,
-            $data['name'] ?? null,
-            $extAddrobj
-        );
+        try {
+            $this->extAddrobjSynonymDao->updateFields(
+                $extAddrobjSynonym,
+                $data['name'] ?? null,
+                $extAddrobj
+            );
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }
@@ -93,7 +108,12 @@ class ExtAddrobjSynonymManager
             return false;
         }
 
-        $this->extAddrobjSynonymDao->delete($extAddrobjSynonym);
+        try {
+            $this->extAddrobjSynonymDao->delete($extAddrobjSynonym);
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }

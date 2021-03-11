@@ -118,14 +118,19 @@ class ExtHouseManager
         ?int $zoom = null
     ): bool {
 
-        $this->extHouseDao->update(
-            $extHouse,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom
-        );
+        try {
+            $this->extHouseDao->update(
+                $extHouse,
+                $objectguid,
+                $precision,
+                $latitude,
+                $longitude,
+                $zoom
+            );
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }
@@ -144,10 +149,15 @@ class ExtHouseManager
         array $data
     ): bool {
 
-        $this->extHouseDao->updateFields(
-            $extHouse,
-            $data
-        );
+        try {
+            $this->extHouseDao->updateFields(
+                $extHouse,
+                $data
+            );
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }
@@ -159,7 +169,12 @@ class ExtHouseManager
             return false;
         }
 
-        $this->extHouseDao->delete($exHouse);
+        try {
+            $this->extHouseDao->delete($exHouse);
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }

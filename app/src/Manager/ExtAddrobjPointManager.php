@@ -34,11 +34,16 @@ class ExtAddrobjPointManager
             return false;
         }
 
-        $this->extAddrobjPointDao->create(
-            $latitude,
-            $longitude,
-            $extAddrobj
-        );
+        try {
+            $this->extAddrobjPointDao->create(
+                $latitude,
+                $longitude,
+                $extAddrobj
+            );
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }
@@ -55,12 +60,17 @@ class ExtAddrobjPointManager
             return false;
         }
 
-        $this->extAddrobjPointDao->update(
-            $extAddrobjPoint,
-            $latitude,
-            $longitude,
-            $extAddrobj
-        );
+        try {
+            $this->extAddrobjPointDao->update(
+                $extAddrobjPoint,
+                $latitude,
+                $longitude,
+                $extAddrobj
+            );
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }
@@ -82,11 +92,16 @@ class ExtAddrobjPointManager
             $extAddrobj = $this->extAddrobjRepository->find($data['objectid']);
         }
 
-        $this->extAddrobjPointDao->updateFields(
-            $extAddrobjPoint,
-            $data,
-            $extAddrobj
-        );
+        try {
+            $this->extAddrobjPointDao->updateFields(
+                $extAddrobjPoint,
+                $data,
+                $extAddrobj
+            );
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }
@@ -98,7 +113,12 @@ class ExtAddrobjPointManager
             return false;
         }
 
-        $this->extAddrobjPointDao->delete($extAddrobjPoint);
+        try {
+            $this->extAddrobjPointDao->delete($extAddrobjPoint);
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }
