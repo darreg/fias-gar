@@ -48,6 +48,35 @@ class ExtAddrobjPointDAO
         return $extAddrobjPoint;
     }
 
+    /**
+     * @psalm-param array{
+     *     latitude?: float,
+     *     longitude?: float,
+     * } $data
+     */
+    public function updateFields(
+        ExtAddrobjPoint $extAddrobjPoint,
+        array $data,
+        ?ExtAddrobj $extAddrobj = null
+    ): ExtAddrobjPoint {
+
+        if (\array_key_exists('latitude', $data)) {
+            $extAddrobjPoint->setLatitude($data['latitude']);
+        }
+
+        if (\array_key_exists('longitude', $data)) {
+            $extAddrobjPoint->setLongitude($data['longitude']);
+        }
+        
+        if ($extAddrobj !== null) {
+            $extAddrobjPoint->setExtAddrobj($extAddrobj);
+        }
+        
+        $this->entityManager->flush();
+
+        return $extAddrobjPoint;
+    }
+
     public function delete(ExtAddrobjPoint $extAddrobjPoint): void
     {
         $this->entityManager->remove($extAddrobjPoint);

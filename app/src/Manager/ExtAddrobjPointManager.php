@@ -65,6 +65,32 @@ class ExtAddrobjPointManager
         return true;
     }
 
+    /**
+     * @psalm-param array{
+     *     objectid?: int,
+     *     latitude?: float,
+     *     longitude?: float,
+     * } $data
+     */
+    public function updateFields(
+        ExtAddrobjPoint $extAddrobjPoint,
+        array $data
+    ): bool {
+
+        $extAddrobj = null;
+        if (isset($data['objectid'])) {
+            $extAddrobj = $this->extAddrobjRepository->find($data['objectid']);
+        }
+
+        $this->extAddrobjPointDao->updateFields(
+            $extAddrobjPoint,
+            $data,
+            $extAddrobj
+        );
+
+        return true;
+    }
+
     public function deleteById(int $objectid): bool
     {
         $extAddrobjPoint = $this->extAddrobjPointRepository->find($objectid);
