@@ -43,14 +43,19 @@ class ExtHouseManager
         ?int $zoom = null
     ): bool {
 
-        $this->extHouseDao->create(
-            $objectid,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom
-        );
+        try {
+            $this->extHouseDao->create(
+                $objectid,
+                $objectguid,
+                $precision,
+                $latitude,
+                $longitude,
+                $zoom
+            );
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }

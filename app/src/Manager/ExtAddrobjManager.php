@@ -52,23 +52,28 @@ class ExtAddrobjManager
         ?string $locative = null
     ): bool {
 
-        $this->extAddrobjDao->create(
-            $objectid,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom,
-            $alias,
-            $anglicism,
-            $nominative,
-            $genitive,
-            $dative,
-            $accusative,
-            $ablative,
-            $prepositive,
-            $locative
-        );
+        try {
+            $this->extAddrobjDao->create(
+                $objectid,
+                $objectguid,
+                $precision,
+                $latitude,
+                $longitude,
+                $zoom,
+                $alias,
+                $anglicism,
+                $nominative,
+                $genitive,
+                $dative,
+                $accusative,
+                $ablative,
+                $prepositive,
+                $locative
+            );
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
 
         return true;
     }
