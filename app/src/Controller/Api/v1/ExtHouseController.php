@@ -89,6 +89,39 @@ class ExtHouseController
     /**
      * @Route("", methods={"PATCH"})
      */
+    public function updateFields(Request $request): JsonResponse
+    {
+        /** @var int $objectid */
+        $objectid = $request->query->get('objectid');
+        /** @var string|null $objectguid */
+        $objectguid = $request->query->get('objectguid');
+        /** @var int|null $precision */
+        $precision = $request->query->get('precision');
+        /** @var float|null $latitude */
+        $latitude = $request->query->get('latitude');
+        /** @var float|null $longitude */
+        $longitude = $request->query->get('longitude');
+        /** @var int|null $zoom */
+        $zoom = $request->query->get('zoom');
+
+        $result = $this->extHouseManager->updatePartById(
+            $objectid,
+            $objectguid,
+            $precision,
+            $latitude,
+            $longitude,
+            $zoom
+        );
+
+        return new JsonResponse(
+            ['result' => $result],
+            $result ? Response::HTTP_OK : Response::HTTP_NOT_FOUND
+        );
+    }
+
+    /**
+     * @Route("", methods={"PUT"})
+     */
     public function update(Request $request): JsonResponse
     {
         /** @var int $objectid */
