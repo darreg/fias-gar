@@ -74,7 +74,7 @@ class ExtAddrobjSynonymDAO
      */
     public function deleteAll(array $extAddrobjSynonyms): void
     {
-        foreach($extAddrobjSynonyms as $extAddrobjSynonym) {
+        foreach ($extAddrobjSynonyms as $extAddrobjSynonym) {
             $this->entityManager->remove($extAddrobjSynonym);
         }
         $this->entityManager->flush();

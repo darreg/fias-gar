@@ -47,7 +47,12 @@ class ExtAddrobjPointController
         $code = count($extAddrobjPoints) === 0 ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
 
         return new JsonResponse(
-            ['result' => array_map(static fn(ExtAddrobjPoint $extAddrobjPoint) => $extAddrobjPoint->toArray(), $extAddrobjPoints)],
+            [
+                'result' => array_map(
+                    static fn(ExtAddrobjPoint $extAddrobjPoint) => $extAddrobjPoint->toArray(),
+                    $extAddrobjPoints
+                )
+            ],
             $code
         );
     }
@@ -62,7 +67,7 @@ class ExtAddrobjPointController
         /** @var float $latitude */
         $latitude = $request->request->get('latitude');
         /** @var float $longitude */
-        $longitude = $request->request->get('longitude');        
+        $longitude = $request->request->get('longitude');
 
         $result = $this->extAddrobjService->addPoint(
             $objectid,
@@ -73,7 +78,7 @@ class ExtAddrobjPointController
         return new JsonResponse(
             ['result' => $result],
             $result ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST
-        );        
+        );
     }
 
     /**
