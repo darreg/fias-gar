@@ -67,11 +67,11 @@ class ExtAddrobjPointDAO
         if (\array_key_exists('longitude', $data)) {
             $extAddrobjPoint->setLongitude($data['longitude']);
         }
-        
+
         if ($extAddrobj !== null) {
             $extAddrobjPoint->setExtAddrobj($extAddrobj);
         }
-        
+
         $this->entityManager->flush();
 
         return $extAddrobjPoint;

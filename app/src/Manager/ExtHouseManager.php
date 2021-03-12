@@ -92,7 +92,7 @@ class ExtHouseManager
      *     longitude?: float,
      *     zoom?: int
      * } $data
-     */    
+     */
     public function updateFieldsById(
         int $objectid,
         array $data
@@ -102,7 +102,7 @@ class ExtHouseManager
         if ($extHouse === null) {
             return false;
         }
-        
+
         return $this->updateFields(
             $extHouse,
             $data
@@ -143,7 +143,7 @@ class ExtHouseManager
      *     longitude?: float,
      *     zoom?: int
      * } $data
-     */    
+     */
     public function updateFields(
         ExtHouse $extHouse,
         array $data
