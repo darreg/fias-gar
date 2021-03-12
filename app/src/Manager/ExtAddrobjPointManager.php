@@ -188,7 +188,9 @@ class ExtAddrobjPointManager
 
     public function deleteByObjectId(int $objectid): bool
     {
-        $extAddrobjPoints = $this->extAddrobjPointRepository->findBy(['objectid' => $objectid]);
+        $extAddrobj = $this->extAddrobjRepository->find($objectid);
+
+        $extAddrobjPoints = $this->extAddrobjPointRepository->findBy(['extAddrobj' => $extAddrobj]);
         if (count($extAddrobjPoints) === 0) {
             return false;
         }

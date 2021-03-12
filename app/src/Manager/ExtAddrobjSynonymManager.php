@@ -33,9 +33,14 @@ class ExtAddrobjSynonymManager
      *
      * @psalm-return array<int, ExtAddrobjSynonym>
      */
-    public function getAll(?int $limit = null, ?int $offset = null): array
+    public function getAll(int $objectid): array
     {
-        return $this->extAddrobjSynonymRepository->findBy([], null, $limit, $offset);
+        $extAddrobj = $this->extAddrobjRepository->find($objectid);
+        if ($extAddrobj === null) {
+            return [];
+        }
+
+        return $this->extAddrobjSynonymRepository->findBy(['extAddrobj' => $extAddrobj]);
     }
 
     public function add(
@@ -59,6 +64,24 @@ class ExtAddrobjSynonymManager
         }
 
         return true;
+    }
+
+    public function updateById(
+        int $id,
+        int $objectid,
+        string $name
+    ): bool {
+
+        $extAddrobjSynonym = $this->extAddrobjSynonymRepository->find($id);
+        if ($extAddrobjSynonym === null) {
+            return false;
+        }
+
+        return $this->update(
+            $extAddrobjSynonym,
+            $objectid,
+            $name,
+        );
     }
 
     public function update(
@@ -116,9 +139,31 @@ class ExtAddrobjSynonymManager
         return true;
     }
 
-    public function deleteById(int $objectid): bool
+    /**
+     * @psalm-param array{
+     *     objectid?: int,
+     *     name?: string,
+     * } $data
+     */
+    public function updateFieldsById(
+        int $id,
+        array $data
+    ): bool {
+
+        $extAddrobjSynonym = $this->extAddrobjSynonymRepository->find($id);
+        if ($extAddrobjSynonym === null) {
+            return false;
+        }
+
+        return $this->updateFields(
+            $extAddrobjSynonym,
+            $data
+        );
+    }
+
+    public function deleteById(int $id): bool
     {
-        $extAddrobjSynonym = $this->extAddrobjSynonymRepository->find($objectid);
+        $extAddrobjSynonym = $this->extAddrobjSynonymRepository->find($id);
         if ($extAddrobjSynonym === null) {
             return false;
         }
@@ -135,7 +180,9 @@ class ExtAddrobjSynonymManager
 
     public function deleteByObjectId(int $objectid): bool
     {
-        $extAddrobjSynonyms = $this->extAddrobjSynonymRepository->findBy(['objectid' => $objectid]);
+        $extAddrobj = $this->extAddrobjRepository->find($objectid);
+
+        $extAddrobjSynonyms = $this->extAddrobjSynonymRepository->findBy(['extAddrobj' => $extAddrobj]);
         if (count($extAddrobjSynonyms) === 0) {
             return false;
         }
