@@ -82,4 +82,15 @@ class ExtAddrobjPointDAO
         $this->entityManager->remove($extAddrobjPoint);
         $this->entityManager->flush();
     }
+
+    /**
+     * @param array<int, ExtAddrobjPoint> $extAddrobjPoints
+     */
+    public function deleteAll(array $extAddrobjPoints): void
+    {
+        foreach($extAddrobjPoints as $extAddrobjPoint) {
+            $this->entityManager->remove($extAddrobjPoint);
+        }
+        $this->entityManager->flush();
+    }    
 }

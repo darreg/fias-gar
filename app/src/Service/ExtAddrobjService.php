@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\ExtAddrobj;
+use App\Entity\ExtAddrobjPoint;
 use App\Manager\ExtAddrobjManager;
 use App\Manager\ExtAddrobjPointManager;
 use App\Manager\ExtAddrobjSynonymManager;
@@ -28,6 +29,11 @@ class ExtAddrobjService
         return $this->extAddrobjManager->getOne($objectid);
     }
 
+    public function getPointOne(int $id): ?ExtAddrobjPoint
+    {
+        return $this->extAddrobjPointManager->getOne($id);
+    }
+
     /**
      * @return ExtAddrobj[]
      *
@@ -36,6 +42,16 @@ class ExtAddrobjService
     public function getAll(?int $limit = null, ?int $offset = null): array
     {
         return $this->extAddrobjManager->getAll($limit, $offset);
+    }
+
+    /**
+     * @return ExtAddrobjPoint[]
+     *
+     * @psalm-return array<int, ExtAddrobjPoint>
+     */
+    public function getPointAll(int $objectid): array
+    {
+        return $this->extAddrobjPointManager->getAll($objectid);
     }
 
     public function add(
@@ -137,6 +153,21 @@ class ExtAddrobjService
         );
     }
 
+    public function updatePointById(
+        int $id,
+        int $objectid,
+        float $latitude,
+        float $longitude
+    ): bool {
+
+        return $this->extAddrobjPointManager->updateById(
+            $id,
+            $objectid,
+            $latitude,
+            $longitude
+        );
+    }
+
     /**
      * @psalm-param array{
      *     objectguid?: string,
@@ -167,6 +198,28 @@ class ExtAddrobjService
 
         return $this->updateFields(
             $extAddrobj,
+            $data
+        );
+    }
+
+    /**
+     * @psalm-param array{
+     *     latitude?: float,
+     *     longitude?: float,
+     * } $data
+     */
+    public function updatePointFieldsById(
+        int $objectid,
+        array $data
+    ): bool {
+
+        $extAddrobjPoint = $this->extAddrobjPointManager->getOne($objectid);
+        if ($extAddrobjPoint === null) {
+            return false;
+        }
+
+        return $this->updatePointFields(
+            $extAddrobjPoint,
             $data
         );
     }
@@ -239,8 +292,53 @@ class ExtAddrobjService
         return true;
     }
 
+    public function updatePoint(
+        ExtAddrobjPoint $extAddrobjPoint,
+        int $objectid,
+        float $latitude,
+        float $longitude
+    ): bool {
+
+        return $this->extAddrobjPointManager->update(
+            $extAddrobjPoint,
+            $objectid,
+            $latitude,
+            $longitude
+        );
+    }
+
+    /**
+     * @psalm-param array{
+     *     objectid?: int,
+     *     latitude?: float,
+     *     longitude?: float,
+     * } $data
+     */
+    public function updatePointFields(
+        ExtAddrobjPoint $extAddrobjPoint,
+        array $data
+    ): bool {
+
+        $this->extAddrobjPointManager->updateFields(
+            $extAddrobjPoint,
+            $data
+        );
+
+        return true;
+    }
+
     public function deleteById(int $objectid): bool
     {
         return $this->extAddrobjManager->deleteById($objectid);
+    }
+
+    public function deletePointById(int $id): bool
+    {
+        return $this->extAddrobjPointManager->deleteById($id);
+    }
+
+    public function deletePointByObjectId(int $objectid): bool
+    {
+        return $this->extAddrobjPointManager->deleteByObjectId($objectid);
     }
 }

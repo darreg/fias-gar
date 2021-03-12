@@ -23,6 +23,21 @@ class ExtAddrobjSynonymManager
         $this->extAddrobjRepository = $extAddrobjRepository;
     }
 
+    public function getOne(int $id): ?ExtAddrobjSynonym
+    {
+        return $this->extAddrobjSynonymRepository->find($id);
+    }
+
+    /**
+     * @return ExtAddrobjSynonym[]
+     *
+     * @psalm-return array<int, ExtAddrobjSynonym>
+     */
+    public function getAll(?int $limit = null, ?int $offset = null): array
+    {
+        return $this->extAddrobjSynonymRepository->findBy([], null, $limit, $offset);
+    }
+
     public function add(
         int $objectid,
         string $name
@@ -110,6 +125,23 @@ class ExtAddrobjSynonymManager
 
         try {
             $this->extAddrobjSynonymDao->delete($extAddrobjSynonym);
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
+
+        return true;
+    }
+
+    public function deleteByObjectId(int $objectid): bool
+    {
+        $extAddrobjSynonyms = $this->extAddrobjSynonymRepository->findBy(['objectid' => $objectid]);
+        if (count($extAddrobjSynonyms) === 0) {
+            return false;
+        }
+
+        try {
+            $this->extAddrobjSynonymDao->deleteAll($extAddrobjSynonyms);
         } catch (\Exception $e) {
             //TODO log
             return false;

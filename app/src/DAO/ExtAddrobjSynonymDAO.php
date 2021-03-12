@@ -68,4 +68,15 @@ class ExtAddrobjSynonymDAO
         $this->entityManager->remove($extAddrobjSynonym);
         $this->entityManager->flush();
     }
+
+    /**
+     * @param array<int, ExtAddrobjSynonym> $extAddrobjSynonyms
+     */
+    public function deleteAll(array $extAddrobjSynonyms): void
+    {
+        foreach($extAddrobjSynonyms as $extAddrobjSynonym) {
+            $this->entityManager->remove($extAddrobjSynonym);
+        }
+        $this->entityManager->flush();
+    }
 }
