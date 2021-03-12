@@ -38,8 +38,8 @@ class ExtAddrobjPointManager
         $extAddrobj = $this->extAddrobjRepository->find($objectid);
         if ($extAddrobj === null) {
             return [];
-        }        
-        
+        }
+
         return $this->extAddrobjPointRepository->findBy(['extAddrobj' => $extAddrobj]);
     }
 
@@ -86,7 +86,7 @@ class ExtAddrobjPointManager
             $latitude,
             $longitude
         );
-    }    
+    }
 
     public function update(
         ExtAddrobjPoint $extAddrobjPoint,
@@ -167,7 +167,7 @@ class ExtAddrobjPointManager
             $extAddrobjPoint,
             $data
         );
-    }    
+    }
 
     public function deleteById(int $id): bool
     {
