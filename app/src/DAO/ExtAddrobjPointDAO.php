@@ -6,6 +6,8 @@ use App\Entity\ExtAddrobj;
 use App\Entity\ExtAddrobjPoint;
 use Doctrine\ORM\EntityManagerInterface;
 
+use function array_key_exists;
+
 class ExtAddrobjPointDAO
 {
     private EntityManagerInterface $entityManager;
@@ -60,11 +62,11 @@ class ExtAddrobjPointDAO
         ?ExtAddrobj $extAddrobj = null
     ): ExtAddrobjPoint {
 
-        if (\array_key_exists('latitude', $data)) {
+        if (array_key_exists('latitude', $data)) {
             $extAddrobjPoint->setLatitude($data['latitude']);
         }
 
-        if (\array_key_exists('longitude', $data)) {
+        if (array_key_exists('longitude', $data)) {
             $extAddrobjPoint->setLongitude($data['longitude']);
         }
 
