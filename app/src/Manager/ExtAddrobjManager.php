@@ -152,7 +152,7 @@ class ExtAddrobjManager
             $extAddrobj,
             $data
         );
-    }    
+    }
 
     public function update(
         ExtAddrobj $extAddrobj,

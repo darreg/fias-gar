@@ -149,7 +149,7 @@ class ExtAddrobjDAO
         if (array_key_exists('nominative', $data)) {
             $extAddrobj->setNominative($data['nominative']);
         }
-        
+
         if (array_key_exists('genitive', $data)) {
             $extAddrobj->setGenitive($data['genitive']);
         }

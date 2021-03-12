@@ -104,7 +104,7 @@ class ExtHouseController
          * } $data
          */
         $result = $this->extHouseManager->updateFieldsById(
-            (int) $data['objectid'],
+            $data['objectid'],
             $data
         );
 

@@ -3,8 +3,6 @@
 namespace App\Controller\Api\v1;
 
 use App\Entity\ExtAddrobj;
-use App\Entity\ExtHouse;
-use App\Manager\ExtHouseManager;
 use App\Service\ExtAddrobjService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -111,11 +109,11 @@ class ExtAddrobjController
          *     prepositive?: string,
          *     locative?: string,
          * } $data
-         */        
+         */
         $data = $request->query->all();
 
         $result = $this->extAddrobjService->updateFieldsById(
-            (int) $data['objectid'],
+            $data['objectid'],
             $data
         );
 

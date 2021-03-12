@@ -160,7 +160,7 @@ class ExtAddrobjService
         array $data
     ): bool {
 
-        $extAddrobj = $this->extAddrobjManager->find($objectid);
+        $extAddrobj = $this->extAddrobjManager->getOne($objectid);
         if ($extAddrobj === null) {
             return false;
         }
@@ -237,7 +237,7 @@ class ExtAddrobjService
         );
 
         return true;
-    }    
+    }
 
     public function deleteById(int $objectid): bool
     {
