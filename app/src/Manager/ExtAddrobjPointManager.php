@@ -23,6 +23,26 @@ class ExtAddrobjPointManager
         $this->extAddrobjRepository = $extAddrobjRepository;
     }
 
+    public function getOne(int $id): ?ExtAddrobjPoint
+    {
+        return $this->extAddrobjPointRepository->find($id);
+    }
+
+    /**
+     * @return ExtAddrobjPoint[]
+     *
+     * @psalm-return array<int, ExtAddrobjPoint>
+     */
+    public function getAll(int $objectid): array
+    {
+        $extAddrobj = $this->extAddrobjRepository->find($objectid);
+        if ($extAddrobj === null) {
+            return [];
+        }        
+        
+        return $this->extAddrobjPointRepository->findBy(['extAddrobj' => $extAddrobj]);
+    }
+
     public function add(
         int $objectid,
         float $latitude,
@@ -47,6 +67,26 @@ class ExtAddrobjPointManager
 
         return true;
     }
+
+    public function updateById(
+        int $id,
+        int $objectid,
+        float $latitude,
+        float $longitude
+    ): bool {
+
+        $extAddrobjPoint = $this->extAddrobjPointRepository->find($id);
+        if ($extAddrobjPoint === null) {
+            return false;
+        }
+
+        return $this->update(
+            $extAddrobjPoint,
+            $objectid,
+            $latitude,
+            $longitude
+        );
+    }    
 
     public function update(
         ExtAddrobjPoint $extAddrobjPoint,
@@ -106,15 +146,55 @@ class ExtAddrobjPointManager
         return true;
     }
 
-    public function deleteById(int $objectid): bool
+    /**
+     * @psalm-param array{
+     *     objectid?: int,
+     *     latitude?: float,
+     *     longitude?: float,
+     * } $data
+     */
+    public function updateFieldsById(
+        int $id,
+        array $data
+    ): bool {
+
+        $extAddrobjPoint = $this->extAddrobjPointRepository->find($id);
+        if ($extAddrobjPoint === null) {
+            return false;
+        }
+
+        return $this->updateFields(
+            $extAddrobjPoint,
+            $data
+        );
+    }    
+
+    public function deleteById(int $id): bool
     {
-        $extAddrobjPoint = $this->extAddrobjPointRepository->find($objectid);
+        $extAddrobjPoint = $this->extAddrobjPointRepository->find($id);
         if ($extAddrobjPoint === null) {
             return false;
         }
 
         try {
             $this->extAddrobjPointDao->delete($extAddrobjPoint);
+        } catch (\Exception $e) {
+            //TODO log
+            return false;
+        }
+
+        return true;
+    }
+
+    public function deleteByObjectId(int $objectid): bool
+    {
+        $extAddrobjPoints = $this->extAddrobjPointRepository->findBy(['objectid' => $objectid]);
+        if (count($extAddrobjPoints) === 0) {
+            return false;
+        }
+
+        try {
+            $this->extAddrobjPointDao->deleteAll($extAddrobjPoints);
         } catch (\Exception $e) {
             //TODO log
             return false;

@@ -38,7 +38,7 @@ class ExtAddrobjController
     }
 
     /**
-     * @Route("", methods={"GET"})
+     * @Route("/all", methods={"GET"})
      */
     public function getAll(Request $request): JsonResponse
     {
@@ -70,6 +70,24 @@ class ExtAddrobjController
         $longitude = $request->request->get('longitude');
         /** @var int|null $zoom */
         $zoom = $request->request->get('zoom');
+        /** @var string|null $alias */
+        $alias = $request->request->get('alias');
+        /** @var string|null $anglicism */
+        $anglicism = $request->request->get('$anglicism');
+        /** @var string|null $nominative */
+        $nominative = $request->request->get('nominative');
+        /** @var string|null $genitive */
+        $genitive = $request->request->get('genitive');
+        /** @var string|null $dative */
+        $dative = $request->request->get('dative');
+        /** @var string|null $accusative */
+        $accusative = $request->request->get('accusative');
+        /** @var string|null $ablative */
+        $ablative = $request->request->get('ablative');
+        /** @var string|null $prepositive */
+        $prepositive = $request->request->get('prepositive');
+        /** @var string|null $locative */
+        $locative = $request->request->get('locative');
 
         $result = $this->extAddrobjService->add(
             $objectid,
@@ -77,7 +95,16 @@ class ExtAddrobjController
             $precision,
             $latitude,
             $longitude,
-            $zoom
+            $zoom,
+            $alias,
+            $anglicism,
+            $nominative,
+            $genitive,
+            $dative,
+            $accusative,
+            $ablative,
+            $prepositive,
+            $locative
         );
 
         return new JsonResponse(
@@ -140,6 +167,24 @@ class ExtAddrobjController
         $longitude = $request->query->get('longitude');
         /** @var int|null $zoom */
         $zoom = $request->query->get('zoom');
+        /** @var string|null $alias */
+        $alias = $request->query->get('alias');
+        /** @var string|null $anglicism */
+        $anglicism = $request->query->get('$anglicism');
+        /** @var string|null $nominative */
+        $nominative = $request->query->get('nominative');
+        /** @var string|null $genitive */
+        $genitive = $request->query->get('genitive');
+        /** @var string|null $dative */
+        $dative = $request->query->get('dative');
+        /** @var string|null $accusative */
+        $accusative = $request->query->get('accusative');
+        /** @var string|null $ablative */
+        $ablative = $request->query->get('ablative');
+        /** @var string|null $prepositive */
+        $prepositive = $request->query->get('prepositive');
+        /** @var string|null $locative */
+        $locative = $request->query->get('locative');
 
         $result = $this->extAddrobjService->updateById(
             $objectid,
@@ -147,7 +192,16 @@ class ExtAddrobjController
             $precision,
             $latitude,
             $longitude,
-            $zoom
+            $zoom,
+            $alias,
+            $anglicism,
+            $nominative,
+            $genitive,
+            $dative,
+            $accusative,
+            $ablative,
+            $prepositive,
+            $locative
         );
 
         return new JsonResponse(
