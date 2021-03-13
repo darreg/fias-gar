@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\DAO\ExtAddrobjPointDAO;
+use App\DTO\ExtAddrobjPointDTO;
 use App\Entity\ExtAddrobjPoint;
 use App\Repository\ExtAddrobjPointRepository;
 use App\Repository\ExtAddrobjRepository;
@@ -43,23 +44,21 @@ class ExtAddrobjPointManager
         return $this->extAddrobjPointRepository->findBy(['extAddrobj' => $extAddrobj]);
     }
 
-    public function add(
-        int $objectid,
-        float $latitude,
-        float $longitude
-    ): bool {
+    public function add(ExtAddrobjPointDTO $extAddrobjPointDTO): bool
+    {
 
-        $extAddrobj = $this->extAddrobjRepository->find($objectid);
+        $extAddrobj = $this->extAddrobjRepository->find($extAddrobjPointDTO->getObjectid());
         if ($extAddrobj === null) {
             return false;
         }
 
+        $extAddrobjPoint = (new ExtAddrobjPoint())
+            ->setLatitude($extAddrobjPointDTO->getLatitude())
+            ->setLongitude($extAddrobjPointDTO->getLongitude())
+            ->setExtAddrobj($extAddrobj);
+
         try {
-            $this->extAddrobjPointDao->create(
-                $latitude,
-                $longitude,
-                $extAddrobj
-            );
+            $this->extAddrobjPointDao->create($extAddrobjPoint);
         } catch (\Exception $e) {
             //TODO log
             return false;
@@ -70,9 +69,7 @@ class ExtAddrobjPointManager
 
     public function updateById(
         int $id,
-        int $objectid,
-        float $latitude,
-        float $longitude
+        ExtAddrobjPointDTO $extAddrobjPointDTO
     ): bool {
 
         $extAddrobjPoint = $this->extAddrobjPointRepository->find($id);
@@ -82,30 +79,28 @@ class ExtAddrobjPointManager
 
         return $this->update(
             $extAddrobjPoint,
-            $objectid,
-            $latitude,
-            $longitude
+            $extAddrobjPointDTO
         );
     }
 
     public function update(
         ExtAddrobjPoint $extAddrobjPoint,
-        int $objectid,
-        float $latitude,
-        float $longitude
+        ExtAddrobjPointDTO $extAddrobjPointDTO
     ): bool {
 
-        $extAddrobj = $this->extAddrobjRepository->find($objectid);
+        $extAddrobj = $this->extAddrobjRepository->find($extAddrobjPointDTO->getObjectid());
         if ($extAddrobj === null) {
             return false;
         }
 
+        $extAddrobjPoint
+            ->setLatitude($extAddrobjPointDTO->getLatitude())
+            ->setLongitude($extAddrobjPointDTO->getLongitude())
+            ->setExtAddrobj($extAddrobj);
+
         try {
             $this->extAddrobjPointDao->update(
-                $extAddrobjPoint,
-                $latitude,
-                $longitude,
-                $extAddrobj
+                $extAddrobjPoint
             );
         } catch (\Exception $e) {
             //TODO log
@@ -113,60 +108,6 @@ class ExtAddrobjPointManager
         }
 
         return true;
-    }
-
-    /**
-     * @psalm-param array{
-     *     objectid?: int,
-     *     latitude?: float,
-     *     longitude?: float,
-     * } $data
-     */
-    public function updateFields(
-        ExtAddrobjPoint $extAddrobjPoint,
-        array $data
-    ): bool {
-
-        $extAddrobj = null;
-        if (isset($data['objectid'])) {
-            $extAddrobj = $this->extAddrobjRepository->find($data['objectid']);
-        }
-
-        try {
-            $this->extAddrobjPointDao->updateFields(
-                $extAddrobjPoint,
-                $data,
-                $extAddrobj
-            );
-        } catch (\Exception $e) {
-            //TODO log
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @psalm-param array{
-     *     objectid?: int,
-     *     latitude?: float,
-     *     longitude?: float,
-     * } $data
-     */
-    public function updateFieldsById(
-        int $id,
-        array $data
-    ): bool {
-
-        $extAddrobjPoint = $this->extAddrobjPointRepository->find($id);
-        if ($extAddrobjPoint === null) {
-            return false;
-        }
-
-        return $this->updateFields(
-            $extAddrobjPoint,
-            $data
-        );
     }
 
     public function deleteById(int $id): bool

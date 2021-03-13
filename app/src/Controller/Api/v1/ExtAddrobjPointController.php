@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\v1;
 
+use App\DTO\ExtAddrobjPointDTO;
 use App\Entity\ExtAddrobj;
 use App\Entity\ExtAddrobjPoint;
 use App\Service\ExtAddrobjService;
@@ -62,18 +63,9 @@ class ExtAddrobjPointController
      */
     public function create(Request $request): JsonResponse
     {
-        /** @var int $objectid */
-        $objectid = $request->request->get('objectid');
-        /** @var float $latitude */
-        $latitude = $request->request->get('latitude');
-        /** @var float $longitude */
-        $longitude = $request->request->get('longitude');
+        $extAddrobjPointDTO = ExtAddrobjPointDTO::fromArray($request->request->all());
 
-        $result = $this->extAddrobjService->addPoint(
-            $objectid,
-            $latitude,
-            $longitude
-        );
+        $result = $this->extAddrobjService->addPoint($extAddrobjPointDTO);
 
         return new JsonResponse(
             ['result' => $result],
@@ -82,50 +74,17 @@ class ExtAddrobjPointController
     }
 
     /**
-     * @Route("", methods={"PATCH"})
-     */
-    public function updateFields(Request $request): JsonResponse
-    {
-        /**
-         * @psalm-var array{
-         *     id: int,
-         *     objectid?: int,
-         *     latitude?: float,
-         *     longitude?: float,
-         * } $data
-         */
-        $data = $request->query->all();
-
-        $result = $this->extAddrobjService->updatePointFieldsById(
-            $data['id'],
-            $data
-        );
-
-        return new JsonResponse(
-            ['result' => $result],
-            $result ? Response::HTTP_OK : Response::HTTP_NOT_FOUND
-        );
-    }
-
-    /**
      * @Route("", methods={"PUT"})
      */
     public function update(Request $request): JsonResponse
     {
-        /** @var int $id */
-        $id = $request->query->get('id');
-        /** @var int $objectid */
-        $objectid = $request->query->get('objectid');
-        /** @var float $latitude */
-        $latitude = $request->query->get('latitude');
-        /** @var float $longitude */
-        $longitude = $request->query->get('longitude');
+        $extAddrobjPointDTO = ExtAddrobjPointDTO::fromArray($request->query->all());
+
+        $id = $request->query->getInt('id');
 
         $result = $this->extAddrobjService->updatePointById(
             $id,
-            $objectid,
-            $latitude,
-            $longitude
+            $extAddrobjPointDTO
         );
 
         return new JsonResponse(
