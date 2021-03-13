@@ -14,39 +14,8 @@ class ExtAddrobjDAO
         $this->entityManager = $entityManager;
     }
 
-    public function create(
-        int $objectid,
-        ?string $objectguid = null,
-        ?int $precision = null,
-        ?float $latitude = null,
-        ?float $longitude = null,
-        ?int $zoom = null,
-        ?string $alias = null,
-        ?string $anglicism = null,
-        ?string $nominative = null,
-        ?string $genitive = null,
-        ?string $dative = null,
-        ?string $accusative = null,
-        ?string $ablative = null,
-        ?string $prepositive = null,
-        ?string $locative = null
-    ): ExtAddrobj {
-        $extAddrobj = (new ExtAddrobj())
-            ->setObjectid($objectid)
-            ->setObjectguid($objectguid)
-            ->setPrecision($precision)
-            ->setLatitude($latitude)
-            ->setLongitude($longitude)
-            ->setZoom($zoom)
-            ->setAlias($alias)
-            ->setAnglicism($anglicism)
-            ->setNominative($nominative)
-            ->setGenitive($genitive)
-            ->setDative($dative)
-            ->setAccusative($accusative)
-            ->setAblative($ablative)
-            ->setPrepositive($prepositive)
-            ->setLocative($locative);
+    public function create(ExtAddrobj $extAddrobj): ExtAddrobj
+    {
 
         $this->entityManager->persist($extAddrobj);
         $this->entityManager->flush();
@@ -54,39 +23,8 @@ class ExtAddrobjDAO
         return $extAddrobj;
     }
 
-    public function update(
-        ExtAddrobj $extAddrobj,
-        ?string $objectguid = null,
-        ?int $precision = null,
-        ?float $latitude = null,
-        ?float $longitude = null,
-        ?int $zoom = null,
-        ?string $alias = null,
-        ?string $anglicism = null,
-        ?string $nominative = null,
-        ?string $genitive = null,
-        ?string $dative = null,
-        ?string $accusative = null,
-        ?string $ablative = null,
-        ?string $prepositive = null,
-        ?string $locative = null
-    ): ExtAddrobj {
-
-        $extAddrobj
-            ->setObjectguid($objectguid)
-            ->setPrecision($precision)
-            ->setLatitude($latitude)
-            ->setLongitude($longitude)
-            ->setZoom($zoom)
-            ->setAlias($alias)
-            ->setAnglicism($anglicism)
-            ->setNominative($nominative)
-            ->setGenitive($genitive)
-            ->setDative($dative)
-            ->setAccusative($accusative)
-            ->setAblative($ablative)
-            ->setPrepositive($prepositive)
-            ->setLocative($locative);
+    public function update(ExtAddrobj $extAddrobj): ExtAddrobj
+    {
 
         $this->entityManager->flush();
 

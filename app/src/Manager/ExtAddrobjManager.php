@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\DAO\ExtAddrobjDAO;
+use App\DTO\ExtAddrobjDTO;
 use App\Entity\ExtAddrobj;
 use App\Repository\ExtAddrobjRepository;
 
@@ -34,42 +35,28 @@ class ExtAddrobjManager
         return $this->extAddrobjRepository->findBy([], null, $limit, $offset);
     }
 
-    public function add(
-        int $objectid,
-        ?string $objectguid = null,
-        ?int $precision = null,
-        ?float $latitude = null,
-        ?float $longitude = null,
-        ?int $zoom = null,
-        ?string $alias = null,
-        ?string $anglicism = null,
-        ?string $nominative = null,
-        ?string $genitive = null,
-        ?string $dative = null,
-        ?string $accusative = null,
-        ?string $ablative = null,
-        ?string $prepositive = null,
-        ?string $locative = null
-    ): bool {
+    public function add(ExtAddrobjDTO $extAddrobjDto): bool
+    {
+
+        $extAddrobj = (new ExtAddrobj())
+            ->setObjectid($extAddrobjDto->getObjectid())
+            ->setObjectguid($extAddrobjDto->getObjectguid())
+            ->setPrecision($extAddrobjDto->getPrecision())
+            ->setLatitude($extAddrobjDto->getLatitude())
+            ->setLongitude($extAddrobjDto->getLongitude())
+            ->setZoom($extAddrobjDto->getZoom())
+            ->setAlias($extAddrobjDto->getAlias())
+            ->setAnglicism($extAddrobjDto->getAnglicism())
+            ->setNominative($extAddrobjDto->getNominative())
+            ->setGenitive($extAddrobjDto->getGenitive())
+            ->setDative($extAddrobjDto->getDative())
+            ->setAccusative($extAddrobjDto->getAccusative())
+            ->setAblative($extAddrobjDto->getAblative())
+            ->setPrepositive($extAddrobjDto->getPrepositive())
+            ->setLocative($extAddrobjDto->getLocative());
 
         try {
-            $this->extAddrobjDao->create(
-                $objectid,
-                $objectguid,
-                $precision,
-                $latitude,
-                $longitude,
-                $zoom,
-                $alias,
-                $anglicism,
-                $nominative,
-                $genitive,
-                $dative,
-                $accusative,
-                $ablative,
-                $prepositive,
-                $locative
-            );
+            $this->extAddrobjDao->create($extAddrobj);
         } catch (\Exception $e) {
             //TODO log
             return false;
@@ -80,20 +67,7 @@ class ExtAddrobjManager
 
     public function updateById(
         int $objectid,
-        ?string $objectguid = null,
-        ?int $precision = null,
-        ?float $latitude = null,
-        ?float $longitude = null,
-        ?int $zoom = null,
-        ?string $alias = null,
-        ?string $anglicism = null,
-        ?string $nominative = null,
-        ?string $genitive = null,
-        ?string $dative = null,
-        ?string $accusative = null,
-        ?string $ablative = null,
-        ?string $prepositive = null,
-        ?string $locative = null
+        ExtAddrobjDTO $extAddrobjDto
     ): bool {
 
         $extAddrobj = $this->extAddrobjRepository->find($objectid);
@@ -103,59 +77,33 @@ class ExtAddrobjManager
 
         return $this->update(
             $extAddrobj,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom,
-            $alias,
-            $anglicism,
-            $nominative,
-            $genitive,
-            $dative,
-            $accusative,
-            $ablative,
-            $prepositive,
-            $locative
+            $extAddrobjDto
         );
     }
 
     public function update(
         ExtAddrobj $extAddrobj,
-        ?string $objectguid = null,
-        ?int $precision = null,
-        ?float $latitude = null,
-        ?float $longitude = null,
-        ?int $zoom = null,
-        ?string $alias = null,
-        ?string $anglicism = null,
-        ?string $nominative = null,
-        ?string $genitive = null,
-        ?string $dative = null,
-        ?string $accusative = null,
-        ?string $ablative = null,
-        ?string $prepositive = null,
-        ?string $locative = null
+        ExtAddrobjDTO $extAddrobjDto
     ): bool {
 
+        $extAddrobj
+            ->setObjectguid($extAddrobjDto->getObjectguid())
+            ->setPrecision($extAddrobjDto->getPrecision())
+            ->setLatitude($extAddrobjDto->getLatitude())
+            ->setLongitude($extAddrobjDto->getLongitude())
+            ->setZoom($extAddrobjDto->getZoom())
+            ->setAlias($extAddrobjDto->getAlias())
+            ->setAnglicism($extAddrobjDto->getAnglicism())
+            ->setNominative($extAddrobjDto->getNominative())
+            ->setGenitive($extAddrobjDto->getGenitive())
+            ->setDative($extAddrobjDto->getDative())
+            ->setAccusative($extAddrobjDto->getAccusative())
+            ->setAblative($extAddrobjDto->getAblative())
+            ->setPrepositive($extAddrobjDto->getPrepositive())
+            ->setLocative($extAddrobjDto->getLocative());
+
         try {
-            $this->extAddrobjDao->update(
-                $extAddrobj,
-                $objectguid,
-                $precision,
-                $latitude,
-                $longitude,
-                $zoom,
-                $alias,
-                $anglicism,
-                $nominative,
-                $genitive,
-                $dative,
-                $accusative,
-                $ablative,
-                $prepositive,
-                $locative
-            );
+            $this->extAddrobjDao->update($extAddrobj);
         } catch (\Exception $e) {
             //TODO log
             return false;
