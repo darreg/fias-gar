@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\v1;
 
+use App\DTO\ExtAddrobjDTO;
 use App\Entity\ExtAddrobj;
 use App\Service\ExtAddrobjService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -58,54 +59,9 @@ class ExtAddrobjController
      */
     public function create(Request $request): JsonResponse
     {
-        /** @var int $objectid */
-        $objectid = $request->request->get('objectid');
-        /** @var string|null $objectguid */
-        $objectguid = $request->request->get('objectguid');
-        /** @var int|null $precision */
-        $precision = $request->request->get('precision');
-        /** @var float|null $latitude */
-        $latitude = $request->request->get('latitude');
-        /** @var float|null $longitude */
-        $longitude = $request->request->get('longitude');
-        /** @var int|null $zoom */
-        $zoom = $request->request->get('zoom');
-        /** @var string|null $alias */
-        $alias = $request->request->get('alias');
-        /** @var string|null $anglicism */
-        $anglicism = $request->request->get('$anglicism');
-        /** @var string|null $nominative */
-        $nominative = $request->request->get('nominative');
-        /** @var string|null $genitive */
-        $genitive = $request->request->get('genitive');
-        /** @var string|null $dative */
-        $dative = $request->request->get('dative');
-        /** @var string|null $accusative */
-        $accusative = $request->request->get('accusative');
-        /** @var string|null $ablative */
-        $ablative = $request->request->get('ablative');
-        /** @var string|null $prepositive */
-        $prepositive = $request->request->get('prepositive');
-        /** @var string|null $locative */
-        $locative = $request->request->get('locative');
+        $extAddrobjDto = ExtAddrobjDTO::fromArray($request->request->all());
 
-        $result = $this->extAddrobjService->add(
-            $objectid,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom,
-            $alias,
-            $anglicism,
-            $nominative,
-            $genitive,
-            $dative,
-            $accusative,
-            $ablative,
-            $prepositive,
-            $locative
-        );
+        $result = $this->extAddrobjService->add($extAddrobjDto);
 
         return new JsonResponse(
             ['result' => $result],
@@ -118,53 +74,13 @@ class ExtAddrobjController
      */
     public function update(Request $request): JsonResponse
     {
-        /** @var int $objectid */
-        $objectid = $request->query->get('objectid');
-        /** @var string|null $objectguid */
-        $objectguid = $request->query->get('objectguid');
-        /** @var int|null $precision */
-        $precision = $request->query->get('precision');
-        /** @var float|null $latitude */
-        $latitude = $request->query->get('latitude');
-        /** @var float|null $longitude */
-        $longitude = $request->query->get('longitude');
-        /** @var int|null $zoom */
-        $zoom = $request->query->get('zoom');
-        /** @var string|null $alias */
-        $alias = $request->query->get('alias');
-        /** @var string|null $anglicism */
-        $anglicism = $request->query->get('$anglicism');
-        /** @var string|null $nominative */
-        $nominative = $request->query->get('nominative');
-        /** @var string|null $genitive */
-        $genitive = $request->query->get('genitive');
-        /** @var string|null $dative */
-        $dative = $request->query->get('dative');
-        /** @var string|null $accusative */
-        $accusative = $request->query->get('accusative');
-        /** @var string|null $ablative */
-        $ablative = $request->query->get('ablative');
-        /** @var string|null $prepositive */
-        $prepositive = $request->query->get('prepositive');
-        /** @var string|null $locative */
-        $locative = $request->query->get('locative');
+        $objectid = $request->query->getInt('objectid');
+
+        $extAddrobjDto = ExtAddrobjDTO::fromArray($request->query->all());
 
         $result = $this->extAddrobjService->updateById(
             $objectid,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom,
-            $alias,
-            $anglicism,
-            $nominative,
-            $genitive,
-            $dative,
-            $accusative,
-            $ablative,
-            $prepositive,
-            $locative
+            $extAddrobjDto
         );
 
         return new JsonResponse(

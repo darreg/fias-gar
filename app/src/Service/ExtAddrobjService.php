@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\DAO\ExtAddrobjPointDAO;
+use App\DTO\ExtAddrobjDTO;
 use App\DTO\ExtAddrobjPointDTO;
 use App\DTO\ExtAddrobjSynonymDTO;
 use App\Entity\ExtAddrobj;
@@ -73,114 +74,31 @@ class ExtAddrobjService
         return $this->extAddrobjSynonymManager->getAll($objectid);
     }
 
-    public function add(
-        int $objectid,
-        ?string $objectguid = null,
-        ?int $precision = null,
-        ?float $latitude = null,
-        ?float $longitude = null,
-        ?int $zoom = null,
-        ?string $alias = null,
-        ?string $anglicism = null,
-        ?string $nominative = null,
-        ?string $genitive = null,
-        ?string $dative = null,
-        ?string $accusative = null,
-        ?string $ablative = null,
-        ?string $prepositive = null,
-        ?string $locative = null
-    ): bool {
+    public function add(ExtAddrobjDTO $extAddrobjDto): bool
+    {
 
-        return $this->extAddrobjManager->add(
-            $objectid,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom,
-            $alias,
-            $anglicism,
-            $nominative,
-            $genitive,
-            $dative,
-            $accusative,
-            $ablative,
-            $prepositive,
-            $locative
-        );
+        return $this->extAddrobjManager->add($extAddrobjDto);
     }
 
     public function updateById(
         int $objectid,
-        ?string $objectguid = null,
-        ?int $precision = null,
-        ?float $latitude = null,
-        ?float $longitude = null,
-        ?int $zoom = null,
-        ?string $alias = null,
-        ?string $anglicism = null,
-        ?string $nominative = null,
-        ?string $genitive = null,
-        ?string $dative = null,
-        ?string $accusative = null,
-        ?string $ablative = null,
-        ?string $prepositive = null,
-        ?string $locative = null
+        ExtAddrobjDTO $extAddrobjDTO
     ): bool {
 
         return $this->extAddrobjManager->updateById(
             $objectid,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom,
-            $alias,
-            $anglicism,
-            $nominative,
-            $genitive,
-            $dative,
-            $accusative,
-            $ablative,
-            $prepositive,
-            $locative
+            $extAddrobjDTO
         );
     }
 
     public function update(
         ExtAddrobj $extAddrobj,
-        ?string $objectguid = null,
-        ?int $precision = null,
-        ?float $latitude = null,
-        ?float $longitude = null,
-        ?int $zoom = null,
-        ?string $alias = null,
-        ?string $anglicism = null,
-        ?string $nominative = null,
-        ?string $genitive = null,
-        ?string $dative = null,
-        ?string $accusative = null,
-        ?string $ablative = null,
-        ?string $prepositive = null,
-        ?string $locative = null
+        ExtAddrobjDTO $extAddrobjDTO
     ): bool {
 
         return $this->extAddrobjManager->update(
             $extAddrobj,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom,
-            $alias,
-            $anglicism,
-            $nominative,
-            $genitive,
-            $dative,
-            $accusative,
-            $ablative,
-            $prepositive,
-            $locative
+            $extAddrobjDTO
         );
     }
 
