@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use App\DAO\ExtAddrobjPointDAO;
+use App\DTO\ExtAddrobjPointDTO;
 use App\Entity\ExtAddrobj;
 use App\Entity\ExtAddrobjPoint;
 use App\Entity\ExtAddrobjSynonym;
@@ -107,16 +109,9 @@ class ExtAddrobjService
         );
     }
 
-    public function addPoint(
-        int $objectid,
-        float $latitude,
-        float $longitude
-    ): bool {
-        return $this->extAddrobjPointManager->add(
-            $objectid,
-            $latitude,
-            $longitude
-        );
+    public function addPoint(ExtAddrobjPointDTO $extAddrobjPointDTO): bool
+    {
+        return $this->extAddrobjPointManager->add($extAddrobjPointDTO);
     }
 
     public function addSynonym(
@@ -171,16 +166,12 @@ class ExtAddrobjService
 
     public function updatePointById(
         int $id,
-        int $objectid,
-        float $latitude,
-        float $longitude
+        ExtAddrobjPointDTO $extAddrobjPointDTO
     ): bool {
 
         return $this->extAddrobjPointManager->updateById(
             $id,
-            $objectid,
-            $latitude,
-            $longitude
+            $extAddrobjPointDTO
         );
     }
 
@@ -227,28 +218,6 @@ class ExtAddrobjService
 
         return $this->updateFields(
             $extAddrobj,
-            $data
-        );
-    }
-
-    /**
-     * @psalm-param array{
-     *     latitude?: float,
-     *     longitude?: float,
-     * } $data
-     */
-    public function updatePointFieldsById(
-        int $objectid,
-        array $data
-    ): bool {
-
-        $extAddrobjPoint = $this->extAddrobjPointManager->getOne($objectid);
-        if ($extAddrobjPoint === null) {
-            return false;
-        }
-
-        return $this->updatePointFields(
-            $extAddrobjPoint,
             $data
         );
     }
@@ -345,16 +314,12 @@ class ExtAddrobjService
 
     public function updatePoint(
         ExtAddrobjPoint $extAddrobjPoint,
-        int $objectid,
-        float $latitude,
-        float $longitude
+        ExtAddrobjPointDTO $extAddrobjPointDTO
     ): bool {
 
         return $this->extAddrobjPointManager->update(
             $extAddrobjPoint,
-            $objectid,
-            $latitude,
-            $longitude
+            $extAddrobjPointDTO
         );
     }
 
@@ -369,26 +334,6 @@ class ExtAddrobjService
             $objectid,
             $name
         );
-    }
-
-    /**
-     * @psalm-param array{
-     *     objectid?: int,
-     *     latitude?: float,
-     *     longitude?: float,
-     * } $data
-     */
-    public function updatePointFields(
-        ExtAddrobjPoint $extAddrobjPoint,
-        array $data
-    ): bool {
-
-        $this->extAddrobjPointManager->updateFields(
-            $extAddrobjPoint,
-            $data
-        );
-
-        return true;
     }
 
     /**
