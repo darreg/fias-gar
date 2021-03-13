@@ -59,45 +59,6 @@ class ExtHouseDAO
         return $extHouse;
     }
 
-    /**
-     * @psalm-param array{
-     *     objectguid?: string,
-     *     precision?: int,
-     *     latitude?: float,
-     *     longitude?: float,
-     *     zoom?: int
-     * } $data
-     */
-    public function updateFields(
-        ExtHouse $extHouse,
-        array $data
-    ): ExtHouse {
-
-        if (array_key_exists('objectguid', $data)) {
-            $extHouse->setObjectguid($data['objectguid']);
-        }
-
-        if (array_key_exists('precision', $data)) {
-            $extHouse->setPrecision($data['precision']);
-        }
-
-        if (array_key_exists('latitude', $data)) {
-            $extHouse->setLatitude($data['latitude']);
-        }
-
-        if (array_key_exists('longitude', $data)) {
-            $extHouse->setLongitude($data['longitude']);
-        }
-
-        if (array_key_exists('zoom', $data)) {
-            $extHouse->setZoom($data['zoom']);
-        }
-
-        $this->entityManager->flush();
-
-        return $extHouse;
-    }
-
     public function delete(ExtHouse $extHouse): void
     {
         $this->entityManager->remove($extHouse);
