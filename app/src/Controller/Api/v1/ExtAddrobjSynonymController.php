@@ -79,31 +79,6 @@ class ExtAddrobjSynonymController
     }
 
     /**
-     * @Route("", methods={"PATCH"})
-     */
-    public function updateFields(Request $request): JsonResponse
-    {
-        /**
-         * @psalm-var array{
-         *     id: int,
-         *     objectid?: int,
-         *     name?: string,
-         * } $data
-         */
-        $data = $request->query->all();
-
-        $result = $this->extAddrobjService->updateSynonymFieldsById(
-            $data['id'],
-            $data
-        );
-
-        return new JsonResponse(
-            ['result' => $result],
-            $result ? Response::HTTP_OK : Response::HTTP_NOT_FOUND
-        );
-    }
-
-    /**
      * @Route("", methods={"PUT"})
      */
     public function update(Request $request): JsonResponse

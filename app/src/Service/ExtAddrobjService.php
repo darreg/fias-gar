@@ -164,86 +164,6 @@ class ExtAddrobjService
         );
     }
 
-    public function updatePointById(
-        int $id,
-        ExtAddrobjPointDTO $extAddrobjPointDTO
-    ): bool {
-
-        return $this->extAddrobjPointManager->updateById(
-            $id,
-            $extAddrobjPointDTO
-        );
-    }
-
-    public function updateSynonymById(
-        int $id,
-        int $objectid,
-        string $name
-    ): bool {
-
-        return $this->extAddrobjSynonymManager->updateById(
-            $id,
-            $objectid,
-            $name
-        );
-    }
-
-    /**
-     * @psalm-param array{
-     *     objectguid?: string,
-     *     precision?: int,
-     *     latitude?: float,
-     *     longitude?: float,
-     *     zoom?: int,
-     *     alias?: string,
-     *     anglicism?: string,
-     *     nominative?: string,
-     *     genitive?: string,
-     *     dative?: string,
-     *     accusative?: string,
-     *     ablative?: string,
-     *     prepositive?: string,
-     *     locative?: string,
-     * } $data
-     */
-    public function updateFieldsById(
-        int $objectid,
-        array $data
-    ): bool {
-
-        $extAddrobj = $this->extAddrobjManager->getOne($objectid);
-        if ($extAddrobj === null) {
-            return false;
-        }
-
-        return $this->updateFields(
-            $extAddrobj,
-            $data
-        );
-    }
-
-    /**
-     * @psalm-param array{
-     *     objectid?: int,
-     *     name?: string,
-     * } $data
-     */
-    public function updateSynonymFieldsById(
-        int $objectid,
-        array $data
-    ): bool {
-
-        $extAddrobjSynonym = $this->extAddrobjSynonymManager->getOne($objectid);
-        if ($extAddrobjSynonym === null) {
-            return false;
-        }
-
-        return $this->updateSynonymFields(
-            $extAddrobjSynonym,
-            $data
-        );
-    }
-
     public function update(
         ExtAddrobj $extAddrobj,
         ?string $objectguid = null,
@@ -281,35 +201,15 @@ class ExtAddrobjService
         );
     }
 
-    /**
-     * @psalm-param array{
-     *     objectguid?: string,
-     *     precision?: int,
-     *     latitude?: float,
-     *     longitude?: float,
-     *     zoom?: int,
-     *     alias?: string,
-     *     anglicism?: string,
-     *     nominative?: string,
-     *     genitive?: string,
-     *     dative?: string,
-     *     accusative?: string,
-     *     ablative?: string,
-     *     prepositive?: string,
-     *     locative?: string,
-     * } $data
-     */
-    public function updateFields(
-        ExtAddrobj $extAddrobj,
-        array $data
+    public function updatePointById(
+        int $id,
+        ExtAddrobjPointDTO $extAddrobjPointDTO
     ): bool {
 
-        $this->extAddrobjManager->updateFields(
-            $extAddrobj,
-            $data
+        return $this->extAddrobjPointManager->updateById(
+            $id,
+            $extAddrobjPointDTO
         );
-
-        return true;
     }
 
     public function updatePoint(
@@ -320,6 +220,19 @@ class ExtAddrobjService
         return $this->extAddrobjPointManager->update(
             $extAddrobjPoint,
             $extAddrobjPointDTO
+        );
+    }
+
+    public function updateSynonymById(
+        int $id,
+        int $objectid,
+        string $name
+    ): bool {
+
+        return $this->extAddrobjSynonymManager->updateById(
+            $id,
+            $objectid,
+            $name
         );
     }
 
@@ -334,25 +247,6 @@ class ExtAddrobjService
             $objectid,
             $name
         );
-    }
-
-    /**
-     * @psalm-param array{
-     *     objectid?: int,
-     *     name?: string,
-     * } $data
-     */
-    public function updateSynonymFields(
-        ExtAddrobjSynonym $extAddrobjSynonym,
-        array $data
-    ): bool {
-
-        $this->extAddrobjSynonymManager->updateFields(
-            $extAddrobjSynonym,
-            $data
-        );
-
-        return true;
     }
 
     public function deleteById(int $objectid): bool

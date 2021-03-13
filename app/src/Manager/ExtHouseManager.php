@@ -84,31 +84,6 @@ class ExtHouseManager
         );
     }
 
-    /**
-     * @psalm-param array{
-     *     objectguid?: string,
-     *     precision?: int,
-     *     latitude?: float,
-     *     longitude?: float,
-     *     zoom?: int
-     * } $data
-     */
-    public function updateFieldsById(
-        int $objectid,
-        array $data
-    ): bool {
-
-        $extHouse = $this->extHouseRepository->find($objectid);
-        if ($extHouse === null) {
-            return false;
-        }
-
-        return $this->updateFields(
-            $extHouse,
-            $data
-        );
-    }
-
     public function update(
         ExtHouse $extHouse,
         ?string $objectguid = null,
@@ -126,33 +101,6 @@ class ExtHouseManager
                 $latitude,
                 $longitude,
                 $zoom
-            );
-        } catch (\Exception $e) {
-            //TODO log
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @psalm-param array{
-     *     objectguid?: string,
-     *     precision?: int,
-     *     latitude?: float,
-     *     longitude?: float,
-     *     zoom?: int
-     * } $data
-     */
-    public function updateFields(
-        ExtHouse $extHouse,
-        array $data
-    ): bool {
-
-        try {
-            $this->extHouseDao->updateFields(
-                $extHouse,
-                $data
             );
         } catch (\Exception $e) {
             //TODO log

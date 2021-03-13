@@ -87,34 +87,6 @@ class ExtHouseController
     }
 
     /**
-     * @Route("", methods={"PATCH"})
-     */
-    public function updateFields(Request $request): JsonResponse
-    {
-        $data = $request->query->all();
-
-        /**
-         * @psalm-var array{
-         *     objectid: int,
-         *     objectguid?: string,
-         *     precision?: int,
-         *     latitude?: float,
-         *     longitude?: float,
-         *     zoom?: int
-         * } $data
-         */
-        $result = $this->extHouseManager->updateFieldsById(
-            $data['objectid'],
-            $data
-        );
-
-        return new JsonResponse(
-            ['result' => $result],
-            $result ? Response::HTTP_OK : Response::HTTP_NOT_FOUND
-        );
-    }
-
-    /**
      * @Route("", methods={"PUT"})
      */
     public function update(Request $request): JsonResponse

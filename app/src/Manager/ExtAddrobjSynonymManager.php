@@ -109,58 +109,6 @@ class ExtAddrobjSynonymManager
         return true;
     }
 
-    /**
-     * @psalm-param array{
-     *     objectid?: int,
-     *     name?: string,
-     * } $data
-     */
-    public function updateFields(
-        ExtAddrobjSynonym $extAddrobjSynonym,
-        array $data
-    ): bool {
-
-        $extAddrobj = null;
-        if (isset($data['objectid'])) {
-            $extAddrobj = $this->extAddrobjRepository->find($data['objectid']);
-        }
-
-        try {
-            $this->extAddrobjSynonymDao->updateFields(
-                $extAddrobjSynonym,
-                $data['name'] ?? null,
-                $extAddrobj
-            );
-        } catch (\Exception $e) {
-            //TODO log
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @psalm-param array{
-     *     objectid?: int,
-     *     name?: string,
-     * } $data
-     */
-    public function updateFieldsById(
-        int $id,
-        array $data
-    ): bool {
-
-        $extAddrobjSynonym = $this->extAddrobjSynonymRepository->find($id);
-        if ($extAddrobjSynonym === null) {
-            return false;
-        }
-
-        return $this->updateFields(
-            $extAddrobjSynonym,
-            $data
-        );
-    }
-
     public function deleteById(int $id): bool
     {
         $extAddrobjSynonym = $this->extAddrobjSynonymRepository->find($id);

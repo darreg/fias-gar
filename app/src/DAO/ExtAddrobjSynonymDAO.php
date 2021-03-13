@@ -44,25 +44,6 @@ class ExtAddrobjSynonymDAO
         return $extAddrobjSynonym;
     }
 
-    public function updateFields(
-        ExtAddrobjSynonym $extAddrobjSynonym,
-        ?string $name = null,
-        ?ExtAddrobj $extAddrobj = null
-    ): ExtAddrobjSynonym {
-
-        if ($name !== null) {
-            $extAddrobjSynonym->setName($name);
-        }
-
-        if ($extAddrobj !== null) {
-            $extAddrobjSynonym->setExtAddrobj($extAddrobj);
-        }
-
-        $this->entityManager->flush();
-
-        return $extAddrobjSynonym;
-    }
-
     public function delete(ExtAddrobjSynonym $extAddrobjSynonym): void
     {
         $this->entityManager->remove($extAddrobjSynonym);
