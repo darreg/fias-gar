@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\DAO\ExtAddrobjPointDAO;
 use App\DTO\ExtAddrobjPointDTO;
+use App\DTO\ExtAddrobjSynonymDTO;
 use App\Entity\ExtAddrobj;
 use App\Entity\ExtAddrobjPoint;
 use App\Entity\ExtAddrobjSynonym;
@@ -109,24 +110,6 @@ class ExtAddrobjService
         );
     }
 
-    public function addPoint(ExtAddrobjPointDTO $extAddrobjPointDTO): bool
-    {
-        return $this->extAddrobjPointManager->add($extAddrobjPointDTO);
-    }
-
-    public function addSynonym(
-        int $objectid,
-        string $name
-    ): bool {
-
-        $this->extAddrobjSynonymManager->add(
-            $objectid,
-            $name
-        );
-
-        return true;
-    }
-
     public function updateById(
         int $objectid,
         ?string $objectguid = null,
@@ -201,6 +184,16 @@ class ExtAddrobjService
         );
     }
 
+    public function deleteById(int $objectid): bool
+    {
+        return $this->extAddrobjManager->deleteById($objectid);
+    }
+
+    public function addPoint(ExtAddrobjPointDTO $extAddrobjPointDTO): bool
+    {
+        return $this->extAddrobjPointManager->add($extAddrobjPointDTO);
+    }
+
     public function updatePointById(
         int $id,
         ExtAddrobjPointDTO $extAddrobjPointDTO
@@ -223,50 +216,46 @@ class ExtAddrobjService
         );
     }
 
-    public function updateSynonymById(
-        int $id,
-        int $objectid,
-        string $name
-    ): bool {
-
-        return $this->extAddrobjSynonymManager->updateById(
-            $id,
-            $objectid,
-            $name
-        );
-    }
-
-    public function updateSynonym(
-        ExtAddrobjSynonym $extAddrobjSynonym,
-        int $objectid,
-        string $name
-    ): bool {
-
-        return $this->extAddrobjSynonymManager->update(
-            $extAddrobjSynonym,
-            $objectid,
-            $name
-        );
-    }
-
-    public function deleteById(int $objectid): bool
-    {
-        return $this->extAddrobjManager->deleteById($objectid);
-    }
-
     public function deletePointById(int $id): bool
     {
         return $this->extAddrobjPointManager->deleteById($id);
     }
 
-    public function deleteSynonymById(int $id): bool
-    {
-        return $this->extAddrobjSynonymManager->deleteById($id);
-    }
-
     public function deletePointByObjectId(int $objectid): bool
     {
         return $this->extAddrobjPointManager->deleteByObjectId($objectid);
+    }
+
+    public function addSynonym(ExtAddrobjSynonymDTO $extAddrobjSynonymDTO): bool
+    {
+        return $this->extAddrobjSynonymManager->add($extAddrobjSynonymDTO);
+    }
+
+    public function updateSynonymById(
+        int $id,
+        ExtAddrobjSynonymDTO $extAddrobjSynonymDTO
+    ): bool {
+
+        return $this->extAddrobjSynonymManager->updateById(
+            $id,
+            $extAddrobjSynonymDTO
+        );
+    }
+
+    public function updateSynonym(
+        ExtAddrobjSynonym $extAddrobjSynonym,
+        ExtAddrobjSynonymDTO $extAddrobjSynonymDTO
+    ): bool {
+
+        return $this->extAddrobjSynonymManager->update(
+            $extAddrobjSynonym,
+            $extAddrobjSynonymDTO
+        );
+    }
+
+    public function deleteSynonymById(int $id): bool
+    {
+        return $this->extAddrobjSynonymManager->deleteById($id);
     }
 
     public function deleteSynonymByObjectId(int $objectid): bool

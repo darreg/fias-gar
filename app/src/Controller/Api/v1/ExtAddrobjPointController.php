@@ -3,7 +3,6 @@
 namespace App\Controller\Api\v1;
 
 use App\DTO\ExtAddrobjPointDTO;
-use App\Entity\ExtAddrobj;
 use App\Entity\ExtAddrobjPoint;
 use App\Service\ExtAddrobjService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,8 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 /** @Route("/api/v1/extaddrobj/point") */
 class ExtAddrobjPointController
 {
-    public const PER_PAGE_DEFAULT = 20;
-
     private ExtAddrobjService $extAddrobjService;
 
     public function __construct(ExtAddrobjService $extAddrobjService)
