@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\DAO\ExtAddrobjSynonymDAO;
+use App\DTO\ExtAddrobjSynonymDTO;
 use App\Entity\ExtAddrobjSynonym;
 use App\Repository\ExtAddrobjRepository;
 use App\Repository\ExtAddrobjSynonymRepository;
@@ -43,21 +44,20 @@ class ExtAddrobjSynonymManager
         return $this->extAddrobjSynonymRepository->findBy(['extAddrobj' => $extAddrobj]);
     }
 
-    public function add(
-        int $objectid,
-        string $name
-    ): bool {
+    public function add(ExtAddrobjSynonymDTO $extAddrobjSynonymDTO): bool
+    {
 
-        $extAddrobj = $this->extAddrobjRepository->find($objectid);
+        $extAddrobj = $this->extAddrobjRepository->find($extAddrobjSynonymDTO->getObjectid());
         if ($extAddrobj === null) {
             return false;
         }
 
+        $extAddrobjSynonym = (new ExtAddrobjSynonym())
+            ->setName($extAddrobjSynonymDTO->getName())
+            ->setExtAddrobj($extAddrobj);
+
         try {
-            $this->extAddrobjSynonymDao->create(
-                $name,
-                $extAddrobj
-            );
+            $this->extAddrobjSynonymDao->create($extAddrobjSynonym);
         } catch (\Exception $e) {
             //TODO log
             return false;
@@ -68,8 +68,7 @@ class ExtAddrobjSynonymManager
 
     public function updateById(
         int $id,
-        int $objectid,
-        string $name
+        ExtAddrobjSynonymDTO $extAddrobjSynonymDTO
     ): bool {
 
         $extAddrobjSynonym = $this->extAddrobjSynonymRepository->find($id);
@@ -79,28 +78,26 @@ class ExtAddrobjSynonymManager
 
         return $this->update(
             $extAddrobjSynonym,
-            $objectid,
-            $name,
+            $extAddrobjSynonymDTO
         );
     }
 
     public function update(
         ExtAddrobjSynonym $extAddrobjSynonym,
-        int $objectid,
-        string $name
+        ExtAddrobjSynonymDTO $extAddrobjSynonymDTO
     ): bool {
 
-        $extAddrobj = $this->extAddrobjRepository->find($objectid);
+        $extAddrobj = $this->extAddrobjRepository->find($extAddrobjSynonymDTO->getObjectid());
         if ($extAddrobj === null) {
             return false;
         }
 
+        $extAddrobjSynonym
+            ->setName($extAddrobjSynonymDTO->getName())
+            ->setExtAddrobj($extAddrobj);
+
         try {
-            $this->extAddrobjSynonymDao->update(
-                $extAddrobjSynonym,
-                $name,
-                $extAddrobj
-            );
+            $this->extAddrobjSynonymDao->update($extAddrobjSynonym);
         } catch (\Exception $e) {
             //TODO log
             return false;

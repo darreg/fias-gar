@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\v1;
 
-use App\Entity\ExtAddrobj;
+use App\DTO\ExtAddrobjSynonymDTO;
 use App\Entity\ExtAddrobjSynonym;
 use App\Service\ExtAddrobjService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,8 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 /** @Route("/api/v1/extaddrobj/synonym") */
 class ExtAddrobjSynonymController
 {
-    public const PER_PAGE_DEFAULT = 20;
-
     private ExtAddrobjService $extAddrobjService;
 
     public function __construct(ExtAddrobjService $extAddrobjService)
@@ -62,14 +60,10 @@ class ExtAddrobjSynonymController
      */
     public function create(Request $request): JsonResponse
     {
-        /** @var int $objectid */
-        $objectid = $request->request->get('objectid');
-        /** @var string $name */
-        $name = $request->request->get('name');
+        $extAddrobjSynonymDTO = ExtAddrobjSynonymDTO::fromArray($request->request->all());
 
         $result = $this->extAddrobjService->addSynonym(
-            $objectid,
-            $name
+            $extAddrobjSynonymDTO
         );
 
         return new JsonResponse(
@@ -85,15 +79,12 @@ class ExtAddrobjSynonymController
     {
         /** @var int $id */
         $id = $request->query->get('id');
-        /** @var int $objectid */
-        $objectid = $request->query->get('objectid');
-        /** @var string $name */
-        $name = $request->query->get('name');
+
+        $extAddrobjSynonymDTO = ExtAddrobjSynonymDTO::fromArray($request->query->all());
 
         $result = $this->extAddrobjService->updateSynonymById(
             $id,
-            $objectid,
-            $name
+            $extAddrobjSynonymDTO
         );
 
         return new JsonResponse(

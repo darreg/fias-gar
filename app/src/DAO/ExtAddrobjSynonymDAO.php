@@ -2,7 +2,6 @@
 
 namespace App\DAO;
 
-use App\Entity\ExtAddrobj;
 use App\Entity\ExtAddrobjSynonym;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -16,12 +15,8 @@ class ExtAddrobjSynonymDAO
     }
 
     public function create(
-        string $name,
-        ExtAddrobj $extAddrobj
+        ExtAddrobjSynonym $extAddrobjSynonym
     ): ExtAddrobjSynonym {
-        $extAddrobjSynonym = (new ExtAddrobjSynonym())
-            ->setName($name)
-            ->setExtAddrobj($extAddrobj);
 
         $this->entityManager->persist($extAddrobjSynonym);
         $this->entityManager->flush();
@@ -30,14 +25,8 @@ class ExtAddrobjSynonymDAO
     }
 
     public function update(
-        ExtAddrobjSynonym $extAddrobjSynonym,
-        string $name,
-        ExtAddrobj $extAddrobj
+        ExtAddrobjSynonym $extAddrobjSynonym
     ): ExtAddrobjSynonym {
-
-        $extAddrobjSynonym
-            ->setName($name)
-            ->setExtAddrobj($extAddrobj);
 
         $this->entityManager->flush();
 
