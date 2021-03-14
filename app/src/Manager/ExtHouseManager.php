@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\DAO\ExtHouseDAO;
+use App\DTO\ExtHouseDTO;
 use App\Entity\ExtHouse;
 use App\Repository\ExtHouseRepository;
 
@@ -34,24 +35,19 @@ class ExtHouseManager
         return $this->extHouseRepository->findBy([], null, $limit, $offset);
     }
 
-    public function add(
-        int $objectid,
-        ?string $objectguid = null,
-        ?int $precision = null,
-        ?float $latitude = null,
-        ?float $longitude = null,
-        ?int $zoom = null
-    ): bool {
+    public function add(ExtHouseDTO $extHouseDTO): bool
+    {
+
+        $extHouse = (new ExtHouse())
+            ->setObjectid($extHouseDTO->getObjectid())
+            ->setObjectguid($extHouseDTO->getObjectguid())
+            ->setPrecision($extHouseDTO->getPrecision())
+            ->setLatitude($extHouseDTO->getLatitude())
+            ->setLongitude($extHouseDTO->getLongitude())
+            ->setZoom($extHouseDTO->getZoom());
 
         try {
-            $this->extHouseDao->create(
-                $objectid,
-                $objectguid,
-                $precision,
-                $latitude,
-                $longitude,
-                $zoom
-            );
+            $this->extHouseDao->create($extHouse);
         } catch (\Exception $e) {
             //TODO log
             return false;
@@ -62,11 +58,7 @@ class ExtHouseManager
 
     public function updateById(
         int $objectid,
-        ?string $objectguid = null,
-        ?int $precision = null,
-        ?float $latitude = null,
-        ?float $longitude = null,
-        ?int $zoom = null
+        ExtHouseDTO $extHouseDto
     ): bool {
 
         $extHouse = $this->extHouseRepository->find($objectid);
@@ -76,32 +68,24 @@ class ExtHouseManager
 
         return $this->update(
             $extHouse,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom
+            $extHouseDto
         );
     }
 
     public function update(
         ExtHouse $extHouse,
-        ?string $objectguid = null,
-        ?int $precision = null,
-        ?float $latitude = null,
-        ?float $longitude = null,
-        ?int $zoom = null
+        ExtHouseDTO $extHouseDto
     ): bool {
 
+        $extHouse
+            ->setObjectguid($extHouseDto->getObjectguid())
+            ->setPrecision($extHouseDto->getPrecision())
+            ->setLatitude($extHouseDto->getLatitude())
+            ->setLongitude($extHouseDto->getLongitude())
+            ->setZoom($extHouseDto->getZoom());
+
         try {
-            $this->extHouseDao->update(
-                $extHouse,
-                $objectguid,
-                $precision,
-                $latitude,
-                $longitude,
-                $zoom
-            );
+            $this->extHouseDao->update($extHouse);
         } catch (\Exception $e) {
             //TODO log
             return false;
