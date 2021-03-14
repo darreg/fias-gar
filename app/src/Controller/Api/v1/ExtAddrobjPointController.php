@@ -31,7 +31,7 @@ class ExtAddrobjPointController
         }
 
         return new JsonResponse(
-            ['result' => $extAddrobjPoint->toArray()],
+            ['result' => $extAddrobjPoint],
             Response::HTTP_OK
         );
     }
@@ -47,7 +47,7 @@ class ExtAddrobjPointController
         return new JsonResponse(
             [
                 'result' => array_map(
-                    static fn(ExtAddrobjPoint $extAddrobjPoint) => $extAddrobjPoint->toArray(),
+                    static fn(ExtAddrobjPoint $extAddrobjPoint) => $extAddrobjPoint,
                     $extAddrobjPoints
                 )
             ],

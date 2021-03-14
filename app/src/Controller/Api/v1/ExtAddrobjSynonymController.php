@@ -31,7 +31,7 @@ class ExtAddrobjSynonymController
         }
 
         return new JsonResponse(
-            ['result' => $extAddrobjSynonym->toArray()],
+            ['result' => $extAddrobjSynonym],
             Response::HTTP_OK
         );
     }
@@ -47,7 +47,7 @@ class ExtAddrobjSynonymController
         return new JsonResponse(
             [
                 'result' => array_map(
-                    static fn(ExtAddrobjSynonym $extAddrobjSynonym) => $extAddrobjSynonym->toArray(),
+                    static fn(ExtAddrobjSynonym $extAddrobjSynonym) => $extAddrobjSynonym,
                     $extAddrobjSynonyms
                 )
             ],
