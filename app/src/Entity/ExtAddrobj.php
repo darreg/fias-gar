@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @psalm-suppress MissingConstructor
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class ExtAddrobj
+class ExtAddrobj implements \JsonSerializable
 {
     use CreatedAtTrait;
     use UpdatedAtTrait;
@@ -389,7 +389,7 @@ class ExtAddrobj
         return $this;
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'objectid' => $this->getObjectid(),
@@ -408,11 +408,11 @@ class ExtAddrobj
             'prepositive' => $this->getPrepositive(),
             'locative' => $this->getLocative(),
             'synonym' => array_map(
-                static fn(ExtAddrobjSynonym $extAddrobjSynonym) => $extAddrobjSynonym->toArray(),
+                static fn(ExtAddrobjSynonym $extAddrobjSynonym) => $extAddrobjSynonym->jsonSerialize(),
                 $this->synonym->toArray()
             ),
             'polygon' => array_map(
-                static fn(ExtAddrobjPoint $extAddrobjPoint) => $extAddrobjPoint->toArray(),
+                static fn(ExtAddrobjPoint $extAddrobjPoint) => $extAddrobjPoint->jsonSerialize(),
                 $this->polygon->toArray()
             ),
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),

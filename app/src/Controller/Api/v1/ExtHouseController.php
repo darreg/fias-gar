@@ -33,7 +33,7 @@ class ExtHouseController
         }
 
         return new JsonResponse(
-            ['result' => $extHouse->toArray()],
+            ['result' => $extHouse],
             Response::HTTP_OK
         );
     }
@@ -49,7 +49,7 @@ class ExtHouseController
         $code = count($extHouses) === 0 ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
 
         return new JsonResponse(
-            ['result' => array_map(static fn(ExtHouse $extHouse) => $extHouse->toArray(), $extHouses)],
+            ['result' => array_map(static fn(ExtHouse $extHouse) => $extHouse, $extHouses)],
             $code
         );
     }

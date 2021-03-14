@@ -33,7 +33,7 @@ class ExtAddrobjController
         }
 
         return new JsonResponse(
-            ['result' => $extAddrobj->toArray()],
+            ['result' => $extAddrobj],
             Response::HTTP_OK
         );
     }
@@ -49,7 +49,7 @@ class ExtAddrobjController
         $code = count($extAddrobjs) === 0 ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
 
         return new JsonResponse(
-            ['result' => array_map(static fn(ExtAddrobj $extAddrobj) => $extAddrobj->toArray(), $extAddrobjs)],
+            ['result' => array_map(static fn(ExtAddrobj $extAddrobj) => $extAddrobj, $extAddrobjs)],
             $code
         );
     }

@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @psalm-suppress MissingConstructor
  */
-class ExtHouse
+class ExtHouse implements \JsonSerializable
 {
     use CreatedAtTrait;
     use UpdatedAtTrait;
@@ -126,7 +126,7 @@ class ExtHouse
         return $this;
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'objectid' => $this->getObjectid(),
