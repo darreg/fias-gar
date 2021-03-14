@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\v1;
 
+use App\DTO\ExtHouseDTO;
 use App\Entity\ExtHouse;
 use App\Manager\ExtHouseManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -58,27 +59,9 @@ class ExtHouseController
      */
     public function create(Request $request): JsonResponse
     {
-        /** @var int $objectid */
-        $objectid = $request->request->get('objectid');
-        /** @var string|null $objectguid */
-        $objectguid = $request->request->get('objectguid');
-        /** @var int|null $precision */
-        $precision = $request->request->get('precision');
-        /** @var float|null $latitude */
-        $latitude = $request->request->get('latitude');
-        /** @var float|null $longitude */
-        $longitude = $request->request->get('longitude');
-        /** @var int|null $zoom */
-        $zoom = $request->request->get('zoom');
+        $extHouseDTO = ExtHouseDTO::fromArray($request->request->all());
 
-        $result = $this->extHouseManager->add(
-            $objectid,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom
-        );
+        $result = $this->extHouseManager->add($extHouseDTO);
 
         return new JsonResponse(
             ['result' => $result],
@@ -93,24 +76,12 @@ class ExtHouseController
     {
         /** @var int $objectid */
         $objectid = $request->query->get('objectid');
-        /** @var string|null $objectguid */
-        $objectguid = $request->query->get('objectguid');
-        /** @var int|null $precision */
-        $precision = $request->query->get('precision');
-        /** @var float|null $latitude */
-        $latitude = $request->query->get('latitude');
-        /** @var float|null $longitude */
-        $longitude = $request->query->get('longitude');
-        /** @var int|null $zoom */
-        $zoom = $request->query->get('zoom');
+
+        $extHouseDto = ExtHouseDTO::fromArray($request->query->all());
 
         $result = $this->extHouseManager->updateById(
             $objectid,
-            $objectguid,
-            $precision,
-            $latitude,
-            $longitude,
-            $zoom
+            $extHouseDto
         );
 
         return new JsonResponse(
