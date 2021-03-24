@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @psalm-suppress MissingConstructor
  */
-class ExtAddrobjSynonym implements \JsonSerializable
+class ExtAddrobjSynonym
 {
     use CreatedAtTrait;
     use UpdatedAtTrait;
@@ -72,15 +72,5 @@ class ExtAddrobjSynonym implements \JsonSerializable
         $this->extAddrobj = $extAddrobj;
 
         return $this;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'objectid' => $this->getExtAddrobj()->getObjectid(),
-            'name' => $this->getName(),
-            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
-        ];
     }
 }

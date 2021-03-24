@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /** @Route("/api/v1/extaddrobj") */
 class ExtAddrobjController
@@ -16,10 +18,14 @@ class ExtAddrobjController
     public const PER_PAGE_DEFAULT = 20;
 
     private ExtAddrobjService $extAddrobjService;
+    private SerializerInterface $serializer;
 
-    public function __construct(ExtAddrobjService $extAddrobjService)
-    {
+    public function __construct(
+        ExtAddrobjService $extAddrobjService,
+        SerializerInterface $serializer
+    ) {
         $this->extAddrobjService = $extAddrobjService;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -32,10 +38,13 @@ class ExtAddrobjController
             return new JsonResponse(['result' => []], Response::HTTP_NO_CONTENT);
         }
 
-        return new JsonResponse(
+        $json = $this->serializer->serialize(
             ['result' => $extAddrobj],
-            Response::HTTP_OK
+            'json',
+            [AbstractNormalizer::IGNORED_ATTRIBUTES => ['extAddrobj']]
         );
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 
     /**
@@ -46,12 +55,21 @@ class ExtAddrobjController
         $perPage = $request->query->getInt('perPage', self::PER_PAGE_DEFAULT);
         $page = $request->query->getInt('page');
         $extAddrobjs = $this->extAddrobjService->getAll($perPage, $page);
-        $code = count($extAddrobjs) === 0 ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
+        if (count($extAddrobjs) === 0) {
+            return new JsonResponse(['result' => []], Response::HTTP_NO_CONTENT);
+        }
 
-        return new JsonResponse(
-            ['result' => array_map(static fn(ExtAddrobj $extAddrobj) => $extAddrobj, $extAddrobjs)],
-            $code
+        $json = $this->serializer->serialize(
+            [
+                'result' => array_map(static fn(ExtAddrobj $extAddrobj) => $extAddrobj, $extAddrobjs)
+            ],
+            'json',
+            [
+                AbstractNormalizer::IGNORED_ATTRIBUTES => ['extAddrobj']
+            ]
         );
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 
     /**

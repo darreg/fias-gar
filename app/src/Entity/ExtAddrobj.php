@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @psalm-suppress MissingConstructor
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class ExtAddrobj implements \JsonSerializable
+class ExtAddrobj
 {
     use CreatedAtTrait;
     use UpdatedAtTrait;
@@ -387,36 +387,5 @@ class ExtAddrobj implements \JsonSerializable
         }
 
         return $this;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'objectid' => $this->getObjectid(),
-            'objectguid' => $this->getObjectguid(),
-            'precision' => $this->getPrecision(),
-            'latitude' => $this->getLatitude(),
-            'longitude' => $this->getLongitude(),
-            'zoom' => $this->getZoom(),
-            'alias' => $this->getAlias(),
-            'anglicism' => $this->getAnglicism(),
-            'nominative' => $this->getNominative(),
-            'genitive' => $this->getGenitive(),
-            'dative' => $this->getDative(),
-            'accusative' => $this->getAccusative(),
-            'ablative' => $this->getAblative(),
-            'prepositive' => $this->getPrepositive(),
-            'locative' => $this->getLocative(),
-            'synonym' => array_map(
-                static fn(ExtAddrobjSynonym $extAddrobjSynonym) => $extAddrobjSynonym->jsonSerialize(),
-                $this->synonym->toArray()
-            ),
-            'polygon' => array_map(
-                static fn(ExtAddrobjPoint $extAddrobjPoint) => $extAddrobjPoint->jsonSerialize(),
-                $this->polygon->toArray()
-            ),
-            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
-        ];
     }
 }
