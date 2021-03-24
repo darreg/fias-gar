@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controller\Admin;
 
 use App\Entity\ExtHouse;
@@ -53,7 +52,7 @@ class MainController extends AbstractController
                     'class' => 'form-control',
                 ]
             ])
-            ->getForm();        
+            ->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,8 +65,8 @@ class MainController extends AbstractController
             // $entityManager->flush();
 
             return $this->redirectToRoute('task_success');
-        }        
-        
+        }
+
         return $this->render('admin/new.html.twig', [
             'form' => $form->createView(),
         ]);

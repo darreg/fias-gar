@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @psalm-suppress MissingConstructor
  */
-class ExtAddrobjPoint implements \JsonSerializable
+class ExtAddrobjPoint
 {
     use CreatedAtTrait;
     use UpdatedAtTrait;
@@ -98,16 +98,5 @@ class ExtAddrobjPoint implements \JsonSerializable
     public function __toString(): string
     {
         return $this->latitude . ',' . $this->longitude;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'objectid' => $this->getExtAddrobj()->getObjectid(),
-            'latitude' => $this->getLatitude(),
-            'longitude' => $this->getLongitude(),
-            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
-        ];
     }
 }

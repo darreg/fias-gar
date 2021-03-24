@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @psalm-suppress MissingConstructor
  */
-class ExtHouse implements \JsonSerializable
+class ExtHouse
 {
     use CreatedAtTrait;
     use UpdatedAtTrait;
@@ -124,19 +124,5 @@ class ExtHouse implements \JsonSerializable
         $this->zoom = $zoom;
 
         return $this;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'objectid' => $this->getObjectid(),
-            'objectguid' => $this->getObjectguid(),
-            'precision' => $this->getPrecision(),
-            'latitude' => $this->getLatitude(),
-            'longitude' => $this->getLongitude(),
-            'zoom' => $this->getZoom(),
-            'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
-        ];
     }
 }

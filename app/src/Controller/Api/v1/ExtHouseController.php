@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /** @Route("/api/v1/exthouse") */
 class ExtHouseController
@@ -16,10 +17,14 @@ class ExtHouseController
     public const PER_PAGE_DEFAULT = 20;
 
     private ExtHouseManager $extHouseManager;
+    private SerializerInterface $serializer;
 
-    public function __construct(ExtHouseManager $extHouseManager)
-    {
+    public function __construct(
+        ExtHouseManager $extHouseManager,
+        SerializerInterface $serializer
+    ) {
         $this->extHouseManager = $extHouseManager;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -32,10 +37,9 @@ class ExtHouseController
             return new JsonResponse(['result' => []], Response::HTTP_NO_CONTENT);
         }
 
-        return new JsonResponse(
-            ['result' => $extHouse],
-            Response::HTTP_OK
-        );
+        $json = $this->serializer->serialize(['result' => $extHouse], 'json');
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 
     /**
@@ -46,12 +50,18 @@ class ExtHouseController
         $perPage = $request->query->getInt('perPage', self::PER_PAGE_DEFAULT);
         $page = $request->query->getInt('page');
         $extHouses = $this->extHouseManager->getAll($perPage, $page);
-        $code = count($extHouses) === 0 ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
+        if (count($extHouses) === 0) {
+            return new JsonResponse(['result' => []], Response::HTTP_NO_CONTENT);
+        }
 
-        return new JsonResponse(
-            ['result' => array_map(static fn(ExtHouse $extHouse) => $extHouse, $extHouses)],
-            $code
+        $json = $this->serializer->serialize(
+            [
+                'result' => array_map(static fn(ExtHouse $extHouse) => $extHouse, $extHouses)
+            ],
+            'json'
         );
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 
     /**

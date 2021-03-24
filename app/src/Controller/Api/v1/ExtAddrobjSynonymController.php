@@ -3,21 +3,28 @@
 namespace App\Controller\Api\v1;
 
 use App\DTO\ExtAddrobjSynonymDTO;
+use App\Entity\ExtAddrobj;
 use App\Entity\ExtAddrobjSynonym;
 use App\Service\ExtAddrobjService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /** @Route("/api/v1/extaddrobj/synonym") */
 class ExtAddrobjSynonymController
 {
     private ExtAddrobjService $extAddrobjService;
+    private SerializerInterface $serializer;
 
-    public function __construct(ExtAddrobjService $extAddrobjService)
-    {
+    public function __construct(
+        ExtAddrobjService $extAddrobjService,
+        SerializerInterface $serializer
+    ) {
         $this->extAddrobjService = $extAddrobjService;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -30,10 +37,19 @@ class ExtAddrobjSynonymController
             return new JsonResponse(['result' => []], Response::HTTP_NO_CONTENT);
         }
 
-        return new JsonResponse(
-            ['result' => $extAddrobjSynonym],
-            Response::HTTP_OK
+        $json = $this->serializer->serialize(
+            [
+                'result' => $extAddrobjSynonym
+            ],
+            'json',
+            [
+                AbstractNormalizer::CALLBACKS => [
+                    'extAddrobj' => static fn (ExtAddrobj $extAddrobj) => $extAddrobj->getObjectid()
+                ],
+            ]
         );
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 
     /**
@@ -42,17 +58,26 @@ class ExtAddrobjSynonymController
     public function getAll(int $objectid): JsonResponse
     {
         $extAddrobjSynonyms = $this->extAddrobjService->getSynonymAll($objectid);
-        $code = count($extAddrobjSynonyms) === 0 ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
+        if (count($extAddrobjSynonyms) === 0) {
+            return new JsonResponse(['result' => []], Response::HTTP_NO_CONTENT);
+        }
 
-        return new JsonResponse(
+        $json = $this->serializer->serialize(
             [
                 'result' => array_map(
                     static fn(ExtAddrobjSynonym $extAddrobjSynonym) => $extAddrobjSynonym,
                     $extAddrobjSynonyms
                 )
             ],
-            $code
+            'json',
+            [
+                AbstractNormalizer::CALLBACKS => [
+                    'extAddrobj' => static fn (ExtAddrobj $extAddrobj) => $extAddrobj->getObjectid()
+                ],
+            ]
         );
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 
     /**
