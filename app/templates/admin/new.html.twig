@@ -2,14 +2,122 @@
 
 {% block stylesheets %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <style>
+        .no-border {
+            border: 0;
+            box-shadow: none;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .form-fields div {
+            margin-bottom: 10px;
+        }
+
+        .form-fields > div > label {
+            font-weight: bold;
+        }
+
+        ul {
+            padding-left: 0;
+        }
+
+        ul li {
+            list-style-type: none;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script>
+        jQuery(document).ready(function() {
+            var $collectionHolderж
+
+            $collectionHolder = $('ul.synonym');
+            $collectionHolder.data('index', $collectionHolder.find('input').length);
+            $('body').on('click', '#add_synonym', function(e) {
+                var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+                addFormToCollection($collectionHolderClass);
+            })
+            $collectionHolder.find('li').each(function() {
+                addTagFormDeleteLink($(this));
+            });
+
+
+            $collectionHolder = $('ul.polygon');
+            $collectionHolder.data('index', $collectionHolder.find('input').length);
+            $('body').on('click', '#add_polygon', function(e) {
+                var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+                addFormToCollection($collectionHolderClass);
+            })
+            $collectionHolder.find('li').each(function() {
+                addTagFormDeleteLink($(this));
+            });
+
+        });
+
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormButton = $('<button type="button" class="btn btn-outline-secondary btn-sm">X</button>');
+            $tagFormLi.append($removeFormButton);
+            $removeFormButton.on('click', function(e) {
+                $tagFormLi.remove();
+            });
+        }
+
+
+        function addFormToCollection($collectionHolderClass) {
+            var $collectionHolder = $('.' + $collectionHolderClass);
+            var prototype = $collectionHolder.data('prototype');
+            var index = $collectionHolder.data('index');
+            var newForm = prototype;
+            newForm = newForm.replace(/__name__label__/g, index);
+            newForm = newForm.replace(/__name__/g, index);
+            $collectionHolder.data('index', index + 1);
+            var $newFormLi = $('<li></li>').append(newForm);
+            $collectionHolder.append($newFormLi)
+        }
+    </script>
 {% endblock %}
 
 {% block body %}
-    <div style="margin: 20px;">
-        {{ form(form) }}
+    <div style="margin: 20px auto;max-width: 600px;">
+        <h3>Редактирование ExtAddrobj</h3>
+        {{ form_start(form, {'attr': {'class': 'form-fields'}}) }}
+        {% for child in form %}
+            {% if child.vars.name not in ['synonym','polygon','save'] %}
+            {{ form_row(child) }}
+            {% endif %}
+        {% endfor %}
+
+        <div>
+            {{ form_label(form.synonym) }}
+            <ul class="synonym" data-prototype="{{ form_widget(form.synonym.vars.prototype)|e('html_attr') }}">
+                {% for synonym in form.synonym %}
+                    <li>{{ form_row(synonym.name, {'label': false}) }}</li>
+                {% endfor %}
+            </ul>
+            <button type="button" id="add_synonym" class="btn btn-secondary" data-collection-holder-class="synonym">Добавить синоним</button>
+        </div>
+
+        <div>
+            {{ form_label(form.polygon) }}
+            <ul class="polygon" data-prototype="{{ form_widget(form.polygon.vars.prototype)|e('html_attr') }}">
+                {% for polygon in form.polygon %}
+                    <li>
+                        {{ form_row(polygon.latitude, {'label': false}) }}
+                        {{ form_row(polygon.longitude, {'label': false}) }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <button type="button" id="add_polygon" class="btn btn-secondary" data-collection-holder-class="polygon">Добавить точку</button>
+        </div>
+
+        {{ form_end(form) }}
     </div>
 {% endblock %}

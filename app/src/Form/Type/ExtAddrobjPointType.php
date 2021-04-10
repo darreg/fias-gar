@@ -15,25 +15,24 @@ class ExtAddrobjPointType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('id', HiddenType::class)
-            ->add('objectid', HiddenType::class)
             ->add('latitude', NumberType::class, [
-                'label' => '',
+                'label' => false,
                 'scale' => 11,
                 'attr' => [
+                    'class' => 'form-control',
                     'required' => true,
                     'placeholder' => 'Широта'
                 ],
             ])
             ->add('longitude', NumberType::class, [
-                'label' => '',
+                'label' => false,
                 'scale' => 11,
                 'attr' => [
+                    'class' => 'form-control',
                     'required' => true,
                     'placeholder' => 'Долгота'
                 ],
             ])
-            ->add('save', SubmitType::class)
         ;
     }
 

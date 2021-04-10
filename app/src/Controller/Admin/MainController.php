@@ -2,11 +2,11 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\ExtHouse;
+use App\Entity\ExtAddrobj;
+use App\Form\Type\ExtAddrobjType;
+use App\Repository\ExtAddrobjRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,55 +16,50 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MainController extends AbstractController
 {
+    private ExtAddrobjRepository $extAddrobjRepository;
+
+    public function __construct(
+        ExtAddrobjRepository $extAddrobjRepository
+    )
+    {
+        $this->extAddrobjRepository = $extAddrobjRepository;
+    }
+
+
     /**
      * @Route("/new")
      */
     public function new(Request $request): Response
     {
+        $entityManager = $this->getDoctrine()->getManager();
+        $extAddrobj = $this->extAddrobjRepository->find(1316173);
+        dump($extAddrobj);
 
-        $task = new ExtHouse();
-        $task->setObjectid(37745114);
+        $originalSynonym = new ArrayCollection();
+        foreach ($extAddrobj->getSynonym() as $synonym) {
+            $originalSynonym->add($synonym);
+        }
 
-        $form = $this->createFormBuilder($task)
-            ->add('precision', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
-            ])
-            ->add('latitude', NumberType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
-            ])
-            ->add('longitude', NumberType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
-            ])
-            ->add('zoom', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Create ExtHouse',
-                'attr' => [
-                    'class' => 'form-control',
-                ]
-            ])
-            ->getForm();
-
+        $form = $this->createForm(ExtAddrobjType::class, $extAddrobj);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $task = $form->getData();
+            /** @var ExtAddrobj $extAddrobj */
+            $extAddrobj = $form->getData();
 
-            // ... perform some action, such as saving the task to the database
-            // for example, if Task is a Doctrine entity, save it!
-            // $entityManager = $this->getDoctrine()->getManager();
-            // $entityManager->persist($task);
-            // $entityManager->flush();
+            foreach ($originalSynonym as $synonym) {
+                if ($extAddrobj->getSynonym()->contains($synonym) === false) {
+                    $synonym->getExtAddrobj()->removeElement($extAddrobj);
+                    $synonym->setTask(null);
 
-            return $this->redirectToRoute('task_success');
+                    $entityManager->persist($synonym);
+                    $entityManager->remove($synonym);
+                }
+            }
+
+            $entityManager->persist($extAddrobj);
+            $entityManager->flush();
+
+//            return $this->redirectToRoute('task_success');
         }
 
         return $this->render('admin/new.html.twig', [
