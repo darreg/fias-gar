@@ -18,36 +18,12 @@ class ExtAddrobjType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('objectid', NumberType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
-            ])
-            ->add('objectguid', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
-            ])            
-            ->add('precision', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
-            ])
-            ->add('latitude', NumberType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
-            ])
-            ->add('longitude', NumberType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
-            ])
-            ->add('zoom', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
-            ])
+            ->add('objectid', NumberType::class)
+            ->add('objectguid', TextType::class)
+            ->add('precision', TextType::class)
+            ->add('latitude', NumberType::class)
+            ->add('longitude', NumberType::class)
+            ->add('zoom', TextType::class)
             ->add('synonym', CollectionType::class, [
                 'entry_type' => ExtAddrobjSynonymType::class,
                 'entry_options' => [
@@ -55,8 +31,9 @@ class ExtAddrobjType extends AbstractType
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,
+                'by_reference' => false,
                 'attr' => [
-                    'class' => 'form-control no-border',
+                    'class' => 'no-border',
                 ]
             ])
             ->add('polygon', CollectionType::class, [
@@ -66,15 +43,13 @@ class ExtAddrobjType extends AbstractType
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,
+                'by_reference' => false,
                 'attr' => [
-                    'class' => 'form-control no-border',
+                    'class' => 'no-border',
                 ]
-            ])            
+            ])
             ->add('save', SubmitType::class, [
                 'label' => 'Сохранить',
-                'attr' => [
-                    'class' => 'btn btn-primary',
-                ]
             ])
         ;
     }
