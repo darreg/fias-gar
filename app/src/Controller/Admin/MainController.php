@@ -40,6 +40,11 @@ class MainController extends AbstractController
             $originalSynonym->add($synonym);
         }
 
+        $originalPolygon = new ArrayCollection();
+        foreach ($extAddrobj->getPolygon() as $point) {
+            $originalPolygon->add($point);
+        }        
+
         $form = $this->createForm(ExtAddrobjType::class, $extAddrobj);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -48,13 +53,17 @@ class MainController extends AbstractController
 
             foreach ($originalSynonym as $synonym) {
                 if ($extAddrobj->getSynonym()->contains($synonym) === false) {
-                    $synonym->getExtAddrobj()->removeElement($extAddrobj);
-                    $synonym->setTask(null);
-
                     $entityManager->persist($synonym);
                     $entityManager->remove($synonym);
                 }
             }
+
+            foreach ($originalPolygon as $point) {
+                if ($extAddrobj->getPolygon()->contains($point) === false) {
+                    $entityManager->persist($point);
+                    $entityManager->remove($point);
+                }
+            }            
 
             $entityManager->persist($extAddrobj);
             $entityManager->flush();

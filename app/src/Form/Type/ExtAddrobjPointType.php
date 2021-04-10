@@ -19,7 +19,7 @@ class ExtAddrobjPointType extends AbstractType
                 'label' => false,
                 'scale' => 11,
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'coord',
                     'required' => true,
                     'placeholder' => 'Широта'
                 ],
@@ -28,7 +28,7 @@ class ExtAddrobjPointType extends AbstractType
                 'label' => false,
                 'scale' => 11,
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'coord',
                     'required' => true,
                     'placeholder' => 'Долгота'
                 ],

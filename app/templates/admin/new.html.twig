@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    {{ parent() }}
     <style>
         .no-border {
             border: 0;
@@ -18,12 +18,51 @@
             font-weight: bold;
         }
 
+        .form-fields li div {
+            margin: 0px;
+        }
+
+        .left {
+            width: 560px;
+            float: left;
+            margin-right:10px;
+        }
+
+        .coord {
+            width: 275px;
+            float: left;
+            margin-right:10px;
+        }
+
+        .del {
+            float: left;
+        }
+
         ul {
             padding-left: 0;
+            clear:both;
+        }
+
+        ul:after {
+            content: '';
+            display: block;
+            clear: both;
         }
 
         ul li {
             list-style-type: none;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        ul li:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        ul li .form-group {
+            margin: 0;
         }
 
         h3 {
@@ -32,9 +71,8 @@
     </style>
 {% endblock %}
 
-{% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+{% block footer_javascripts %}
+    {{ parent() }}
     <script>
         jQuery(document).ready(function() {
             var $collectionHolderж
@@ -63,7 +101,7 @@
         });
 
         function addTagFormDeleteLink($tagFormLi) {
-            var $removeFormButton = $('<button type="button" class="btn btn-outline-secondary btn-sm">X</button>');
+            var $removeFormButton = $('<button type="button" class="btn btn-outline-secondary btn-sm del">X</button>');
             $tagFormLi.append($removeFormButton);
             $removeFormButton.on('click', function(e) {
                 $tagFormLi.remove();
@@ -86,6 +124,7 @@
 {% endblock %}
 
 {% block body %}
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
     <div style="margin: 20px auto;max-width: 600px;">
         <h3>Редактирование ExtAddrobj</h3>
         {{ form_start(form, {'attr': {'class': 'form-fields'}}) }}
@@ -118,6 +157,7 @@
             <button type="button" id="add_polygon" class="btn btn-secondary" data-collection-holder-class="polygon">Добавить точку</button>
         </div>
 
-        {{ form_end(form) }}
+        {{ form_row(form.save) }}
+        {{ form_end(form, {'render_rest': false}) }}
     </div>
 {% endblock %}

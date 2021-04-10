@@ -17,7 +17,7 @@ class ExtAddrobjSynonymType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => false,
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'left',
                     'required' => true,
                     'placeholder' => 'Наименование',
                 ],
