@@ -84,6 +84,16 @@ class ExtAddrobjDTO implements ConstructFromArrayInterface
      */
     private ?string $locative;
 
+    /**
+     * @var array<int, array> 
+     */
+    private array $synonyms;
+
+    /**
+     * @var array<int, array>
+     */    
+    private array $points;
+
     public function __construct(
         int $objectid,
         ?string $objectguid = null,
@@ -99,7 +109,9 @@ class ExtAddrobjDTO implements ConstructFromArrayInterface
         ?string $accusative = null,
         ?string $ablative = null,
         ?string $prepositive = null,
-        ?string $locative = null
+        ?string $locative = null,
+        array $synonyms = [],
+        array $points = []
     ) {
         $this->objectid = $objectid;
         $this->objectguid = $objectguid;
@@ -115,7 +127,8 @@ class ExtAddrobjDTO implements ConstructFromArrayInterface
         $this->accusative = $accusative;
         $this->ablative = $ablative;
         $this->prepositive = $prepositive;
-        $this->locative = $locative;
+        $this->synonyms = $synonyms;
+        $this->points = $points;
     }
 
     public function getObjectid(): int
@@ -192,4 +205,30 @@ class ExtAddrobjDTO implements ConstructFromArrayInterface
     {
         return $this->locative;
     }
+    
+    public function getSynonyms(): array
+    {
+        return $this->synonyms;
+    }
+
+    public function getPoints(): array
+    {
+        return $this->points;
+    }
+
+    /**
+     * @return array<int, ExtAddrobjSynonymDTO>
+     */
+    public function getSynonymDTOs(): array
+    {
+        return array_map(static fn(array $synonym) => ExtAddrobjSynonymDTO::fromArray($synonym), $this->synonyms);
+    }
+
+    /**
+     * @return array<int, ExtAddrobjPointDTO>
+     */
+    public function getPointDTOs(): array
+    {
+        return array_map(static fn(array $point) => ExtAddrobjPointDTO::fromArray($point), $this->points);
+    }    
 }

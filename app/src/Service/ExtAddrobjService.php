@@ -74,9 +74,8 @@ class ExtAddrobjService
         return $this->extAddrobjSynonymManager->getAll($objectid);
     }
 
-    public function add(ExtAddrobjDTO $extAddrobjDto): bool
+    public function add(ExtAddrobjDTO $extAddrobjDto): ?int
     {
-
         return $this->extAddrobjManager->add($extAddrobjDto);
     }
 

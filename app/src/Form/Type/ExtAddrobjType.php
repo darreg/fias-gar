@@ -4,6 +4,7 @@
 namespace App\Form\Type;
 
 
+use App\DTO\ExtAddrobjDTO;
 use App\Entity\ExtAddrobj;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -57,7 +58,7 @@ class ExtAddrobjType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ExtAddrobj::class
+            'data_class' => ExtAddrobjDTO::class
         ]);
     }
 }

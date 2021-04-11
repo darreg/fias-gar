@@ -35,7 +35,7 @@ class ExtAddrobjManager
         return $this->extAddrobjRepository->findBy([], null, $limit, $offset);
     }
 
-    public function add(ExtAddrobjDTO $extAddrobjDto): bool
+    public function add(ExtAddrobjDTO $extAddrobjDto): ?int
     {
 
         $extAddrobj = (new ExtAddrobj())
@@ -59,10 +59,10 @@ class ExtAddrobjManager
             $this->extAddrobjDao->create($extAddrobj);
         } catch (\Exception $e) {
             //TODO log
-            return false;
+            return null;
         }
 
-        return true;
+        return $extAddrobj->getObjectid();
     }
 
     public function updateById(
