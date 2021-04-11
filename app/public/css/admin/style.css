@@ -1,0 +1,65 @@
+.no-border {
+    border: 0;
+    box-shadow: none;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.form-fields div {
+    margin-bottom: 10px;
+}
+
+.form-fields > div > label {
+    font-weight: bold;
+}
+
+.form-fields li div {
+    margin: 0px;
+}
+
+.left {
+    width: 560px;
+    float: left;
+    margin-right:10px;
+}
+
+.coord {
+    width: 275px;
+    float: left;
+    margin-right:10px !important;
+}
+
+.del {
+    float: left;
+}
+
+ul {
+    padding-left: 0;
+    clear:both;
+}
+
+ul:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+ul li {
+    list-style-type: none;
+    display: block;
+    margin-bottom: 3px;
+}
+
+ul li:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+ul li .form-group {
+    margin: 0;
+}
+
+h3 {
+    margin-bottom: 20px;
+}
