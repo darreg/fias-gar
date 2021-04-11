@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('admin/css/style.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <div style="margin: 20px auto;max-width: 600px;">
+        <h3>Панель администрирования</h3>
+
+        <ul>
+            <li><a href="{{ path('extaddrobj-new') }}">Добавление ExtAddrobj</a></li>
+        </ul>
+
+    </div>
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('admin/js/extaddrobj-form.js') }}" />
+{% endblock %}
