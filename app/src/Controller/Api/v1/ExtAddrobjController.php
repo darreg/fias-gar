@@ -80,7 +80,7 @@ class ExtAddrobjController
         $extAddrobjDto = ExtAddrobjDTO::fromArray($request->request->all());
 
         $result = $this->extAddrobjService->add($extAddrobjDto) !== null;
-        
+
         return new JsonResponse(
             ['result' => $result],
             $result ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST

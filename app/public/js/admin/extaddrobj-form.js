@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-    var $collectionHolderж
+    var $collectionHolder;
 
     $collectionHolder = $('ul.synonym');
     $collectionHolder.data('index', $collectionHolder.find('input').length);
@@ -24,7 +24,8 @@ jQuery(document).ready(function () {
 
 });
 
-function addTagFormDeleteLink($tagFormLi) {
+function addTagFormDeleteLink($tagFormLi)
+{
     var $removeFormButton = $('<button type="button" class="btn btn-outline-secondary btn-sm del">X</button>');
     $tagFormLi.append($removeFormButton);
     $removeFormButton.on('click', function (e) {
@@ -33,7 +34,8 @@ function addTagFormDeleteLink($tagFormLi) {
 }
 
 
-function addFormToCollection($collectionHolderClass) {
+function addFormToCollection($collectionHolderClass)
+{
     var $collectionHolder = $('.' + $collectionHolderClass);
     var prototype = $collectionHolder.data('prototype');
     var index = $collectionHolder.data('index');

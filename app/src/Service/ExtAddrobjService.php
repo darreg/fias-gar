@@ -24,8 +24,7 @@ class ExtAddrobjService
         ExtAddrobjManager $extAddrobjManager,
         ExtAddrobjPointManager $extAddrobjPointManager,
         ExtAddrobjSynonymManager $extAddrobjSynonymManager
-    )
-    {
+    ) {
         $this->extAddrobjManager = $extAddrobjManager;
         $this->extAddrobjPointManager = $extAddrobjPointManager;
         $this->extAddrobjSynonymManager = $extAddrobjSynonymManager;
@@ -107,8 +106,7 @@ class ExtAddrobjService
     public function updateById(
         int $objectid,
         ExtAddrobjDTO $extAddrobjDto
-    ): bool
-    {
+    ): bool {
 
         $extAddrobj = $this->extAddrobjManager->getOne($objectid);
         if ($extAddrobj === null) {
@@ -124,8 +122,7 @@ class ExtAddrobjService
     public function update(
         ExtAddrobj $extAddrobj,
         ExtAddrobjDTO $extAddrobjDto
-    ): bool
-    {
+    ): bool {
         $originalSynonyms = $extAddrobj->getSynonyms();
         $originalPoints = $extAddrobj->getPoints();
 
@@ -142,13 +139,13 @@ class ExtAddrobjService
 
         foreach ($originalSynonyms as $synonym) {
             if ($extAddrobj->getSynonyms()->contains($synonym) === false) {
-                $this->extAddrobjSynonymManager->deleteById($synonym->getId());
+                $this->extAddrobjSynonymManager->delete($synonym);
             }
         }
 
         foreach ($originalPoints as $point) {
             if ($extAddrobj->getPoints()->contains($point) === false) {
-                $this->extAddrobjPointManager->deleteById($point->getId());
+                $this->extAddrobjPointManager->delete($point);
             }
         }
 
@@ -173,8 +170,7 @@ class ExtAddrobjService
     public function updatePointById(
         int $id,
         ExtAddrobjPointDTO $extAddrobjPointDTO
-    ): ?int
-    {
+    ): ?int {
 
         $extAddrobjPoint = $this->extAddrobjPointManager->updateById(
             $id,
@@ -190,8 +186,7 @@ class ExtAddrobjService
     public function updatePoint(
         ExtAddrobjPoint $extAddrobjPoint,
         ExtAddrobjPointDTO $extAddrobjPointDTO
-    ): ?int
-    {
+    ): ?int {
 
         $extAddrobjPoint = $this->extAddrobjPointManager->update(
             $extAddrobjPoint,
@@ -228,8 +223,7 @@ class ExtAddrobjService
     public function updateSynonymById(
         int $id,
         ExtAddrobjSynonymDTO $extAddrobjSynonymDTO
-    ): ?int
-    {
+    ): ?int {
 
         $extAddrobjSynonym = $this->extAddrobjSynonymManager->updateById(
             $id,
@@ -245,8 +239,7 @@ class ExtAddrobjService
     public function updateSynonym(
         ExtAddrobjSynonym $extAddrobjSynonym,
         ExtAddrobjSynonymDTO $extAddrobjSynonymDTO
-    ): ?int
-    {
+    ): ?int {
 
         $extAddrobjSynonym = $this->extAddrobjSynonymManager->update(
             $extAddrobjSynonym,
@@ -272,8 +265,7 @@ class ExtAddrobjService
     private function updateSynonymsInExtAddrobj(
         ExtAddrobj $extAddrobj,
         ExtAddrobjDTO $extAddrobjDto
-    ): void
-    {
+    ): void {
         $extAddrobj->setSynonyms(new ArrayCollection());
         foreach ($extAddrobjDto->getSynonymDTOs() as $synonym) {
             $synonym->objectid = $extAddrobj->getObjectid();
@@ -291,8 +283,7 @@ class ExtAddrobjService
     private function updatePointsInExtAddrobj(
         ExtAddrobj $extAddrobj,
         ExtAddrobjDTO $extAddrobjDto
-    ): void
-    {
+    ): void {
         $extAddrobj->setPoints(new ArrayCollection());
         foreach ($extAddrobjDto->getPointDTOs() as $point) {
             $point->objectid = $extAddrobj->getObjectid();
