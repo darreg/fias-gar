@@ -110,6 +110,16 @@ class ExtAddrobjPointManager
         return $extAddrobjPoint;
     }
 
+    public function delete(ExtAddrobjPoint $extAddrobjPoint): bool
+    {
+        $id = $extAddrobjPoint->getId();
+        if ($id === null) {
+            return false;
+        }
+
+        return $this->deleteById($id);
+    }
+
     public function deleteById(int $id): bool
     {
         $extAddrobjPoint = $this->extAddrobjPointRepository->find($id);

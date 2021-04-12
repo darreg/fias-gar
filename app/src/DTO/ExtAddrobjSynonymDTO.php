@@ -11,8 +11,8 @@ class ExtAddrobjSynonymDTO implements ConstructFromArrayInterface
     /**
      * @Assert\Positive
      */
-    public ?int $id;    
-    
+    public ?int $id;
+
     /**
      * @Assert\Positive
      */
@@ -28,7 +28,7 @@ class ExtAddrobjSynonymDTO implements ConstructFromArrayInterface
         ?int $objectid = null,
         ?string $name = null
     ) {
-        $this->id = $id;        
+        $this->id = $id;
         $this->objectid = $objectid;
         $this->name = $name;
     }

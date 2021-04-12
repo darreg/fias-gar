@@ -3,12 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\DTO\ExtAddrobjDTO;
-use App\Entity\ExtAddrobj;
-use App\Entity\ExtAddrobjPoint;
 use App\Form\Type\ExtAddrobjType;
-use App\Repository\ExtAddrobjRepository;
 use App\Service\ExtAddrobjService;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +29,7 @@ class ExtAddrobjController extends AbstractController
         $this->extAddrobjService = $extAddrobjService;
         $this->serializer = $serializer;
     }
-    
+
     /**
      * @Route("/new", name="extaddrobj-new", methods={"GET"})
      */
@@ -54,7 +50,8 @@ class ExtAddrobjController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $extAddrobjDto = ExtAddrobjDTO::fromArray($form->getData());
+            $data = (array)$form->getData();
+            $extAddrobjDto = ExtAddrobjDTO::fromArray($data);
             $objectid = $this->extAddrobjService->add($extAddrobjDto);
             return $this->redirectToRoute('extaddrobj-edit', ['objectid' => $objectid]);
         }
@@ -75,8 +72,8 @@ class ExtAddrobjController extends AbstractController
         }
 
         $extAddrobjArray = $this->serializer->normalize(
-            $extAddrobj, 
-            null, 
+            $extAddrobj,
+            null,
             [AbstractNormalizer::IGNORED_ATTRIBUTES => ['extAddrobj']]
         );
 
@@ -85,7 +82,9 @@ class ExtAddrobjController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->extAddrobjService->update($extAddrobj, $form->getData());
+            /** @var ExtAddrobjDTO $data */
+            $data = $form->getData();
+            $this->extAddrobjService->update($extAddrobj, $data);
 
             return $this->redirectToRoute('extaddrobj-edit', ['objectid' => $extAddrobj->getObjectid()]);
         }

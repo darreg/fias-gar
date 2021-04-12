@@ -84,7 +84,7 @@ class ExtAddrobjDTO implements ConstructFromArrayInterface
     public ?string $locative;
 
     /**
-     * @var array<int, array> 
+     * @var array<int, array>
      */
     public array $synonyms;
 
@@ -93,6 +93,10 @@ class ExtAddrobjDTO implements ConstructFromArrayInterface
      */
     public array $points;
 
+    /**
+     * @param array<int, array> $synonyms
+     * @param array<int, array> $points
+     */
     public function __construct(
         ?int $objectid = null,
         ?string $objectguid = null,
@@ -126,11 +130,11 @@ class ExtAddrobjDTO implements ConstructFromArrayInterface
         $this->accusative = $accusative;
         $this->ablative = $ablative;
         $this->prepositive = $prepositive;
-        $this->locative = $locative;        
+        $this->locative = $locative;
         $this->synonyms = $synonyms;
         $this->points = $points;
     }
-    
+
     /**
      * @return array<int, ExtAddrobjSynonymDTO>
      */
@@ -145,5 +149,5 @@ class ExtAddrobjDTO implements ConstructFromArrayInterface
     public function getPointDTOs(): array
     {
         return array_map(static fn(array $point) => ExtAddrobjPointDTO::fromArray($point), $this->points);
-    }    
+    }
 }

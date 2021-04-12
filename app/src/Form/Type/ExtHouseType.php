@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Form\Type;
-
 
 use App\Entity\ExtHouse;
 use Symfony\Component\Form\AbstractType;

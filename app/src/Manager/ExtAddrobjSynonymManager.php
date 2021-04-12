@@ -106,6 +106,16 @@ class ExtAddrobjSynonymManager
         return $extAddrobjSynonym;
     }
 
+    public function delete(ExtAddrobjSynonym $extAddrobjSynonym): bool
+    {
+        $id = $extAddrobjSynonym->getId();
+        if ($id === null) {
+            return false;
+        }
+
+        return $this->deleteById($id);
+    }
+
     public function deleteById(int $id): bool
     {
         $extAddrobjSynonym = $this->extAddrobjSynonymRepository->find($id);
