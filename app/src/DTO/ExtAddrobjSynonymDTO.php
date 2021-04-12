@@ -9,32 +9,20 @@ class ExtAddrobjSynonymDTO implements ConstructFromArrayInterface
     use ConstructableFromArrayTrait;
 
     /**
-     * @Assert\NotBlank
      * @Assert\Positive
      */
-    private int $objectid;
+    public ?int $objectid;
 
     /**
-     * @Assert\NotBlank
      * @Assert\Length(max = 255)
      */
-    private string $name;
+    public ?string $name;
 
     public function __construct(
-        int $objectid,
-        string $name
+        ?int $objectid = null,
+        ?string $name = null
     ) {
         $this->objectid = $objectid;
         $this->name = $name;
-    }
-
-    public function getObjectid(): int
-    {
-        return $this->objectid;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
     }
 }

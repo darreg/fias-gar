@@ -48,7 +48,7 @@ class ExtAddrobjPoint
     private float $longitude;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ExtAddrobj::class, inversedBy="polygon")
+     * @ORM\ManyToOne(targetEntity=ExtAddrobj::class, inversedBy="points")
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid")
      */
     private ExtAddrobj $extAddrobj;

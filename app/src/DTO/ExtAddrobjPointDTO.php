@@ -9,45 +9,27 @@ class ExtAddrobjPointDTO implements ConstructFromArrayInterface
     use ConstructableFromArrayTrait;
 
     /**
-     * @Assert\NotBlank
      * @Assert\Positive
      */
-    private int $objectid;
+    public ?int $objectid;
 
     /**
-     * @Assert\NotBlank
      * @Assert\Positive
      */
-    private float $latitude;
+    public ?float $latitude;
 
     /**
-     * @Assert\NotBlank
      * @Assert\Positive
      */
-    private float $longitude;
+    public ?float $longitude;
 
     public function __construct(
-        int $objectid,
-        float $latitude,
-        float $longitude
+        ?int $objectid = null,
+        ?float $latitude = null,
+        ?float $longitude = null
     ) {
         $this->objectid = $objectid;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
-    }
-
-    public function getObjectid(): int
-    {
-        return $this->objectid;
-    }
-
-    public function getLatitude(): float
-    {
-        return $this->latitude;
-    }
-
-    public function getLongitude(): float
-    {
-        return $this->longitude;
     }
 }

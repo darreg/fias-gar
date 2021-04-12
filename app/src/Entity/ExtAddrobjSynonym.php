@@ -39,7 +39,7 @@ class ExtAddrobjSynonym
     private string $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ExtAddrobj::class, inversedBy="synonym")
+     * @ORM\ManyToOne(targetEntity=ExtAddrobj::class, inversedBy="synonyms")
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid")
      */
     private ExtAddrobj $extAddrobj;

@@ -25,7 +25,7 @@ class ExtAddrobjType extends AbstractType
             ->add('latitude', NumberType::class)
             ->add('longitude', NumberType::class)
             ->add('zoom', TextType::class)
-            ->add('synonym', CollectionType::class, [
+            ->add('synonyms', CollectionType::class, [
                 'entry_type' => ExtAddrobjSynonymType::class,
                 'entry_options' => [
                     'label' => false,
@@ -37,7 +37,7 @@ class ExtAddrobjType extends AbstractType
                     'class' => 'no-border',
                 ]
             ])
-            ->add('polygon', CollectionType::class, [
+            ->add('points', CollectionType::class, [
                 'entry_type' => ExtAddrobjPointType::class,
                 'entry_options' => [
                     'label' => false,
@@ -53,12 +53,5 @@ class ExtAddrobjType extends AbstractType
                 'label' => 'Сохранить',
             ])
         ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => ExtAddrobjDTO::class
-        ]);
     }
 }

@@ -109,7 +109,7 @@ class ExtAddrobj
      * @ORM\OneToMany(targetEntity=ExtAddrobjPoint::class, mappedBy="extAddrobj", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
      */
-    private $polygon;
+    private $points;
 
     /**
      * @var Collection|ExtAddrobjSynonym[]
@@ -118,13 +118,13 @@ class ExtAddrobj
      * @ORM\OneToMany(targetEntity=ExtAddrobjSynonym::class, mappedBy="extAddrobj", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
      */
-    private $synonym;
+    private $synonyms;
 
 
     public function __construct()
     {
-        $this->polygon = new ArrayCollection();
-        $this->synonym = new ArrayCollection();
+        $this->points = new ArrayCollection();
+        $this->synonyms = new ArrayCollection();
     }
 
     public function getObjectid(): ?int
@@ -311,38 +311,38 @@ class ExtAddrobj
      * @return Collection|ExtAddrobjPoint[]
      * @psalm-return Collection<int, ExtAddrobjPoint>
      */
-    public function getPolygon()
+    public function getPoints()
     {
-        return $this->polygon;
+        return $this->points;
     }
 
     /**
-     * @param Collection|ExtAddrobjPoint[] $polygon
-     * @psalm-param Collection<int, ExtAddrobjPoint> $polygon
+     * @param Collection|ExtAddrobjPoint[] $points
+     * @psalm-param Collection<int, ExtAddrobjPoint> $points
      *
      * @return $this
      */
-    public function setPolygon($polygon): self
+    public function setPoints($points): self
     {
-        $this->polygon = $polygon;
+        $this->points = $points;
 
         return $this;
     }
 
-    public function addPolygon(ExtAddrobjPoint $polygon): self
+    public function addPoint(ExtAddrobjPoint $point): self
     {
-        if (!$this->polygon->contains($polygon)) {
-            $this->polygon[] = $polygon;
-            $polygon->setExtAddrobj($this);
+        if (!$this->points->contains($point)) {
+            $this->points[] = $point;
+            $point->setExtAddrobj($this);
         }
 
         return $this;
     }
 
-    public function removePolygon(ExtAddrobjPoint $polygon): self
+    public function removePoint(ExtAddrobjPoint $point): self
     {
-        if ($this->polygon->contains($polygon)) {
-            $this->polygon->removeElement($polygon);
+        if ($this->points->contains($point)) {
+            $this->points->removeElement($point);
         }
 
         return $this;
@@ -352,9 +352,9 @@ class ExtAddrobj
      * @return Collection|ExtAddrobjSynonym[]
      * @psalm-return Collection<int, ExtAddrobjSynonym>
      */
-    public function getSynonym()
+    public function getSynonyms()
     {
-        return $this->synonym;
+        return $this->synonyms;
     }
 
     /**
@@ -363,17 +363,17 @@ class ExtAddrobj
      *
      * @return $this
      */
-    public function setSynonym($synonyms): self
+    public function setSynonyms($synonyms): self
     {
-        $this->synonym = $synonyms;
+        $this->synonyms = $synonyms;
 
         return $this;
     }
 
     public function addSynonym(ExtAddrobjSynonym $synonym): self
     {
-        if (!$this->synonym->contains($synonym)) {
-            $this->synonym[] = $synonym;
+        if (!$this->synonyms->contains($synonym)) {
+            $this->synonyms[] = $synonym;
             $synonym->setExtAddrobj($this);
         }
 
@@ -382,8 +382,8 @@ class ExtAddrobj
 
     public function removeSynonym(ExtAddrobjSynonym $synonym): self
     {
-        if ($this->synonym->contains($synonym)) {
-            $this->synonym->removeElement($synonym);
+        if ($this->synonyms->contains($synonym)) {
+            $this->synonyms->removeElement($synonym);
         }
 
         return $this;

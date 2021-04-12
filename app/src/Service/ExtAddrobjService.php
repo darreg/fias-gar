@@ -76,7 +76,30 @@ class ExtAddrobjService
 
     public function add(ExtAddrobjDTO $extAddrobjDto): ?int
     {
-        return $this->extAddrobjManager->add($extAddrobjDto);
+        $extAddrobj = $this->extAddrobjManager->add($extAddrobjDto);
+        if ($extAddrobj === null) {
+            return null;
+        }
+
+        foreach ($extAddrobjDto->getSynonymDTOs() as $synonym) {
+            $synonym->objectid = $extAddrobj->getObjectid();
+            $extAddrobjSynonym = $this->extAddrobjSynonymManager->add($synonym);
+            if ($extAddrobjSynonym === null) {
+                continue;
+            }
+            $extAddrobj->addSynonym($extAddrobjSynonym);
+        }
+
+        foreach ($extAddrobjDto->getPointDTOs() as $point) {
+            $point->objectid = $extAddrobj->getObjectid();
+            $extAddrobjPoint = $this->extAddrobjPointManager->add($point);
+            if ($extAddrobjPoint === null) {
+                continue;
+            }
+            $extAddrobj->addPoint($extAddrobjPoint);
+        }
+        
+        return $extAddrobj->getObjectid();
     }
 
     public function updateById(
