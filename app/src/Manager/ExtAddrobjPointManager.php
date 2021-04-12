@@ -44,37 +44,37 @@ class ExtAddrobjPointManager
         return $this->extAddrobjPointRepository->findBy(['extAddrobj' => $extAddrobj]);
     }
 
-    public function add(ExtAddrobjPointDTO $extAddrobjPointDTO): bool
+    public function add(ExtAddrobjPointDTO $extAddrobjPointDTO): ?ExtAddrobjPoint
     {
 
-        $extAddrobj = $this->extAddrobjRepository->find($extAddrobjPointDTO->getObjectid());
+        $extAddrobj = $this->extAddrobjRepository->find($extAddrobjPointDTO->objectid);
         if ($extAddrobj === null) {
-            return false;
+            return null;
         }
 
         $extAddrobjPoint = (new ExtAddrobjPoint())
-            ->setLatitude($extAddrobjPointDTO->getLatitude())
-            ->setLongitude($extAddrobjPointDTO->getLongitude())
+            ->setLatitude($extAddrobjPointDTO->latitude)
+            ->setLongitude($extAddrobjPointDTO->longitude)
             ->setExtAddrobj($extAddrobj);
 
         try {
             $this->extAddrobjPointDao->create($extAddrobjPoint);
         } catch (\Exception $e) {
             //TODO log
-            return false;
+            return null;
         }
 
-        return true;
+        return $extAddrobjPoint;
     }
 
     public function updateById(
         int $id,
         ExtAddrobjPointDTO $extAddrobjPointDTO
-    ): bool {
+    ): ?ExtAddrobjPoint {
 
         $extAddrobjPoint = $this->extAddrobjPointRepository->find($id);
         if ($extAddrobjPoint === null) {
-            return false;
+            return null;
         }
 
         return $this->update(
@@ -86,16 +86,16 @@ class ExtAddrobjPointManager
     public function update(
         ExtAddrobjPoint $extAddrobjPoint,
         ExtAddrobjPointDTO $extAddrobjPointDTO
-    ): bool {
+    ): ?ExtAddrobjPoint {
 
-        $extAddrobj = $this->extAddrobjRepository->find($extAddrobjPointDTO->getObjectid());
+        $extAddrobj = $this->extAddrobjRepository->find($extAddrobjPointDTO->objectid);
         if ($extAddrobj === null) {
-            return false;
+            return null;
         }
 
         $extAddrobjPoint
-            ->setLatitude($extAddrobjPointDTO->getLatitude())
-            ->setLongitude($extAddrobjPointDTO->getLongitude())
+            ->setLatitude($extAddrobjPointDTO->latitude)
+            ->setLongitude($extAddrobjPointDTO->longitude)
             ->setExtAddrobj($extAddrobj);
 
         try {
@@ -104,10 +104,10 @@ class ExtAddrobjPointManager
             );
         } catch (\Exception $e) {
             //TODO log
-            return false;
+            return null;
         }
 
-        return true;
+        return $extAddrobjPoint;
     }
 
     public function deleteById(int $id): bool

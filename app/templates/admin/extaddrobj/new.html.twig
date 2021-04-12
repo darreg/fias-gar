@@ -11,15 +11,15 @@
         <h3>Добавление ExtAddrobj</h3>
         {{ form_start(form, {'attr': {'class': 'form-fields'}}) }}
         {% for child in form %}
-            {% if child.vars.name not in ['synonym','polygon','save'] %}
+            {% if child.vars.name not in ['synonyms','points','save'] %}
                 {{ form_row(child) }}
             {% endif %}
         {% endfor %}
 
         <div>
-            {{ form_label(form.synonym) }}
-            <ul class="synonym" data-prototype="{{ form_widget(form.synonym.vars.prototype)|e('html_attr') }}">
-                {% for synonym in form.synonym %}
+            {{ form_label(form.synonyms) }}
+            <ul class="synonym" data-prototype="{{ form_widget(form.synonyms.vars.prototype)|e('html_attr') }}">
+                {% for synonym in form.synonyms %}
                     <li>{{ form_row(synonym.name, {'label': false}) }}</li>
                 {% endfor %}
             </ul>
@@ -29,17 +29,17 @@
         </div>
 
         <div>
-            {{ form_label(form.polygon) }}
-            <ul class="polygon" data-prototype="{{ form_widget(form.polygon.vars.prototype)|e('html_attr') }}">
-                {% for polygon in form.polygon %}
+            {{ form_label(form.points) }}
+            <ul class="polygon" data-prototype="{{ form_widget(form.points.vars.prototype)|e('html_attr') }}">
+                {% for point in form.points %}
                     <li>
                         <div class="coord form-group qqq">
-                            {{ form_widget(polygon.latitude) }}
-                            {{ form_errors(polygon.latitude) }}
+                            {{ form_widget(point.latitude) }}
+                            {{ form_errors(point.latitude) }}
                         </div>
                         <div class="coord form-group xxx">
-                            {{ form_widget(polygon.longitude) }}
-                            {{ form_errors(polygon.longitude) }}
+                            {{ form_widget(point.longitude) }}
+                            {{ form_errors(point.longitude) }}
                         </div>
                     </li>
                 {% endfor %}

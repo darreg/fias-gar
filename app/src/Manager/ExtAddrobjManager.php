@@ -35,25 +35,25 @@ class ExtAddrobjManager
         return $this->extAddrobjRepository->findBy([], null, $limit, $offset);
     }
 
-    public function add(ExtAddrobjDTO $extAddrobjDto): ?int
+    public function add(ExtAddrobjDTO $extAddrobjDto): ?ExtAddrobj
     {
 
         $extAddrobj = (new ExtAddrobj())
-            ->setObjectid($extAddrobjDto->getObjectid())
-            ->setObjectguid($extAddrobjDto->getObjectguid())
-            ->setPrecision($extAddrobjDto->getPrecision())
-            ->setLatitude($extAddrobjDto->getLatitude())
-            ->setLongitude($extAddrobjDto->getLongitude())
-            ->setZoom($extAddrobjDto->getZoom())
-            ->setAlias($extAddrobjDto->getAlias())
-            ->setAnglicism($extAddrobjDto->getAnglicism())
-            ->setNominative($extAddrobjDto->getNominative())
-            ->setGenitive($extAddrobjDto->getGenitive())
-            ->setDative($extAddrobjDto->getDative())
-            ->setAccusative($extAddrobjDto->getAccusative())
-            ->setAblative($extAddrobjDto->getAblative())
-            ->setPrepositive($extAddrobjDto->getPrepositive())
-            ->setLocative($extAddrobjDto->getLocative());
+            ->setObjectid($extAddrobjDto->objectid)
+            ->setObjectguid($extAddrobjDto->objectguid)
+            ->setPrecision($extAddrobjDto->precision)
+            ->setLatitude($extAddrobjDto->latitude)
+            ->setLongitude($extAddrobjDto->longitude)
+            ->setZoom($extAddrobjDto->zoom)
+            ->setAlias($extAddrobjDto->alias)
+            ->setAnglicism($extAddrobjDto->anglicism)
+            ->setNominative($extAddrobjDto->nominative)
+            ->setGenitive($extAddrobjDto->genitive)
+            ->setDative($extAddrobjDto->dative)
+            ->setAccusative($extAddrobjDto->accusative)
+            ->setAblative($extAddrobjDto->ablative)
+            ->setPrepositive($extAddrobjDto->precision)
+            ->setLocative($extAddrobjDto->locative);
 
         try {
             $this->extAddrobjDao->create($extAddrobj);
@@ -62,7 +62,7 @@ class ExtAddrobjManager
             return null;
         }
 
-        return $extAddrobj->getObjectid();
+        return $extAddrobj;
     }
 
     public function updateById(
@@ -87,20 +87,20 @@ class ExtAddrobjManager
     ): bool {
 
         $extAddrobj
-            ->setObjectguid($extAddrobjDto->getObjectguid())
-            ->setPrecision($extAddrobjDto->getPrecision())
-            ->setLatitude($extAddrobjDto->getLatitude())
-            ->setLongitude($extAddrobjDto->getLongitude())
-            ->setZoom($extAddrobjDto->getZoom())
-            ->setAlias($extAddrobjDto->getAlias())
-            ->setAnglicism($extAddrobjDto->getAnglicism())
-            ->setNominative($extAddrobjDto->getNominative())
-            ->setGenitive($extAddrobjDto->getGenitive())
-            ->setDative($extAddrobjDto->getDative())
-            ->setAccusative($extAddrobjDto->getAccusative())
-            ->setAblative($extAddrobjDto->getAblative())
-            ->setPrepositive($extAddrobjDto->getPrepositive())
-            ->setLocative($extAddrobjDto->getLocative());
+            ->setObjectguid($extAddrobjDto->objectguid)
+            ->setPrecision($extAddrobjDto->precision)
+            ->setLatitude($extAddrobjDto->latitude)
+            ->setLongitude($extAddrobjDto->longitude)
+            ->setZoom($extAddrobjDto->zoom)
+            ->setAlias($extAddrobjDto->alias)
+            ->setAnglicism($extAddrobjDto->anglicism)
+            ->setNominative($extAddrobjDto->nominative)
+            ->setGenitive($extAddrobjDto->genitive)
+            ->setDative($extAddrobjDto->dative)
+            ->setAccusative($extAddrobjDto->accusative)
+            ->setAblative($extAddrobjDto->ablative)
+            ->setPrepositive($extAddrobjDto->precision)
+            ->setLocative($extAddrobjDto->locative);
 
         try {
             $this->extAddrobjDao->update($extAddrobj);

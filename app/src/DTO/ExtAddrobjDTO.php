@@ -9,93 +9,92 @@ class ExtAddrobjDTO implements ConstructFromArrayInterface
     use ConstructableFromArrayTrait;
 
     /**
-     * @Assert\NotBlank
      * @Assert\Positive
      */
-    private int $objectid;
+    public ?int $objectid;
 
     /**
      * @Assert\Length(max = 36)
      */
-    private ?string $objectguid;
+    public ?string $objectguid;
 
     /**
      * @Assert\PositiveOrZero
      */
-    private ?int $precision;
+    public ?int $precision;
 
     /**
      * @Assert\Positive
      */
-    private ?float $latitude;
+    public ?float $latitude;
 
     /**
      * @Assert\Positive
      */
-    private ?float $longitude;
+    public ?float $longitude;
 
     /**
      * @Assert\Positive
      */
-    private ?int $zoom;
+    public ?int $zoom;
 
     /**
      * @Assert\Length(max = 255)
      */
-    private ?string $alias;
+    public ?string $alias;
 
     /**
      * @Assert\Length(max = 255)
      */
-    private ?string $anglicism;
+    public ?string $anglicism;
 
     /**
      * @Assert\Length(max = 255)
      */
-    private ?string $nominative;
+    public ?string $nominative;
 
     /**
      * @Assert\Length(max = 255)
      */
-    private ?string $genitive;
+    public ?string $genitive;
 
     /**
      * @Assert\Length(max = 255)
      */
-    private ?string $dative;
+    public ?string $dative;
 
     /**
      * @Assert\Length(max = 255)
      */
-    private ?string $accusative;
+    public ?string $accusative;
 
     /**
      * @Assert\Length(max = 255)
      */
-    private ?string $ablative;
+    public ?string $ablative;
 
     /**
      * @Assert\Length(max = 255)
      */
-    private ?string $prepositive;
+    public ?string $prepositive;
 
     /**
      * @Assert\Length(max = 255)
      */
-    private ?string $locative;
+    public ?string $locative;
 
     /**
      * @var array<int, array> 
      */
-    private array $synonyms;
+    public array $synonyms;
 
     /**
      * @var array<int, array>
-     */    
-    private array $points;
+     */
+    public array $points;
 
     public function __construct(
-        int $objectid,
+        ?int $objectid = null,
         ?string $objectguid = null,
         ?int $precision = null,
         ?float $latitude = null,
@@ -127,95 +126,11 @@ class ExtAddrobjDTO implements ConstructFromArrayInterface
         $this->accusative = $accusative;
         $this->ablative = $ablative;
         $this->prepositive = $prepositive;
+        $this->locative = $locative;        
         $this->synonyms = $synonyms;
         $this->points = $points;
     }
-
-    public function getObjectid(): int
-    {
-        return $this->objectid;
-    }
-
-    public function getObjectguid(): ?string
-    {
-        return $this->objectguid;
-    }
-
-    public function getPrecision(): ?int
-    {
-        return $this->precision;
-    }
-
-    public function getLatitude(): ?float
-    {
-        return $this->latitude;
-    }
-
-    public function getLongitude(): ?float
-    {
-        return $this->longitude;
-    }
-
-    public function getZoom(): ?int
-    {
-        return $this->zoom;
-    }
-
-    public function getAlias(): ?string
-    {
-        return $this->alias;
-    }
-
-    public function getAnglicism(): ?string
-    {
-        return $this->anglicism;
-    }
-
-    public function getNominative(): ?string
-    {
-        return $this->nominative;
-    }
-
-    public function getGenitive(): ?string
-    {
-        return $this->genitive;
-    }
-
-    public function getDative(): ?string
-    {
-        return $this->dative;
-    }
-
-    public function getAccusative(): ?string
-    {
-        return $this->accusative;
-    }
-
-    public function getAblative(): ?string
-    {
-        return $this->ablative;
-    }
-
-    public function getPrepositive(): ?string
-    {
-        return $this->prepositive;
-    }
-
-    public function getLocative(): ?string
-    {
-        return $this->locative;
-    }
     
-    public function getSynonyms(): array
-    {
-        return $this->synonyms;
-    }
-
-    public function getPoints(): array
-    {
-        return $this->points;
-    }
-
     /**
      * @return array<int, ExtAddrobjSynonymDTO>
      */

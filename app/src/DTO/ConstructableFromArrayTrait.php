@@ -2,6 +2,8 @@
 
 namespace App\DTO;
 
+use Doctrine\Common\Collections\Collection;
+
 trait ConstructableFromArrayTrait
 {
     /**
@@ -46,5 +48,39 @@ trait ConstructableFromArrayTrait
          * @psalm-suppress PossiblyNullArgument
          */
         return new static(...$parameters);
+    }
+
+    /**
+     * @return static
+     * @throws \ReflectionException
+     */
+    public static function fromEntity(object $object)
+    {
+        $reflect = new \ReflectionClass(\get_class($object));
+        $props = $reflect->getProperties();
+
+        $data = [];
+        foreach ($props as $prop) {
+            if ($prop->isPrivate()) {
+                $prop->setAccessible(true);
+            }
+            
+            $value = $prop->getValue($object);
+            if ($value instanceof Collection) {
+                $value = $value->toArray();
+            }
+
+            $propType = $prop->getType();            
+//            if ($propType !== null && !$propType->isBuiltin()) {
+//                if ($value instanceof Collection) {
+//                    $value = $value->toArray();
+//                } else {
+//                    $value = \get_object_vars($value);
+//                }
+//            }
+            $data[$prop->getName()] = $value;
+        }
+
+        return static::fromArray($data);
     }
 }
