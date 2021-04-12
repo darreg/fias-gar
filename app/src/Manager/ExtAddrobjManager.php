@@ -68,11 +68,11 @@ class ExtAddrobjManager
     public function updateById(
         int $objectid,
         ExtAddrobjDTO $extAddrobjDto
-    ): bool {
+    ): ?ExtAddrobj {
 
         $extAddrobj = $this->extAddrobjRepository->find($objectid);
         if ($extAddrobj === null) {
-            return false;
+            return null;
         }
 
         return $this->update(
@@ -84,7 +84,7 @@ class ExtAddrobjManager
     public function update(
         ExtAddrobj $extAddrobj,
         ExtAddrobjDTO $extAddrobjDto
-    ): bool {
+    ): ?ExtAddrobj {
 
         $extAddrobj
             ->setObjectguid($extAddrobjDto->objectguid)
@@ -106,10 +106,10 @@ class ExtAddrobjManager
             $this->extAddrobjDao->update($extAddrobj);
         } catch (\Exception $e) {
             //TODO log
-            return false;
+            return null;
         }
 
-        return true;
+        return $extAddrobj;
     }
 
     public function deleteById(int $objectid): bool

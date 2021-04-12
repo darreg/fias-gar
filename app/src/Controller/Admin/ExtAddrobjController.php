@@ -14,6 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/admin/extaddrobj")
@@ -21,12 +23,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExtAddrobjController extends AbstractController
 {
     private ExtAddrobjService $extAddrobjService;
+    private SerializerInterface $serializer;
 
     public function __construct(
-        ExtAddrobjService $extAddrobjService
+        ExtAddrobjService $extAddrobjService,
+        SerializerInterface $serializer
     )
     {
         $this->extAddrobjService = $extAddrobjService;
+        $this->serializer = $serializer;
     }
     
     /**
@@ -49,8 +54,7 @@ class ExtAddrobjController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $data = $form->getData();
-            $extAddrobjDto = ExtAddrobjDTO::fromArray($data);
+            $extAddrobjDto = ExtAddrobjDTO::fromArray($form->getData());
             $objectid = $this->extAddrobjService->add($extAddrobjDto);
             return $this->redirectToRoute('extaddrobj-edit', ['objectid' => $objectid]);
         }
@@ -70,38 +74,18 @@ class ExtAddrobjController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-//        $originalSynonym = new ArrayCollection();
-//        foreach ($extAddrobj->getSynonym() as $synonym) {
-//            $originalSynonym->add($synonym);
-//        }
-//
-//        $originalPolygon = new ArrayCollection();
-//        foreach ($extAddrobj->getPolygon() as $point) {
-//            $originalPolygon->add($point);
-//        }
+        $extAddrobjArray = $this->serializer->normalize(
+            $extAddrobj, 
+            null, 
+            [AbstractNormalizer::IGNORED_ATTRIBUTES => ['extAddrobj']]
+        );
 
-        $form = $this->createForm(ExtAddrobjType::class, ExtAddrobjDTO::fromEntity($extAddrobj));
+        $extAddrobjDto = ExtAddrobjDTO::fromArray($extAddrobjArray);
+        $form = $this->createForm(ExtAddrobjType::class, $extAddrobjDto);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->extAddrobjService->update($extAddrobj, $form->getData());
-
-//            foreach ($originalSynonym as $synonym) {
-//                if ($extAddrobj->getSynonym()->contains($synonym) === false) {
-//                    $entityManager->persist($synonym);
-//                    $entityManager->remove($synonym);
-//                }
-//            }
-//
-//            foreach ($originalPolygon as $point) {
-//                if ($extAddrobj->getPolygon()->contains($point) === false) {
-//                    $entityManager->persist($point);
-//                    $entityManager->remove($point);
-//                }
-//            }
-//
-//            $entityManager->persist($extAddrobj);
-//            $entityManager->flush();
 
             return $this->redirectToRoute('extaddrobj-edit', ['objectid' => $extAddrobj->getObjectid()]);
         }
