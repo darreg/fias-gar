@@ -24,8 +24,7 @@ class ExtAddrobjController extends AbstractController
     public function __construct(
         ExtAddrobjService $extAddrobjService,
         SerializerInterface $serializer
-    )
-    {
+    ) {
         $this->extAddrobjService = $extAddrobjService;
         $this->serializer = $serializer;
     }

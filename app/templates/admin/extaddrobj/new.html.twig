@@ -33,11 +33,11 @@
             <ul class="polygon" data-prototype="{{ form_widget(form.points.vars.prototype)|e('html_attr') }}">
                 {% for point in form.points %}
                     <li>
-                        <div class="coord form-group qqq">
+                        <div class="coord form-group">
                             {{ form_widget(point.latitude) }}
                             {{ form_errors(point.latitude) }}
                         </div>
-                        <div class="coord form-group xxx">
+                        <div class="coord form-group">
                             {{ form_widget(point.longitude) }}
                             {{ form_errors(point.longitude) }}
                         </div>

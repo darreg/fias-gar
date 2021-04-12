@@ -18,6 +18,9 @@ class ExtAddrobjPointType extends AbstractType
                     'required' => true,
                     'placeholder' => 'Широта'
                 ],
+                'row_attr' => [
+                    'class' => 'coord'
+                ]
             ])
             ->add('longitude', NumberType::class, [
                 'label' => false,
@@ -26,6 +29,9 @@ class ExtAddrobjPointType extends AbstractType
                     'required' => true,
                     'placeholder' => 'Долгота'
                 ],
+                'row_attr' => [
+                    'class' => 'coord'
+                ]
             ])
         ;
     }
