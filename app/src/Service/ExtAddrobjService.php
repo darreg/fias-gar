@@ -14,6 +14,7 @@ use App\Manager\ExtAddrobjSynonymManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -39,12 +40,16 @@ class ExtAddrobjService
         $this->normalizer = $normalizer;
     }
 
+    /**
+     * @param class-string<FormTypeInterface> $className
+     */
     public function createForm(string $className, ?ExtAddrobj $extAddrobj = null): FormInterface
     {
         if ($extAddrobj === null) {
             return $this->formFactory->create($className);
         }
 
+        /** @var array<string, mixed> $extAddrobjArray */
         $extAddrobjArray = $this->normalizer->normalize(
             $extAddrobj,
             null,

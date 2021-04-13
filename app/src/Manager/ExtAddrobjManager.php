@@ -52,7 +52,7 @@ class ExtAddrobjManager
             ->setDative($extAddrobjDto->dative)
             ->setAccusative($extAddrobjDto->accusative)
             ->setAblative($extAddrobjDto->ablative)
-            ->setPrepositive($extAddrobjDto->precision)
+            ->setPrepositive($extAddrobjDto->prepositive)
             ->setLocative($extAddrobjDto->locative);
 
         try {
@@ -99,7 +99,7 @@ class ExtAddrobjManager
             ->setDative($extAddrobjDto->dative)
             ->setAccusative($extAddrobjDto->accusative)
             ->setAblative($extAddrobjDto->ablative)
-            ->setPrepositive($extAddrobjDto->precision)
+            ->setPrepositive($extAddrobjDto->prepositive)
             ->setLocative($extAddrobjDto->locative);
 
         try {

@@ -27,7 +27,7 @@ class ExtAddrobjController extends AbstractController
     /**
      * @Route("/new", name="extaddrobj-new", methods={"GET"})
      */
-    public function new(Request $request): Response
+    public function new(): Response
     {
         $form = $this->extAddrobjService->createForm(ExtAddrobjType::class);
 
@@ -59,7 +59,7 @@ class ExtAddrobjController extends AbstractController
     /**
      * @Route("/edit/{objectid}", name="extaddrobj-edit", methods={"GET"}, requirements={"objectid":"\d+"})
      */
-    public function edit(Request $request, int $objectid): Response
+    public function edit(int $objectid): Response
     {
         $extAddrobj = $this->extAddrobjService->getOne($objectid);
         if ($extAddrobj === null) {
