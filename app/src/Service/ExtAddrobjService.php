@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\DAO\ExtAddrobjPointDAO;
 use App\DTO\ExtAddrobjDTO;
 use App\DTO\ExtAddrobjPointDTO;
 use App\DTO\ExtAddrobjSynonymDTO;
@@ -13,21 +12,50 @@ use App\Manager\ExtAddrobjManager;
 use App\Manager\ExtAddrobjPointManager;
 use App\Manager\ExtAddrobjSynonymManager;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ExtAddrobjService
 {
     private ExtAddrobjManager $extAddrobjManager;
     private ExtAddrobjPointManager $extAddrobjPointManager;
     private ExtAddrobjSynonymManager $extAddrobjSynonymManager;
+    private FormFactoryInterface $formFactory;
+    private NormalizerInterface $normalizer;
 
     public function __construct(
         ExtAddrobjManager $extAddrobjManager,
         ExtAddrobjPointManager $extAddrobjPointManager,
-        ExtAddrobjSynonymManager $extAddrobjSynonymManager
+        ExtAddrobjSynonymManager $extAddrobjSynonymManager,
+        FormFactoryInterface $formFactory,
+        NormalizerInterface $normalizer
     ) {
         $this->extAddrobjManager = $extAddrobjManager;
         $this->extAddrobjPointManager = $extAddrobjPointManager;
         $this->extAddrobjSynonymManager = $extAddrobjSynonymManager;
+        $this->formFactory = $formFactory;
+        $this->normalizer = $normalizer;
+    }
+
+    public function createForm(string $className, ?ExtAddrobj $extAddrobj = null): FormInterface
+    {
+        if ($extAddrobj === null) {
+            return $this->formFactory->create($className);
+        }
+
+        $extAddrobjArray = $this->normalizer->normalize(
+            $extAddrobj,
+            null,
+            [
+                AbstractNormalizer::IGNORED_ATTRIBUTES => ['extAddrobj']
+            ]
+        );
+
+        $extAddrobjDto = ExtAddrobjDTO::fromArray($extAddrobjArray);
+
+        return $this->formFactory->create($className, $extAddrobjDto);
     }
 
     public function getOne(int $objectid): ?ExtAddrobj
