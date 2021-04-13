@@ -10,8 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/admin/extaddrobj")
@@ -19,14 +17,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ExtAddrobjController extends AbstractController
 {
     private ExtAddrobjService $extAddrobjService;
-    private SerializerInterface $serializer;
 
     public function __construct(
-        ExtAddrobjService $extAddrobjService,
-        SerializerInterface $serializer
+        ExtAddrobjService $extAddrobjService
     ) {
         $this->extAddrobjService = $extAddrobjService;
-        $this->serializer = $serializer;
     }
 
     /**
@@ -34,7 +29,8 @@ class ExtAddrobjController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $form = $this->createForm(ExtAddrobjType::class);
+        $form = $this->extAddrobjService->createForm(ExtAddrobjType::class);
+
         return $this->render('admin/extaddrobj/new.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -45,7 +41,7 @@ class ExtAddrobjController extends AbstractController
      */
     public function newSubmit(Request $request): Response
     {
-        $form = $this->createForm(ExtAddrobjType::class);
+        $form = $this->extAddrobjService->createForm(ExtAddrobjType::class);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -61,7 +57,7 @@ class ExtAddrobjController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{objectid}", name="extaddrobj-edit", requirements={"objectid":"\d+"})
+     * @Route("/edit/{objectid}", name="extaddrobj-edit", methods={"GET"}, requirements={"objectid":"\d+"})
      */
     public function edit(Request $request, int $objectid): Response
     {
@@ -70,22 +66,37 @@ class ExtAddrobjController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $extAddrobjArray = $this->serializer->normalize(
-            $extAddrobj,
-            null,
-            [AbstractNormalizer::IGNORED_ATTRIBUTES => ['extAddrobj']]
-        );
+        $form = $this->extAddrobjService->createForm(ExtAddrobjType::class, $extAddrobj);
 
-        $extAddrobjDto = ExtAddrobjDTO::fromArray($extAddrobjArray);
-        $form = $this->createForm(ExtAddrobjType::class, $extAddrobjDto);
+        return $this->render('admin/extaddrobj/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{objectid}", name="extaddrobj-edit-submit", methods={"POST"}, requirements={"objectid":"\d+"})
+     */
+    public function editSubmit(Request $request, int $objectid): Response
+    {
+        $extAddrobj = $this->extAddrobjService->getOne($objectid);
+        if ($extAddrobj === null) {
+            throw new EntityNotFoundException('Объект не найден');
+        }
+
+        $form = $this->extAddrobjService->createForm(ExtAddrobjType::class, $extAddrobj);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var ExtAddrobjDTO $data */
-            $data = $form->getData();
-            $this->extAddrobjService->update($extAddrobj, $data);
+        if ($form->isValid()) {
+            /** @var ExtAddrobjDTO $extAddrobjDto */
+            $extAddrobjDto = $form->getData();
+            $this->extAddrobjService->update($extAddrobj, $extAddrobjDto);
 
-            return $this->redirectToRoute('extaddrobj-edit', ['objectid' => $extAddrobj->getObjectid()]);
+            return $this->redirectToRoute(
+                'extaddrobj-edit',
+                [
+                    'objectid' => $extAddrobj->getObjectid()
+                ]
+            );
         }
 
         return $this->render('admin/extaddrobj/edit.html.twig', [
