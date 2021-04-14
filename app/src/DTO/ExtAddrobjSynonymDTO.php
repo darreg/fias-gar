@@ -14,6 +14,7 @@ class ExtAddrobjSynonymDTO implements ConstructFromArrayInterface
     public ?int $id;
 
     /**
+     * @Assert\NotBlank
      * @Assert\Positive
      */
     public ?int $objectid;

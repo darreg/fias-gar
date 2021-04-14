@@ -17,11 +17,49 @@ class ExtAddrobjType extends AbstractType
     {
         $builder
             ->add('objectid', NumberType::class)
-            ->add('objectguid', TextType::class)
-            ->add('precision', TextType::class)
-            ->add('latitude', NumberType::class)
-            ->add('longitude', NumberType::class)
-            ->add('zoom', TextType::class)
+            
+            ->add('objectguid', TextType::class, [
+                'required' => false,
+            ])
+            ->add('precision', TextType::class, [
+                'required' => false,
+            ])
+            ->add('latitude', NumberType::class, [
+                'required' => false,
+            ])
+            ->add('longitude', NumberType::class, [
+                'required' => false,
+            ])
+            ->add('zoom', TextType::class, [
+                'required' => false,
+            ])
+            ->add('alias', TextType::class, [
+                'required' => false,
+            ])
+            ->add('anglicism', TextType::class, [
+                'required' => false,
+            ])
+            ->add('nominative', TextType::class, [
+                'required' => false,
+            ])
+            ->add('genitive', TextType::class, [
+                'required' => false,
+            ])
+            ->add('dative', TextType::class, [
+                'required' => false,
+            ])
+            ->add('accusative', TextType::class, [
+                'required' => false,
+            ])
+            ->add('ablative', TextType::class, [
+                'required' => false,
+            ])
+            ->add('prepositive', TextType::class, [
+                'required' => false,
+            ])
+            ->add('locative', TextType::class, [
+                'required' => false,
+            ])   
             ->add('synonyms', CollectionType::class, [
                 'entry_type' => ExtAddrobjSynonymType::class,
                 'entry_options' => [
