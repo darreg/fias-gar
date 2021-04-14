@@ -17,7 +17,7 @@ class ExtAddrobjType extends AbstractType
     {
         $builder
             ->add('objectid', NumberType::class)
-            
+
             ->add('objectguid', TextType::class, [
                 'required' => false,
             ])
@@ -59,7 +59,7 @@ class ExtAddrobjType extends AbstractType
             ])
             ->add('locative', TextType::class, [
                 'required' => false,
-            ])   
+            ])
             ->add('synonyms', CollectionType::class, [
                 'entry_type' => ExtAddrobjSynonymType::class,
                 'entry_options' => [
