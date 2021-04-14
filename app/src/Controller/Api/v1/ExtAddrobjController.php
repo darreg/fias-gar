@@ -122,7 +122,7 @@ class ExtAddrobjController
                 ],
                 Response::HTTP_BAD_REQUEST
             );
-        }        
+        }
 
         $result = $this->extAddrobjService->updateById(
             $objectid,

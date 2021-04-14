@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ExtHouseController
 {
     use GetValidatorErrors;
-    
+
     public const PER_PAGE_DEFAULT = 20;
 
     private ExtHouseManager $extHouseManager;
@@ -115,7 +115,7 @@ class ExtHouseController
                 ],
                 Response::HTTP_BAD_REQUEST
             );
-        }        
+        }
 
         $result = $this->extHouseManager->updateById(
             $objectid,

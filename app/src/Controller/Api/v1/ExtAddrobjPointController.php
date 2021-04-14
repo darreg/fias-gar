@@ -17,8 +17,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /** @Route("/api/v1/extaddrobj/point") */
 class ExtAddrobjPointController
 {
-    use GetValidatorErrors;    
-    
+    use GetValidatorErrors;
+
     private ExtAddrobjService $extAddrobjService;
     private SerializerInterface $serializer;
     private ValidatorInterface $validator;
@@ -102,7 +102,7 @@ class ExtAddrobjPointController
                 ],
                 Response::HTTP_BAD_REQUEST
             );
-        }        
+        }
 
         $result = $this->extAddrobjService->addPoint($extAddrobjPointDto);
 
