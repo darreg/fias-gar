@@ -10,21 +10,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /** @Route("/api/v1/exthouse") */
 class ExtHouseController
 {
+    use GetValidatorErrors;
+    
     public const PER_PAGE_DEFAULT = 20;
 
     private ExtHouseManager $extHouseManager;
     private SerializerInterface $serializer;
+    private ValidatorInterface $validator;
 
     public function __construct(
         ExtHouseManager $extHouseManager,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        ValidatorInterface $validator
     ) {
         $this->extHouseManager = $extHouseManager;
         $this->serializer = $serializer;
+        $this->validator = $validator;
     }
 
     /**
@@ -69,9 +75,20 @@ class ExtHouseController
      */
     public function create(Request $request): JsonResponse
     {
-        $extHouseDTO = ExtHouseDTO::fromArray($request->request->all());
+        $extHouseDto = ExtHouseDTO::fromArray($request->request->all());
 
-        $result = $this->extHouseManager->add($extHouseDTO);
+        $violations = $this->validator->validate($extHouseDto);
+        if (count($violations) > 0) {
+            return new JsonResponse(
+                [
+                    'result' => [],
+                    'errors' => $this->getValidatorErrors($violations)
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $result = $this->extHouseManager->add($extHouseDto);
 
         return new JsonResponse(
             ['result' => $result],
@@ -88,6 +105,17 @@ class ExtHouseController
         $objectid = $request->query->get('objectid');
 
         $extHouseDto = ExtHouseDTO::fromArray($request->query->all());
+
+        $violations = $this->validator->validate($extHouseDto);
+        if (count($violations) > 0) {
+            return new JsonResponse(
+                [
+                    'result' => [],
+                    'errors' => $this->getValidatorErrors($violations)
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }        
 
         $result = $this->extHouseManager->updateById(
             $objectid,

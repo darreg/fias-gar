@@ -12,19 +12,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /** @Route("/api/v1/extaddrobj/synonym") */
 class ExtAddrobjSynonymController
 {
+    use GetValidatorErrors;
+
     private ExtAddrobjService $extAddrobjService;
     private SerializerInterface $serializer;
+    private ValidatorInterface $validator;
 
     public function __construct(
         ExtAddrobjService $extAddrobjService,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        ValidatorInterface $validator
     ) {
         $this->extAddrobjService = $extAddrobjService;
         $this->serializer = $serializer;
+        $this->validator = $validator;
     }
 
     /**
@@ -85,10 +91,21 @@ class ExtAddrobjSynonymController
      */
     public function create(Request $request): JsonResponse
     {
-        $extAddrobjSynonymDTO = ExtAddrobjSynonymDTO::fromArray($request->request->all());
+        $extAddrobjSynonymDto = ExtAddrobjSynonymDTO::fromArray($request->request->all());
+
+        $violations = $this->validator->validate($extAddrobjSynonymDto);
+        if (count($violations) > 0) {
+            return new JsonResponse(
+                [
+                    'result' => [],
+                    'errors' => $this->getValidatorErrors($violations)
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
         $result = $this->extAddrobjService->addSynonym(
-            $extAddrobjSynonymDTO
+            $extAddrobjSynonymDto
         );
 
         return new JsonResponse(
@@ -105,11 +122,22 @@ class ExtAddrobjSynonymController
         /** @var int $id */
         $id = $request->query->get('id');
 
-        $extAddrobjSynonymDTO = ExtAddrobjSynonymDTO::fromArray($request->query->all());
+        $extAddrobjSynonymDto = ExtAddrobjSynonymDTO::fromArray($request->query->all());
+
+        $violations = $this->validator->validate($extAddrobjSynonymDto);
+        if (count($violations) > 0) {
+            return new JsonResponse(
+                [
+                    'result' => [],
+                    'errors' => $this->getValidatorErrors($violations)
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
         $result = $this->extAddrobjService->updateSynonymById(
             $id,
-            $extAddrobjSynonymDTO
+            $extAddrobjSynonymDto
         );
 
         return new JsonResponse(

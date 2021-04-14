@@ -11,21 +11,27 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /** @Route("/api/v1/extaddrobj") */
 class ExtAddrobjController
 {
+    use GetValidatorErrors;
+
     public const PER_PAGE_DEFAULT = 20;
 
     private ExtAddrobjService $extAddrobjService;
     private SerializerInterface $serializer;
+    private ValidatorInterface $validator;
 
     public function __construct(
         ExtAddrobjService $extAddrobjService,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        ValidatorInterface $validator
     ) {
         $this->extAddrobjService = $extAddrobjService;
         $this->serializer = $serializer;
+        $this->validator = $validator;
     }
 
     /**
@@ -79,6 +85,17 @@ class ExtAddrobjController
     {
         $extAddrobjDto = ExtAddrobjDTO::fromArray($request->request->all());
 
+        $violations = $this->validator->validate($extAddrobjDto);
+        if (count($violations) > 0) {
+            return new JsonResponse(
+                [
+                    'result' => [],
+                    'errors' => $this->getValidatorErrors($violations)
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         $result = $this->extAddrobjService->add($extAddrobjDto) !== null;
 
         return new JsonResponse(
@@ -95,6 +112,17 @@ class ExtAddrobjController
         $objectid = $request->query->getInt('objectid');
 
         $extAddrobjDto = ExtAddrobjDTO::fromArray($request->query->all());
+
+        $violations = $this->validator->validate($extAddrobjDto);
+        if (count($violations) > 0) {
+            return new JsonResponse(
+                [
+                    'result' => [],
+                    'errors' => $this->getValidatorErrors($violations)
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }        
 
         $result = $this->extAddrobjService->updateById(
             $objectid,
