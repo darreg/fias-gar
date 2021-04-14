@@ -37,7 +37,6 @@ class ExtAddrobjManager
 
     public function add(ExtAddrobjDTO $extAddrobjDto): ?ExtAddrobj
     {
-
         $extAddrobj = (new ExtAddrobj())
             ->setObjectid($extAddrobjDto->objectid)
             ->setObjectguid($extAddrobjDto->objectguid)

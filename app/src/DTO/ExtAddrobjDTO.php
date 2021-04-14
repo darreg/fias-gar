@@ -9,12 +9,13 @@ class ExtAddrobjDTO implements ConstructFromArrayInterface
     use ConstructableFromArrayTrait;
 
     /**
+     * @Assert\NotBlank
      * @Assert\Positive
      */
     public ?int $objectid;
 
     /**
-     * @Assert\Length(max = 36)
+     * @Assert\Length(min = 36, max = 36)
      */
     public ?string $objectguid;
 

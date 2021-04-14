@@ -16,40 +16,26 @@ class ExtHouseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('objectid', NumberType::class)
+            
+            ->add('objectguid', TextType::class, [
+                'required' => false,
+            ])
             ->add('precision', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
+                'required' => false,
             ])
             ->add('latitude', NumberType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
+                'required' => false,
             ])
             ->add('longitude', NumberType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
+                'required' => false,
             ])
             ->add('zoom', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ]
+                'required' => false,
             ])
-            ->add('synonym', CollectionType::class, [
-                'entry_type' => ExtAddrobjSynonymType::class,
-                'entry_options' => [
-                    'label' => false,
-                ],
-                'attr' => [
-                    'class' => 'form-control',
-                ]
-            ])
+
             ->add('save', SubmitType::class, [
-                'label' => 'Create ExtHouse',
-                'attr' => [
-                    'class' => 'form-control',
-                ]
+                'label' => 'Сохранить',
             ])
         ;
     }
