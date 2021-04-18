@@ -135,20 +135,4 @@ class ExtAddrobjDTO implements ConstructFromArrayInterface
         $this->synonyms = $synonyms;
         $this->points = $points;
     }
-
-    /**
-     * @return array<int, ExtAddrobjSynonymDTO>
-     */
-    public function getSynonymDTOs(): array
-    {
-        return array_map(static fn(array $synonym) => ExtAddrobjSynonymDTO::fromArray($synonym), $this->synonyms);
-    }
-
-    /**
-     * @return array<int, ExtAddrobjPointDTO>
-     */
-    public function getPointDTOs(): array
-    {
-        return array_map(static fn(array $point) => ExtAddrobjPointDTO::fromArray($point), $this->points);
-    }
 }
