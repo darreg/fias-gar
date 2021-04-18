@@ -115,18 +115,20 @@ class ExtAddrobjService
             return null;
         }
 
-        foreach ($extAddrobjDto->getSynonymDTOs() as $synonym) {
-            $synonym->objectid = $extAddrobj->getObjectid();
-            $extAddrobjSynonym = $this->extAddrobjSynonymManager->add($synonym);
+        foreach ($extAddrobjDto->synonyms as $synonym) {
+            $extAddrobjSynonymDto = ExtAddrobjSynonymDTO::fromArray($synonym);
+            $extAddrobjSynonymDto->objectid = $extAddrobj->getObjectid();
+            $extAddrobjSynonym = $this->extAddrobjSynonymManager->add($extAddrobjSynonymDto);
             if ($extAddrobjSynonym === null) {
                 continue;
             }
             $extAddrobj->addSynonym($extAddrobjSynonym);
         }
 
-        foreach ($extAddrobjDto->getPointDTOs() as $point) {
-            $point->objectid = $extAddrobj->getObjectid();
-            $extAddrobjPoint = $this->extAddrobjPointManager->add($point);
+        foreach ($extAddrobjDto->points as $point) {
+            $extAddrobjPointDto = ExtAddrobjPointDTO::fromArray($point);
+            $extAddrobjPointDto->objectid = $extAddrobj->getObjectid();
+            $extAddrobjPoint = $this->extAddrobjPointManager->add($extAddrobjPointDto);
             if ($extAddrobjPoint === null) {
                 continue;
             }
@@ -300,12 +302,16 @@ class ExtAddrobjService
         ExtAddrobjDTO $extAddrobjDto
     ): void {
         $extAddrobj->setSynonyms(new ArrayCollection());
-        foreach ($extAddrobjDto->getSynonymDTOs() as $synonym) {
-            $synonym->objectid = $extAddrobj->getObjectid();
-            if ($synonym->id !== null) {
-                $extAddrobjSynonym = $this->extAddrobjSynonymManager->updateById($synonym->id, $synonym);
+        foreach ($extAddrobjDto->synonyms as $synonym) {
+            $extAddrobjSynonymDto = ExtAddrobjSynonymDTO::fromArray($synonym);
+            $extAddrobjSynonymDto->objectid = $extAddrobj->getObjectid();
+            if ($extAddrobjSynonymDto->id !== null) {
+                $extAddrobjSynonym = $this->extAddrobjSynonymManager->updateById(
+                    $extAddrobjSynonymDto->id,
+                    $extAddrobjSynonymDto
+                );
             } else {
-                $extAddrobjSynonym = $this->extAddrobjSynonymManager->add($synonym);
+                $extAddrobjSynonym = $this->extAddrobjSynonymManager->add($extAddrobjSynonymDto);
             }
             if ($extAddrobjSynonym !== null) {
                 $extAddrobj->addSynonym($extAddrobjSynonym);
@@ -318,12 +324,16 @@ class ExtAddrobjService
         ExtAddrobjDTO $extAddrobjDto
     ): void {
         $extAddrobj->setPoints(new ArrayCollection());
-        foreach ($extAddrobjDto->getPointDTOs() as $point) {
-            $point->objectid = $extAddrobj->getObjectid();
-            if ($point->id !== null) {
-                $extAddrobjPoint = $this->extAddrobjPointManager->updateById($point->id, $point);
+        foreach ($extAddrobjDto->points as $point) {
+            $extAddrobjPointDto = ExtAddrobjPointDTO::fromArray($point);
+            $extAddrobjPointDto->objectid = $extAddrobj->getObjectid();
+            if ($extAddrobjPointDto->id !== null) {
+                $extAddrobjPoint = $this->extAddrobjPointManager->updateById(
+                    $extAddrobjPointDto->id,
+                    $extAddrobjPointDto
+                );
             } else {
-                $extAddrobjPoint = $this->extAddrobjPointManager->add($point);
+                $extAddrobjPoint = $this->extAddrobjPointManager->add($extAddrobjPointDto);
             }
             if ($extAddrobjPoint !== null) {
                 $extAddrobj->addPoint($extAddrobjPoint);
