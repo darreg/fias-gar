@@ -3,11 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\ApiTokenRepository;
+use \DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * @ORM\Table(
+ *     name="api_token",
+ *     indexes={
+ *         @ORM\Index(name="api_token__user_id__ind", columns={"user_id"})
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=ApiTokenRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class ApiToken
 {
@@ -20,22 +28,22 @@ class ApiToken
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $token;
+    private ?string $token;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $expiresAt;
+    private ?DateTime $expiresAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="apiTokens")
@@ -46,7 +54,7 @@ class ApiToken
     public function __construct()
     {
         $this->token = bin2hex(random_bytes(60));
-        $this->expiresAt = new \DateTime('+365 day');
+        $this->expiresAt = new DateTime('+365 day');
     }
 
     public function getId(): ?int
@@ -78,11 +86,11 @@ class ApiToken
         return $this;
     }
 
-    public function getExpiresAt(): ?\DateTimeInterface
+    public function getExpiresAt(): ?DateTime
     {
         return $this->expiresAt;
     }
-    public function setExpiresAt(\DateTimeInterface $expiresAt): self
+    public function setExpiresAt(DateTime $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
         return $this;
@@ -90,12 +98,12 @@ class ApiToken
 
     public function isExpired(): bool
     {
-        return $this->getExpiresAt() <= new \DateTime();
+        return $this->getExpiresAt() <= new DateTime();
     }
 
     public function renewExpiresAt()
     {
-        $this->expiresAt = new \DateTime('+365 day');
+        $this->expiresAt = new DateTime('+365 day');
     }
 
     public function getUser(): ?UserInterface
