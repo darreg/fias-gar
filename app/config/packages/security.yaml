@@ -7,7 +7,7 @@ security:
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        # used to reload user from session & other features (e.g. switch_user)
+        users_in_memory: { memory: null }
         app_user_provider:
             entity:
                 class: App\Entity\User
@@ -16,15 +16,47 @@ security:
             entity:
                 class: App\Entity\Admin
                 property: email
-        # used to reload user from session & other features (e.g. switch_user)
+
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            anonymous: true
+
+        admin_secured_area:
+            pattern:   ^/admin
+            anonymous: false
             lazy: true
+            provider: app_admin_provider
+            guard:
+                authenticators:
+                    - App\Security\AdminAuthenticator
+            logout:
+                path: admin_logout
+                target: /admin/login
+
+            switch_user:  { role: ROLE_SUPER_ADMIN, parameter: _impersonate }
+
+        api_secured_area:
+            pattern:   ^/api
+            stateless: true
+            anonymous: false
             provider: app_user_provider
+            guard:
+                authenticators:
+                    - App\Security\ApiTokenAuthenticator
+                entry_point: App\Security\ApiTokenAuthenticator
+
+#        user_secured_area:
+#            pattern:   ^/
+#            anonymous: true
+#            provider: app_user_provider
+#            guard:
+#                authenticators:
+#                    - App\Security\UserAuthenticator
+#                entry_point: App\Security\UserAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
