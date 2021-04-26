@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ApiTokenRepository;
-use \DateTime;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
