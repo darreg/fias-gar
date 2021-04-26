@@ -9,7 +9,7 @@ trait StatusTrait
     /**
      * @ORM\Column(type="boolean", options={"default" : false})
      */
-    private $status;
+    private ?bool $status;
 
     public function getStatus(): ?bool
     {

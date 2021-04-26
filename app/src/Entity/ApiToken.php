@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * )
  * @ORM\Entity(repositoryClass=ApiTokenRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ *
  */
 class ApiToken
 {

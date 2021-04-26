@@ -14,6 +14,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method Admin|null findOneBy(array $criteria, array $orderBy = null)
  * @method Admin[]    findAll()
  * @method Admin[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-method list<Admin> findAll()
+ * @psalm-method list<Admin> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class AdminRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
