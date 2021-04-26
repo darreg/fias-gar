@@ -18,6 +18,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * )
  * @ORM\Entity(repositoryClass=AdminRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ *
+ * @psalm-suppress MissingConstructor
  */
 class Admin implements UserInterface
 {
@@ -99,7 +101,7 @@ class Admin implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self
@@ -123,7 +125,7 @@ class Admin implements UserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

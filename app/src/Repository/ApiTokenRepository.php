@@ -11,6 +11,9 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ApiToken|null findOneBy(array $criteria, array $orderBy = null)
  * @method ApiToken[]    findAll()
  * @method ApiToken[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-method list<ApiToken> findAll()
+ * @psalm-method list<ApiToken> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class ApiTokenRepository extends ServiceEntityRepository
 {

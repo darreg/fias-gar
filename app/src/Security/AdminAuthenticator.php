@@ -27,10 +27,10 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
     public const LOGIN_ROUTE = 'admin_login';
     public const LOGIN_RESULT_ROUTE = 'admin';
 
-    private $entityManager;
-    private $urlGenerator;
-    private $csrfTokenManager;
-    private $passwordEncoder;
+    private EntityManagerInterface $entityManager;
+    private UrlGeneratorInterface $urlGenerator;
+    private CsrfTokenManagerInterface $csrfTokenManager;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -44,13 +44,13 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function supports(Request $request)
+    public function supports(Request $request): bool
     {
         return self::LOGIN_ROUTE === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request): array
     {
         $credentials = [
             'email' => $request->request->get('email'),
@@ -82,7 +82,7 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         return $user;
     }
 
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
@@ -95,8 +95,11 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         return $credentials['password'];
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
-    {
+    public function onAuthenticationSuccess(
+        Request $request,
+        TokenInterface $token,
+        string $providerKey
+    ): RedirectResponse {
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
@@ -104,7 +107,7 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         return new RedirectResponse($this->urlGenerator->generate(self::LOGIN_RESULT_ROUTE));
     }
 
-    protected function getLoginUrl()
+    protected function getLoginUrl(): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }

@@ -22,21 +22,23 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         $this->apiTokenRepository = $apiTokenRepository;
     }
 
-    public function supports(Request $request)
+    public function supports(Request $request): bool
     {
-        // look for header "Authorization: Bearer <token>"
-        return $request->headers->has('Authorization')
-            && 0 === strpos($request->headers->get('Authorization'), 'Bearer ');
+        if (!$request->headers->has('Authorization')) {
+            return false;
+        }
+        $authorizationHeader = $request->headers->get('Authorization');
+
+        return strncmp($authorizationHeader ?? '', 'Bearer ', 7) === 0;
     }
 
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request): string
     {
         $authorizationHeader = $request->headers->get('Authorization');
-        // skip beyond "Bearer "
-        return substr($authorizationHeader, 7);
+        return substr($authorizationHeader ?? '', 7);
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
     {
         $token = $this->apiTokenRepository->findOneBy([
             'token' => $credentials,
@@ -58,31 +60,31 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         return $token->getUser();
     }
 
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
         return true;
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): JsonResponse
     {
         return new JsonResponse([
             'message' => $exception->getMessageKey(),
         ], 401);
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): void
     {
         // allow the authentication to continue
     }
 
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, AuthenticationException $authException = null): JsonResponse
     {
         return new JsonResponse([
             'message' => 'Unauthorized',
         ], 401);
     }
 
-    public function supportsRememberMe()
+    public function supportsRememberMe(): bool
     {
         return false;
     }
