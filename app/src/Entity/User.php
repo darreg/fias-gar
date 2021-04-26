@@ -24,7 +24,7 @@ class User implements UserInterface
     use StatusTrait;
     use CreatedAtTrait;
     use UpdatedAtTrait;
-    
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
