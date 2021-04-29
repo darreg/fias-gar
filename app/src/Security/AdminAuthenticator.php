@@ -65,11 +65,24 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         return $credentials;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, UserProviderInterface $userProvider): UserInterface
     {
-        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+        if (!\is_array($credentials)) {
+            throw new CustomUserMessageAuthenticationException('Invalid credentials');
+        }
+
+        if (!\array_key_exists('csrf_token', $credentials)) {
+            throw new InvalidCsrfTokenException();
+        }
+
+        $token = new CsrfToken('authenticate', (string) $credentials['csrf_token']);
+
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
+        }
+
+        if (!\array_key_exists('email', $credentials)) {
+            throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
         $user = $this->entityManager->getRepository(Admin::class)->findOneBy(['email' => $credentials['email']]);
@@ -84,7 +97,15 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
 
     public function checkCredentials($credentials, UserInterface $user): bool
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        if (
+            !\is_array($credentials) ||
+            !\array_key_exists('password', $credentials) ||
+            $credentials['password'] === null
+        ) {
+            return false;
+        }
+
+        return $this->passwordEncoder->isPasswordValid($user, (string) $credentials['password']);
     }
 
     /**
@@ -92,7 +113,15 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
      */
     public function getPassword($credentials): ?string
     {
-        return $credentials['password'];
+        if (
+            !\is_array($credentials) ||
+            !\array_key_exists('password', $credentials) ||
+            $credentials['password'] === null
+        ) {
+            return null;
+        }
+
+        return (string) $credentials['password'];
     }
 
     public function onAuthenticationSuccess(

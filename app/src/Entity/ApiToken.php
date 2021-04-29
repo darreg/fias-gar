@@ -17,6 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass=ApiTokenRepository::class)
  * @ORM\HasLifecycleCallbacks()
  *
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class ApiToken
 {
