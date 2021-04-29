@@ -9,6 +9,7 @@ trait CreatedAtTrait
 {
     /**
      * @ORM\Column(name="created_at", type="datetime")
+     * @psalm-suppress PropertyNotSetInConstructor
      */
     private DateTime $createdAt;
 

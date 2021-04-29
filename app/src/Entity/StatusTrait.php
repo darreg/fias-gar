@@ -8,6 +8,7 @@ trait StatusTrait
 {
     /**
      * @ORM\Column(type="boolean", options={"default" : false})
+     * @psalm-suppress PropertyNotSetInConstructor
      */
     private ?bool $status;
 

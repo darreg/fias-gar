@@ -9,6 +9,7 @@ trait UpdatedAtTrait
 {
     /**
      * @ORM\Column(name="updated_at", type="datetime")
+     * @psalm-suppress PropertyNotSetInConstructor
      */
     private DateTime $updatedAt;
 

@@ -22,14 +22,6 @@ class ApiTokenRepository extends ServiceEntityRepository
         parent::__construct($registry, ApiToken::class);
     }
 
-    public function getNum()
-    {
-        return $this->createQueryBuilder('t')
-            ->select('count(t.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
-    }
-
     // /**
     //  * @return ApiToken[] Returns an array of ApiToken objects
     //  */
