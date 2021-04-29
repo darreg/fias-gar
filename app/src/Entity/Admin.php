@@ -42,6 +42,7 @@ class Admin implements UserInterface
 
     /**
      * @ORM\Column(type="json")
+     * @var array<int, string>
      */
     private array $roles = [];
 
@@ -80,16 +81,20 @@ class Admin implements UserInterface
 
     /**
      * @see UserInterface
+     * @return array<int, string>
      */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // guarantee every user at least has ROLE_ADMIN
+        $roles[] = 'ROLE_ADMIN';
 
         return array_unique($roles);
     }
 
+    /**
+     * @param array<int, string> $roles
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;

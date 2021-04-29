@@ -29,11 +29,13 @@ class ApiToken
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @psalm-suppress PropertyNotSetInConstructor
      */
     private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @psalm-suppress PropertyNotSetInConstructor
      */
     private ?string $name;
 
@@ -50,6 +52,7 @@ class ApiToken
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="apiTokens")
      * @ORM\JoinColumn(nullable=true)
+     * @psalm-suppress PropertyNotSetInConstructor
      */
     private ?UserInterface $user;
 
@@ -103,7 +106,7 @@ class ApiToken
         return $this->getExpiresAt() <= new DateTime();
     }
 
-    public function renewExpiresAt()
+    public function renewExpiresAt(): void
     {
         $this->expiresAt = new DateTime('+365 day');
     }
