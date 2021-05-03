@@ -9,7 +9,7 @@ start:
 	docker-compose up -d --build
 
 stop:
-	docker-compose down
+	docker-compose down --remove-orphans
 
 redis:
 	docker exec -it --user www-data $(PROJECT_NAME)-redis redis-cli
