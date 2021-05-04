@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/admin/style.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+    <div style="margin: 20px auto;max-width: 600px;">
+        <h3>Редактирование Администратора</h3>
+        {{ form_start(form, {'attr': {'class': 'form-fields'}}) }}
+        {% for child in form %}
+            {% if child.vars.name not in ['save'] %}
+                {{ form_row(child) }}
+            {% endif %}
+        {% endfor %}
+        {{ form_row(form.save) }}
+        {{ form_end(form, {'render_rest': false}) }}
+    </div>
+{% endblock %}
+
+{% block footer_javascripts %}{% endblock %}
