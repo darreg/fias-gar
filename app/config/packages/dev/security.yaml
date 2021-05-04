@@ -1,4 +1,5 @@
-
+security:
+    firewalls:
         api_secured_area:
             pattern:   ^/api
             stateless: true
