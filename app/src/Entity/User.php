@@ -41,6 +41,11 @@ class User implements UserInterface
     private ?string $email;
 
     /**
+     * @ORM\Column(type="string", length=180)
+     */
+    private ?string $name;
+
+    /**
      * @ORM\Column(type="json")
      * @var array<int, string>
      */
@@ -65,6 +70,18 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
