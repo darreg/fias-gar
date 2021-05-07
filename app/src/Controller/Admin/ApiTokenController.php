@@ -31,7 +31,7 @@ class ApiTokenController extends AbstractController
     {
         $form = $this->apiTokenService->createForm(ApiTokenType::class);
 
-        return $this->render('api_token/apiToken/new.html.twig', [
+        return $this->render('admin/api_token/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -51,7 +51,7 @@ class ApiTokenController extends AbstractController
             return $this->redirectToRoute('api-token-edit', ['id' => $id]);
         }
 
-        return $this->render('api_token/apiToken/new.html.twig', [
+        return $this->render('admin/api_token/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -68,7 +68,7 @@ class ApiTokenController extends AbstractController
 
         $form = $this->apiTokenService->createForm(ApiTokenType::class, $apiToken);
 
-        return $this->render('api_token/apiToken/edit.html.twig', [
+        return $this->render('admin/api_token/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -99,7 +99,7 @@ class ApiTokenController extends AbstractController
             );
         }
 
-        return $this->render('api_token/apiToken/edit.html.twig', [
+        return $this->render('admin/api_token/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
