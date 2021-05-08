@@ -45,11 +45,13 @@ class UserManager
         $user = (new User())
             ->setEmail($userDto->email)
             ->setName($userDto->name)
-            ->setRoles($userDto->roles ?? [])
+            ->setRoles($userDto->roles)
             ->setStatus($userDto->status);
 
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $userDto->password));        
-        
+        if ($userDto->password !== null) {
+            $user->setPassword($this->passwordEncoder->encodePassword($user, $userDto->password));
+        }
+
         try {
             $this->userDao->create($user);
         } catch (\Exception $e) {
@@ -84,13 +86,13 @@ class UserManager
         $user
             ->setEmail($userDto->email)
             ->setName($userDto->name)
-            ->setRoles($userDto->roles ?? [])
+            ->setRoles($userDto->roles)
             ->setStatus($userDto->status);
 
         if (!empty($userDto->password)) {
             $user->setPassword($this->passwordEncoder->encodePassword($user, $userDto->password));
-        }        
-        
+        }
+
         try {
             $this->userDao->update($user);
         } catch (\Exception $e) {

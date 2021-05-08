@@ -20,8 +20,7 @@ class ApiTokenType extends AbstractType
 
     public function __construct(
         UserRepository $userRepository
-    )
-    {
+    ) {
         $this->userRepository = $userRepository;
     }
 
@@ -37,8 +36,8 @@ class ApiTokenType extends AbstractType
             ->add('status', CheckboxType::class, [
                 'label' => 'Включен / отключен',
                 'required' => false,
-            ])            
-            
+            ])
+
             ->add('user', ChoiceType::class, [
                 'choices' => $choices
             ])
@@ -47,16 +46,16 @@ class ApiTokenType extends AbstractType
                 'label' => 'Имя',
             ])
 
-            ->add('token', TextType::class, [
-                'label' => 'Токен',                
-                'disabled' => true,
-            ])
-
             ->add('expiresAt', DateTimeType::class, [
-                'label' => 'Дата-время окончания действия',                
+                'label' => 'Дата-время окончания действия',
                 'widget' => 'single_text',
                 'input' => 'string',
                 'input_format' => 'Y-m-d H:i'
+            ])
+
+            ->add('token', TextType::class, [
+                'label' => 'Токен',
+                'disabled' => true,
             ])
 
             ->add('save', SubmitType::class, [

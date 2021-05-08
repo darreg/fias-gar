@@ -25,7 +25,10 @@ class AdminDTO implements ConstructFromArrayInterface
      * @Assert\NotBlank
      */
     public ?string $name;
-    
+
+    /**
+     * @var array<int, string>|null
+     */
     public ?array $roles;
 
     /**
@@ -49,14 +52,16 @@ class AdminDTO implements ConstructFromArrayInterface
 
     public ?bool $status;
 
-
+    /**
+     * @param array<int, string>|null $roles
+     */
     public function __construct(
         ?int $id = null,
         ?string $email = null,
         ?string $name = null,
         ?array $roles = null,
         ?string $password = null,
-        ?string $confirmPassword = null,        
+        ?string $confirmPassword = null,
         ?bool $status = null
     ) {
         $this->id = $id;
@@ -64,7 +69,7 @@ class AdminDTO implements ConstructFromArrayInterface
         $this->name = $name;
         $this->roles = $roles;
         $this->password = $password;
-        $this->confirmPassword = $confirmPassword;        
+        $this->confirmPassword = $confirmPassword;
         $this->status = $status;
     }
 }

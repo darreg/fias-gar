@@ -19,30 +19,30 @@ class AdminType extends AbstractType
         'Редактирование адресных объектов' => 'ROLE_EDITOR_EXTADDROBJ',
         'Редактирование домов' => 'ROLE_EDITOR_EXTHOUSE',
     ];
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('status', CheckboxType::class, [
-                'label' => 'Включен / отключен',                
+                'label' => 'Включен / отключен',
                 'required' => false,
             ])
 
             ->add('name', TextType::class, [
                 'label' => 'Имя',
-            ])            
-            
+            ])
+
             ->add('email', EmailType::class)
 
             ->add('password', PasswordType::class, [
-                'label' => 'Пароль',                
+                'label' => 'Пароль',
                 'required' => false,
             ])
 
             ->add('confirmPassword', PasswordType::class, [
                 'label' => 'Подтвердить пароль',
                 'required' => false,
-            ])            
+            ])
 
             ->add('roles', ChoiceType::class, [
                 'label' => 'Роли',

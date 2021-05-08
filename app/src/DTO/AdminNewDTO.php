@@ -19,7 +19,10 @@ class AdminNewDTO implements ConstructFromArrayInterface
      * @Assert\NotBlank
      */
     public ?string $name;
-    
+
+    /**
+     * @var array<int, string>|null
+     */
     public ?array $roles;
 
     /**
@@ -39,20 +42,22 @@ class AdminNewDTO implements ConstructFromArrayInterface
 
     public ?bool $status;
 
-
+    /**
+     * @param array<int, string>|null $roles
+     */
     public function __construct(
         ?string $email = null,
         ?string $name = null,
         ?array $roles = null,
         ?string $password = null,
-        ?string $confirmPassword = null,        
+        ?string $confirmPassword = null,
         ?bool $status = null
     ) {
         $this->email = $email;
         $this->name = $name;
         $this->roles = $roles;
         $this->password = $password;
-        $this->confirmPassword = $confirmPassword;        
+        $this->confirmPassword = $confirmPassword;
         $this->status = $status;
     }
 }

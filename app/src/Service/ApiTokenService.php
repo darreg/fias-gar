@@ -37,10 +37,12 @@ class ApiTokenService
      */
     public function createForm(string $className, string $dtoClassName, ?ApiToken $apiToken = null): FormInterface
     {
-        $data = [];
-        if ($apiToken !== null) {
-            $data = $this->normalizer->normalize($apiToken);
+
+        $data = ($apiToken !== null) ? $this->normalizer->normalize($apiToken) : [];
+        if (!\is_array($data)) {
+            throw new \LogicException('Не удалось нормализовать объект');
         }
+
         return $this->formManager->createForDto($className, $dtoClassName, $data);
     }
 

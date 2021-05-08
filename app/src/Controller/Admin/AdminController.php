@@ -80,9 +80,9 @@ class AdminController extends AbstractController
     public function editSubmit(Request $request, int $id): Response
     {
         if ($id === 1) {
-            throw new EntityNotFoundException('Редактирование запрещено'); 
+            throw new EntityNotFoundException('Редактирование запрещено');
         }
-        
+
         $admin = $this->adminService->getOne($id);
         if ($admin === null) {
             throw new EntityNotFoundException('Объект не найден');

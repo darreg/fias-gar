@@ -54,7 +54,7 @@ class ApiToken
      * @ORM\JoinColumn(nullable=true)
      * @psalm-suppress PropertyNotSetInConstructor
      */
-    private ?UserInterface $user;
+    private ?User $user;
 
     public function __construct()
     {
@@ -111,11 +111,11 @@ class ApiToken
         $this->expiresAt = new DateTime('+365 day');
     }
 
-    public function getUser(): ?UserInterface
+    public function getUser(): ?User
     {
         return $this->user;
     }
-    public function setUser(?UserInterface $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
         return $this;
