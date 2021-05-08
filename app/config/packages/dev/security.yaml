@@ -1,12 +1,5 @@
 security:
     firewalls:
         api_secured_area:
-            pattern:   ^/api
-            stateless: true
             anonymous: true
-            provider: app_user_provider
-            guard:
-                authenticators:
-                    - App\Security\ApiTokenAuthenticator
-                entry_point: App\Security\ApiTokenAuthenticator
 
