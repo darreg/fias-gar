@@ -50,7 +50,7 @@ class ApiToken
     private ?DateTime $expiresAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="apiTokens")
+     * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=true)
      * @psalm-suppress PropertyNotSetInConstructor
      */
