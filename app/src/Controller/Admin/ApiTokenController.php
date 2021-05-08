@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\DTO\ApiTokenDTO;
+use App\DTO\ApiTokenNewDTO;
+use App\Entity\ApiToken;
 use App\Form\Type\ApiTokenType;
 use App\Service\ApiTokenService;
 use Doctrine\ORM\EntityNotFoundException;
@@ -29,7 +31,7 @@ class ApiTokenController extends AbstractController
      */
     public function new(): Response
     {
-        $form = $this->apiTokenService->createForm(ApiTokenType::class);
+        $form = $this->apiTokenService->createForm(ApiTokenType::class, ApiTokenNewDTO::class);
 
         return $this->render('admin/api_token/new.html.twig', [
             'form' => $form->createView(),
@@ -41,12 +43,13 @@ class ApiTokenController extends AbstractController
      */
     public function newSubmit(Request $request): Response
     {
-        $form = $this->apiTokenService->createForm(ApiTokenType::class);
+        $form = $this->apiTokenService->createForm(ApiTokenType::class, ApiTokenNewDTO::class);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = (array)$form->getData();
-            $apiTokenDto = ApiTokenDTO::fromArray($data);
+            $apiTokenDto = ApiTokenNewDTO::fromArray($data);
+            $apiTokenDto->token = base64_encode(random_bytes(20));
             $id = $this->apiTokenService->add($apiTokenDto);
             return $this->redirectToRoute('api-token-edit', ['id' => $id]);
         }
@@ -66,7 +69,7 @@ class ApiTokenController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->apiTokenService->createForm(ApiTokenType::class, $apiToken);
+        $form = $this->apiTokenService->createForm(ApiTokenType::class, ApiTokenDTO::class, $apiToken);
 
         return $this->render('admin/api_token/edit.html.twig', [
             'form' => $form->createView(),
@@ -83,7 +86,7 @@ class ApiTokenController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->apiTokenService->createForm(ApiTokenType::class, $apiToken);
+        $form = $this->apiTokenService->createForm(ApiTokenType::class, ApiTokenDTO::class, $apiToken);
 
         $form->handleRequest($request);
         if ($form->isValid()) {

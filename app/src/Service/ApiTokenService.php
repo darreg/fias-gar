@@ -3,8 +3,13 @@
 namespace App\Service;
 
 use App\DTO\ApiTokenDTO;
+use App\DTO\ApiTokenNewDTO;
+use App\DTO\ConstructFromArrayInterface;
+use App\Entity\Admin;
 use App\Entity\ApiToken;
 use App\Manager\ApiTokenManager;
+use App\Manager\FormManager;
+use App\Serializer\ApiTokenNormalizer;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -13,34 +18,30 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ApiTokenService
 {
     private ApiTokenManager $apiTokenManager;
-    private FormFactoryInterface $formFactory;
+    private FormManager $formManager;
     private NormalizerInterface $normalizer;
 
     public function __construct(
         ApiTokenManager $apiTokenManager,
-        FormFactoryInterface $formFactory,
-        NormalizerInterface $normalizer
+        FormManager $formManager,
+        ApiTokenNormalizer $normalizer
     ) {
         $this->apiTokenManager = $apiTokenManager;
-        $this->formFactory = $formFactory;
+        $this->formManager = $formManager;
         $this->normalizer = $normalizer;
     }
 
     /**
      * @param class-string<FormTypeInterface> $className
+     * @param class-string<ConstructFromArrayInterface> $dtoClassName
      */
-    public function createForm(string $className, ?ApiToken $apiToken = null): FormInterface
+    public function createForm(string $className, string $dtoClassName, ?ApiToken $apiToken = null): FormInterface
     {
-        if ($apiToken === null) {
-            return $this->formFactory->create($className);
+        $data = [];
+        if ($apiToken !== null) {
+            $data = $this->normalizer->normalize($apiToken);
         }
-
-        /** @var array<string, mixed> $apiTokenArray */
-        $apiTokenArray = $this->normalizer->normalize($apiToken);
-
-        $apiTokenDto = ApiTokenDTO::fromArray($apiTokenArray);
-
-        return $this->formFactory->create($className, $apiTokenDto);
+        return $this->formManager->createForDto($className, $dtoClassName, $data);
     }
 
     public function getOne(int $id): ?ApiToken
@@ -58,7 +59,7 @@ class ApiTokenService
         return $this->apiTokenManager->getAll($limit, $offset);
     }
 
-    public function add(ApiTokenDTO $apiTokenDto): ?int
+    public function add(ApiTokenNewDTO $apiTokenDto): ?int
     {
         $apiToken = $this->apiTokenManager->add($apiTokenDto);
         if ($apiToken === null) {

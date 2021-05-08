@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AdminService
 {
     private AdminManager $adminManager;
-    private FormManager $formManager;    
+    private FormManager $formManager;
     private NormalizerInterface $normalizer;
 
     public function __construct(
@@ -24,7 +24,7 @@ class AdminService
         NormalizerInterface $normalizer
     ) {
         $this->adminManager = $adminManager;
-        $this->formManager = $formManager;        
+        $this->formManager = $formManager;
         $this->normalizer = $normalizer;
     }
 
@@ -36,10 +36,7 @@ class AdminService
     {
         $data = [];
         if ($admin !== null) {
-            $normalized =  $this->normalizer->normalize($admin);
-            if (\is_array($normalized)) {
-                $data = $normalized;
-            }
+            $data = $this->normalizer->normalize($admin);
         }
         return $this->formManager->createForDto($className, $dtoClassName, $data);
     }
