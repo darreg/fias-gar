@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\DTO\AdminDTO;
+use App\DTO\AdminNewDTO;
 use App\Form\Type\AdminType;
 use App\Service\AdminService;
 use Doctrine\ORM\EntityNotFoundException;
@@ -29,7 +30,7 @@ class AdminController extends AbstractController
      */
     public function new(): Response
     {
-        $form = $this->adminService->createForm(AdminType::class);
+        $form = $this->adminService->createForm(AdminType::class, AdminNewDTO::class);
 
         return $this->render('admin/admin/new.html.twig', [
             'form' => $form->createView(),
@@ -41,12 +42,12 @@ class AdminController extends AbstractController
      */
     public function newSubmit(Request $request): Response
     {
-        $form = $this->adminService->createForm(AdminType::class);
+        $form = $this->adminService->createForm(AdminType::class, AdminNewDTO::class);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = (array)$form->getData();
-            $adminDto = AdminDTO::fromArray($data);
+            $adminDto = AdminNewDTO::fromArray($data);
             $id = $this->adminService->add($adminDto);
             return $this->redirectToRoute('admin-edit', ['id' => $id]);
         }
@@ -66,7 +67,7 @@ class AdminController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->adminService->createForm(AdminType::class, $admin);
+        $form = $this->adminService->createForm(AdminType::class, AdminDTO::class, $admin);
 
         return $this->render('admin/admin/edit.html.twig', [
             'form' => $form->createView(),
@@ -78,12 +79,16 @@ class AdminController extends AbstractController
      */
     public function editSubmit(Request $request, int $id): Response
     {
+        if ($id === 1) {
+            throw new EntityNotFoundException('Редактирование запрещено'); 
+        }
+        
         $admin = $this->adminService->getOne($id);
         if ($admin === null) {
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->adminService->createForm(AdminType::class, $admin);
+        $form = $this->adminService->createForm(AdminType::class, AdminDTO::class, $admin);
 
         $form->handleRequest($request);
         if ($form->isValid()) {

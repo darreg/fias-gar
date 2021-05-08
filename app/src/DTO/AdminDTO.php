@@ -22,19 +22,30 @@ class AdminDTO implements ConstructFromArrayInterface
 
     /**
      * @Assert\Length(max = 255)
-     */
-    public ?string $name;
-
-    /**
      * @Assert\NotBlank
      */
+    public ?string $name;
+    
     public ?array $roles;
 
     /**
-     * @Assert\Length(max = 255)
-     * @Assert\NotBlank
+     * @Assert\AtLeastOneOf({
+     *     @Assert\Blank,
+     *     @Assert\Length(min = 6, max = 255)
+     * })
      */
     public ?string $password;
+
+    /**
+     * @Assert\AtLeastOneOf({
+     *     @Assert\Blank,
+     *     @Assert\Expression(
+     *         "value == this.password",
+     *         message="Пароль и подтверждение пароля должны совпадать"
+     *     )
+     * })
+     */
+    public ?string $confirmPassword;
 
     public ?bool $status;
 
@@ -45,6 +56,7 @@ class AdminDTO implements ConstructFromArrayInterface
         ?string $name = null,
         ?array $roles = null,
         ?string $password = null,
+        ?string $confirmPassword = null,        
         ?bool $status = null
     ) {
         $this->id = $id;
@@ -52,6 +64,7 @@ class AdminDTO implements ConstructFromArrayInterface
         $this->name = $name;
         $this->roles = $roles;
         $this->password = $password;
+        $this->confirmPassword = $confirmPassword;        
         $this->status = $status;
     }
 }

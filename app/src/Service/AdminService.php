@@ -3,9 +3,11 @@
 namespace App\Service;
 
 use App\DTO\AdminDTO;
+use App\DTO\AdminNewDTO;
+use App\DTO\ConstructFromArrayInterface;
 use App\Entity\Admin;
 use App\Manager\AdminManager;
-use Symfony\Component\Form\FormFactoryInterface;
+use App\Manager\FormManager;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -13,34 +15,33 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AdminService
 {
     private AdminManager $adminManager;
-    private FormFactoryInterface $formFactory;
+    private FormManager $formManager;    
     private NormalizerInterface $normalizer;
 
     public function __construct(
         AdminManager $adminManager,
-        FormFactoryInterface $formFactory,
+        FormManager $formManager,
         NormalizerInterface $normalizer
     ) {
         $this->adminManager = $adminManager;
-        $this->formFactory = $formFactory;
+        $this->formManager = $formManager;        
         $this->normalizer = $normalizer;
     }
 
     /**
      * @param class-string<FormTypeInterface> $className
+     * @param class-string<ConstructFromArrayInterface> $dtoClassName
      */
-    public function createForm(string $className, ?Admin $admin = null): FormInterface
+    public function createForm(string $className, string $dtoClassName, ?Admin $admin = null): FormInterface
     {
-        if ($admin === null) {
-            return $this->formFactory->create($className);
+        $data = [];
+        if ($admin !== null) {
+            $normalized =  $this->normalizer->normalize($admin);
+            if (\is_array($normalized)) {
+                $data = $normalized;
+            }
         }
-
-        /** @var array<string, mixed> $adminArray */
-        $adminArray = $this->normalizer->normalize($admin);
-
-        $adminDto = AdminDTO::fromArray($adminArray);
-
-        return $this->formFactory->create($className, $adminDto);
+        return $this->formManager->createForDto($className, $dtoClassName, $data);
     }
 
     public function getOne(int $id): ?Admin
@@ -58,7 +59,7 @@ class AdminService
         return $this->adminManager->getAll($limit, $offset);
     }
 
-    public function add(AdminDTO $adminDto): ?int
+    public function add(AdminNewDTO $adminDto): ?int
     {
         $admin = $this->adminManager->add($adminDto);
         if ($admin === null) {

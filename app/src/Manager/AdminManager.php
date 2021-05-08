@@ -4,25 +4,30 @@ namespace App\Manager;
 
 use App\DAO\AdminDAO;
 use App\DTO\AdminDTO;
+use App\DTO\AdminNewDTO;
 use App\Entity\Admin;
 use App\Repository\AdminRepository;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdminManager
 {
-    private AdminDAO $AdminDao;
-    private AdminRepository $AdminRepository;
+    private AdminDAO $adminDao;
+    private AdminRepository $adminRepository;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(
-        AdminDAO $AdminDao,
-        AdminRepository $AdminRepository
+        AdminDAO $adminDao,
+        AdminRepository $adminRepository,
+        UserPasswordEncoderInterface $passwordEncoder
     ) {
-        $this->AdminDao = $AdminDao;
-        $this->AdminRepository = $AdminRepository;
+        $this->adminDao = $adminDao;
+        $this->adminRepository = $adminRepository;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     public function getOne(int $id): ?Admin
     {
-        return $this->AdminRepository->find($id);
+        return $this->adminRepository->find($id);
     }
 
     /**
@@ -32,75 +37,79 @@ class AdminManager
      */
     public function getAll(?int $limit = null, ?int $offset = null): array
     {
-        return $this->AdminRepository->findBy([], null, $limit, $offset);
+        return $this->adminRepository->findBy([], null, $limit, $offset);
     }
 
-    public function add(AdminDTO $AdminDto): ?Admin
+    public function add(AdminNewDTO $adminDto): ?Admin
     {
-        $Admin = (new Admin())
-            ->setEmail($AdminDto->email)
-            ->setName($AdminDto->name)
-            ->setRoles($AdminDto->roles)
-            ->setPassword($AdminDto->password)
-            ->setStatus($AdminDto->status);
+        $admin = (new Admin())
+            ->setEmail($adminDto->email)
+            ->setName($adminDto->name)
+            ->setRoles($adminDto->roles ?? [])
+            ->setStatus($adminDto->status);
+
+        $admin->setPassword($this->passwordEncoder->encodePassword($admin, $adminDto->password));
 
         try {
-            $this->AdminDao->create($Admin);
+            $this->adminDao->create($admin);
         } catch (\Exception $e) {
             //TODO log
             return null;
         }
 
-        return $Admin;
+        return $admin;
     }
 
     public function updateById(
         int $id,
-        AdminDTO $AdminDto
+        AdminDTO $adminDto
     ): ?Admin {
 
-        $Admin = $this->AdminRepository->find($id);
-        if ($Admin === null) {
+        $admin = $this->adminRepository->find($id);
+        if ($admin === null) {
             return null;
         }
 
         return $this->update(
-            $Admin,
-            $AdminDto
+            $admin,
+            $adminDto
         );
     }
 
     public function update(
-        Admin $Admin,
-        AdminDTO $AdminDto
+        Admin $admin,
+        AdminDTO $adminDto
     ): ?Admin {
 
-        $Admin
-            ->setEmail($AdminDto->email)
-            ->setName($AdminDto->name)
-            ->setRoles($AdminDto->roles)
-            ->setPassword($AdminDto->password)
-            ->setStatus($AdminDto->status);
+        $admin
+            ->setEmail($adminDto->email)
+            ->setName($adminDto->name)
+            ->setRoles($adminDto->roles ?? [])
+            ->setStatus($adminDto->status);
+
+        if (!empty($adminDto->password)) {
+            $admin->setPassword($this->passwordEncoder->encodePassword($admin, $adminDto->password));
+        }
 
         try {
-            $this->AdminDao->update($Admin);
+            $this->adminDao->update($admin);
         } catch (\Exception $e) {
             //TODO log
             return null;
         }
 
-        return $Admin;
+        return $admin;
     }
 
     public function deleteById(int $id): bool
     {
-        $exHouse = $this->AdminRepository->find($id);
-        if ($exHouse === null) {
+        $admin = $this->adminRepository->find($id);
+        if ($admin === null) {
             return false;
         }
 
         try {
-            $this->AdminDao->delete($exHouse);
+            $this->adminDao->delete($admin);
         } catch (\Exception $e) {
             //TODO log
             return false;

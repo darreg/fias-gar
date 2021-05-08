@@ -4,15 +4,9 @@ namespace App\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UserDTO implements ConstructFromArrayInterface
+class UserNewDTO implements ConstructFromArrayInterface
 {
     use ConstructableFromArrayTrait;
-
-    /**
-     * @Assert\NotBlank
-     * @Assert\Positive
-     */
-    public ?int $id;
 
     /**
      * @Assert\Length(max = 180)
@@ -29,29 +23,24 @@ class UserDTO implements ConstructFromArrayInterface
     public ?array $roles;
 
     /**
-     * @Assert\AtLeastOneOf({
-     *     @Assert\Blank,
-     *     @Assert\Length(min = 6, max = 255)
-     * })
+     * @Assert\NotBlank
+     * @Assert\Length(min = 6, max = 255)
      */
     public ?string $password;
 
     /**
-     * @Assert\AtLeastOneOf({
-     *     @Assert\Blank,
-     *     @Assert\Expression(
-     *         "value == this.password",
-     *         message="Пароль и подтверждение пароля должны совпадать"
-     *     )
-     * })
+     * @Assert\NotBlank
+     * @Assert\Expression(
+     *     "value == this.password",
+     *     message="Пароль и подтверждение пароля должны совпадать"
+     * )
      */
-    public ?string $confirmPassword;    
+    public ?string $confirmPassword;
 
     public ?bool $status;
 
 
     public function __construct(
-        ?int $id = null,
         ?string $email = null,
         ?string $name = null,
         ?array $roles = null,
@@ -59,7 +48,6 @@ class UserDTO implements ConstructFromArrayInterface
         ?string $confirmPassword = null,
         ?bool $status = null
     ) {
-        $this->id = $id;
         $this->email = $email;
         $this->name = $name;
         $this->roles = $roles;

@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     /**
-     * @Route("/admin", name="admin-main")
+     * @Route("/admin", name="admin_main")
      */
     public function index(Request $request): Response
     {

@@ -25,7 +25,7 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'admin_login';
-    public const LOGIN_RESULT_ROUTE = 'admin';
+    public const LOGIN_RESULT_ROUTE = 'admin_main';
 
     private EntityManagerInterface $entityManager;
     private UrlGeneratorInterface $urlGenerator;

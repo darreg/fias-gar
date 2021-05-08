@@ -10,23 +10,23 @@ use App\Repository\UserRepository;
 
 class ApiTokenManager
 {
-    private ApiTokenDAO $ApiTokenDao;
-    private ApiTokenRepository $ApiTokenRepository;
+    private ApiTokenDAO $apiTokenDao;
+    private ApiTokenRepository $apiTokenRepository;
     private UserRepository $userRepository;
 
     public function __construct(
-        ApiTokenDAO $ApiTokenDao,
-        ApiTokenRepository $ApiTokenRepository,
+        ApiTokenDAO $apiTokenDao,
+        ApiTokenRepository $apiTokenRepository,
         UserRepository $userRepository
     ) {
-        $this->ApiTokenDao = $ApiTokenDao;
-        $this->ApiTokenRepository = $ApiTokenRepository;
+        $this->apiTokenDao = $apiTokenDao;
+        $this->apiTokenRepository = $apiTokenRepository;
         $this->userRepository = $userRepository;
     }
 
     public function getOne(int $id): ?ApiToken
     {
-        return $this->ApiTokenRepository->find($id);
+        return $this->apiTokenRepository->find($id);
     }
 
     /**
@@ -36,79 +36,79 @@ class ApiTokenManager
      */
     public function getAll(?int $limit = null, ?int $offset = null): array
     {
-        return $this->ApiTokenRepository->findBy([], null, $limit, $offset);
+        return $this->apiTokenRepository->findBy([], null, $limit, $offset);
     }
 
-    public function add(ApiTokenDTO $ApiTokenDto): ?ApiToken
+    public function add(ApiTokenDTO $apiTokenDto): ?ApiToken
     {
-        $user = $this->userRepository->find($ApiTokenDto->userId);
+        $user = $this->userRepository->find($apiTokenDto->userId);
 
-        $ApiToken = (new ApiToken())
-            ->setName($ApiTokenDto->name)
-            ->setToken($ApiTokenDto->token)
-            ->setExpiresAt($ApiTokenDto->expiresAt)
-            ->setStatus($ApiTokenDto->status)
+        $apiToken = (new ApiToken())
+            ->setName($apiTokenDto->name)
+            ->setToken($apiTokenDto->token)
+            ->setExpiresAt($apiTokenDto->expiresAt)
+            ->setStatus($apiTokenDto->status)
             ->setUser($user);
 
         try {
-            $this->ApiTokenDao->create($ApiToken);
+            $this->apiTokenDao->create($apiToken);
         } catch (\Exception $e) {
             //TODO log
             return null;
         }
 
-        return $ApiToken;
+        return $apiToken;
     }
 
     public function updateById(
         int $id,
-        ApiTokenDTO $ApiTokenDto
+        ApiTokenDTO $apiTokenDto
     ): ?ApiToken {
 
-        $ApiToken = $this->ApiTokenRepository->find($id);
-        if ($ApiToken === null) {
+        $apiToken = $this->apiTokenRepository->find($id);
+        if ($apiToken === null) {
             return null;
         }
 
         return $this->update(
-            $ApiToken,
-            $ApiTokenDto
+            $apiToken,
+            $apiTokenDto
         );
     }
 
     public function update(
-        ApiToken $ApiToken,
-        ApiTokenDTO $ApiTokenDto
+        ApiToken $apiToken,
+        ApiTokenDTO $apiTokenDto
     ): ?ApiToken {
 
-        $user = $this->userRepository->find($ApiTokenDto->userId);
+        $user = $this->userRepository->find($apiTokenDto->userId);
 
-        $ApiToken
-            ->setName($ApiTokenDto->name)
-            ->setToken($ApiTokenDto->token)
-            ->setExpiresAt($ApiTokenDto->expiresAt)
-            ->setStatus($ApiTokenDto->status)
+        $apiToken
+            ->setName($apiTokenDto->name)
+            ->setToken($apiTokenDto->token)
+            ->setExpiresAt($apiTokenDto->expiresAt)
+            ->setStatus($apiTokenDto->status)
             ->setUser($user);
 
         try {
-            $this->ApiTokenDao->update($ApiToken);
+            $this->apiTokenDao->update($apiToken);
         } catch (\Exception $e) {
             //TODO log
             return null;
         }
 
-        return $ApiToken;
+        return $apiToken;
     }
 
     public function deleteById(int $id): bool
     {
-        $exHouse = $this->ApiTokenRepository->find($id);
-        if ($exHouse === null) {
+        $apiToken = $this->apiTokenRepository->find($id);
+        if ($apiToken === null) {
             return false;
         }
 
         try {
-            $this->ApiTokenDao->delete($exHouse);
+            $this->apiTokenDao->delete($apiToken);
         } catch (\Exception $e) {
             //TODO log
             return false;

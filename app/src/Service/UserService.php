@@ -2,10 +2,12 @@
 
 namespace App\Service;
 
+use App\DTO\ConstructFromArrayInterface;
 use App\DTO\UserDTO;
+use App\DTO\UserNewDTO;
 use App\Entity\User;
+use App\Manager\FormManager;
 use App\Manager\UserManager;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -13,34 +15,33 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class UserService
 {
     private UserManager $userManager;
-    private FormFactoryInterface $formFactory;
+    private FormManager $formManager;
     private NormalizerInterface $normalizer;
 
     public function __construct(
         UserManager $userManager,
-        FormFactoryInterface $formFactory,
+        FormManager $formManager,
         NormalizerInterface $normalizer
     ) {
         $this->userManager = $userManager;
-        $this->formFactory = $formFactory;
+        $this->formManager = $formManager;
         $this->normalizer = $normalizer;
     }
 
     /**
      * @param class-string<FormTypeInterface> $className
+     * @param class-string<ConstructFromArrayInterface> $dtoClassName
      */
-    public function createForm(string $className, ?User $user = null): FormInterface
+    public function createForm(string $className, string $dtoClassName, ?User $admin = null): FormInterface
     {
-        if ($user === null) {
-            return $this->formFactory->create($className);
+        $data = [];
+        if ($admin !== null) {
+            $normalized =  $this->normalizer->normalize($admin);
+            if (\is_array($normalized)) {
+                $data = $normalized;
+            }
         }
-
-        /** @var array<string, mixed> $userArray */
-        $userArray = $this->normalizer->normalize($user);
-
-        $userDto = UserDTO::fromArray($userArray);
-
-        return $this->formFactory->create($className, $userDto);
+        return $this->formManager->createForDto($className, $dtoClassName, $data);
     }
 
     public function getOne(int $id): ?User
@@ -58,7 +59,7 @@ class UserService
         return $this->userManager->getAll($limit, $offset);
     }
 
-    public function add(UserDTO $userDto): ?int
+    public function add(UserNewDTO $userDto): ?int
     {
         $user = $this->userManager->add($userDto);
         if ($user === null) {

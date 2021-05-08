@@ -103,7 +103,6 @@ class Admin implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_ADMIN
         $roles[] = 'ROLE_ADMIN';
 
         return array_unique($roles);
@@ -114,7 +113,8 @@ class Admin implements UserInterface
      */
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
+        $roles[] = 'ROLE_ADMIN';
+        $this->roles = array_values(array_unique($roles));
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\DTO\UserDTO;
+use App\DTO\UserNewDTO;
 use App\Form\Type\UserType;
 use App\Service\UserService;
 use Doctrine\ORM\EntityNotFoundException;
@@ -29,7 +30,7 @@ class UserController extends AbstractController
      */
     public function new(): Response
     {
-        $form = $this->userService->createForm(UserType::class);
+        $form = $this->userService->createForm(UserType::class, UserNewDTO::class);
 
         return $this->render('admin/user/new.html.twig', [
             'form' => $form->createView(),
@@ -41,12 +42,12 @@ class UserController extends AbstractController
      */
     public function newSubmit(Request $request): Response
     {
-        $form = $this->userService->createForm(UserType::class);
+        $form = $this->userService->createForm(UserType::class, UserNewDTO::class);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = (array)$form->getData();
-            $userDto = UserDTO::fromArray($data);
+            $userDto = UserNewDTO::fromArray($data);
             $id = $this->userService->add($userDto);
             return $this->redirectToRoute('user-edit', ['id' => $id]);
         }
@@ -66,7 +67,7 @@ class UserController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->userService->createForm(UserType::class, $user);
+        $form = $this->userService->createForm(UserType::class, UserDTO::class, $user);
 
         return $this->render('admin/user/edit.html.twig', [
             'form' => $form->createView(),
@@ -83,7 +84,7 @@ class UserController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->userService->createForm(UserType::class, $user);
+        $form = $this->userService->createForm(UserType::class, UserDTO::class, $user);
 
         $form->handleRequest($request);
         if ($form->isValid()) {

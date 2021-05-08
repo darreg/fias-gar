@@ -4,25 +4,30 @@ namespace App\Manager;
 
 use App\DAO\UserDAO;
 use App\DTO\UserDTO;
+use App\DTO\UserNewDTO;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserManager
 {
-    private UserDAO $UserDao;
-    private UserRepository $UserRepository;
+    private UserDAO $userDao;
+    private UserRepository $userRepository;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(
-        UserDAO $UserDao,
-        UserRepository $UserRepository
+        UserDAO $userDao,
+        UserRepository $userRepository,
+        UserPasswordEncoderInterface $passwordEncoder
     ) {
-        $this->UserDao = $UserDao;
-        $this->UserRepository = $UserRepository;
+        $this->userDao = $userDao;
+        $this->userRepository = $userRepository;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     public function getOne(int $id): ?User
     {
-        return $this->UserRepository->find($id);
+        return $this->userRepository->find($id);
     }
 
     /**
@@ -32,75 +37,79 @@ class UserManager
      */
     public function getAll(?int $limit = null, ?int $offset = null): array
     {
-        return $this->UserRepository->findBy([], null, $limit, $offset);
+        return $this->userRepository->findBy([], null, $limit, $offset);
     }
 
-    public function add(UserDTO $UserDto): ?User
+    public function add(UserNewDTO $userDto): ?User
     {
-        $User = (new User())
-            ->setEmail($UserDto->email)
-            ->setName($UserDto->name)
-            ->setRoles($UserDto->roles)
-            ->setPassword($UserDto->password)
-            ->setStatus($UserDto->status);
+        $user = (new User())
+            ->setEmail($userDto->email)
+            ->setName($userDto->name)
+            ->setRoles($userDto->roles ?? [])
+            ->setStatus($userDto->status);
 
+        $user->setPassword($this->passwordEncoder->encodePassword($user, $userDto->password));        
+        
         try {
-            $this->UserDao->create($User);
+            $this->userDao->create($user);
         } catch (\Exception $e) {
             //TODO log
             return null;
         }
 
-        return $User;
+        return $user;
     }
 
     public function updateById(
         int $id,
-        UserDTO $UserDto
+        UserDTO $userDto
     ): ?User {
 
-        $User = $this->UserRepository->find($id);
-        if ($User === null) {
+        $user = $this->userRepository->find($id);
+        if ($user === null) {
             return null;
         }
 
         return $this->update(
-            $User,
-            $UserDto
+            $user,
+            $userDto
         );
     }
 
     public function update(
-        User $User,
-        UserDTO $UserDto
+        User $user,
+        UserDTO $userDto
     ): ?User {
 
-        $User
-            ->setEmail($UserDto->email)
-            ->setName($UserDto->name)
-            ->setRoles($UserDto->roles)
-            ->setPassword($UserDto->password)
-            ->setStatus($UserDto->status);
+        $user
+            ->setEmail($userDto->email)
+            ->setName($userDto->name)
+            ->setRoles($userDto->roles ?? [])
+            ->setStatus($userDto->status);
 
+        if (!empty($userDto->password)) {
+            $user->setPassword($this->passwordEncoder->encodePassword($user, $userDto->password));
+        }        
+        
         try {
-            $this->UserDao->update($User);
+            $this->userDao->update($user);
         } catch (\Exception $e) {
             //TODO log
             return null;
         }
 
-        return $User;
+        return $user;
     }
 
     public function deleteById(int $id): bool
     {
-        $exHouse = $this->UserRepository->find($id);
-        if ($exHouse === null) {
+        $user = $this->userRepository->find($id);
+        if ($user === null) {
             return false;
         }
 
         try {
-            $this->UserDao->delete($exHouse);
+            $this->userDao->delete($user);
         } catch (\Exception $e) {
             //TODO log
             return false;

@@ -10,12 +10,21 @@
         <h3>Панель администрирования</h3>
 
         <ul>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
             <li><a href="{{ path('admin-new') }}">Добавление Администратора</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_EDITOR_USER') %}
             <li><a href="{{ path('user-new') }}">Добавление Пользователя</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_EDITOR_APITOKEN') %}
             <li><a href="{{ path('api-token-new') }}">Добавление Токена</a></li>
-
+            {% endif %}
+            {% if is_granted('ROLE_EDITOR_EXTADDROBJ') %}
             <li><a href="{{ path('extaddrobj-new') }}">Добавление ExtAddrobj</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_EDITOR_EXTHOUSE') %}
             <li><a href="{{ path('exthouse-new') }}">Добавление ExtHouse</a></li>
+            {% endif %}
         </ul>
 
     </div>
