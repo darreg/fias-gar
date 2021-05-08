@@ -49,7 +49,6 @@ class ApiTokenController extends AbstractController
         if ($form->isValid()) {
             $data = (array)$form->getData();
             $apiTokenDto = ApiTokenNewDTO::fromArray($data);
-            $apiTokenDto->token = base64_encode(random_bytes(20));
             $id = $this->apiTokenService->add($apiTokenDto);
             return $this->redirectToRoute('api-token-edit', ['id' => $id]);
         }

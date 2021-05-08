@@ -34,10 +34,11 @@ class UserService
      */
     public function createForm(string $className, string $dtoClassName, ?User $user = null): FormInterface
     {
-        $data = [];
-        if ($user !== null) {
-            $data = $this->normalizer->normalize($user);
+        $data = ($user !== null) ? $this->normalizer->normalize($user) : [];
+        if (!\is_array($data)) {
+            throw new \LogicException('Не удалось нормализовать объект');
         }
+
         return $this->formManager->createForDto($className, $dtoClassName, $data);
     }
 

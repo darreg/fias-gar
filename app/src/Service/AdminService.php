@@ -34,10 +34,11 @@ class AdminService
      */
     public function createForm(string $className, string $dtoClassName, ?Admin $admin = null): FormInterface
     {
-        $data = [];
-        if ($admin !== null) {
-            $data = $this->normalizer->normalize($admin);
+        $data = ($admin !== null) ? $this->normalizer->normalize($admin) : [];
+        if (!\is_array($data)) {
+            throw new \LogicException('Не удалось нормализовать объект');
         }
+
         return $this->formManager->createForDto($className, $dtoClassName, $data);
     }
 

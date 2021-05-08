@@ -46,10 +46,13 @@ class ApiTokenManager
 
         $apiToken = (new ApiToken())
             ->setName($apiTokenDto->name)
-            ->setToken($apiTokenDto->token)
             ->setExpiresAt(\DateTime::createFromFormat('Y-m-d H:i', $apiTokenDto->expiresAt))
             ->setStatus($apiTokenDto->status)
             ->setUser($user);
+
+        if ($apiTokenDto->token !== null) {
+            $apiToken->setToken($apiTokenDto->token);
+        }
 
         try {
             $this->apiTokenDao->create($apiToken);

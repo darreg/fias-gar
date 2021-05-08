@@ -25,7 +25,10 @@ class UserDTO implements ConstructFromArrayInterface
      * @Assert\NotBlank
      */
     public ?string $name;
-    
+
+    /**
+     * @var array<int, string>|null
+     */
     public ?array $roles;
 
     /**
@@ -45,11 +48,13 @@ class UserDTO implements ConstructFromArrayInterface
      *     )
      * })
      */
-    public ?string $confirmPassword;    
+    public ?string $confirmPassword;
 
     public ?bool $status;
 
-
+    /**
+     * @param array<int, string>|null $roles
+     */
     public function __construct(
         ?int $id = null,
         ?string $email = null,

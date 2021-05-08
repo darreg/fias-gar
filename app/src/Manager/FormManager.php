@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Manager;
-
 
 use App\DTO\ConstructFromArrayInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -26,7 +24,8 @@ class FormManager
     public function createForDto(string $className, string $dtoClassName, array $data): FormInterface
     {
         $dto = new $dtoClassName();
-        if (count($data) !== 0 ) {
+        if (count($data) !== 0) {
+            /** @var mixed $dto */
             $dto = $dtoClassName::fromArray($data);
         }
 
