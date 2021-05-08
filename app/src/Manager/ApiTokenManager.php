@@ -4,6 +4,7 @@ namespace App\Manager;
 
 use App\DAO\ApiTokenDAO;
 use App\DTO\ApiTokenDTO;
+use App\DTO\ApiTokenNewDTO;
 use App\Entity\ApiToken;
 use App\Repository\ApiTokenRepository;
 use App\Repository\UserRepository;
@@ -39,14 +40,14 @@ class ApiTokenManager
         return $this->apiTokenRepository->findBy([], null, $limit, $offset);
     }
 
-    public function add(ApiTokenDTO $apiTokenDto): ?ApiToken
+    public function add(ApiTokenNewDTO $apiTokenDto): ?ApiToken
     {
-        $user = $this->userRepository->find($apiTokenDto->userId);
+        $user = $this->userRepository->find($apiTokenDto->user);
 
         $apiToken = (new ApiToken())
             ->setName($apiTokenDto->name)
             ->setToken($apiTokenDto->token)
-            ->setExpiresAt($apiTokenDto->expiresAt)
+            ->setExpiresAt(\DateTime::createFromFormat('Y-m-d H:i', $apiTokenDto->expiresAt))
             ->setStatus($apiTokenDto->status)
             ->setUser($user);
 
@@ -81,12 +82,12 @@ class ApiTokenManager
         ApiTokenDTO $apiTokenDto
     ): ?ApiToken {
 
-        $user = $this->userRepository->find($apiTokenDto->userId);
+        $user = $this->userRepository->find($apiTokenDto->user);
 
         $apiToken
             ->setName($apiTokenDto->name)
             ->setToken($apiTokenDto->token)
-            ->setExpiresAt($apiTokenDto->expiresAt)
+            ->setExpiresAt(\DateTime::createFromFormat('Y-m-d H:i', $apiTokenDto->expiresAt))
             ->setStatus($apiTokenDto->status)
             ->setUser($user);
 
