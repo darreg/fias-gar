@@ -37,17 +37,17 @@ class ApiToken
      * @ORM\Column(type="string", length=255)
      * @psalm-suppress PropertyNotSetInConstructor
      */
-    private ?string $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $token;
+    private string $token;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private ?DateTime $expiresAt;
+    private DateTime $expiresAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
@@ -67,7 +67,7 @@ class ApiToken
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -79,7 +79,7 @@ class ApiToken
         return $this;
     }
 
-    public function getToken(): ?string
+    public function getToken(): string
     {
         return $this->token;
     }
@@ -91,7 +91,7 @@ class ApiToken
         return $this;
     }
 
-    public function getExpiresAt(): ?DateTime
+    public function getExpiresAt(): DateTime
     {
         return $this->expiresAt;
     }

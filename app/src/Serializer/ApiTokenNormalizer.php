@@ -32,10 +32,7 @@ class ApiTokenNormalizer implements NormalizerInterface
             if ($user !== null) {
                 $data['user'] = $user->getId();
             }
-            $expiresAt = $object->getExpiresAt();
-            if ($expiresAt !== null) {
-                $data['expiresAt'] = $expiresAt->format('Y-m-d H:i');
-            }
+            $data['expiresAt'] = $object->getExpiresAt()->format('Y-m-d H:i');
         }
 
         return $data;

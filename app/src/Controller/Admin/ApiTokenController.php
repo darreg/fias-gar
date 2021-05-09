@@ -68,7 +68,11 @@ class ApiTokenController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->apiTokenService->createForm(ApiTokenType::class, ApiTokenDTO::class, $apiToken);
+        $form = $this->apiTokenService->createForm(
+            ApiTokenType::class,
+            ApiTokenDTO::class,
+            $apiToken
+        );
 
         return $this->render('admin/api_token/edit.html.twig', [
             'form' => $form->createView(),
@@ -85,7 +89,11 @@ class ApiTokenController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->apiTokenService->createForm(ApiTokenType::class, ApiTokenDTO::class, $apiToken);
+        $form = $this->apiTokenService->createForm(
+            ApiTokenType::class,
+            ApiTokenDTO::class,
+            $apiToken
+        );
 
         $form->handleRequest($request);
         if ($form->isValid()) {
