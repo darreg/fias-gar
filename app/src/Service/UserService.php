@@ -32,14 +32,18 @@ class UserService
      * @param class-string<FormTypeInterface> $className
      * @param class-string<ConstructFromArrayInterface> $dtoClassName
      */
-    public function createForm(string $className, string $dtoClassName, ?User $user = null): FormInterface
-    {
+    public function createForm(
+        string $className,
+        string $dtoClassName,
+        ?User $user = null,
+        array $options = []
+    ): FormInterface {
         $data = ($user !== null) ? $this->normalizer->normalize($user) : [];
         if (!\is_array($data)) {
             throw new \LogicException('Не удалось нормализовать объект');
         }
 
-        return $this->formManager->createForDto($className, $dtoClassName, $data);
+        return $this->formManager->createForDto($className, $dtoClassName, $data, $options);
     }
 
     public function getOne(int $id): ?User
