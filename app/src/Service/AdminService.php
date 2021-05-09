@@ -32,15 +32,20 @@ class AdminService
      * @param class-string<FormTypeInterface> $className
      * @param class-string<ConstructFromArrayInterface> $dtoClassName
      */
-    public function createForm(string $className, string $dtoClassName, ?Admin $admin = null): FormInterface
-    {
+    public function createForm(
+        string $className,
+        string $dtoClassName,
+        ?Admin $admin = null,
+        array $options = []
+    ): FormInterface {
         $data = ($admin !== null) ? $this->normalizer->normalize($admin) : [];
         if (!\is_array($data)) {
             throw new \LogicException('Не удалось нормализовать объект');
         }
 
-        return $this->formManager->createForDto($className, $dtoClassName, $data);
+        return $this->formManager->createForDto($className, $dtoClassName, $data, $options);
     }
+
 
     public function getOne(int $id): ?Admin
     {

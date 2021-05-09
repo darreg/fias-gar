@@ -67,7 +67,12 @@ class AdminController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->adminService->createForm(AdminType::class, AdminDTO::class, $admin);
+        $form = $this->adminService->createForm(
+            AdminType::class,
+            AdminDTO::class,
+            $admin,
+            ['password_require' => false]
+        );
 
         return $this->render('admin/admin/edit.html.twig', [
             'form' => $form->createView(),
@@ -88,7 +93,12 @@ class AdminController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->adminService->createForm(AdminType::class, AdminDTO::class, $admin);
+        $form = $this->adminService->createForm(
+            AdminType::class,
+            AdminDTO::class,
+            $admin,
+            ['password_require' => false]
+        );
 
         $form->handleRequest($request);
         if ($form->isValid()) {

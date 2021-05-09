@@ -43,12 +43,20 @@ class AdminManager
     public function add(AdminNewDTO $adminDto): ?Admin
     {
         $admin = (new Admin())
-            ->setEmail($adminDto->email)
-            ->setName($adminDto->name)
             ->setRoles($adminDto->roles ?? [])
-            ->setStatus($adminDto->status);
+            ->setStatus($adminDto->status ?? false);
 
-        $admin->setPassword($this->passwordEncoder->encodePassword($admin, $adminDto->password));
+        if ($adminDto->email !== null) {
+            $admin->setEmail($adminDto->email);
+        }
+
+        if ($adminDto->name !== null) {
+            $admin->setName($adminDto->name);
+        }
+
+        if (!empty($adminDto->password)) {
+            $admin->setPassword($this->passwordEncoder->encodePassword($admin, $adminDto->password));
+        }
 
         try {
             $this->adminDao->create($admin);
@@ -84,7 +92,7 @@ class AdminManager
         $admin
             ->setEmail($adminDto->email)
             ->setName($adminDto->name)
-            ->setRoles($adminDto->roles ?? [])
+            ->setRoles($adminDto->roles)
             ->setStatus($adminDto->status);
 
         if (!empty($adminDto->password)) {
