@@ -45,10 +45,18 @@ class ApiTokenManager
         $user = $this->userRepository->find($apiTokenDto->user);
 
         $apiToken = (new ApiToken())
-            ->setName($apiTokenDto->name)
-            ->setExpiresAt(\DateTime::createFromFormat('Y-m-d H:i', $apiTokenDto->expiresAt))
-            ->setStatus($apiTokenDto->status)
-            ->setUser($user);
+            ->setStatus($apiTokenDto->status ?? false);
+
+        if ($apiTokenDto->name !== null) {
+            $apiToken->setName($apiTokenDto->name);
+        }
+        if ($apiTokenDto->expiresAt !== null) {
+            $apiToken->setExpiresAt(\DateTime::createFromFormat('Y-m-d H:i', $apiTokenDto->expiresAt));
+        }
+
+        if ($user !== null) {
+            $apiToken->setUser($user);
+        }
 
         if ($apiTokenDto->token !== null) {
             $apiToken->setToken($apiTokenDto->token);

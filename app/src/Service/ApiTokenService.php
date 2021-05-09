@@ -35,15 +35,18 @@ class ApiTokenService
      * @param class-string<FormTypeInterface> $className
      * @param class-string<ConstructFromArrayInterface> $dtoClassName
      */
-    public function createForm(string $className, string $dtoClassName, ?ApiToken $apiToken = null): FormInterface
-    {
-
+    public function createForm(
+        string $className,
+        string $dtoClassName,
+        ?ApiToken $apiToken = null,
+        array $options = []
+    ): FormInterface {
         $data = ($apiToken !== null) ? $this->normalizer->normalize($apiToken) : [];
         if (!\is_array($data)) {
             throw new \LogicException('Не удалось нормализовать объект');
         }
 
-        return $this->formManager->createForDto($className, $dtoClassName, $data);
+        return $this->formManager->createForDto($className, $dtoClassName, $data, $options);
     }
 
     public function getOne(int $id): ?ApiToken

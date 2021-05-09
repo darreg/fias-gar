@@ -2,7 +2,6 @@
 
 namespace App\DTO;
 
-use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ApiTokenDTO implements ConstructFromArrayInterface
@@ -13,39 +12,39 @@ class ApiTokenDTO implements ConstructFromArrayInterface
      * @Assert\NotBlank
      * @Assert\Positive
      */
-    public ?int $id;
+    public int $id;
 
     /**
      * @Assert\NotBlank
      */
-    public ?int $user;
+    public int $user;
 
     /**
      * @Assert\Length(max = 255)
      */
-    public ?string $name;
+    public string $name;
 
     /**
      * @Assert\Length(max = 255)
      * @Assert\NotBlank
      */
-    public ?string $token;
+    public string $token;
 
     /**
      * @Assert\NotBlank
      */
-    public ?string $expiresAt;
+    public string $expiresAt;
 
-    public ?bool $status;
+    public bool $status;
 
 
     public function __construct(
-        ?int $id = null,
-        ?int $user = null,
-        ?string $name = null,
-        ?string $token = null,
-        ?string $expiresAt = null,
-        ?bool $status = null
+        int $id,
+        int $user,
+        string $name,
+        string $token,
+        string $expiresAt,
+        bool $status
     ) {
         $this->id = $id;
         $this->user = $user;
