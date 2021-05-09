@@ -43,12 +43,18 @@ class UserManager
     public function add(UserNewDTO $userDto): ?User
     {
         $user = (new User())
-            ->setEmail($userDto->email)
-            ->setName($userDto->name)
-            ->setRoles($userDto->roles)
-            ->setStatus($userDto->status);
+            ->setRoles($userDto->roles ?? [])
+            ->setStatus($userDto->status ?? false);
 
-        if ($userDto->password !== null) {
+        if ($userDto->email !== null) {
+            $user->setEmail($userDto->email);
+        }
+
+        if ($userDto->name !== null) {
+            $user->setName($userDto->name);
+        }
+
+        if (!empty($userDto->password)) {
             $user->setPassword($this->passwordEncoder->encodePassword($user, $userDto->password));
         }
 

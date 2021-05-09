@@ -38,12 +38,12 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private ?string $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="string", length=180)
      */
-    private ?string $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="json")
@@ -62,7 +62,7 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -74,12 +74,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 

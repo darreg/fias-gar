@@ -21,14 +21,15 @@ class FormManager
      * @param class-string<FormTypeInterface> $className
      * @param class-string<ConstructFromArrayInterface> $dtoClassName
      */
-    public function createForDto(string $className, string $dtoClassName, array $data): FormInterface
-    {
-        $dto = new $dtoClassName();
-        if (count($data) !== 0) {
-            /** @var mixed $dto */
-            $dto = $dtoClassName::fromArray($data);
-        }
-
-        return $this->formFactory->create($className, $dto);
+    public function createForDto(
+        string $className,
+        string $dtoClassName,
+        array $data,
+        array $options = []
+    ): FormInterface {
+        /** @var mixed $dto */
+        $dto = (count($data) !== 0) ? $dtoClassName::fromArray($data) : null;
+        $options['data_class'] = $dtoClassName;
+        return $this->formFactory->create($className, $dto, $options);
     }
 }

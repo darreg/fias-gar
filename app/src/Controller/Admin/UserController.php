@@ -67,7 +67,12 @@ class UserController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->userService->createForm(UserType::class, UserDTO::class, $user);
+        $form = $this->userService->createForm(
+            UserType::class,
+            UserDTO::class,
+            $user,
+            ['password_require' => false]
+        );
 
         return $this->render('admin/user/edit.html.twig', [
             'form' => $form->createView(),
@@ -84,7 +89,12 @@ class UserController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->userService->createForm(UserType::class, UserDTO::class, $user);
+        $form = $this->userService->createForm(
+            UserType::class,
+            UserDTO::class,
+            $user,
+            ['password_require' => false]
+        );
 
         $form->handleRequest($request);
         if ($form->isValid()) {
