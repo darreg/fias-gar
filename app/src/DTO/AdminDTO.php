@@ -12,30 +12,34 @@ class AdminDTO implements ConstructFromArrayInterface
      * @Assert\NotBlank
      * @Assert\Positive
      */
-    public ?int $id;
+    public int $id;
 
     /**
      * @Assert\Length(max = 180)
      * @Assert\NotBlank
      */
-    public ?string $email;
+    public string $email;
 
     /**
      * @Assert\Length(max = 255)
      * @Assert\NotBlank
      */
-    public ?string $name;
+    public string $name;
 
     /**
-     * @var array<int, string>|null
+     * @var array<int, string>
      */
-    public ?array $roles;
+    public array $roles;
 
     /**
      * @Assert\AtLeastOneOf({
      *     @Assert\Blank,
      *     @Assert\Length(min = 6, max = 255)
      * })
+     * @Assert\Expression(
+     *     "value == this.confirmPassword",
+     *     message="Пароль и подтверждение пароля должны совпадать"
+     * )
      */
     public ?string $password;
 
@@ -50,19 +54,19 @@ class AdminDTO implements ConstructFromArrayInterface
      */
     public ?string $confirmPassword;
 
-    public ?bool $status;
+    public bool $status;
 
     /**
-     * @param array<int, string>|null $roles
+     * @param array<int, string> $roles
      */
     public function __construct(
-        ?int $id = null,
-        ?string $email = null,
-        ?string $name = null,
-        ?array $roles = null,
+        int $id,
+        string $email,
+        string $name,
+        array $roles,
+        bool $status,
         ?string $password = null,
-        ?string $confirmPassword = null,
-        ?bool $status = null
+        ?string $confirmPassword = null
     ) {
         $this->id = $id;
         $this->email = $email;

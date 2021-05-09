@@ -36,6 +36,10 @@ class UserDTO implements ConstructFromArrayInterface
      *     @Assert\Blank,
      *     @Assert\Length(min = 6, max = 255)
      * })
+     * @Assert\Expression(
+     *     "value == this.confirmPassword",
+     *     message="Пароль и подтверждение пароля должны совпадать"
+     * )
      */
     public ?string $password;
 
