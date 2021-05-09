@@ -29,7 +29,10 @@ class ExtAddrobjController extends AbstractController
      */
     public function new(): Response
     {
-        $form = $this->extAddrobjService->createForm(ExtAddrobjType::class);
+        $form = $this->extAddrobjService->createForm(
+            ExtAddrobjType::class,
+            ExtAddrobjDTO::class
+        );
 
         return $this->render('admin/extaddrobj/new.html.twig', [
             'form' => $form->createView(),
@@ -41,7 +44,10 @@ class ExtAddrobjController extends AbstractController
      */
     public function newSubmit(Request $request): Response
     {
-        $form = $this->extAddrobjService->createForm(ExtAddrobjType::class);
+        $form = $this->extAddrobjService->createForm(
+            ExtAddrobjType::class,
+            ExtAddrobjDTO::class
+        );
 
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -66,7 +72,11 @@ class ExtAddrobjController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->extAddrobjService->createForm(ExtAddrobjType::class, $extAddrobj);
+        $form = $this->extAddrobjService->createForm(
+            ExtAddrobjType::class,
+            ExtAddrobjDTO::class,
+            $extAddrobj
+        );
 
         return $this->render('admin/extaddrobj/edit.html.twig', [
             'form' => $form->createView(),
@@ -83,7 +93,11 @@ class ExtAddrobjController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->extAddrobjService->createForm(ExtAddrobjType::class, $extAddrobj);
+        $form = $this->extAddrobjService->createForm(
+            ExtAddrobjType::class,
+            ExtAddrobjDTO::class,
+            $extAddrobj
+        );
 
         $form->handleRequest($request);
         if ($form->isValid()) {

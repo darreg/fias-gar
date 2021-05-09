@@ -29,7 +29,7 @@ class ExtHouseController extends AbstractController
      */
     public function new(): Response
     {
-        $form = $this->extHouseService->createForm(ExtHouseType::class);
+        $form = $this->extHouseService->createForm(ExtHouseType::class, ExtHouseDTO::class);
 
         return $this->render('admin/exthouse/new.html.twig', [
             'form' => $form->createView(),
@@ -41,7 +41,7 @@ class ExtHouseController extends AbstractController
      */
     public function newSubmit(Request $request): Response
     {
-        $form = $this->extHouseService->createForm(ExtHouseType::class);
+        $form = $this->extHouseService->createForm(ExtHouseType::class, ExtHouseDTO::class);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -66,7 +66,11 @@ class ExtHouseController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->extHouseService->createForm(ExtHouseType::class, $extHouse);
+        $form = $this->extHouseService->createForm(
+            ExtHouseType::class,
+            ExtHouseDTO::class,
+            $extHouse
+        );
 
         return $this->render('admin/exthouse/edit.html.twig', [
             'form' => $form->createView(),
@@ -83,7 +87,11 @@ class ExtHouseController extends AbstractController
             throw new EntityNotFoundException('Объект не найден');
         }
 
-        $form = $this->extHouseService->createForm(ExtHouseType::class, $extHouse);
+        $form = $this->extHouseService->createForm(
+            ExtHouseType::class,
+            ExtHouseDTO::class,
+            $extHouse
+        );
 
         $form->handleRequest($request);
         if ($form->isValid()) {
