@@ -28,6 +28,8 @@ class User implements UserInterface
     use CreatedAtTrait;
     use UpdatedAtTrait;
 
+    public const USERNAME_FIELD = 'email';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
