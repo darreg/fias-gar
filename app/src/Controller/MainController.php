@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/", name="main")
      */
     public function index(): Response
     {

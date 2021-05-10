@@ -30,6 +30,11 @@ class UserManager
         return $this->userRepository->find($id);
     }
 
+    public function getOneByUsername(string $username): ?User
+    {
+        return $this->userRepository->findOneBy([User::USERNAME_FIELD => $username]);
+    }
+
     /**
      * @return User[]
      *

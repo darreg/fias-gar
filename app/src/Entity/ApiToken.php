@@ -58,7 +58,7 @@ class ApiToken
 
     public function __construct()
     {
-        $this->token = bin2hex(random_bytes(60));
+        $this->token = bin2hex(random_bytes(20));
         $this->expiresAt = new DateTime('+365 day');
     }
 
