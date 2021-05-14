@@ -6,6 +6,7 @@ use App\DTO\ExtAddrobjDTO;
 use App\Form\Type\ExtAddrobjType;
 use App\Service\ExtAddrobjService;
 use Doctrine\ORM\EntityNotFoundException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/admin/extaddrobj")
+ *
+ * @IsGranted("ROLE_EDITOR_EXTADDROBJ")
  */
 class ExtAddrobjController extends AbstractController
 {

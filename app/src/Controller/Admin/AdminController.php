@@ -7,6 +7,7 @@ use App\DTO\AdminNewDTO;
 use App\Form\Type\AdminType;
 use App\Service\AdminService;
 use Doctrine\ORM\EntityNotFoundException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/admin/admin")
+ *
+ * @IsGranted("ROLE_SUPER_ADMIN")
  */
 class AdminController extends AbstractController
 {
