@@ -6,6 +6,7 @@ use App\DTO\ExtHouseDTO;
 use App\Form\Type\ExtHouseType;
 use App\Service\ExtHouseService;
 use Doctrine\ORM\EntityNotFoundException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/admin/exthouse")
+ *
+ * @IsGranted("ROLE_EDITOR_EXTHOUSE")
  */
 class ExtHouseController extends AbstractController
 {
