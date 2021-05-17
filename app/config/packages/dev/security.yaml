@@ -1,5 +1,54 @@
 security:
-    firewalls:
-        api_secured_area:
-            anonymous: true
+    encoders:
+        Symfony\Component\Security\Core\User\User: 'auto'
 
+    providers:
+        admin_chain_provider:
+            chain:
+                providers: [admins_in_memory, app_admin_provider]
+
+        user_chain_provider:
+            chain:
+                providers: [users_in_memory, app_user_provider]
+
+        admins_in_memory:
+            memory:
+                users:
+                    super@admin.ru:
+                        password: '$argon2id$v=19$m=65536,t=4,p=1$Rbrq+Ai5IXl6pHKV+WjGLA$KONxiVkaI+FuQERRs6fC0pub3P6Esf6exfy5anh8uOE'
+                        roles: [ 'ROLE_SUPER_ADMIN' ]
+
+        users_in_memory:
+            memory:
+                users:
+                    user@user.ru:
+                        password: '$argon2id$v=19$m=65536,t=4,p=1$Rbrq+Ai5IXl6pHKV+WjGLA$KONxiVkaI+FuQERRs6fC0pub3P6Esf6exfy5anh8uOE'
+                        roles: [ 'ROLE_SUPER_ADMIN' ]
+
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+        app_admin_provider:
+            entity:
+                class: App\Entity\Admin
+                property: email
+
+    firewalls:
+        admin_secured_area:
+            pattern:   ^/admin
+            anonymous: false
+            lazy: true
+            provider: admin_chain_provider
+            logout:
+                path: admin_logout
+                target: /admin/login
+
+            switch_user:  { role: ROLE_SUPER_ADMIN, parameter: _impersonate }
+
+        api_secured_area:
+            pattern:   ^/api
+            stateless: true
+            anonymous: false
+            provider: user_chain_provider
