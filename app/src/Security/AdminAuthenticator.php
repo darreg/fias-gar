@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -27,7 +28,7 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
 
     public const LOGIN_ROUTE = 'admin_login';
     public const LOGIN_RESULT_ROUTE = 'admin_main';
-    
+
     private UrlGeneratorInterface $urlGenerator;
     private CsrfTokenManagerInterface $csrfTokenManager;
     private UserPasswordEncoderInterface $passwordEncoder;
@@ -83,10 +84,10 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
-        $user = $userProvider->loadUserByUsername($credentials['email']);
-
-        if (!$user) {
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
+        try {
+            $user = $userProvider->loadUserByUsername((string) $credentials['email']);
+        } catch (UsernameNotFoundException $e) {
+            throw new CustomUserMessageAuthenticationException('User could not be found.');
         }
 
         return $user;
