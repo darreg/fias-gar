@@ -27,19 +27,16 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
 
     public const LOGIN_ROUTE = 'admin_login';
     public const LOGIN_RESULT_ROUTE = 'admin_main';
-
-    private AdminRepository $adminRepository;
+    
     private UrlGeneratorInterface $urlGenerator;
     private CsrfTokenManagerInterface $csrfTokenManager;
     private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(
-        AdminRepository $adminRepository,
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
         UserPasswordEncoderInterface $passwordEncoder
     ) {
-        $this->adminRepository = $adminRepository;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
@@ -86,7 +83,7 @@ class AdminAuthenticator extends AbstractFormLoginAuthenticator implements Passw
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
-        $user = $this->adminRepository->findOneBy(['email' => $credentials['email']]);
+        $user = $userProvider->loadUserByUsername($credentials['email']);
 
         if (!$user) {
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
