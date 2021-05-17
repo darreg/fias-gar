@@ -43,8 +43,7 @@ security:
             provider: app_user_provider
             guard:
                 authenticators:
-#                    - App\Security\ApiTokenAuthenticator
-                    - App\Security\JwtTokenAuthenticator
+                    - App\Security\ApiTokenAuthenticator
 
 #        user_secured_area:
 #            pattern:   ^/
@@ -64,7 +63,6 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/v1/jwt-token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: [ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_EDITOR_USER, ROLE_EDITOR_APITOKEN, ROLE_EDITOR_EXTADDROBJ, ROLE_EDITOR_EXTHOUSE] }
 
