@@ -65,7 +65,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin, roles: [ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_EDITOR_USER, ROLE_EDITOR_APITOKEN, ROLE_EDITOR_EXTADDROBJ, ROLE_EDITOR_EXTHOUSE] }
+        - { path: ^/admin, roles: ROLE_ADMIN }
 
     role_hierarchy:
         ROLE_SUPER_ADMIN: ROLE_ADMIN, ROLE_EDITOR_USER, ROLE_EDITOR_APITOKEN, ROLE_EDITOR_EXTADDROBJ, ROLE_EDITOR_EXTHOUSE
