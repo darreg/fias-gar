@@ -14,8 +14,6 @@ services:
     ports:
       - ${NGINX_LOCAL_HTTP_PORT}:80
       - ${NGINX_LOCAL_HTTPS_PORT}:443
-    depends_on:
-      - php-fpm
     networks:
       internal:
         ipv4_address: ${PROJECT_IP}
@@ -38,6 +36,7 @@ services:
       - ./app:/app
     restart: always
     depends_on:
+      - nginx
       - postgres
       - redis
 #      - rabbit
@@ -67,6 +66,7 @@ services:
       - ./app:/app
     restart: always
     depends_on:
+      - nginx
       - postgres
       - redis
 #      - rabbit
@@ -87,6 +87,8 @@ services:
       - ./docker/postgres/data:/var/lib/postgresql/data
     shm_size: 512mb
     restart: always
+    depends_on:
+      - nginx
     ports:
       - ${POSTGRES_LOCAL_PORT}:5432
     env_file:
@@ -98,6 +100,8 @@ services:
     container_name: ${PROJECT_NAME}-redis
     image: redis:latest
     restart: always
+    depends_on:
+      - nginx
     ports:
       - ${REDIS_LOCAL_PORT}:6379
     volumes:
@@ -109,6 +113,8 @@ services:
     container_name: ${PROJECT_NAME}-rabbit
     hostname: rabbit
     image: rabbitmq:3.6.6-management
+    depends_on:
+      - nginx
     volumes:
       - ./docker/rabbit/data:/var/lib/rabbitmq/mnesia/
     ports:
@@ -127,12 +133,76 @@ services:
   mailhog:
     image: mailhog/mailhog
     container_name: ${PROJECT_NAME}-mailhog
+    depends_on:
+      - nginx
     ports:
       - ${MAILHOG_LOCAL_PORT}:1025
       - ${MAILHOG_MANAGER_PORT}:8025
     networks:
       - internal
 
+  sentry-postgres:
+    image: postgres
+    container_name: ${PROJECT_NAME}-sentry-postgres
+    depends_on:
+      - nginx
+    volumes:
+      - ./docker/sentry/postgres/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${SENTRY_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${SENTRY_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${SENTRY_POSTGRES_DB}
+    networks:
+      - internal
+
+  sentry:
+    image: sentry
+    container_name: ${PROJECT_NAME}-sentry
+    depends_on:
+      - nginx
+      - redis
+      - sentry-postgres
+    ports:
+      - ${SENTRY_LOCAL_PORT}:9000
+    environment:
+      SENTRY_POSTGRES_HOST: ${PROJECT_NAME}-sentry-postgres
+      SENTRY_REDIS_HOST: ${PROJECT_NAME}-redis
+    env_file:
+      - .env
+    networks:
+      - internal
+
+  sentry-cron:
+    image: sentry
+    container_name: ${PROJECT_NAME}-sentry-cron
+    depends_on:
+      - nginx
+      - redis
+      - sentry-postgres
+    command: "sentry run cron"
+    environment:
+      SENTRY_POSTGRES_HOST: ${PROJECT_NAME}-sentry-postgres
+      SENTRY_REDIS_HOST: ${PROJECT_NAME}-redis
+    env_file:
+      - .env
+    networks:
+      - internal
+
+  sentry-worker:
+    image: sentry
+    container_name: ${PROJECT_NAME}-sentry-worker
+    depends_on:
+      - nginx
+      - redis
+      - sentry-postgres
+    command: "sentry run worker"
+    environment:
+      SENTRY_POSTGRES_HOST: ${PROJECT_NAME}-sentry-postgres
+      SENTRY_REDIS_HOST: ${PROJECT_NAME}-redis
+    env_file:
+      - .env
+    networks:
+      - internal
 
 #volumes:
 #  socket:
