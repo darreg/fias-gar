@@ -47,6 +47,7 @@ RUN apk add --update --virtual .build-deps \
     && docker-php-ext-install \
         opcache \
         pdo_pgsql \
+        sockets \
         bcmath \
         intl \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
