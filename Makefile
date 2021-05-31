@@ -4,8 +4,6 @@ check: lint phpcs psalm
 fix: phpcbf
 
 start:
-	@bash -c "if [ ! -f \"$(PHPINIFILE)\" ]; then cp \"$(PHPINIFILE).dist\" \"$(PHPINIFILE)\"; fi"
-	@bash -c "if [ ! -f \"$(XDEBUGINIFILE)\" ]; then cp \"$(XDEBUGINIFILE).dist\" \"$(XDEBUGINIFILE)\"; fi"
 	docker-compose up -d --build
 
 stop:
