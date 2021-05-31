@@ -53,17 +53,18 @@ services:
     container_name: ${PROJECT_NAME}-php-cli
     user: "${USER_ID}:${GROUP_ID}"
     build:
-      context: ./docker/php-fpm
+      context: ./docker/php-cli
       args:
         - USER_ID
         - GROUP_ID
     volumes:
-#      - socket:/var/run
-      - ./docker/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
-      - ./docker/php-fpm/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-dev.ini
-      - ./docker/php-fpm/error_log.ini:/usr/local/etc/php/conf.d/error_log.ini
-      - ./docker/php-fpm/php.ini:/usr/local/etc/php/conf.d/40-custom.ini
+      - ./docker/php-cli/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-dev.ini
+      - ./docker/php-cli/php.ini:/usr/local/etc/php/conf.d/40-custom.ini
+      - ./docker/supervisord/supervisord.conf:/etc/supervisor/supervisord.conf
       - ./app:/app
+    ports:
+      - 9111:9111
+    command: ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
     restart: always
     depends_on:
       - nginx
