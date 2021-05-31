@@ -60,7 +60,7 @@ services:
     volumes:
       - ./docker/php-cli/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-dev.ini
       - ./docker/php-cli/php.ini:/usr/local/etc/php/conf.d/40-custom.ini
-      - ./docker/supervisord/supervisord.conf:/etc/supervisor/supervisord.conf
+      - ./docker/php-cli/supervisord.conf:/etc/supervisor/supervisord.conf
       - ./app:/app
     ports:
       - 9111:9111
