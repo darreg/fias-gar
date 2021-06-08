@@ -151,6 +151,8 @@ services:
     ports:
       - ${ELASTICSEARCH_LOCAL_PORT}:9200
       - ${ELASTICSEARCH_NODES_LOCAL_PORT}:9300
+    networks:
+      - internal
 
   kibana:
     container_name: ${PROJECT_NAME}-kibana
@@ -160,6 +162,24 @@ services:
       - elasticsearch
     ports:
       - ${KIBANA_LOCAL_PORT}:5601
+    networks:
+      - internal
+
+#  logstash:
+#    container_name: ${PROJECT_NAME}-logstash
+#    image: docker.elastic.co/logstash/logstash:7.9.2
+#    volumes:
+#      - ./docker/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+#      - ./docker/logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml
+#      - ./docker/logstash/pipeline:/usr/share/logstash/pipeline
+#      - ./docker/logstash/queries:/usr/share/logstash/config/queries
+#    depends_on:
+#      - nginx
+#      - elasticsearch
+#    ports:
+#      - ${LOGSTASH_LOCAL_PORT}:5000
+#    networks:
+#      - internal
 
   mailhog:
     image: mailhog/mailhog
