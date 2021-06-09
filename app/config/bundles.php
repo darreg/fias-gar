@@ -13,4 +13,5 @@ return [
     Sentry\SentryBundle\SentryBundle::class => ['all' => true],
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
     OldSound\RabbitMqBundle\OldSoundRabbitMqBundle::class => ['all' => true],
+    FOS\ElasticaBundle\FOSElasticaBundle::class => ['all' => true],
 ];
