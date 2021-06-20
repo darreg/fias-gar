@@ -33,3 +33,8 @@ services:
     App\Symfony\MigrationEventSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    App\Service\AsyncService:
+        calls:
+            - ['registerProducer', [!php/const App\Service\AsyncService::PARSE, '@old_sound_rabbit_mq.parse_producer']]
+            - ['registerProducer', [!php/const App\Service\AsyncService::SAVE, '@old_sound_rabbit_mq.save_producer']]
