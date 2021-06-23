@@ -36,7 +36,7 @@ final class SaveConsumer implements ConsumerInterface
             return $this->reject($e->getMessage());
         }
 
-        FiasImportXmlService::parse($message->getXml());
+        // TODO
 
 //        $userRepository = $this->entityManager->getRepository(User::class);
 
