@@ -22,10 +22,18 @@ class AsyncService
         $this->producers[$producerName] = $producer;
     }
 
-    public function publishToExchange(string $producerName, string $message, ?string $routingKey = null, ?array $additionalProperties = null): bool
-    {
+    public function publishToExchange(
+        string $producerName,
+        string $message,
+        ?string $routingKey = null,
+        ?array $additionalProperties = null
+    ): bool {
         if (isset($this->producers[$producerName])) {
-            $this->producers[$producerName]->publish($message, $routingKey ?? '', $additionalProperties ?? []);
+            $this->producers[$producerName]->publish(
+                $message,
+                $routingKey ?? '',
+                $additionalProperties ?? []
+            );
 
             return true;
         }
@@ -33,12 +41,20 @@ class AsyncService
         return false;
     }
 
-    public function publishMultipleToExchange(string $producerName, array $messages, ?string $routingKey = null, ?array $additionalProperties = null): int
-    {
+    public function publishMultipleToExchange(
+        string $producerName,
+        array $messages,
+        ?string $routingKey = null,
+        ?array $additionalProperties = null
+    ): int {
         $sentCount = 0;
         if (isset($this->producers[$producerName])) {
             foreach ($messages as $message) {
-                $this->producers[$producerName]->publish($message, $routingKey ?? '', $additionalProperties ?? []);
+                $this->producers[$producerName]->publish(
+                    $message,
+                    $routingKey ?? '',
+                    $additionalProperties ?? []
+                );
                 $sentCount++;
             }
 

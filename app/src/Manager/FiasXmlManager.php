@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
-namespace App\Service\FiasImport;
+namespace App\Manager;
 
+use App\Exception\FiasImportException;
 
-class FiasImportXmlService
+final class FiasXmlManager
 {
     public static function parse(string $tagXml): ?array
     {
