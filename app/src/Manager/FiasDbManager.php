@@ -71,7 +71,7 @@ final class FiasDbManager
             return null;
         }
 
-        return (string)$result['tableColumns'];
+        return (string)$result[0]['tableColumns'];
     }
 
     /**
