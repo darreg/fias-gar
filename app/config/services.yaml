@@ -96,6 +96,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
+    App\Manager\FiasFileManager:
+        arguments:
+            $fiasXmlDirectory: '%fias_xml_directory%'
+
     App\Service\AsyncService:
         calls:
             - ['registerProducer', [!php/const App\Service\AsyncService::PARSE, '@old_sound_rabbit_mq.parse_producer']]

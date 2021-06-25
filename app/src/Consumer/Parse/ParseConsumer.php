@@ -34,7 +34,7 @@ final class ParseConsumer implements ConsumerInterface
             $message = Message::createFromQueue($msg->getBody());
             $errors = $this->validator->validate($message);
             if ($errors->count() > 0) {
-                return $this->reject((string)$errors);
+                return $this->reject(implode(PHP_EOL, (array)$errors));
             }
         } catch (JsonException $e) {
             return $this->reject($e->getMessage());

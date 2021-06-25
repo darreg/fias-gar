@@ -8,7 +8,7 @@ use App\Exception\FiasImportException;
 
 final class FiasXmlManager
 {
-    public static function parse(string $tagXml): ?array
+    public static function parse(string $tagXml): array
     {
         $xmlElement = simplexml_load_string($tagXml);
         if (empty($xmlElement)) {
@@ -20,6 +20,6 @@ final class FiasXmlManager
             throw new FiasImportException('Не удалось получить значения аттрибутов тега');
         }
 
-        return $tagData['@attributes'];
+        return (array)$tagData['@attributes'];
     }
 }
