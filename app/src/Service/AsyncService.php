@@ -41,6 +41,9 @@ class AsyncService
         return false;
     }
 
+    /**
+     * @param array<int, string> $messages
+     */
     public function publishMultipleToExchange(
         string $producerName,
         array $messages,

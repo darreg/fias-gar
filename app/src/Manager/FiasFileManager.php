@@ -14,10 +14,14 @@ final class FiasFileManager
     public const SCHEMAS_DIR = 'Schemas';
 
     private ParameterBagInterface $parameterBag;
+    private string $fiasXmlDirectory;
 
-    public function __construct(ParameterBagInterface $parameterBag)
-    {
+    public function __construct(
+        ParameterBagInterface $parameterBag,
+        string $fiasXmlDirectory
+    ) {
         $this->parameterBag = $parameterBag;
+        $this->fiasXmlDirectory = $fiasXmlDirectory;
     }
 
     /**
@@ -60,12 +64,12 @@ final class FiasFileManager
                     break 2;
                 }
             }
+            /** @psalm-suppress PossiblyFalseOperand */
             $endPosition += $tagEndLength;
 
             yield substr($buffer, 0, $endPosition);
 
             $buffer = substr($buffer, $endPosition);
-            $startPosition += $endPosition;
         }
 
         fclose($fh);
@@ -75,9 +79,11 @@ final class FiasFileManager
     {
         $files = [];
 
+        /** @var string $fiasXmlDirectory */
         $fiasXmlDirectory = $this->parameterBag->get('fias_xml_directory');
         $finder = new Finder();
         $finder->files()->in($fiasXmlDirectory)->name('/\.xml$/i');
+        /** @var array<array-key, string> $finder */
         foreach ($finder as $file) {
             $files[] = $file;
         }
@@ -87,6 +93,7 @@ final class FiasFileManager
 
     public function getFile(string $fileName): ?string
     {
+        /** @var string $fiasXmlDirectory */
         $fiasXmlDirectory = $this->parameterBag->get('fias_xml_directory');
         $finder = new Finder();
         $finder->files()->in($fiasXmlDirectory)->name($fileName);
@@ -98,18 +105,23 @@ final class FiasFileManager
         return (string)reset($files);
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function getFileNamesByToken(string $token): array
     {
         $files = [];
 
+        /** @var string $fiasXmlDirectory */
         $fiasXmlDirectory = $this->parameterBag->get('fias_xml_directory');
         $finder = new Finder();
 
         $pattern = '/^AS_' . $token . '_([0-9]{8})_(?:.*)\.xml$/i';
 
         $finder->files()->in($fiasXmlDirectory)->name($pattern);
+        /** @var array<array-key, string> $finder */
         foreach ($finder as $file) {
-            $files[] = (string)$file;
+            $files[] = $file;
         }
 
         return $files;
@@ -125,6 +137,7 @@ final class FiasFileManager
             throw new FiasImportException('Не удалены старые XML файлы');
         }
 
+        /** @var string $fiasXmlDirectory */
         $fiasXmlDirectory = $this->parameterBag->get('fias_xml_directory');
         $filePath = $fiasXmlDirectory . '/' . $fileName;
         if (!file_exists($filePath)) {
@@ -147,12 +160,14 @@ final class FiasFileManager
 
     public function clear(): void
     {
+        /** @var string $fiasXmlDirectory */
         $fiasXmlDirectory = $this->parameterBag->get('fias_xml_directory');
         shell_exec('rm -rf ' . $fiasXmlDirectory . '/*');
     }
 
-    public function getPrimaryKeyNameByFile(string $token): ?string
+    public function getPrimaryKeyNameByFile(string $token): string
     {
+        /** @var array<string, string> $fiasTablePkeys */
         $fiasTablePkeys = $this->parameterBag->get('fias_tables_pkey');
         if (empty($fiasTablePkeys[$token])) {
             return 'id';
@@ -163,6 +178,7 @@ final class FiasFileManager
 
     public function getTableNameByFile(string $token): ?string
     {
+        /** @var array<string, string> $fiasTables */
         $fiasTables = $this->parameterBag->get('fias_tables');
         if (empty($fiasTables[$token])) {
             return null;
@@ -173,6 +189,7 @@ final class FiasFileManager
 
     public function getTagNameByFile(string $token): ?string
     {
+        /** @var array<string, string> $fiasTags */
         $fiasTags = $this->parameterBag->get('fias_tags');
         if (empty($fiasTags[$token])) {
             return null;
@@ -201,6 +218,9 @@ final class FiasFileManager
     public function getFileNameToken(string $filePath): ?string
     {
         $fileName = $this->getBaseName($filePath);
+        if ($fileName === null) {
+            return null;
+        }
 
         preg_match('/^AS_(.*?)_\d/i', $fileName, $m);
         if (!empty($m[1])) {
@@ -216,6 +236,9 @@ final class FiasFileManager
     public function getFileVersion(string $filePath): ?string
     {
         $fileName = $this->getBaseName($filePath);
+        if ($fileName === null) {
+            return null;
+        }
 
         preg_match('/^AS_(?:.*)_([0-9]{8})_/i', $fileName, $m);
         if (!empty($m[1])) {

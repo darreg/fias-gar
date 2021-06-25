@@ -27,6 +27,7 @@ final class FiasDbManager
         $this->em->clear();
     }
 
+    /** @param array<array-key, string|null> $values */
     public function upsert(
         string $tableName,
         string $primaryKey,
@@ -62,47 +63,28 @@ final class FiasDbManager
         );
 
         $result = $query->getScalarResult();
-        if (empty($result) || empty($result[0])) {
+        if (empty($result)) {
             return null;
         }
 
-        $result = $result[0];
-
-        if (empty($result['tableColumns'])) {
+        if (empty($result[0]) || empty($result[0]['tableColumns'])) {
             return null;
         }
 
-        return $result['tableColumns'];
+        return (string)$result['tableColumns'];
     }
 
-    public function disableSqlLogger(): ?SQLLogger
-    {
-        $configuration = $this->em->getConnection()->getConfiguration();
-        if ($configuration === null) {
-            return null;
-        }
-        $sqlLogger = $configuration->getSQLLogger();
-        $configuration->setSQLLogger();
-
-        return $sqlLogger;
-    }
-
-    public function enableSqlLogger(?SQLLogger $sqlLogger): void
-    {
-        $configuration = $this->em->getConnection()->getConfiguration();
-        if ($configuration === null) {
-            return;
-        }
-
-        $configuration->setSQLLogger($sqlLogger);
-    }
-
+    /**
+     * @param array<array-key, string> $tagData
+     * @return array<array-key, string|null>
+     */
     public function rebuildTagData(array $tagData, string $columnNamesAsString): array
     {
         $columnNames = $this->tableColumnsStringToArray($columnNamesAsString);
 
         $result = [];
 
+        /** @var string $columnName */
         foreach ($columnNames as $columnName) {
             $result[$columnName] = $tagData[$columnName] ?? null;
         }
@@ -127,6 +109,7 @@ final class FiasDbManager
         return $columns;
     }
 
+    /** @param array<array-key, string|null> $values */
     private function buildArrayString(array $values): string
     {
         $clearValues = [];

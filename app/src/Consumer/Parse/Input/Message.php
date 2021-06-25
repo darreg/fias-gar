@@ -4,6 +4,9 @@ namespace App\Consumer\Parse\Input;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @psalm-suppress MissingConstructor
+ */
 final class Message
 {
     /**
@@ -34,6 +37,7 @@ final class Message
 
     public static function createFromQueue(string $messageBody): self
     {
+        /** @var array<string, string> $message */
         $message = json_decode($messageBody, true, 512, JSON_THROW_ON_ERROR);
         $result = new self();
         $result->token = $message['token'];

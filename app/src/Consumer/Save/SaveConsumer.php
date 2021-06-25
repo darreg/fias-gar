@@ -33,7 +33,7 @@ final class SaveConsumer implements ConsumerInterface
             $message = Message::createFromQueue($msg->getBody());
             $errors = $this->validator->validate($message);
             if ($errors->count() > 0) {
-                return $this->reject((string)$errors);
+                return $this->reject(implode(PHP_EOL, (array)$errors));
             }
         } catch (JsonException $e) {
             return $this->reject($e->getMessage());
@@ -63,22 +63,14 @@ final class SaveConsumer implements ConsumerInterface
     public function disableSqlLogger(): ?SQLLogger
     {
         $configuration = $this->entityManager->getConnection()->getConfiguration();
-        if ($configuration === null) {
-            return null;
-        }
         $sqlLogger = $configuration->getSQLLogger();
         $configuration->setSQLLogger();
-
         return $sqlLogger;
     }
 
     public function enableSqlLogger(?SQLLogger $sqlLogger): void
     {
         $configuration = $this->entityManager->getConnection()->getConfiguration();
-        if ($configuration === null) {
-            return;
-        }
-
         $configuration->setSQLLogger($sqlLogger);
     }
 }
