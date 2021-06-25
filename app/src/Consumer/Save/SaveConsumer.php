@@ -3,7 +3,8 @@
 namespace App\Consumer\Save;
 
 use App\Consumer\Save\Input\Message;
-use App\Service\FiasImport\FiasImportXmlService;
+use App\Manager\FiasDbManager;
+use Doctrine\DBAL\Logging\SQLLogger;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
@@ -13,15 +14,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class SaveConsumer implements ConsumerInterface
 {
     private EntityManagerInterface $entityManager;
-
     private ValidatorInterface $validator;
+    private FiasDbManager $fiasDbManager;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        FiasDbManager $fiasDbManager
     ) {
         $this->entityManager = $entityManager;
         $this->validator = $validator;
+        $this->fiasDbManager = $fiasDbManager;
     }
 
     public function execute(AMQPMessage $msg): int
@@ -36,13 +39,16 @@ final class SaveConsumer implements ConsumerInterface
             return $this->reject($e->getMessage());
         }
 
-        // TODO
+        $tagData = $this->fiasDbManager->rebuildTagData($message->getData(), $message->getTableColumnNames());
 
-//        $userRepository = $this->entityManager->getRepository(User::class);
-
-
-        $this->entityManager->clear();
-        $this->entityManager->getConnection()->close();
+        $sqlLogger = $this->disableSqlLogger();
+        $this->fiasDbManager->upsert(
+            $message->getTableName(),
+            $message->getPrimaryKeyName(),
+            $tagData,
+            $message->getTableColumnNames()
+        );
+        $this->enableSqlLogger($sqlLogger);
 
         return self::MSG_ACK;
     }
@@ -52,5 +58,27 @@ final class SaveConsumer implements ConsumerInterface
         echo "Incorrect message: $error";
 
         return self::MSG_REJECT;
+    }
+
+    public function disableSqlLogger(): ?SQLLogger
+    {
+        $configuration = $this->entityManager->getConnection()->getConfiguration();
+        if ($configuration === null) {
+            return null;
+        }
+        $sqlLogger = $configuration->getSQLLogger();
+        $configuration->setSQLLogger();
+
+        return $sqlLogger;
+    }
+
+    public function enableSqlLogger(?SQLLogger $sqlLogger): void
+    {
+        $configuration = $this->entityManager->getConnection()->getConfiguration();
+        if ($configuration === null) {
+            return;
+        }
+
+        $configuration->setSQLLogger($sqlLogger);
     }
 }

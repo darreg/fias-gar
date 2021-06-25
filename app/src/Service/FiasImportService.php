@@ -61,8 +61,7 @@ final class FiasImportService
                 $primaryKeyName,
                 $tableColumnNamesAsString,
                 $xmlTag
-            )
-            )->toAMQPMessage();
+            ))->toAMQPMessage();
             $result = $this->asyncService->publishToExchange(AsyncService::PARSE, $message);
             $i++;
         }
