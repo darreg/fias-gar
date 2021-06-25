@@ -77,12 +77,14 @@ final class FiasFileManager
 
     public function getFiles(): array
     {
+        if ($this->fiasXmlDirectory === '') {
+            throw new FiasImportException('Некорректная папка с xml-файлами');
+        }
+
         $files = [];
 
-        /** @var string $fiasXmlDirectory */
-        $fiasXmlDirectory = $this->parameterBag->get('fias_xml_directory');
         $finder = new Finder();
-        $finder->files()->in($fiasXmlDirectory)->name('/\.xml$/i');
+        $finder->files()->in($this->fiasXmlDirectory)->name('/\.xml$/i');
         /** @var array<array-key, string> $finder */
         foreach ($finder as $file) {
             $files[] = $file;
@@ -93,10 +95,12 @@ final class FiasFileManager
 
     public function getFile(string $fileName): ?string
     {
-        /** @var string $fiasXmlDirectory */
-        $fiasXmlDirectory = $this->parameterBag->get('fias_xml_directory');
+        if ($this->fiasXmlDirectory === '') {
+            throw new FiasImportException('Некорректная папка с xml-файлами');
+        }
+
         $finder = new Finder();
-        $finder->files()->in($fiasXmlDirectory)->name($fileName);
+        $finder->files()->in($this->fiasXmlDirectory)->name($fileName);
         if (!$finder->hasResults()) {
             return null;
         }
@@ -110,15 +114,17 @@ final class FiasFileManager
      */
     public function getFileNamesByToken(string $token): array
     {
+        if ($this->fiasXmlDirectory === '') {
+            throw new FiasImportException('Некорректная папка с xml-файлами');
+        }
+
         $files = [];
 
-        /** @var string $fiasXmlDirectory */
-        $fiasXmlDirectory = $this->parameterBag->get('fias_xml_directory');
         $finder = new Finder();
 
         $pattern = '/^AS_' . $token . '_([0-9]{8})_(?:.*)\.xml$/i';
 
-        $finder->files()->in($fiasXmlDirectory)->name($pattern);
+        $finder->files()->in($this->fiasXmlDirectory)->name($pattern);
         /** @var array<array-key, string> $finder */
         foreach ($finder as $file) {
             $files[] = $file;
@@ -132,19 +138,21 @@ final class FiasFileManager
      */
     public function unzip(string $fileName): void
     {
+        if ($this->fiasXmlDirectory === '') {
+            throw new FiasImportException('Некорректная папка с xml-файлами');
+        }
+
         $files = $this->getFiles();
         if (!empty($files)) {
             throw new FiasImportException('Не удалены старые XML файлы');
         }
 
-        /** @var string $fiasXmlDirectory */
-        $fiasXmlDirectory = $this->parameterBag->get('fias_xml_directory');
-        $filePath = $fiasXmlDirectory . '/' . $fileName;
+        $filePath = $this->fiasXmlDirectory . '/' . $fileName;
         if (!file_exists($filePath)) {
             throw new FiasImportException('Не найден файл ' . $fileName);
         }
 
-        exec('unzip  ' . $filePath . ' -d ' . $fiasXmlDirectory, $output, $exitCode);
+        exec('unzip  ' . $filePath . ' -d ' . $this->fiasXmlDirectory, $output, $exitCode);
         if ($exitCode != 0) {
             throw new FiasImportException('Возникла ошибка при разархивировании');
         }
@@ -154,15 +162,17 @@ final class FiasFileManager
             throw new FiasImportException('Не найдены XML файлы после распаковки архива');
         }
 
-        shell_exec('chmod 777 ' . $fiasXmlDirectory . '/' . self::SCHEMAS_DIR);
-        shell_exec('chmod -R 644 ' . $fiasXmlDirectory . '/*.XML');
+        exec('chmod 777 ' . $this->fiasXmlDirectory . '/' . self::SCHEMAS_DIR);
+        exec('chmod -R 644 ' . $this->fiasXmlDirectory . '/*.XML');
     }
 
     public function clear(): void
     {
-        /** @var string $fiasXmlDirectory */
-        $fiasXmlDirectory = $this->parameterBag->get('fias_xml_directory');
-        shell_exec('rm -rf ' . $fiasXmlDirectory . '/*');
+        if ($this->fiasXmlDirectory === '') {
+            throw new FiasImportException('Некорректная папка с xml-файлами');
+        }
+
+        exec('rm -rf ' . $this->fiasXmlDirectory . '/*');
     }
 
     public function getPrimaryKeyNameByFile(string $token): string
