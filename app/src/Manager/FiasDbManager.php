@@ -97,18 +97,20 @@ final class FiasDbManager
         $configuration->setSQLLogger($sqlLogger);
     }
 
-    public static function rebuildTagData(array $tagData, array $columnNames): array
+    public function rebuildTagData(array $tagData, string $columnNamesAsString): array
     {
+        $columnNames = $this->tableColumnsStringToArray($columnNamesAsString);
+
         $result = [];
 
         foreach ($columnNames as $columnName) {
             $result[$columnName] = $tagData[$columnName] ?? null;
         }
 
-        return $result;
+        return array_values($result);
     }
 
-    public static function tableColumnsStringtoArray(
+    public function tableColumnsStringToArray(
         string $columnsAsString,
         string $strFunction = 'strtoupper'
     ): array {

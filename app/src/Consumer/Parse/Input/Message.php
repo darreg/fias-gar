@@ -10,30 +10,63 @@ final class Message
      * @Assert\Length(max = 120)
      * @Assert\NotBlank
      */
-    private string $fileToken;
+    private string $token;
 
     /**
      * @Assert\NotBlank
      */
-    private string $xml;
+    private string $tableName;
+
+    /**
+     * @Assert\NotBlank
+     */
+    private string $primaryKeyName;
+
+    /**
+     * @Assert\NotBlank
+     */
+    private string $tableColumnNames;
+
+    /**
+     * @Assert\NotBlank
+     */
+    private string $xmlTag;
 
     public static function createFromQueue(string $messageBody): self
     {
         $message = json_decode($messageBody, true, 512, JSON_THROW_ON_ERROR);
         $result = new self();
-        $result->fileToken = $message['fileToken'];
-        $result->xml = $message['xml'];
+        $result->token = $message['token'];
+        $result->tableName = $message['tableName'];
+        $result->primaryKeyName = $message['primaryKeyName'];
+        $result->tableColumnNames = $message['tableColumnNames'];
+        $result->xmlTag = $message['xmlTag'];
 
         return $result;
     }
 
-    public function getFileToken(): string
+    public function getToken(): string
     {
-        return $this->fileToken;
+        return $this->token;
     }
 
-    public function getXml(): string
+    public function getTableName(): string
     {
-        return $this->xml;
+        return $this->tableName;
+    }
+
+    public function getPrimaryKeyName(): string
+    {
+        return $this->primaryKeyName;
+    }
+
+    public function getTableColumnNames(): string
+    {
+        return $this->tableColumnNames;
+    }
+
+    public function getXmlTag(): string
+    {
+        return $this->xmlTag;
     }
 }

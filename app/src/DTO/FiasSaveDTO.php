@@ -2,18 +2,17 @@
 
 namespace App\DTO;
 
-class FiasParseDTO
+class FiasSaveDTO
 {
     private array $payload;
 
     public function __construct(
-        string $token,
         string $tableName,
         string $primaryKeyName,
         string $tableColumnNames,
-        string $xmlTag
+        array $data
     ) {
-        $this->payload = compact('token', 'tableName', 'primaryKeyName', 'tableColumnNames', 'xmlTag');
+        $this->payload = compact('tableName', 'primaryKeyName', 'tableColumnNames', 'data');
     }
 
     /**

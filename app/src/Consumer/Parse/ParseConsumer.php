@@ -3,7 +3,10 @@
 namespace App\Consumer\Parse;
 
 use App\Consumer\Parse\Input\Message;
-use App\Service\FiasImport\FiasImportXmlService;
+use App\DTO\FiasSaveDTO;
+use App\Exception\FiasImportException;
+use App\Manager\FiasXmlManager;
+use App\Service\AsyncService;
 use JsonException;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -12,13 +15,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class ParseConsumer implements ConsumerInterface
 {
     private ValidatorInterface $validator;
+    private AsyncService $asyncService;
 
     public function __construct(
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        AsyncService $asyncService
     ) {
         $this->validator = $validator;
+        $this->asyncService = $asyncService;
     }
 
+    /**
+     * @throws FiasImportException
+     */
     public function execute(AMQPMessage $msg): int
     {
         try {
@@ -31,9 +40,15 @@ final class ParseConsumer implements ConsumerInterface
             return $this->reject($e->getMessage());
         }
 
-        $data = FiasImportXmlService::parse($message->getXml());
+        $data = FiasXmlmanager::parse($message->getXmlTag());
 
-        // TODO
+        $message = (new FiasSaveDTO(
+            $message->getTableName(),
+            $message->getPrimaryKeyName(),
+            $message->getTableColumnNames(),
+            $data
+        ))->toAMQPMessage();
+        $this->asyncService->publishToExchange(AsyncService::SAVE, $message);
 
         return self::MSG_ACK;
     }

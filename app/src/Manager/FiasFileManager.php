@@ -106,9 +106,6 @@ final class FiasFileManager
         $finder = new Finder();
 
         $pattern = '/^AS_' . $token . '_([0-9]{8})_(?:.*)\.xml$/i';
-        if (preg_match('/_PARAMS$/i', $token)) {
-            $pattern = '/^AS_(?:.*)_PARAMS_([0-9]{8})_(?:.*)\.xml$/i';
-        }
 
         $finder->files()->in($fiasXmlDirectory)->name($pattern);
         foreach ($finder as $file) {
