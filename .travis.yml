@@ -3,6 +3,9 @@ language: php
 php:
   - "7.4"
 
+services:
+  - redis
+
 before_install:
   - cd app
   - phpenv config-rm xdebug.ini
