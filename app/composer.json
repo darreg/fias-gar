@@ -9,6 +9,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
+        "ext-redis": "*",
         "doctrine/cache": "^1.11",
         "doctrine/annotations": "^1.12",
         "doctrine/doctrine-bundle": "^2.2",
