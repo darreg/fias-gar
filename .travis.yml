@@ -3,13 +3,13 @@ language: php
 php:
   - "7.4"
 
-services:
-  - redis
+#services:
+#  - redis
 
 before_install:
   - cd app
   - phpenv config-rm xdebug.ini
-  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+#  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 install:
   - composer install
