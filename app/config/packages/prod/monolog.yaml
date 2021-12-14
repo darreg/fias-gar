@@ -11,9 +11,9 @@ monolog:
             path: php://stderr
             level: debug
             formatter: monolog.formatter.json
-        sentry:
-            type: service
-            id: Sentry\Monolog\Handler
+#        sentry:
+#            type: service
+#            id: Sentry\Monolog\Handler
         console:
             type: console
             process_psr_3_messages: false

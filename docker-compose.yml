@@ -83,7 +83,6 @@ services:
         - USER_ID
         - GROUP_ID
     volumes:
-      - ./app/docker/development/php-cli/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-dev.ini
       - ./app/docker/development/php-cli/php.ini:/usr/local/etc/php/conf.d/40-custom.ini
       - ./app:/app
     restart: always
@@ -91,8 +90,6 @@ services:
       - .env
     environment:
       COMPOSER_MEMORY_LIMIT: -1
-      XDEBUG_CONFIG: client_host=${XDEBUG_CLIENT_HOST} client_port=${XDEBUG_CLIENT_PORT}
-      PHP_IDE_CONFIG: serverName=${XDEBUG_IDE_SERVER_NAME}
     networks:
       - internal
 
