@@ -23,7 +23,6 @@ RUN apk add --update --virtual .build-deps \
         icu-dev \
         postgresql-dev \
         libmemcached-dev \
-        supervisor \
         freetype \
         libpng \
         libjpeg-turbo \
@@ -55,9 +54,7 @@ RUN apk add --update --virtual .build-deps \
     && rm -rf /tmp/* \
     && rm -rf /var/cache/apk/* \
     && apk del .build-deps \
-    && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev \
-    && mkdir -p /var/log/supervisor/ \
-    && chmod 777 /var/log/supervisor
+    && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
 
 RUN echo "alias ll='ls -alF'" >> /home/www-data/.bashrc
 

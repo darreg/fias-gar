@@ -1,0 +1,97 @@
+FROM php:7.4-fpm-alpine AS php-builder
+
+RUN apk add --update --virtual .build-deps \
+        autoconf \
+        make \
+        gcc \
+        g++ \
+        libtool \
+    && apk add --no-cache \
+        bash \
+        icu-dev \
+        postgresql-dev \
+    && pecl install \
+        redis \
+    && docker-php-ext-enable \
+        redis \
+    && docker-php-ext-configure \
+        bcmath \
+    && docker-php-ext-install \
+        opcache \
+        pdo_pgsql \
+        sockets \
+        bcmath \
+        intl \
+    && rm -rf /tmp/* \
+    && rm -rf /var/cache/apk/* \
+    && apk del .build-deps \
+    && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --quiet
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
+WORKDIR /app
+
+COPY ./composer.json ./composer.lock ./
+
+RUN composer install --no-dev --no-scripts --prefer-dist --optimize-autoloader
+
+######################
+
+FROM php:7.4-fpm-alpine
+
+RUN apk add --update --virtual .build-deps \
+        autoconf \
+        make \
+        gcc \
+        g++ \
+        libtool \
+    && apk add --no-cache \
+        bash \
+        icu-dev \
+        postgresql-dev \
+        rabbitmq-c-dev \
+        supervisor \
+    && pecl install \
+        redis \
+        amqp \
+    && docker-php-ext-enable \
+        redis \
+        amqp \
+    && docker-php-ext-configure \
+        bcmath \
+    && docker-php-ext-install \
+        opcache \
+        pdo_pgsql \
+        sockets \
+        bcmath \
+        intl \
+    && rm -rf /tmp/* \
+    && rm -rf /var/cache/apk/* \
+    && apk del .build-deps \
+    && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev \
+    && mkdir -p /var/log/supervisor/ \
+    && chmod 777 /var/log/supervisor
+
+COPY ./docker/production/php-workers/php.ini /usr/local/etc/php/conf.d/default.ini
+COPY ./docker/production/php-workers/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+COPY ./docker/production/php-workers/supervisord.conf /etc/supervisor/supervisord.conf
+COPY ./docker/production/php-workers/workers.conf /etc/supervisor/conf.d/workers.conf
+
+WORKDIR /app
+
+COPY --from=php-builder /app ./
+
+COPY ./bin ./bin
+COPY ./config ./config
+COPY ./public ./public
+COPY ./src ./src
+
+ENV APP_ENV prod
+
+RUN mkdir ./var
+RUN chown -R www-data:www-data ./var
+
+
+

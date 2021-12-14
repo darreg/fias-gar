@@ -48,7 +48,7 @@ BEGIN
             field_place = CONCAT(field_place, '%L', ',');
         END LOOP;
 
-    sql = format('INSERT INTO %I(%s) VALUES(%s) ON CONFLICT ("%I") DO UPDATE SET %s;', tblname, LEFT(colnames_str, -1), LEFT(field_place, -1) ,primkey, LEFT(sql, -2));
+    sql = format('INSERT INTO %I(%s) VALUES(%s) ON CONFLICT ("%I") DO UPDATE SET %s;', tblname, LEFT(colnames_str, -1), LEFT(field_place, -1), primkey, LEFT(sql, -2));
     sql = format(sql, VARIADIC params);
 
 --     RAISE NOTICE '%',sql;
