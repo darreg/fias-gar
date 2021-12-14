@@ -1,5 +1,7 @@
+_!/
 .idea/
+volumes/
+!volumes/rabbit/data/.gitignore
+!volumes/redis/data/.gitignore
+scratches/
 .env
-docker/postgres/data/
-docker/redis/data/
-docker/rabbit/data/

@@ -1,0 +1,4 @@
+FROM rabbitmq:3.9-management
+
+COPY --chown=rabbitmq:rabbitmq ./docker/production/rabbit/rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
+

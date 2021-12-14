@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  nginx:
+    image: ${REGISTRY_ADDRESS}/${PROJECT_NAME}-nginx:${NGINX_IMAGE_TAG}
+    restart: always
+    depends_on:
+      - php-fpm
+    ports:
+      - "${NGINX_LOCAL_HTTP_PORT}:80"
+      - "${NGINX_LOCAL_HTTPS_PORT}:443"
+
+  php-fpm:
+    image: ${REGISTRY_ADDRESS}/${PROJECT_NAME}-php-fpm:${PHP_FPM_IMAGE_TAG}
+    restart: always
+
+  php-workers:
+    image: ${REGISTRY_ADDRESS}/${PROJECT_NAME}-php-workers:${PHP_FPM_IMAGE_TAG}
+    restart: always
+    command: ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+
+  rabbit:
+    image: ${REGISTRY_ADDRESS}/${PROJECT_NAME}-rabbit:${RABBITMQ_IMAGE_TAG}
+    volumes:
+      - ./volumes/rabbit/data:/var/lib/rabbitmq/mnesia/
+    restart: always
+    ports:
+      - "${RABBIT_LOCAL_PORT}:5672"
+      - "${RABBIT_MANAGER_LOCAL_PORT}:15672"
+#    environment:
+#      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+#      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
