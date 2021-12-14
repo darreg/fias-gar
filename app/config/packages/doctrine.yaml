@@ -18,24 +18,24 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
 
-        metadata_cache_driver:
-            type: service
-            id: doctrine.cache.redis
-        query_cache_driver:
-            type: service
-            id: doctrine.cache.redis
-        result_cache_driver:
-            type: service
-            id: doctrine.cache.redis
+#        metadata_cache_driver:
+#            type: service
+#            id: doctrine.cache.redis
+#        query_cache_driver:
+#            type: service
+#            id: doctrine.cache.redis
+#        result_cache_driver:
+#            type: service
+#            id: doctrine.cache.redis
 
-services:
-    redis.doctrine:
-        class: Redis
-        factory: Symfony\Component\Cache\Adapter\RedisAdapter::createConnection
-        arguments:
-            - '%env(REDIS_DSN)%'
-
-    doctrine.cache.redis:
-        class: Doctrine\Common\Cache\RedisCache
-        calls:
-            - ['setRedis', ['@redis.doctrine']]
+#services:
+#    redis.doctrine:
+#        class: Redis
+#        factory: Symfony\Component\Cache\Adapter\RedisAdapter::createConnection
+#        arguments:
+#            - '%env(REDIS_DSN)%'
+#
+#    doctrine.cache.redis:
+#        class: Doctrine\Common\Cache\RedisCache
+#        calls:
+#            - ['setRedis', ['@redis.doctrine']]
