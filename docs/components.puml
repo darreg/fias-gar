@@ -37,34 +37,30 @@ component "Загрузка ФИАС" {
 }
 
 database "Postgres" {
-    rectangle "Таблицы fias_gar_*" #White
-    rectangle "Таблицы ext_*" #White
-    rectangle "Users" #White
-    rectangle "Tokens" #White
+    rectangle "fias_gar_*" #White
+    rectangle "ext_*" #White
+    rectangle "user" #White
+    rectangle "token" #White
 }
 
 component "API" {
-    [Таблицы fias_gar_*] <-- [Методы API]
-    [Таблицы ext_*] <-- [Методы API]
+    [fias_gar_*] <-- [Методы API]
+    [ext_*] <-- [Методы API]
     [Методы API]
 }
 
 component "Авторизация" {
-    [Пользователи] -up-> [Users]
-    [Токены] -up-> [Tokens]
-    [Tokens] --> [Пользователи]
+    [Пользователи] -up-> [user]
+    [Токены] -up-> [token]
+    [token] --> [Пользователи]
 }
 
-
-[Загрузка в БД] <-up- [Таблицы fias_gar_*]
 [Методы API] --> [Токены]
-[Координаты] --> [Таблицы ext_*]
-[Синонимы] --> [Таблицы ext_*]
-[Данные ФИАС] --> [Таблицы fias_gar_*]
-[Статистика] --> [Таблицы fias_gar_*]
-[Настройки] --> [Users]
-
-
-
+[Загрузка в БД] <-up- [fias_gar_*]
+[Координаты] --> [ext_*]
+[Синонимы] --> [ext_*]
+[Данные ФИАС] --> [fias_gar_*]
+[Статистика] --> [fias_gar_*]
+[Настройки] --> [user]
 
 @enduml
