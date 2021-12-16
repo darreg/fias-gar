@@ -6,4 +6,5 @@ namespace App\Shared\Domain\Bus\Query;
 
 interface QueryHandlerInterface
 {
+    public function __invoke(QueryInterface $command): void;
 }

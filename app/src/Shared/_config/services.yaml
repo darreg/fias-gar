@@ -1,0 +1,26 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\Shared\:
+        resource: '../../../src/Shared/*'
+        exclude:
+            - '../../../src/Shared/{Domain/Entity,Test}'
+
+    App\Shared\Infrastructure\Symfony\MigrationEventSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    App\Shared\Domain\Bus\Command\CommandHandlerInterface: ~
+    App\Shared\Domain\Bus\Query\QueryHandlerInterface: ~
+    App\Shared\Domain\Bus\Command\CommandInterface: ~
+    App\Shared\Domain\Bus\Query\QueryInterface: ~
+
+#    _instanceof:
+#        App\Shared\Domain\Bus\Command\CommandHandlerInterface:
+#            tags:
+#                - { name: messenger.message_handler, bus: command.bus }
+#        App\Shared\Domain\Bus\Query\QueryHandlerInterface:
+#            tags:
+#                - { name: messenger.message_handler, bus: query.bus }
