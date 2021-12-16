@@ -78,29 +78,29 @@ services:
     App\:
         resource: '../src/'
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
+            - '../src/BackOffice/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
-
-    # controllers are imported separately to make sure services can be injected
-    # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller/'
-        tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Symfony\MigrationEventSubscriber:
+    App\Shared\Infrastructure\Symfony\MigrationEventSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
-    App\Manager\FiasFileManager:
-        arguments:
-            $fiasXmlDirectory: '%fias_xml_directory%'
+#    App\Manager\FiasFileManager:
+#        arguments:
+#            $fiasXmlDirectory: '%fias_xml_directory%'
 
-    App\Service\AsyncService:
-        calls:
-            - ['registerProducer', [!php/const App\Service\AsyncService::PARSE, '@old_sound_rabbit_mq.parse_producer']]
-            - ['registerProducer', [!php/const App\Service\AsyncService::SAVE, '@old_sound_rabbit_mq.save_producer']]
+#    App\Service\AsyncService:
+#        calls:
+#            - ['registerProducer', [!php/const App\Service\AsyncService::PARSE, '@old_sound_rabbit_mq.parse_producer']]
+#            - ['registerProducer', [!php/const App\Service\AsyncService::SAVE, '@old_sound_rabbit_mq.save_producer']]
+
+    _instanceof:
+        App\Shared\Domain\Bus\Command\CommandHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }
+        App\Shared\Domain\Bus\Query\QueryHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: query.bus }
