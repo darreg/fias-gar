@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\Shared\:
+        resource: '../../src/Shared/*'
+        exclude:
+            - '../../src/Shared/{Domain/Entity,Test}'
+
+    App\Shared\Infrastructure\Symfony\MigrationEventSubscriber:
+        tags: [{ name: doctrine.event_subscriber, connection: default }]
+

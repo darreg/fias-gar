@@ -1,3 +1,0 @@
-controllers:
-  resource: '../../../src/DataLoad/Infrastructure/Controller/'
-  type: annotation

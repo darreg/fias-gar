@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\DataLoad\:
+        resource: '../../src/DataLoad/*'
+        exclude:
+            - '../../src/DataLoad/{Domain/Entity,Test}'
+
+    App\DataLoad\Infrastructure\Controller\:
+        resource: '../../src/DataLoad/Infrastructure/Controller'
+        tags: ['controller.service_arguments']
