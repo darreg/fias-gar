@@ -2,7 +2,10 @@
 
 namespace App;
 
+use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
+use App\Shared\Domain\Bus\Query\QueryHandlerInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -23,9 +26,9 @@ final class Kernel extends BaseKernel
             (require $path)($container->withPath($path), $this);
         }
 
-        $container->import('./**/_config/services.yaml');
-        $container->import('./**/_config/{services}_' . $this->environment . '.yaml');
-        $container->import('./**/_config/{packages}/' . $this->environment . '/*.yaml');
+        $container->import('./**/services.yaml');
+        $container->import('./**/{services}_' . $this->environment . '.yaml');
+        $container->import('./**/{package}_' . $this->environment . '.*.yaml');
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void
@@ -39,7 +42,15 @@ final class Kernel extends BaseKernel
             (require $path)($routes->withPath($path), $this);
         }
 
-        $routes->import('./**/_config/{routes}.yaml');
-        $routes->import('./**/_config/{routes}_' . $this->environment . '.yaml');
+        $routes->import('./**/routes.yaml');
+        $routes->import('./**/{routes}_' . $this->environment . '.yaml');
+    }
+
+    protected function build(ContainerBuilder $container): void
+    {
+        $container->registerForAutoconfiguration(CommandHandlerInterface::class)
+            ->addTag('messenger.message_handler', ['bus' => 'command.bus']);
+        $container->registerForAutoconfiguration(QueryHandlerInterface::class)
+            ->addTag('messenger.message_handler', ['bus' => 'query.bus']);
     }
 }
