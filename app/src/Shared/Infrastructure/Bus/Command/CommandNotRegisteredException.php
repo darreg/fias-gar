@@ -7,7 +7,7 @@ namespace App\Shared\Infrastructure\Bus\Command;
 use App\Shared\Domain\Bus\Command\CommandInterface;
 use RuntimeException;
 
-class CommandNotRegisteredError extends RuntimeException
+class CommandNotRegisteredException extends RuntimeException
 {
     public function __construct(CommandInterface $command)
     {

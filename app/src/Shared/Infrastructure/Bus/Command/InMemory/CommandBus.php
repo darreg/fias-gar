@@ -1,0 +1,46 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Shared\Infrastructure\Bus\Command\InMemory;
+
+use App\Shared\Domain\Bus\Command\CommandBusInterface;
+use App\Shared\Domain\Bus\Command\CommandInterface;
+use App\Shared\Infrastructure\Bus\CallableFirstParameterExtractor;
+use App\Shared\Infrastructure\Bus\Command\CommandNotRegisteredException;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Symfony\Component\Messenger\Exception\NoHandlerForMessageException;
+use Symfony\Component\Messenger\Handler\HandlersLocator;
+use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
+
+final class CommandBus implements CommandBusInterface
+{
+    private MessageBus $bus;
+
+
+    public function __construct(iterable $commandHandlers)
+    {
+        $this->bus = new MessageBus(
+            [
+                new HandleMessageMiddleware(
+                    new HandlersLocator(CallableFirstParameterExtractor::forCallables($commandHandlers))
+                ),
+            ]
+        );
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function dispatch(CommandInterface $command): void
+    {
+        try {
+            $this->bus->dispatch($command);
+        } catch (NoHandlerForMessageException $e) {
+            throw new CommandNotRegisteredException($command);
+        } catch (HandlerFailedException $e) {
+            throw $e->getPrevious() ?? $e;
+        }
+    }
+}

@@ -7,7 +7,7 @@ namespace App\Shared\Infrastructure\Bus\Query;
 use App\Shared\Domain\Bus\Query\QueryInterface;
 use RuntimeException;
 
-final class QueryNotRegisteredError extends RuntimeException
+final class QueryNotRegisteredException extends RuntimeException
 {
     public function __construct(QueryInterface $query)
     {
