@@ -41,6 +41,9 @@ composer:
 test:
 	docker-compose run --rm php-cli composer test
 
+test-functional:
+	docker-compose run --rm php-cli composer test -- --testsuite=functional
+
 build-prod-nginx:
 	docker build -f=app/docker/production/nginx.docker -t $(REGISTRY_ADDRESS)/$(PROJECT_NAME)-nginx:$(NGINX_IMAGE_TAG) app
 

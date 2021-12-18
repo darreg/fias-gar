@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
+use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
 use App\Shared\Domain\Bus\Query\QueryHandlerInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,6 +30,9 @@ final class Kernel extends BaseKernel
         $container->import('./**/services.yaml');
         $container->import('./**/{services}_' . $this->environment . '.yaml');
         $container->import('./**/{package}_' . $this->environment . '.*.yaml');
+        $container->import('./**/**/services.yaml');
+        $container->import('./**/**/{services}_' . $this->environment . '.yaml');
+        $container->import('./**/**/{package}_' . $this->environment . '.*.yaml');
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void
@@ -44,13 +48,22 @@ final class Kernel extends BaseKernel
 
         $routes->import('./**/routes.yaml');
         $routes->import('./**/{routes}_' . $this->environment . '.yaml');
+        $routes->import('./**/**/routes.yaml');
+        $routes->import('./**/**/{routes}_' . $this->environment . '.yaml');
     }
 
     protected function build(ContainerBuilder $container): void
     {
-        $container->registerForAutoconfiguration(CommandHandlerInterface::class)
+        $container
+            ->registerForAutoconfiguration(CommandHandlerInterface::class)
             ->addTag('messenger.message_handler', ['bus' => 'command.bus']);
-        $container->registerForAutoconfiguration(QueryHandlerInterface::class)
+
+        $container
+            ->registerForAutoconfiguration(QueryHandlerInterface::class)
             ->addTag('messenger.message_handler', ['bus' => 'query.bus']);
+
+        $container
+            ->registerForAutoconfiguration(EventSubscriberInterface::class)
+            ->addTag('messenger.message_handler', ['bus' => 'event.bus']);
     }
 }

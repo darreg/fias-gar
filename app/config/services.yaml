@@ -73,14 +73,6 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
-#    App\:
-#        resource: '../src/'
-#        exclude:
-#            - '../src/BackOffice/'
-#            - '../src/Kernel.php'
-
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
@@ -96,8 +88,3 @@ services:
 #        calls:
 #            - ['registerProducer', [!php/const App\Service\AsyncService::PARSE, '@old_sound_rabbit_mq.parse_producer']]
 #            - ['registerProducer', [!php/const App\Service\AsyncService::SAVE, '@old_sound_rabbit_mq.save_producer']]
-
-#    _instanceof:
-#        App\MessageHandler\CommandHandlerInterface:
-#            tags:
-#                - { name: messenger.message_handler, bus: command.bus }

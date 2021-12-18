@@ -1,9 +1,0 @@
-doctrine:
-    orm:
-        mappings:
-            App\DataLoad\Domain\Entity:
-                is_bundle: false
-                type: annotation
-                dir: '%kernel.project_dir%/src/DataLoad/Domain/Entity'
-                prefix: 'App\DataLoad\Domain\Entity'
-                alias: App
