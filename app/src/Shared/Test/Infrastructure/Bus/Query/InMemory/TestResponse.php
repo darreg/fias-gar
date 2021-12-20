@@ -6,7 +6,7 @@ namespace App\Shared\Test\Infrastructure\Bus\Query\InMemory;
 
 use App\Shared\Domain\Bus\Query\ResponseInterface;
 
-final class FakeResponse implements ResponseInterface
+final class TestResponse implements ResponseInterface
 {
     private int $number;
 

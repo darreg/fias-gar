@@ -6,6 +6,6 @@ namespace App\Shared\Test\Infrastructure\Bus\Query\InMemory;
 
 use App\Shared\Domain\Bus\Query\QueryInterface;
 
-final class FakeQuery implements QueryInterface
+final class TestQuery implements QueryInterface
 {
 }

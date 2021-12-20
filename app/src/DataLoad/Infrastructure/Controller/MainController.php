@@ -2,6 +2,8 @@
 
 namespace App\DataLoad\Infrastructure\Controller;
 
+use App\DataLoad\Application\UseCase\FirstQuery\Query;
+use App\DataLoad\Application\UseCase\OtherCommand\Command as OtherCommand;
 use App\DataLoad\Application\UseCase\CheckNewVersion\Command;
 use App\Shared\Infrastructure\Bus\Command\InMemory\CommandBus;
 use App\Shared\Infrastructure\Bus\Query\InMemory\QueryBus;
@@ -25,8 +27,15 @@ class MainController extends AbstractController
      */
     public function index(): Response
     {
-        $command = new Command('id', 'XXX!');
+        $command = new Command('id1', 'XXX!');
         $this->commandBus->dispatch($command);
+
+        $command = new OtherCommand('id2', 'ZZZ!');
+        $this->commandBus->dispatch($command);
+
+        $query = new Query('id3', 'QQQ!');
+        $result = $this->queryBus->ask($query);
+        dump($result);
 
         return new Response("<html><body>Welcome!</body></html>");
     }

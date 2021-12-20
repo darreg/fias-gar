@@ -12,43 +12,27 @@ use RuntimeException;
 
 class CommandBusTest extends TestCase
 {
-    private ?CommandBus $commandBus;
+    private CommandBus $commandBus;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->commandBus = new CommandBus([$this->commandHandler()]);
+        $this->commandBus = new CommandBus([new TestHandler()]);
     }
 
-    /** @test */
-    public function it_should_be_able_to_handle_a_command(): void
+    public function testCommandHandle(): void
     {
         $this->expectException(RuntimeException::class);
 
-        $this->commandBus->dispatch(new FakeCommand());
+        $this->commandBus->dispatch(new TestCommand());
     }
 
-    /** @test */
-    public function it_should_raise_an_exception_dispatching_a_non_registered_command(): void
+    public function testNonRegisteredCommand(): void
     {
         $this->expectException(CommandNotRegisteredException::class);
 
-        $this->commandBus->dispatch($this->command());
-    }
-
-    private function commandHandler(): object
-    {
-        return new class {
-            public function __invoke(FakeCommand $command)
-            {
-                throw new RuntimeException('This works fine!');
-            }
-        };
-    }
-
-    private function command(): CommandInterface
-    {
-        return $this->createStub(CommandInterface::class);
+        $nonRegisteredCommand = $this->createStub(CommandInterface::class);
+        $this->commandBus->dispatch($nonRegisteredCommand);
     }
 }

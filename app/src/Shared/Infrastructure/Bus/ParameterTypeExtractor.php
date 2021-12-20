@@ -15,21 +15,22 @@ use function Lambdish\Phunctional\map;
 use function Lambdish\Phunctional\reduce;
 use function Lambdish\Phunctional\reindex;
 
-final class CallableFirstParameterExtractor
+final class ParameterTypeExtractor
 {
     public static function forCallables(iterable $callables): array
     {
-        return map(self::unflatten(), reindex(self::classExtractor(new self()), $callables));
+        return map(
+            self::turnIntoArray(),
+            reindex(
+                self::newKeyFromParameterType(),
+                $callables
+            )
+        );
     }
 
     public static function forPipedCallables(iterable $callables): array
     {
         return reduce(self::pipedCallablesReducer(), $callables, []);
-    }
-
-    private static function classExtractor(CallableFirstParameterExtractor $parameterExtractor): callable
-    {
-        return static fn(callable $handler): ?string => $parameterExtractor->extract($handler);
     }
 
     private static function pipedCallablesReducer(): callable
@@ -45,28 +46,37 @@ final class CallableFirstParameterExtractor
         };
     }
 
-    private static function unflatten(): callable
+    private static function turnIntoArray(): callable
     {
         return static fn($value) => [$value];
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    public function extract($class): ?string
+    private static function newKeyFromParameterType(): callable
     {
-        $reflector = new ReflectionClass($class);
-        $method    = $reflector->getMethod('__invoke');
-
-        if ($this->hasOnlyOneParameter($method)) {
-            return $this->firstParameterClassFrom($method);
-        }
-
-        return null;
+        return static fn(callable $handler): ?string => self::extractParameterType($handler);
     }
 
-    private function firstParameterClassFrom(ReflectionMethod $method): string
+    /**
+     * @throws ReflectionException
+     * @throws LogicException
+     */
+    private static function extractParameterType($class): ?string
     {
+        $reflector = new ReflectionClass($class);
+        $method = $reflector->getMethod('__invoke');
+
+        return self::getMethodParameterType($method);
+    }
+
+    /**
+     * @throws LogicException
+     */
+    private static function getMethodParameterType(ReflectionMethod $method): ?string
+    {
+        if ($method->getNumberOfParameters() !== 1) {
+            return null;
+        }
+
         /** @var ReflectionNamedType $fistParameterType */
         $fistParameterType = $method->getParameters()[0]->getType();
 
@@ -75,10 +85,5 @@ final class CallableFirstParameterExtractor
         }
 
         return $fistParameterType->getName();
-    }
-
-    private function hasOnlyOneParameter(ReflectionMethod $method): bool
-    {
-        return $method->getNumberOfParameters() === 1;
     }
 }
