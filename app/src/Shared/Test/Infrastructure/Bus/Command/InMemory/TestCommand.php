@@ -6,6 +6,6 @@ namespace App\Shared\Test\Infrastructure\Bus\Command\InMemory;
 
 use App\Shared\Domain\Bus\Command\CommandInterface;
 
-final class FakeCommand implements CommandInterface
+final class TestCommand implements CommandInterface
 {
 }

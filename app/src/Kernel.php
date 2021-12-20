@@ -56,14 +56,17 @@ final class Kernel extends BaseKernel
     {
         $container
             ->registerForAutoconfiguration(CommandHandlerInterface::class)
-            ->addTag('messenger.message_handler', ['bus' => 'command.bus']);
+            ->addTag('messenger.message_handler', ['bus' => 'command.bus'])
+            ->addTag('app.command_handler');
 
         $container
             ->registerForAutoconfiguration(QueryHandlerInterface::class)
-            ->addTag('messenger.message_handler', ['bus' => 'query.bus']);
+            ->addTag('messenger.message_handler', ['bus' => 'query.bus'])
+            ->addTag('app.query_handler');
 
         $container
             ->registerForAutoconfiguration(EventSubscriberInterface::class)
-            ->addTag('messenger.message_handler', ['bus' => 'event.bus']);
+            ->addTag('messenger.message_handler', ['bus' => 'event.bus'])
+            ->addTag('app.domain_event_subscriber');
     }
 }

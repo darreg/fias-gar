@@ -234,6 +234,9 @@
             "tests/bootstrap.php"
         ]
     },
+    "psalm/plugin-phpunit": {
+        "version": "0.16.1"
+    },
     "psalm/plugin-symfony": {
         "version": "v2.2.1"
     },

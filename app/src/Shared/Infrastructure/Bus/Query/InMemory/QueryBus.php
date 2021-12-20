@@ -7,7 +7,7 @@ namespace App\Shared\Infrastructure\Bus\Query\InMemory;
 use App\Shared\Domain\Bus\Query\QueryBusInterface;
 use App\Shared\Domain\Bus\Query\QueryInterface;
 use App\Shared\Domain\Bus\Query\ResponseInterface;
-use App\Shared\Infrastructure\Bus\CallableFirstParameterExtractor;
+use App\Shared\Infrastructure\Bus\ParameterTypeExtractor;
 use App\Shared\Infrastructure\Bus\Query\QueryNotRegisteredException;
 use Symfony\Component\Messenger\Exception\NoHandlerForMessageException;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
@@ -24,7 +24,7 @@ class QueryBus implements QueryBusInterface
         $this->bus = new MessageBus(
             [
                 new HandleMessageMiddleware(
-                    new HandlersLocator(CallableFirstParameterExtractor::forCallables($queryHandlers))
+                    new HandlersLocator(ParameterTypeExtractor::forCallables($queryHandlers))
                 ),
             ]
         );

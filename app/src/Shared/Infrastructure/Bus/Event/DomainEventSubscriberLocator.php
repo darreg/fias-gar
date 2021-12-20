@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Shared\Infrastructure\Bus\Event;
 
 use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
-use App\Shared\Infrastructure\Bus\CallableFirstParameterExtractor;
+use App\Shared\Infrastructure\Bus\ParameterTypeExtractor;
 use RuntimeException;
 use Traversable;
 
@@ -22,7 +22,7 @@ final class DomainEventSubscriberLocator
 
     public function allSubscribedTo(string $eventClass): array
     {
-        $formatted = CallableFirstParameterExtractor::forPipedCallables($this->mapping);
+        $formatted = ParameterTypeExtractor::forPipedCallables($this->mapping);
 
         return $formatted[$eventClass];
     }
