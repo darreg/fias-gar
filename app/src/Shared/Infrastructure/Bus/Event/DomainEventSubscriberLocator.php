@@ -8,6 +8,7 @@ use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
 use App\Shared\Infrastructure\Bus\CallableFirstParameterExtractor;
 use RuntimeException;
 use Traversable;
+
 use function Lambdish\Phunctional\search;
 
 final class DomainEventSubscriberLocator
