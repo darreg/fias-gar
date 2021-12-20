@@ -7,6 +7,7 @@ use App\BackOffice\DTO\ExtAddrobjPointDTO;
 use App\BackOffice\Entity\ExtAddrobjPoint;
 use App\BackOffice\Repository\ExtAddrobjPointRepository;
 use App\BackOffice\Repository\ExtAddrobjRepository;
+
 use function App\Manager\count;
 
 class ExtAddrobjPointManager

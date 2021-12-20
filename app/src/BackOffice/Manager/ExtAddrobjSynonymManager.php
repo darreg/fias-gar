@@ -7,6 +7,7 @@ use App\BackOffice\DTO\ExtAddrobjSynonymDTO;
 use App\BackOffice\Entity\ExtAddrobjSynonym;
 use App\BackOffice\Repository\ExtAddrobjRepository;
 use App\BackOffice\Repository\ExtAddrobjSynonymRepository;
+
 use function App\Manager\count;
 
 class ExtAddrobjSynonymManager

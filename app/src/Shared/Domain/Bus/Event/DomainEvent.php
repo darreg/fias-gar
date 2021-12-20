@@ -18,7 +18,7 @@ abstract class DomainEvent implements EventInterface
     {
         $this->aggregateId = $aggregateId;
         $this->eventId = $eventId ?: Uuid::random()->value();
-        $this->dateTime = $dateTime ?: (new DateTimeImmutable)->format(DateTimeInterface::ATOM);
+        $this->dateTime = $dateTime ?: (new DateTimeImmutable())->format(DateTimeInterface::ATOM);
     }
 
     abstract public static function eventName(): string;
