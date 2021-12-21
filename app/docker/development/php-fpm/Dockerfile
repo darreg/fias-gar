@@ -29,14 +29,17 @@ RUN apk add --update --virtual .build-deps \
         freetype-dev \
         libpng-dev \
         libjpeg-turbo-dev \
+       rabbitmq-c-dev \
     && pecl install \
         xdebug \
         redis \
         memcached \
+        amqp \
     && docker-php-ext-enable \
         xdebug \
         redis \
         memcached \
+        amqp \
     && docker-php-ext-configure \
         bcmath \
     && docker-php-ext-configure gd \

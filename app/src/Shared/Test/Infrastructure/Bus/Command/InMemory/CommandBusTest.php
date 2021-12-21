@@ -18,12 +18,13 @@ class CommandBusTest extends TestCase
     {
         parent::setUp();
 
-        $this->commandBus = new CommandBus([new TestHandler()]);
+        $this->commandBus = new CommandBus([$this->commandHandler()]);
     }
 
     public function testCommandHandle(): void
     {
         $this->expectException(RuntimeException::class);
+
 
         $this->commandBus->dispatch(new TestCommand());
     }
@@ -34,5 +35,15 @@ class CommandBusTest extends TestCase
 
         $nonRegisteredCommand = $this->createStub(CommandInterface::class);
         $this->commandBus->dispatch($nonRegisteredCommand);
+    }
+
+    private function commandHandler(): object
+    {
+        return new class {
+            public function __invoke(TestCommand $command)
+            {
+                throw new RuntimeException('This works fine!');
+            }
+        };
     }
 }

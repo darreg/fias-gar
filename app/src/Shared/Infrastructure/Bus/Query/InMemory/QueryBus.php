@@ -24,7 +24,7 @@ class QueryBus implements QueryBusInterface
         $this->bus = new MessageBus(
             [
                 new HandleMessageMiddleware(
-                    new HandlersLocator(ParameterTypeExtractor::forCallables($queryHandlers))
+                    new HandlersLocator(ParameterTypeExtractor::fromHandlers($queryHandlers))
                 ),
             ]
         );

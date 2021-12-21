@@ -4,46 +4,25 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Bus;
 
-use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
 use LogicException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionNamedType;
-
 use function Lambdish\Phunctional\map;
-use function Lambdish\Phunctional\reduce;
 use function Lambdish\Phunctional\reindex;
 
 final class ParameterTypeExtractor
 {
-    public static function forCallables(iterable $callables): array
+    public static function fromHandlers(iterable $handlers): array
     {
         return map(
             self::turnIntoArray(),
             reindex(
                 self::newKeyFromParameterType(),
-                $callables
+                $handlers
             )
         );
-    }
-
-    public static function forPipedCallables(iterable $callables): array
-    {
-        return reduce(self::pipedCallablesReducer(), $callables, []);
-    }
-
-    private static function pipedCallablesReducer(): callable
-    {
-        return static function ($subscribers, EventSubscriberInterface $subscriber): array {
-            $subscribedEvents = $subscriber::subscribedTo();
-
-            foreach ($subscribedEvents as $subscribedEvent) {
-                $subscribers[$subscribedEvent][] = $subscriber;
-            }
-
-            return $subscribers;
-        };
     }
 
     private static function turnIntoArray(): callable

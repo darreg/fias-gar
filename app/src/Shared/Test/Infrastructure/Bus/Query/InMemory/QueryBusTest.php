@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Shared\Test\Infrastructure\Bus\Query\InMemory;
 
 use App\Shared\Domain\Bus\Query\QueryInterface;
+use App\Shared\Domain\Bus\Query\ResponseInterface;
 use App\Shared\Infrastructure\Bus\Query\InMemory\QueryBus;
 use App\Shared\Infrastructure\Bus\Query\QueryNotRegisteredException;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +18,7 @@ final class QueryBusTest extends TestCase
     {
         parent::setUp();
 
-        $this->queryBus = new QueryBus([new TestHandler()]);
+        $this->queryBus = new QueryBus([$this->queryHandler()]);
     }
 
     public function testSuccessfulResponse(): void
@@ -33,5 +34,15 @@ final class QueryBusTest extends TestCase
         $notRegisteredQuery = $this->createStub(QueryInterface::class);
 
         $this->queryBus->ask($notRegisteredQuery);
+    }
+
+    private function queryHandler(): object
+    {
+        return new class {
+            public function __invoke(TestQuery $query): ResponseInterface
+            {
+                return new TestResponse(42);
+            }
+        };
     }
 }

@@ -6,4 +6,5 @@ namespace App\Shared\Domain\Bus\Event;
 
 interface EventInterface
 {
+    public static function eventName(): string;
 }
