@@ -6,7 +6,7 @@ namespace App\Shared\Infrastructure\Bus\Event\InMemory;
 
 use App\Shared\Domain\Bus\Event\EventInterface;
 use App\Shared\Domain\Bus\Event\EventBusInterface;
-use App\Shared\Infrastructure\Bus\ParameterTypeExtractor;
+use App\Shared\Infrastructure\Bus\Event\DomainEventSubscriberLocator;
 use Symfony\Component\Messenger\Exception\NoHandlerForMessageException;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
@@ -22,7 +22,7 @@ class EventBus implements EventBusInterface
             [
                 new HandleMessageMiddleware(
                     new HandlersLocator(
-                        ParameterTypeExtractor::forPipedCallables($subscribers)
+                        DomainEventSubscriberLocator::getSubscribedByEventClass($subscribers)
                     )
                 ),
             ]

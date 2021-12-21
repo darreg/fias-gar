@@ -6,16 +6,16 @@ namespace App\DataLoad\Application\UseCase\FirstQuery;
 
 use App\Shared\Domain\Bus\Query\QueryHandlerInterface;
 use App\Shared\Domain\Bus\Query\ResponseInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManagerInterface;
 
 class Handler implements QueryHandlerInterface
 {
-    private EntityManagerInterface $entityManager;
+    private Connection $connection;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     /**
@@ -23,15 +23,13 @@ class Handler implements QueryHandlerInterface
      */
     public function __invoke(Query $query): ?ResponseInterface
     {
-        $connection = $this->entityManager->getConnection();
-
-        $query = $connection->createQueryBuilder()
+        $queryBuilder = $this->connection->createQueryBuilder()
             ->select('*')
             ->from('admin')
             ->setMaxResults(1)
             ->executeQuery();
 
-        $result = $query->fetchAssociative();
+        $result = $queryBuilder->fetchAssociative();
 
         if (count($result) === 0) {
             return null;

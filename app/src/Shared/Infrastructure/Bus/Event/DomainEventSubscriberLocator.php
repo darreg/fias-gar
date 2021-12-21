@@ -5,26 +5,46 @@ declare(strict_types=1);
 namespace App\Shared\Infrastructure\Bus\Event;
 
 use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
-use App\Shared\Infrastructure\Bus\ParameterTypeExtractor;
 use RuntimeException;
-use Traversable;
-
-use function Lambdish\Phunctional\search;
+use function Lambdish\Phunctional\reduce;
 
 final class DomainEventSubscriberLocator
 {
-    private array $mapping;
+    private iterable $subscribers;
+    private array $subscribed;
 
-    public function __construct(Traversable $mapping)
+    public function __construct(iterable $subscribers)
     {
-        $this->mapping = iterator_to_array($mapping);
+        $this->subscribers = $subscribers;
+        $this->subscribed = self::getSubscribedByEventClass($subscribers);
     }
 
-    public function allSubscribedTo(string $eventClass): array
+    public function getAll(): iterable
     {
-        $formatted = ParameterTypeExtractor::forPipedCallables($this->mapping);
+        return $this->subscribers;
+    }
 
-        return $formatted[$eventClass];
+    public function getSubscribedTo(string $eventClass)
+    {
+        if (!isset($this->subscribed[$eventClass])) {
+            throw new RuntimeException("The Domain Event for <$eventClass> doesn't exists or have no subscribers");
+        }
+
+        return $this->subscribed[$eventClass];
+    }
+
+    public static function getSubscribedByEventClass(iterable $subscribers): array
+    {
+        return reduce(
+            static function ($subscribers, EventSubscriberInterface $subscriber): array {
+                foreach ($subscriber->subscribedTo() as $eventClass) {
+                    $subscribers[$eventClass][] = $subscriber;
+                }
+                return $subscribers;
+            },
+            $subscribers,
+            []
+        );
     }
 
 //    public function withRabbitMqQueueNamed(string $queueName): EventSubscriberInterface
@@ -41,9 +61,4 @@ final class DomainEventSubscriberLocator
 //
 //        return $subscriber;
 //    }
-
-    public function all(): array
-    {
-        return $this->mapping;
-    }
 }

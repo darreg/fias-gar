@@ -1,0 +1,20 @@
+Events
+
+1. Создаем класс события - Event
+2. В обработчике добавляем метод subscribedTo(return [<Event>::class]) - т.е. подписываем его на событие
+3. В любом месте кода вызываем <EventBus>->publish(new <Event>(...)) - активируя событие
+
+4. В <Агрегат> выполняем recordEvent(new <Event>(...)) - т.е. фиксируем событие, которое должно вызваться
+5. В сервисе или где-то еще делаем <EventBus>->publish(...<Агрегат>->releaseEvents()); - вызывая все произошедшие события разом
+
+Query
+
+1. Создаем класс запроса - Query
+2. В обработчике делаем метод __invoke(Query $query): ?ResponseInterface
+3. В любом месте кода вызываем $result = <QueryBus>->ask(new Query(...)); для получения результата запроса
+
+Command
+
+1. Создаем класс команды - Command
+2. В обработчике делаем метод __invoke(Command $command)
+3. В любом месте кода вызываем <CommandBus>->dispatch(new Command(...));

@@ -24,7 +24,7 @@ final class CommandBus implements CommandBusInterface
             [
                 new HandleMessageMiddleware(
                     new HandlersLocator(
-                        ParameterTypeExtractor::forCallables($commandHandlers)
+                        ParameterTypeExtractor::fromHandlers($commandHandlers)
                     )
                 ),
             ]

@@ -11,9 +11,9 @@ use RuntimeException;
 
 final class DomainEventJsonDeserializer
 {
-    private DomainEventMapping $mapping;
+    private DomainEventSubscriberLocator $mapping;
 
-    public function __construct(DomainEventMapping $mapping)
+    public function __construct(DomainEventSubscriberLocator $mapping)
     {
         $this->mapping = $mapping;
     }
@@ -35,7 +35,7 @@ final class DomainEventJsonDeserializer
             $eventData['data']['attributes']['id'],
             $eventData['data']['attributes'],
             $eventData['data']['id'],
-            $eventData['data']['occurred_on']
+            $eventData['data']['date_time']
         );
     }
 }

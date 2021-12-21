@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Shared\Infrastructure\Bus\Event;
 
 use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
+use LogicException;
 use RuntimeException;
-
 use function Lambdish\Phunctional\reduce;
 use function Lambdish\Phunctional\reindex;
 
@@ -14,33 +14,39 @@ final class DomainEventMapping
 {
     private $mapping;
 
-    public function __construct(iterable $mapping)
+    public function __construct(iterable $subscribers)
     {
-        $this->mapping = reduce($this->eventsExtractor(), $mapping, []);
+        $this->mapping = reduce(self::eventsExtractor(), $subscribers, []);
     }
 
-    public function for(string $name)
+    public function for(string $eventName)
     {
-        if (!isset($this->mapping[$name])) {
-            throw new RuntimeException("The Domain Event Class for <$name> doesn't exists or have no subscribers");
+        if (!isset($this->mapping[$eventName])) {
+            throw new RuntimeException("The Domain Event Class for <$eventName> doesn't exists or have no subscribers");
         }
 
-        return $this->mapping[$name];
+        return $this->mapping[$eventName];
     }
 
-    private function eventsExtractor(): callable
+    /** @throws LogicException */
+    private static function eventsExtractor(): callable
     {
-        return fn(array $mapping, EventSubscriberInterface $subscriber) => array_merge(
-            $mapping,
+        return static fn(array $subscribers, EventSubscriberInterface $subscriber) => array_merge(
+            $subscribers,
             reindex(
-                $this->eventNameExtractor(),
-                $subscriber::subscribedTo()
+                self::eventNameExtractor(),
+                $subscriber->subscribedTo()
             )
         );
     }
 
-    private function eventNameExtractor(): callable
+    private static function eventNameExtractor(): callable
     {
-        return static fn(string $eventClass): string => $eventClass::eventName();
+        return static function(string $eventClass): string {
+            if (!method_exists($eventClass, 'eventName')) {
+                throw new LogicException("The Domain Event Class for <$eventClass> have no method 'eventName'");
+            }
+            return $eventClass::eventName();
+        };
     }
 }
