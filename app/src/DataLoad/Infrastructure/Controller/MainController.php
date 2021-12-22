@@ -2,11 +2,11 @@
 
 namespace App\DataLoad\Infrastructure\Controller;
 
-use App\DataLoad\Application\UseCase\FirstQuery\Query;
 use App\DataLoad\Application\UseCase\OtherCommand\Command as OtherCommand;
 use App\DataLoad\Application\UseCase\CheckNewVersion\Command;
-use App\Shared\Infrastructure\Bus\Command\InMemory\CommandBus;
-use App\Shared\Infrastructure\Bus\Query\InMemory\QueryBus;
+use App\DataLoad\Application\UseCase\FirstQuery\Query;
+use App\Shared\Infrastructure\Bus\Command\CommandBus;
+use App\Shared\Infrastructure\Bus\Query\QueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

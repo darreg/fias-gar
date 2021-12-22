@@ -12,21 +12,21 @@ services:
         tags: [{ name: doctrine.event_subscriber, connection: default }]
 
 
-    App\Shared\Infrastructure\Bus\Command\InMemory\CommandBus:
-        arguments: [!tagged_iterator app.command_handler]
-
-    App\Shared\Infrastructure\Bus\Query\InMemory\QueryBus:
-        arguments: [!tagged_iterator app.query_handler]
-
-
-    App\Shared\Infrastructure\Bus\Event\InMemory\EventBus:
-        arguments: [!tagged_iterator app.domain_event_subscriber]
-        lazy: true
-
-    App\Shared\Infrastructure\Bus\Event\DomainEventMapping:
-        arguments: [!tagged_iterator app.domain_event_subscriber]
-
-    App\Shared\Infrastructure\Bus\Event\DomainEventSubscriberLocator:
-        arguments: [!tagged_iterator app.domain_event_subscriber]
-
-    App\Shared\Domain\Bus\Event\EventBusInterface: '@App\Shared\Infrastructure\Bus\Event\InMemory\EventBus'
+#    App\Shared\Infrastructure\Bus\Command\InMemory\CommandBus:
+#        arguments: [!tagged_iterator app.command_handler]
+#
+#    App\Shared\Infrastructure\Bus\Query\InMemory\QueryBus:
+#        arguments: [!tagged_iterator app.query_handler]
+#
+#
+#    App\Shared\Infrastructure\Bus\Event\InMemory\EventBus:
+#        arguments: [!tagged_iterator app.domain_event_subscriber]
+#        lazy: true
+#
+#    App\Shared\Infrastructure\Bus\Event\DomainEventMapping:
+#        arguments: [!tagged_iterator app.domain_event_subscriber]
+#
+#    App\Shared\Infrastructure\Bus\Event\DomainEventSubscriberLocator:
+#        arguments: [!tagged_iterator app.domain_event_subscriber]
+#
+#    App\Shared\Domain\Bus\Event\EventBusInterface: '@App\Shared\Infrastructure\Bus\Event\InMemory\EventBus'

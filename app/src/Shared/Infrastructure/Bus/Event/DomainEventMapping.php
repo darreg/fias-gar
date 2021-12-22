@@ -35,7 +35,7 @@ final class DomainEventMapping
             $subscribers,
             reindex(
                 self::eventNameExtractor(),
-                $subscriber->subscribedTo()
+                self::getHandledMessages($subscriber)
             )
         );
     }
@@ -48,5 +48,15 @@ final class DomainEventMapping
             }
             return $eventClass::eventName();
         };
+    }
+
+    private static function getHandledMessages(EventSubscriberInterface $subscriber): array
+    {
+        $handledMessages = [];
+        foreach($subscriber->getHandledMessages() as $handledMessage) {
+            $handledMessages[] = \is_array($handledMessage) ? key($handledMessage) : $handledMessage;
+        }
+
+        return $handledMessages;
     }
 }
