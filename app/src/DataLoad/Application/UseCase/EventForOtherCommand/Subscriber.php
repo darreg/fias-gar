@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace App\DataLoad\Application\UseCase\EventForOtherCommand;
 
 use App\Shared\Domain\Bus\Event\EventInterface;
-use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
+use App\Shared\Infrastructure\Bus\Event\AbstractEventSubscriber;
 
-class Subscriber implements EventSubscriberInterface
+class Subscriber extends AbstractEventSubscriber
 {
     public function __invoke(EventInterface $event): void
     {
-        dump($event->eventName());
+        dump(['EventForOtherCommand', $event->eventName()]);
     }
 
-    public function subscribedTo(): array
+    public static function subscribeTo(): array
     {
-        return [Event::class];
+        return [Event::class, Event2::class];
     }
 }

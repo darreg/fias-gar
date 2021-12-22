@@ -6,6 +6,5 @@ namespace App\Shared\Domain\Bus\Event;
 
 interface EventSubscriberInterface
 {
-    /** @return array<int, class-string> */
-    public function subscribedTo(): array;
+    public static function subscribeTo(): array;
 }

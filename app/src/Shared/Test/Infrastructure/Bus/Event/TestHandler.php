@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Test\Infrastructure\Bus\Event\InMemory;
+namespace App\Shared\Test\Infrastructure\Bus\Event;
 
 use App\Shared\Domain\Bus\Event\EventInterface;
 use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
@@ -15,8 +15,8 @@ class TestHandler implements EventSubscriberInterface
         throw new RuntimeException('This works fine!');
     }
 
-    public function subscribedTo(): array
+    public static function getHandledMessages(): iterable
     {
-        return [EventInterface::class];
+        yield TestEvent::class;
     }
 }

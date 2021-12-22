@@ -6,7 +6,7 @@ namespace App\DataLoad\Application\UseCase\OtherCommand;
 
 use App\DataLoad\Application\UseCase\EventForOtherCommand\Event;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
-use App\Shared\Infrastructure\Bus\Event\InMemory\EventBus;
+use App\Shared\Infrastructure\Bus\Event\EventBus;
 
 class Handler implements CommandHandlerInterface
 {
@@ -21,6 +21,6 @@ class Handler implements CommandHandlerInterface
     {
         $this->eventBus->publish(new Event('one','xxx'));
 
-        dump($command);
+        dump(['OtherCommand ' . uniqid(), $command]);
     }
 }
