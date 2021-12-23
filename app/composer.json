@@ -16,7 +16,6 @@
         "doctrine/orm": "^2.8",
         "lambdish/phunctional": "^2.1",
         "nyholm/psr7": "^1.4",
-        "php-amqplib/rabbitmq-bundle": "^2.7",
         "phpdocumentor/reflection-docblock": "^5.4",
         "ramsey/uuid": "^4.2",
         "sensio/framework-extra-bundle": "^6.1",
