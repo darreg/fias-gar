@@ -7,6 +7,7 @@ use App\DataLoad\Application\UseCase\CheckNewVersion\Command;
 use App\DataLoad\Application\UseCase\Parse\Command as ParseCommand;
 use App\DataLoad\Application\UseCase\FirstQuery\Query;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
+use App\Shared\Infrastructure\Bus\Event\DomainEventNormalizer;
 use App\Shared\Infrastructure\Bus\Query\QueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,10 +30,10 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="main")
      */
-    public function index(): Response
+    public function index(DomainEventNormalizer $normalizer): Response
     {
-        $command = new ParseCommand('id1', 'Parse It!');
-        $this->commandBus->dispatch($command);
+//        $command = new ParseCommand('id1', 'Parse It!');
+//        $this->commandBus->dispatch($command);
 
 
 //        $command = new Command('id1', 'XXX!');
@@ -41,9 +42,9 @@ class MainController extends AbstractController
 //        $command = new OtherCommand('id2', 'ZZZ!');
 //        $this->commandBus->dispatch($command);
 
-        $query = new Query('id3', 'QQQ!');
-        $result = $this->queryBus->ask($query);
-        dump($result);
+//        $query = new Query('id3', 'QQQ!');
+//        $result = $this->queryBus->ask($query);
+//        dump($result);
 
         return new Response("<html><body>Welcome!</body></html>");
     }

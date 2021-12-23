@@ -23,14 +23,14 @@ abstract class DomainEvent implements EventInterface
 
     abstract public static function eventName(): string;
 
-    abstract public static function fromPrimitives(
+    abstract public static function fromArray(
         string $aggregateId,
         array $body,
         string $eventId,
         string $dateTime
     ): self;
 
-    abstract public function toPrimitives(): array;
+    abstract public function toArray(): array;
 
     public function aggregateId(): string
     {
