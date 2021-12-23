@@ -1,11 +1,5 @@
 framework:
     messenger:
-        serializer:
-            default_serializer: messenger.transport.symfony_serializer
-            symfony_serializer:
-                format: json
-                context: { }
-
         failure_transport: failed
 
         default_bus: command.bus
@@ -16,14 +10,30 @@ framework:
                 default_middleware: allow_no_handlers
 
         transports:
-             failed: '%env(MESSENGER_TRANSPORT_DSN)%?queue_name=failed'
-             sync: 'sync://'
-             async:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-#                serializer: messenger.transport.symfony_serializer
-
+            sync: 'sync://'
+            postgresql_command:
+                dsn: '%env(MESSENGER_DOCTRINE_TRANSPORT_DSN)%'
+                options:
+                    use_notify: true
+                    queue_name: command
+            postgresql_event:
+                dsn: '%env(MESSENGER_DOCTRINE_TRANSPORT_DSN)%'
+                options:
+                    use_notify: true
+                    queue_name: event
+            rabbit_command:
+                dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
+                options:
+                    queues:
+                        command: ~
+            rabbit_event:
+                dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
+                options:
+                    queues:
+                        event: ~
+            failed: '%env(MESSENGER_DOCTRINE_TRANSPORT_DSN)%?queue_name=failed'
 
         routing:
-             'App\Shared\Domain\Bus\Command\CommandInterface': sync
-             'App\Shared\Domain\Bus\Query\QueryInterface': sync
-             'App\Shared\Domain\Bus\Event\EventInterface': sync
+            'App\Shared\Domain\Bus\Command\CommandInterface': sync
+            'App\Shared\Domain\Bus\Query\QueryInterface': sync
+            'App\Shared\Domain\Bus\Event\EventInterface': postgresql_command
