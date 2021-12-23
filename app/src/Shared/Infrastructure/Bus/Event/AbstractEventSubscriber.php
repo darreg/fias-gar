@@ -16,7 +16,7 @@ abstract class AbstractEventSubscriber implements MessageSubscriberInterface, Ev
 
     public static function getHandledMessages(): iterable
     {
-        foreach(static::subscribeTo() as $className) {
+        foreach (static::subscribeTo() as $className) {
             yield $className => ['bus' => 'event.bus'];
         }
     }

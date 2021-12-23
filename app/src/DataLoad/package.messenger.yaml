@@ -1,0 +1,16 @@
+framework:
+    messenger:
+        transports:
+            rabbit_parse:
+                dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
+                options:
+                    queues:
+                        parse: ~
+            rabbit_save:
+                dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
+                options:
+                    queues:
+                        save: ~
+
+        routing:
+            'App\DataLoad\Application\UseCase\Parse\Command': rabbit_parse

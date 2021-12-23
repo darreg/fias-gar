@@ -30,7 +30,7 @@ class EventBusTest extends TestCase
 
     private function fakeEventBus(): MessageBusInterface
     {
-        return new class() implements MessageBusInterface {
+        return new class () implements MessageBusInterface {
             private EventInterface $dispatchedEvent;
 
             public function dispatch($message, array $stamps = []): Envelope

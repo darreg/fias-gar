@@ -7,6 +7,7 @@ namespace App\Shared\Infrastructure\Bus\Event;
 use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
 use LogicException;
 use RuntimeException;
+
 use function Lambdish\Phunctional\reduce;
 use function Lambdish\Phunctional\reindex;
 
@@ -42,7 +43,7 @@ final class DomainEventMapping
 
     private static function eventNameExtractor(): callable
     {
-        return static function(string $eventClass): string {
+        return static function (string $eventClass): string {
             if (!method_exists($eventClass, 'eventName')) {
                 throw new LogicException("The Domain Event Class for <$eventClass> have no method 'eventName'");
             }
@@ -53,7 +54,7 @@ final class DomainEventMapping
     private static function getHandledMessages(EventSubscriberInterface $subscriber): array
     {
         $handledMessages = [];
-        foreach($subscriber->getHandledMessages() as $handledMessage) {
+        foreach ($subscriber->getHandledMessages() as $handledMessage) {
             $handledMessages[] = \is_array($handledMessage) ? key($handledMessage) : $handledMessage;
         }
 

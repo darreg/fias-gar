@@ -31,7 +31,7 @@ final class QueryBusTest extends TestCase
 
     private function fakeQueryBus(): MessageBusInterface
     {
-        return new class() implements MessageBusInterface {
+        return new class () implements MessageBusInterface {
             private QueryInterface $dispatchedQuery;
 
             public function dispatch($message, array $stamps = []): Envelope
@@ -39,8 +39,8 @@ final class QueryBusTest extends TestCase
                 $this->dispatchedQuery = $message;
                 return (new Envelope($message))->with(new HandledStamp(
                     new TestResponse(42),
-                    'test')
-                );
+                    'test'
+                ));
             }
 
             public function lastDispatchedQuery(): QueryInterface

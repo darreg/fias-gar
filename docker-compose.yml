@@ -56,7 +56,7 @@ services:
       - ./app/docker/development/php-workers/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-dev.ini
       - ./app/docker/development/php-workers/php.ini:/usr/local/etc/php/conf.d/40-custom.ini
       - ./app/docker/development/php-workers/supervisord.conf:/etc/supervisor/supervisord.conf
-      - ./app/docker/development/php-workers/workers.conf:/etc/supervisor/conf.d/workers.conf
+#      - ./app/docker/development/php-workers/workers.conf:/etc/supervisor/conf.d/workers.conf
       - ./app:/app
     ports:
       - "9111:9111"
@@ -128,17 +128,17 @@ services:
     networks:
       - internal
 
-#  redis:
-#    container_name: ${PROJECT_NAME}-redis
-#    image: redis:latest
-#    restart: always
-#    ports:
-#      - "${REDIS_LOCAL_PORT}:6379"
-#    volumes:
-#      - ./docker/redis/data:/data
-#    networks:
-#      - internal
-#
+  redis:
+    container_name: ${PROJECT_NAME}-redis
+    image: redis:latest
+    restart: always
+    ports:
+      - "${REDIS_LOCAL_PORT}:6379"
+    volumes:
+      - ./docker/redis/data:/data
+    networks:
+      - internal
+
 #  mailhog:
 #    image: mailhog/mailhog
 #    container_name: ${PROJECT_NAME}-mailhog
