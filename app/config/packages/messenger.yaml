@@ -36,4 +36,4 @@ framework:
         routing:
             'App\Shared\Domain\Bus\Command\CommandInterface': sync
             'App\Shared\Domain\Bus\Query\QueryInterface': sync
-            'App\Shared\Domain\Bus\Event\EventInterface': postgresql_command
+            'App\Shared\Domain\Bus\Event\EventInterface': rabbit_event
