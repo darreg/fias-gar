@@ -30,7 +30,7 @@ class CommandBusTest extends TestCase
 
     private function fakeCommandBus(): MessageBusInterface
     {
-        return new class() implements MessageBusInterface {
+        return new class () implements MessageBusInterface {
             private CommandInterface $dispatchedCommand;
 
             public function dispatch($message, array $stamps = []): Envelope

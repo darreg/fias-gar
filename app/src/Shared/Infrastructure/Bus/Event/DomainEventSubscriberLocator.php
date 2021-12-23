@@ -6,6 +6,7 @@ namespace App\Shared\Infrastructure\Bus\Event;
 
 use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
 use RuntimeException;
+
 use function Lambdish\Phunctional\reduce;
 
 final class DomainEventSubscriberLocator

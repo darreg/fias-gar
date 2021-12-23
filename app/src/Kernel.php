@@ -29,9 +29,11 @@ final class Kernel extends BaseKernel
 
         $container->import('./**/services.yaml');
         $container->import('./**/{services}_' . $this->environment . '.yaml');
+        $container->import('./**/package.*.yaml');
         $container->import('./**/{package}_' . $this->environment . '.*.yaml');
         $container->import('./**/**/services.yaml');
         $container->import('./**/**/{services}_' . $this->environment . '.yaml');
+        $container->import('./**/**/package.*.yaml');
         $container->import('./**/**/{package}_' . $this->environment . '.*.yaml');
     }
 

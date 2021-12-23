@@ -19,7 +19,7 @@ class Handler implements CommandHandlerInterface
 
     public function __invoke(Command $command): void
     {
-        $this->eventBus->publish(new Event('one','xxx'));
+        $this->eventBus->publish(new Event('one', 'xxx'));
 
         dump(['OtherCommand ' . uniqid(), $command]);
     }
