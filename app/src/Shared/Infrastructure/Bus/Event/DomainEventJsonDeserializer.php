@@ -31,7 +31,7 @@ final class DomainEventJsonDeserializer
             throw new RuntimeException("The event <$eventName> doesn't exist or has no subscribers");
         }
 
-        return $eventClass::fromPrimitives(
+        return $eventClass::fromArray(
             $eventData['data']['attributes']['id'],
             $eventData['data']['attributes'],
             $eventData['data']['id'],

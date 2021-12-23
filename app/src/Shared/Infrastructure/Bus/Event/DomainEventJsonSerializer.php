@@ -19,7 +19,7 @@ final class DomainEventJsonSerializer
                 'id' => $domainEvent->eventId(),
                 'type' => $domainEvent::eventName(),
                 'date_time' => $domainEvent->dateTime(),
-                'attributes' => array_merge($domainEvent->toPrimitives(), ['id' => $domainEvent->aggregateId()]),
+                'attributes' => array_merge($domainEvent->toArray(), ['id' => $domainEvent->aggregateId()]),
             ],
             'meta' => [],
         ], JSON_THROW_ON_ERROR);

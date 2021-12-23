@@ -4,27 +4,56 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\EventForOtherCommand;
 
-use App\Shared\Domain\Bus\Event\EventInterface;
+use App\Shared\Domain\Bus\Event\DomainEvent;
 
-class Event implements EventInterface
+class Event extends DomainEvent
 {
-    private string $id;
-    private string $name;
+    private string $type;
+    private string $title;
+    private string $url;
+    private string $courseId;
 
-    public function __construct(string $id, string $name)
-    {
-        $this->id = $id;
-        $this->name = $name;
+    public function __construct(
+        string $id,
+        string $type,
+        string $title,
+        string $url,
+        string $courseId,
+        string $eventId = null,
+        string $dateTime = null
+    ) {
+        parent::__construct($id, $eventId, $dateTime);
+        $this->type = $type;
+        $this->title = $title;
+        $this->url = $url;
+        $this->courseId = $courseId;
     }
 
-    public function id(): string
-    {
-        return $this->id;
+    public static function fromArray(
+        string $aggregateId,
+        array $body,
+        string $eventId,
+        string $dateTime
+    ): self {
+        return new self(
+            $aggregateId,
+            $body['type'],
+            $body['title'],
+            $body['url'],
+            $body['course_id'],
+            $eventId,
+            $dateTime
+        );
     }
 
-    public function name(): string
+    public function toArray(): array
     {
-        return $this->name;
+        return [
+            'type'      => $this->type,
+            'title'     => $this->title,
+            'url'       => $this->url,
+            'course_id' => $this->courseId,
+        ];
     }
 
     public static function eventName(): string

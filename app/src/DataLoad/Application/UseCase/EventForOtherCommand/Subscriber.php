@@ -14,7 +14,7 @@ class Subscriber extends AbstractEventSubscriber
         dump(['EventForOtherCommand', $event->eventName()]);
     }
 
-    public static function subscribeTo(): array
+    public static function subscribedTo(): array
     {
         return [Event::class, Event2::class];
     }
