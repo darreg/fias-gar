@@ -6,9 +6,9 @@ namespace App\Shared\Domain\ValueObject;
 
 use InvalidArgumentException;
 use Stringable;
-use Symfony\Component\Uid\Ulid as SymfonyUlid;
+use Symfony\Component\Uid\Uuid as SymfonyUuid;
 
-class Ulid implements Stringable
+class Uuid implements Stringable
 {
     protected string $value;
 
@@ -19,7 +19,7 @@ class Ulid implements Stringable
 
     public static function random(): self
     {
-        return new static(SymfonyUlid::generate());
+        return new static((string)SymfonyUuid::v4());
     }
 
     public function value(): string
@@ -27,7 +27,7 @@ class Ulid implements Stringable
         return $this->value;
     }
 
-    public function equals(Ulid $other): bool
+    public function equals(Uuid $other): bool
     {
         return $this->value() === $other->value();
     }
@@ -39,7 +39,7 @@ class Ulid implements Stringable
 
     private function ensureIsValidUuid(string $id): void
     {
-        if (!SymfonyUlid::isValid($id)) {
+        if (!SymfonyUuid::isValid($id)) {
             throw new InvalidArgumentException(sprintf('<%s> does not allow the value <%s>.', static::class, $id));
         }
     }
