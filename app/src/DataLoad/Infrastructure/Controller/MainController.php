@@ -9,6 +9,7 @@ use App\DataLoad\Application\UseCase\FirstQuery\Query;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
 use App\Shared\Infrastructure\Bus\Event\DomainEventNormalizer;
 use App\Shared\Infrastructure\Bus\Query\QueryBus;
+use App\Shared\Infrastructure\UuidGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -30,8 +31,10 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="main")
      */
-    public function index(DomainEventNormalizer $normalizer): Response
+    public function index(UuidGenerator $uuidGenerator): Response
     {
+        dump($uuidGenerator->generate());
+
 //        $command = new ParseCommand('id1', 'Parse It!');
 //        $this->commandBus->dispatch($command);
 
