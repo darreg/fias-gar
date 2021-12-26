@@ -23,7 +23,7 @@
         <directory name="src"/>
         <directory name="tests"/>
         <ignoreFiles>
-            <directory name="src/BackOffice"/>
+            <directory name="src/_old_BackOffice"/>
             <directory name="vendor"/>
             <file name="src/Kernel.php"/>
             <file name="config/preload.php"/>

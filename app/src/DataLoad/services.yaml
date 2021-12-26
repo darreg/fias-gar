@@ -5,9 +5,7 @@ services:
 
     App\DataLoad\:
         resource: '../../src/DataLoad/*'
-        exclude:
-            - '../../src/DataLoad/{Domain/Entity,Test}'
 
-    App\DataLoad\Infrastructure\Controller\:
-        resource: '../../src/DataLoad/Infrastructure/Controller'
+    App\DataLoad\Presentation\Controller\:
+        resource: '../../src/DataLoad/Presentation/Controller'
         tags: ['controller.service_arguments']
