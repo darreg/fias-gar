@@ -48,8 +48,8 @@ class Point
 
     public function __construct(ExtAddrobj $extAddrobj, Id $id, LatLon $latLon)
     {
-        $this->id = $id;
         $this->extAddrobj = $extAddrobj;
+        $this->id = $id;
         $this->latLon = $latLon;
     }
 
@@ -61,6 +61,11 @@ class Point
     public function getLatLon(): LatLon
     {
         return $this->latLon;
+    }
+
+    public function setLatLon(LatLon $latLon): void
+    {
+        $this->latLon = $latLon;
     }
 
     public function __toString(): string

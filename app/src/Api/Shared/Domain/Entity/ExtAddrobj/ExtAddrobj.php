@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace App\Api\Shared\Domain\Entity\ExtAddrobj;
 
 use App\Api\Shared\Domain\Entity\ExtAddrobj\Point\Point;
+use App\Api\Shared\Domain\Entity\ExtAddrobj\Point\Id as PointId;
+use App\Api\Shared\Domain\Entity\ExtAddrobj\Point\LatLon as PointLatLon;
 use App\Api\Shared\Domain\Entity\ExtAddrobj\Synonym\Synonym;
+use App\Api\Shared\Domain\Entity\ExtAddrobj\Synonym\Id as SynonymId;
 use App\Shared\Infrastructure\Doctrine\CreatedAtTrait;
 use App\Shared\Infrastructure\Doctrine\UpdatedAtTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 
 
 /**
@@ -29,14 +33,14 @@ class ExtAddrobj
 
     /**
      * @ORM\Id()
-     * @ORM\Column(type="ext_addrobj_id")
+     * @ORM\Column(type="bigint")
      */
-    private Id $id;
+    private int $objectid;
 
     /**
-     * @ORM\Embedded(class="Addrobj", columnPrefix=false)
+     * @ORM\Column(type="string", length=36, nullable=true)
      */
-    private Addrobj $addrobj;
+    private string $objectguid;
 
     /**
      * @ORM\Embedded(class="LatLon", columnPrefix=false)
@@ -105,8 +109,8 @@ class ExtAddrobj
     private $synonyms;
 
     public function __construct(
-        Id $id,
-        Addrobj $addrobj,
+        int $objectid,
+        string $objectguid,
         LatLon $latLon,
         ?string $alias,
         ?string $anglicism,
@@ -118,8 +122,8 @@ class ExtAddrobj
         ?string $prepositive,
         ?string $locative
     ) {
-        $this->id = $id;
-        $this->addrobj = $addrobj;
+        $this->objectid = $objectid;
+        $this->objectguid = $objectguid;
         $this->latLon = $latLon;
         $this->alias = $alias;
         $this->anglicism = $anglicism;
@@ -134,5 +138,46 @@ class ExtAddrobj
         $this->synonyms = new ArrayCollection();
     }
 
+    /**
+     * @throws DomainException
+     */
+    public function addPoint(PointId $id, float $latitude, float $longitude): void
+    {
+        $latLon = PointLatLon::fromArray([$latitude, $longitude]);
+
+        foreach ($this->points as $point) {
+            if ($point->getLatLon()->isEqual($latLon)) {
+                throw new DomainException('Point already exists.');
+            }
+        }
+        $this->points->add(new Point($this, $id, $latLon));
+    }
+
+    /**
+     * @throws DomainException
+     */
+    public function editPoint(PointId $id, float $latitude, float $longitude): void
+    {
+        $latLon = PointLatLon::fromArray([$latitude, $longitude]);
+
+        foreach ($this->points as $current) {
+            if ($current->getId()->isEqual($id)) {
+                $current->setLatLon($latLon);
+                return;
+            }
+        }
+        throw new DomainException('Point is not found.');
+    }
+
+    public function removePoint(PointId $id): void
+    {
+        foreach ($this->points as $point) {
+            if ($point->getId()->isEqual($id)) {
+                $this->points->removeElement($point);
+                return;
+            }
+        }
+        throw new \DomainException('Point is not found.');
+    }
 
 }

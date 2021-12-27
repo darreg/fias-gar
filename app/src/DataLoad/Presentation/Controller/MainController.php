@@ -2,10 +2,7 @@
 
 namespace App\DataLoad\Presentation\Controller;
 
-
-use App\Api\Shared\Domain\Entity\ExtAddrobj\Addrobj;
 use App\Api\Shared\Domain\Entity\ExtAddrobj\ExtAddrobj;
-use App\Api\Shared\Domain\Entity\ExtAddrobj\Id;
 use App\Api\Shared\Domain\Entity\ExtAddrobj\LatLon;
 use App\Api\Shared\Domain\Entity\ExtAddrobj\Point\Id as PointId;
 use App\Api\Shared\Domain\Entity\ExtAddrobj\Point\LatLon as PointLatLon;
@@ -51,8 +48,8 @@ class MainController extends AbstractController
     public function index(): Response
     {
         $extAddrobj = new ExtAddrobj(
-            Id::next(),
-            new Addrobj(1316173, 'cc1bf769-7f0b-44c9-968c-31a9cd8f7ab9'),
+            1316173,
+            'cc1bf769-7f0b-44c9-968c-31a9cd8f7ab9',
             LatLon::fromString('11.222,22.333'),
             'test1',
             '',
@@ -65,11 +62,8 @@ class MainController extends AbstractController
             '',
         );
 
-        $point = new Point(
-            $extAddrobj,
-            PointId::next(),
-            PointLatLon::fromString('11.222,22.333')
-        );
+        $extAddrobj->addPoint(PointId::next(), 11.222, 22.333);
+        $extAddrobj->addPoint(PointId::next(), 22.333, 33.444);
 
         $entityRepository = $this->entityManager->getRepository(ExtAddrobj::class);
         $extAddrobjRepository = new ExtAddrobjRepository($this->entityManager, $entityRepository);

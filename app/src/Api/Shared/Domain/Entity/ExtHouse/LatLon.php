@@ -15,12 +15,12 @@ class LatLon extends LatLonValueObject
     /**
      * @ORM\Column(type="decimal", precision=14, scale=11, options={"comment"="Координаты: широта"})
      */
-    private float $latitude;
+    protected float $latitude;
 
     /**
      * @ORM\Column(type="decimal", precision=14, scale=11, options={"comment"="Координаты: долгота"})
      */
-    private float $longitude;
+    protected float $longitude;
 
     /**
      * @ORM\Column(type="smallint", nullable=true, options={"comment"="Код точности координат"})

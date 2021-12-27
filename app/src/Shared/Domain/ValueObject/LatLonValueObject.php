@@ -9,14 +9,16 @@ use Stringable;
 
 class LatLonValueObject implements Stringable
 {
+    public const DECIMALS = 6;
+
     private const LATITUDE_MAX = 90;
     private const LATITUDE_MIN = -90;
     private const LONGITUDE_MAX = 180;
     private const LONGITUDE_MIN = -180;
 
-    private float $latitude;
+    protected float $latitude;
 
-    private float $longitude;
+    protected float $longitude;
 
     public function __construct(float $latitude, float $longitude)
     {
@@ -37,6 +39,13 @@ class LatLonValueObject implements Stringable
     public function getLongitude(): float
     {
         return $this->longitude;
+    }
+
+    public function isEqual(LatLonValueObject $latLon): bool
+    {
+        return
+            self::isFloatEqual($this->latitude, $latLon->getLatitude()) &&
+            self::isFloatEqual($this->longitude, $latLon->getLongitude());
     }
 
     public static function fromString(string $latLon): static
@@ -95,5 +104,14 @@ class LatLonValueObject implements Stringable
     public function __toString(): string
     {
         return $this->latitude . ',' . $this->longitude;
+    }
+
+    protected static function isFloatEqual($one, $two): bool
+    {
+        return bccomp(
+                number_format($one, self::DECIMALS),
+                number_format($two, self::DECIMALS),
+                self::DECIMALS
+            ) === 0;
     }
 }
