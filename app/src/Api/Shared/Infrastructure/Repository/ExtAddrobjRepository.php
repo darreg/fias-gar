@@ -24,20 +24,20 @@ class ExtAddrobjRepository implements ExtAddrobjRepositoryInterface
 
     public function get(Id $id): ExtAddrobj
     {
-        /** @var ExtAddrobj $extHouse */
-        if (!$extHouse = $this->repo->find($id->getValue())) {
+        /** @var ExtAddrobj $extAddrobj */
+        if (!$extAddrobj = $this->repo->find($id->getValue())) {
             throw new DomainException('ExtAddrobj is not found.');
         }
-        return $extHouse;
+        return $extAddrobj;
     }
 
-    public function add(ExtAddrobj $extHouse): void
+    public function add(ExtAddrobj $extAddrobj): void
     {
-        $this->em->persist($extHouse);
+        $this->em->persist($extAddrobj);
     }
 
-    public function remove(ExtAddrobj $extHouse): void
+    public function remove(ExtAddrobj $extAddrobj): void
     {
-        $this->em->remove($extHouse);
+        $this->em->remove($extAddrobj);
     }
 }

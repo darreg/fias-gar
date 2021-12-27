@@ -34,12 +34,12 @@ class ExtAddrobj
     private Id $id;
 
     /**
-     * @ORM\Embedded(class="Addrobj")
+     * @ORM\Embedded(class="Addrobj", columnPrefix=false)
      */
     private Addrobj $addrobj;
 
     /**
-     * @ORM\Embedded(class="LatLon")
+     * @ORM\Embedded(class="LatLon", columnPrefix=false)
      */
     private LatLon $latLon;
 
@@ -89,20 +89,20 @@ class ExtAddrobj
     private ?string $locative;
 
     /**
-     * @var ArrayCollection<int, Point>
+     * @var ArrayCollection|Point[]
      *
      * @ORM\OneToMany(targetEntity=Point::class, mappedBy="extAddrobj", orphanRemoval=true, cascade={"all"})
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
      */
-    private ArrayCollection $points;
+    private $points;
 
     /**
-     * @var ArrayCollection<int, Synonym>
+     * @var ArrayCollection|Synonym[]
      *
      * @ORM\OneToMany(targetEntity=Synonym::class, mappedBy="extAddrobj", orphanRemoval=true, cascade={"all"})
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
      */
-    private ArrayCollection $synonyms;
+    private $synonyms;
 
     public function __construct(
         Id $id,

@@ -42,7 +42,7 @@ class Point
     private Id $id;
 
     /**
-     * @ORM\Embedded(class="LatLon")
+     * @ORM\Embedded(class="LatLon", columnPrefix=false)
      */
     private LatLon $latLon;
 

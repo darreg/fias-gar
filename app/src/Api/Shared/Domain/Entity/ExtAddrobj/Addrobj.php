@@ -7,6 +7,9 @@ namespace App\Api\Shared\Domain\Entity\ExtAddrobj;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
 
+/**
+ * @ORM\Embeddable
+ */
 class Addrobj
 {
     /**
