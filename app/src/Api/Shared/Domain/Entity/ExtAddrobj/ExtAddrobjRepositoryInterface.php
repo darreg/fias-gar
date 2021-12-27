@@ -6,7 +6,7 @@ namespace App\Api\Shared\Domain\Entity\ExtAddrobj;
 
 interface ExtAddrobjRepositoryInterface
 {
-    public function get(Id $id): ExtAddrobj;
+    public function get(int $objectid): ExtAddrobj;
 
     public function add(ExtAddrobj $extAddrobj): void;
 

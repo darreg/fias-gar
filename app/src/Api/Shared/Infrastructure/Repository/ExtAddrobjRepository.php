@@ -22,10 +22,10 @@ class ExtAddrobjRepository implements ExtAddrobjRepositoryInterface
         $this->repo = $repo;
     }
 
-    public function get(Id $id): ExtAddrobj
+    public function get(int $objectid): ExtAddrobj
     {
         /** @var ExtAddrobj $extAddrobj */
-        if (!$extAddrobj = $this->repo->find($id->getValue())) {
+        if (!$extAddrobj = $this->repo->find($objectid)) {
             throw new DomainException('ExtAddrobj is not found.');
         }
         return $extAddrobj;
