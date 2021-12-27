@@ -21,12 +21,12 @@ doctrine:
 #                prefix: 'App\Entity'
 #                alias: App
 
-        metadata_cache_driver:
-            type: pool
-            pool: doctrine.cache.redis
-        query_cache_driver:
-            type: pool
-            pool: doctrine.cache.redis
-        result_cache_driver:
-            type: pool
-            pool: doctrine.cache.redis
+#        metadata_cache_driver:
+#            type: pool
+#            pool: doctrine.cache.redis
+#        query_cache_driver:
+#            type: pool
+#            pool: doctrine.cache.redis
+#        result_cache_driver:
+#            type: pool
+#            pool: doctrine.cache.redis

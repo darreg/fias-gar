@@ -13,12 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 class LatLon extends LatLonValueObject
 {
     /**
-     * @ORM\Column(type="decimal", precision=14, scale=11, options={"comment"="Координаты: широта"})
+     * @ORM\Column(name="latitude", type="decimal", precision=14, scale=11, options={"comment"="Координаты: широта"})
      */
     private float $latitude;
 
     /**
-     * @ORM\Column(type="decimal", precision=14, scale=11, options={"comment"="Координаты: долгота"})
+     * @ORM\Column(name="longitude", type="decimal", precision=14, scale=11, options={"comment"="Координаты: долгота"})
      */
     private float $longitude;
 }
