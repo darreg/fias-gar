@@ -109,9 +109,9 @@ class LatLonValueObject implements Stringable
     protected static function isFloatEqual($one, $two): bool
     {
         return bccomp(
-                number_format($one, self::DECIMALS),
-                number_format($two, self::DECIMALS),
-                self::DECIMALS
-            ) === 0;
+            number_format($one, self::DECIMALS),
+            number_format($two, self::DECIMALS),
+            self::DECIMALS
+        ) === 0;
     }
 }

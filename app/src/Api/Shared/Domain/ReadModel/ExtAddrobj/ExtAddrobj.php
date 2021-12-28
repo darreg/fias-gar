@@ -6,5 +6,4 @@ namespace App\Api\Shared\Domain\ReadModel\ExtAddrobj;
 
 class ExtAddrobj
 {
-
 }

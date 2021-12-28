@@ -5,6 +5,7 @@ namespace App\Api\Shared\Domain\Entity\ExtHouse;
 use App\Shared\Infrastructure\Doctrine\CreatedAtTrait;
 use App\Shared\Infrastructure\Doctrine\UpdatedAtTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Webmozart\Assert\Assert;
 
 /**
  * ExtHouse
@@ -26,35 +27,41 @@ class ExtHouse
 
     /**
      * @ORM\Id()
-     * @ORM\Column(type="ext_addrobj_id")
+     * @ORM\Column(type="bigint")
      */
-    private Id $id;
+    private int $objectid;
 
     /**
-     * @ORM\Embedded(class="House")
+     * @ORM\Column(type="string", length=36, nullable=true)
      */
-    private House $house;
+    private string $objectguid;
 
     /**
-     * @ORM\Embedded(class="LatLon")
+     * @ORM\Embedded(class="LatLon", columnPrefix=false)
      */
     private LatLon $latLon;
 
-    public function __construct(Id $id, House $house, LatLon $latLon)
-    {
-        $this->id = $id;
-        $this->house = $house;
+    public function __construct(
+        int $objectid,
+        string $objectguid,
+        LatLon $latLon
+    ) {
+        Assert::notEmpty($objectid);
+        Assert::notEmpty($objectguid);
+
+        $this->objectid = $objectid;
+        $this->objectguid = $objectguid;
         $this->latLon = $latLon;
     }
 
-    public function getId(): Id
+    public function getObjectid(): int
     {
-        return $this->id;
+        return $this->objectid;
     }
 
-    public function getHouse(): House
+    public function getObjectguid(): string
     {
-        return $this->house;
+        return $this->objectguid;
     }
 
     public function getLatLon(): LatLon

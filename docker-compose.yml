@@ -135,7 +135,7 @@ services:
     ports:
       - "${REDIS_LOCAL_PORT}:6379"
     volumes:
-      - ./docker/redis/data:/data
+      - ./volumes/redis/data:/data
     networks:
       - internal
 
