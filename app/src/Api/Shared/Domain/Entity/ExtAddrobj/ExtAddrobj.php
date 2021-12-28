@@ -14,7 +14,7 @@ use App\Shared\Infrastructure\Doctrine\UpdatedAtTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
-
+use Webmozart\Assert\Assert;
 
 /**
  * @ORM\Table(
@@ -122,6 +122,9 @@ class ExtAddrobj
         ?string $prepositive,
         ?string $locative
     ) {
+        Assert::notEmpty($objectid);
+        Assert::notEmpty($objectguid);
+
         $this->objectid = $objectid;
         $this->objectguid = $objectguid;
         $this->latLon = $latLon;
@@ -160,9 +163,9 @@ class ExtAddrobj
     {
         $latLon = PointLatLon::fromArray([$latitude, $longitude]);
 
-        foreach ($this->points as $current) {
-            if ($current->getId()->isEqual($id)) {
-                $current->setLatLon($latLon);
+        foreach ($this->points as $point) {
+            if ($point->getId()->isEqual($id)) {
+                $point->setLatLon($latLon);
                 return;
             }
         }
@@ -180,4 +183,51 @@ class ExtAddrobj
         throw new \DomainException('Point is not found.');
     }
 
+    public function getPoints(): array
+    {
+        return $this->points->toArray();
+    }
+
+    /**
+     * @throws DomainException
+     */
+    public function addSynonym(SynonymId $id, string $name): void
+    {
+        foreach ($this->synonyms as $synonym) {
+            if ($synonym->getName() === $name) {
+                throw new DomainException('Synonym already exists.');
+            }
+        }
+        $this->synonyms->add(new Synonym($this, $id, $name));
+    }
+
+    /**
+     * @throws DomainException
+     */
+    public function editSynonym(SynonymId $id, string $name): void
+    {
+        foreach ($this->synonyms as $synonym) {
+            if ($synonym->getId()->isEqual($id)) {
+                $synonym->setName($name);
+                return;
+            }
+        }
+        throw new DomainException('Synonym is not found.');
+    }
+
+    public function removeSynonym(SynonymId $id): void
+    {
+        foreach ($this->synonyms as $synonym) {
+            if ($synonym->getId()->isEqual($id)) {
+                $this->synonyms->removeElement($synonym);
+                return;
+            }
+        }
+        throw new \DomainException('Synonym is not found.');
+    }
+
+    public function getSynonyms(): array
+    {
+        return $this->synonyms->toArray();
+    }
 }

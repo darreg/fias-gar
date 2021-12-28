@@ -6,7 +6,7 @@ namespace App\Api\Shared\Domain\Entity\ExtHouse;
 
 interface ExtHouseRepositoryInterface
 {
-    public function get(Id $id): ExtHouse;
+    public function get(int $objectid): ExtHouse;
 
     public function add(ExtHouse $extHouse): void;
 

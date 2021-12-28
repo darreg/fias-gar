@@ -6,7 +6,6 @@ namespace App\Api\Shared\Infrastructure\Repository;
 
 use App\Api\Shared\Domain\Entity\ExtAddrobj\ExtAddrobj;
 use App\Api\Shared\Domain\Entity\ExtAddrobj\ExtAddrobjRepositoryInterface;
-use App\Api\Shared\Domain\Entity\ExtAddrobj\Id;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use DomainException;

@@ -43,7 +43,7 @@ class LatLonTest extends TestCase
         $this->assertEquals($expected, $result, "$latitude, $longitude");
     }
 
-    public function validationDataProvider():array
+    public function validationDataProvider(): array
     {
         return [
             [0.0, 0.0, true],
@@ -55,5 +55,4 @@ class LatLonTest extends TestCase
             [11.2222, 22.3333, true],
         ];
     }
-
 }
