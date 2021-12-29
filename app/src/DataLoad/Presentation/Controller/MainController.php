@@ -2,30 +2,18 @@
 
 namespace App\DataLoad\Presentation\Controller;
 
-use App\Api\Shared\Domain\Entity\ExtAddrobj\ExtAddrobj;
-use App\Api\Shared\Domain\Entity\ExtAddrobj\LatLon;
-use App\Api\Shared\Domain\Entity\ExtAddrobj\Point\Id as PointId;
-use App\Api\Shared\Domain\Entity\ExtAddrobj\Point\LatLon as PointLatLon;
-use App\Api\Shared\Domain\Entity\ExtAddrobj\Point\Point;
-use App\Api\Shared\Domain\Entity\ExtAddrobj\Synonym\Synonym;
-use App\Api\Shared\Domain\Entity\ExtAddrobj\Synonym\Id as SynonymId;
-use App\Api\Shared\Domain\Entity\ExtHouse\ExtHouse;
-use App\Api\Shared\Domain\Entity\ExtHouse\LatLon as ExtHouseLatLon;
-use App\Api\Shared\Infrastructure\Repository\ExtAddrobjRepository;
-use App\Api\Shared\Infrastructure\Repository\ExtHouseRepository;
-use App\DataLoad\Application\UseCase\OtherCommand\Command as OtherCommand;
 use App\DataLoad\Application\UseCase\CheckNewVersion\Command;
-use App\DataLoad\Application\UseCase\Parse\Command as ParseCommand;
 use App\DataLoad\Application\UseCase\FirstQuery\Query;
+use App\DataLoad\Infrastructure\FiasTable\FiasTableFactory;
+use App\DataLoad\Infrastructure\FiasTable\FiasTableParameters;
+use App\DataLoad\Infrastructure\FiasTable\FiasTableSaver;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
-use App\Shared\Infrastructure\Bus\Event\DomainEventNormalizer;
 use App\Shared\Infrastructure\Bus\Query\QueryBus;
 use App\Shared\Infrastructure\Persistence\DoctrineFlusher;
-use App\Shared\Infrastructure\UuidGenerator;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
@@ -34,26 +22,52 @@ class MainController extends AbstractController
     private CommandBus $commandBus;
     private DoctrineFlusher $doctrineFlusher;
     private EntityManagerInterface $entityManager;
+    private FiasTableSaver $dataSaver;
+    private FiasTableParameters $fiasTableParameters;
+    private FiasTableFactory $fiasTableFactory;
 
     public function __construct(
+        FiasTableParameters    $fiasTableParameters,
+        FiasTableFactory    $fiasTableFactory,
+        FiasTableSaver         $dataSaver,
         EntityManagerInterface $entityManager,
-        DoctrineFlusher $doctrineFlusher,
-        QueryBus $queryBus,
-        CommandBus $commandBus
+        DoctrineFlusher        $doctrineFlusher,
+        QueryBus               $queryBus,
+        CommandBus             $commandBus
     ) {
         $this->queryBus = $queryBus;
         $this->commandBus = $commandBus;
         $this->doctrineFlusher = $doctrineFlusher;
         $this->entityManager = $entityManager;
+        $this->dataSaver = $dataSaver;
+        $this->fiasTableParameters = $fiasTableParameters;
+        $this->fiasTableFactory = $fiasTableFactory;
     }
 
     /**
      * @Route("/", name="main")
      */
-    public function index(): Response
+    public function index(Connection $connection): Response
     {
-        $entityRepository = $this->entityManager->getRepository(ExtHouse::class);
-        $extHouseRepository = new ExtHouseRepository($this->entityManager, $entityRepository);
+
+//        $this->dataSaver->getTableColumns('fias_gar_addrobjtypes');
+
+        $driver = $connection->getDriver();
+
+//        $pdo = $connection->getDriver()->getWrappedConnection();
+//        dump($pdo);
+//
+//        $query = $pdo->query('SELECT * FROM fias_gar_addrobjtypes LIMIT 1');
+//        $query->
+
+//        $data = $pdo->
+//            query('SELECT * FROM fias_gar_addrobjtypes LIMIT 1')->
+//            fetchAll(PDO::FETCH_CLASS, FiasGarAddrobjtypes::class);
+//
+//        dump($data);
+
+//        $entityRepository = $this->entityManager->getRepository(ExtHouse::class);
+//        $extHouseRepository = new ExtHouseRepository($this->entityManager, $entityRepository);
 
 //        $extHouse = new ExtHouse(
 //            37745114,

@@ -1,3 +1,67 @@
+parameters:
+    fias_xml_directory: '%kernel.project_dir%/var/xml'
+    fias_tables_pkey:
+        object_levels: 'level'
+        reestr_objects: 'objectid'
+    fias_tables:
+        addr_obj: 'fias_gar_addrobj'
+        addr_obj_division: 'fias_gar_addrobjdivision'
+        addr_obj_params: 'fias_gar_param'
+        adm_hierarchy: 'fias_gar_admhierarchy'
+        apartments: 'fias_gar_apartments'
+        apartments_params: 'fias_gar_param'
+        carplaces: 'fias_gar_carplaces'
+        carplaces_params: 'fias_gar_param'
+        change_history: 'fias_gar_changehistory'
+        houses: 'fias_gar_houses'
+        houses_params: 'fias_gar_param'
+        mun_hierarchy: 'fias_gar_munhierarchy'
+        normative_docs: 'fias_gar_normativedocs'
+        reestr_objects: 'fias_gar_reestrobjects'
+        rooms: 'fias_gar_rooms'
+        rooms_params: 'fias_gar_param'
+        steads: 'fias_gar_steads'
+        steads_params: 'fias_gar_param'
+        addhouse_types: 'fias_gar_housetypes'
+        addr_obj_types: 'fias_gar_addrobjtypes'
+        apartment_types: 'fias_gar_apartmenttypes'
+        house_types: 'fias_gar_housetypes'
+        normative_docs_kinds: 'fias_gar_normativedocskinds'
+        normative_docs_types: 'fias_gar_normativedocstypes'
+        object_levels: 'fias_gar_objectlevels'
+        operation_types: 'fias_gar_operationtypes'
+        param_types: 'fias_gar_paramtypes'
+        room_types: 'fias_gar_roomtypes'
+    fias_tags:
+        addr_obj: 'OBJECT'
+        addr_obj_division: 'ITEM'
+        addr_obj_params: 'PARAM'
+        adm_hierarchy: 'ITEM'
+        apartments: 'APARTMENT'
+        apartments_params: 'PARAM'
+        carplaces: 'CARPLACE'
+        carplaces_params: 'PARAM'
+        change_history: 'ITEM'
+        houses: 'HOUSE'
+        houses_params: 'PARAM'
+        mun_hierarchy: 'ITEM'
+        normative_docs: 'NORMDOC'
+        reestr_objects: 'OBJECT'
+        rooms: 'ROOM'
+        rooms_params: 'PARAM'
+        steads: 'STEAD'
+        steads_params: 'PARAM'
+        addhouse_types: 'HOUSETYPE'
+        addr_obj_types: 'ADDRESSOBJECTTYPE'
+        apartment_types: 'APARTMENTTYPE'
+        house_types: 'HOUSETYPE'
+        normative_docs_kinds: 'NDOCKIND'
+        normative_docs_types: 'NDOCTYPE'
+        object_levels: 'OBJECTLEVEL'
+        operation_types: 'OPERATIONTYPE'
+        param_types: 'PARAMTYPE'
+        room_types: 'ROOMTYPE'
+
 services:
     _defaults:
         autowire: true
@@ -9,3 +73,7 @@ services:
     App\DataLoad\Presentation\Controller\:
         resource: '../../src/DataLoad/Presentation/Controller'
         tags: ['controller.service_arguments']
+
+
+    App\DataLoad\Infrastructure\FiasTable\FiasTableSaver: ~
+    App\DataLoad\Domain\Repository\FiasTableSaverInterface: '@App\DataLoad\Infrastructure\FiasTable\FiasTableSaver'
