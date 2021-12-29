@@ -15,6 +15,11 @@ trait EventsTrait
         $this->recordedEvents[] = $event;
     }
 
+    final public function clearEvents(): void
+    {
+        $this->recordedEvents = [];
+    }
+
     final public function releaseEvents(): array
     {
         $events = $this->recordedEvents;
