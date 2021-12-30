@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Shared\Infrastructure\Doctrine;
+namespace App\Shared\Infrastructure\Doctrine\FieldTrait;
 
-use DateTime;
+
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 trait CreatedAtTrait
@@ -11,10 +12,10 @@ trait CreatedAtTrait
      * @ORM\Column(name="created_at", type="datetime")
      * @psalm-suppress PropertyNotSetInConstructor
      */
-    private DateTime $createdAt;
+    private DateTimeImmutable $createdAt;
 
 
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -24,7 +25,7 @@ trait CreatedAtTrait
      */
     public function setCreatedAt(): self
     {
-        $this->createdAt = new DateTime();
+        $this->createdAt = new DateTimeImmutable();
 
         return $this;
     }

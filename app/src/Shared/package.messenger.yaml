@@ -15,22 +15,22 @@ framework:
                 dsn: '%env(MESSENGER_DOCTRINE_TRANSPORT_DSN)%'
                 options:
                     use_notify: true
-                    queue_name: command
+                    queue_name: default_command
             postgresql_event:
                 dsn: '%env(MESSENGER_DOCTRINE_TRANSPORT_DSN)%'
                 options:
                     use_notify: true
-                    queue_name: event
+                    queue_name: default_event
             rabbit_command:
                 dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
                 options:
                     queues:
-                        command: ~
+                        default_command: ~
             rabbit_event:
                 dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
                 options:
                     queues:
-                        event: ~
+                        default_event: ~
             failed: '%env(MESSENGER_DOCTRINE_TRANSPORT_DSN)%?queue_name=failed'
 
         routing:

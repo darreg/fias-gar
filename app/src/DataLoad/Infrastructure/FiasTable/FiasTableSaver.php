@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\FiasTable;
 
+use App\DataLoad\Domain\FiasTableSaverInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use LogicException;
 
-class FiasTableSaver
+class FiasTableSaver implements FiasTableSaverInterface
 {
     private Connection $connection;
     private FiasTableFactory $fiasTableFactory;
@@ -44,28 +45,12 @@ class FiasTableSaver
     ): void {
         $this->connection->executeStatement(
             sprintf(
-                "SELECT upsert('%s', '%s', '%s',  VARIADIC ARRAY[%s])",
+                "SELECT upsert('%s', '%s', '{%s}',  VARIADIC ARRAY[%s])",
                 $fiasTable->getName(),
                 $fiasTable->getPrimaryKey(),
                 $fiasTable->getColumnsAsString(),
-                $this->buildValuesString($values)
+                $fiasTable->getValuesAsString($values)
             )
         );
-    }
-
-
-    /** @param array<int, string|null> $values */
-    private function buildValuesString(array $values): string
-    {
-        $clearValues = [];
-        foreach ($values as $value) {
-            if ($value === null || $value === '') {
-                $clearValues[] = 'NULL';
-                continue;
-            }
-            $clearValues[] = "'" . str_replace("'", "''", $value) . "'";
-        }
-
-        return implode(',', $clearValues);
     }
 }

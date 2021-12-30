@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Api\Shared\Domain\Entity\ExtAddrobj;
 
-use App\Api\Shared\Domain\Entity\ExtAddrobj\Point\Point;
 use App\Api\Shared\Domain\Entity\ExtAddrobj\Point\Id as PointId;
 use App\Api\Shared\Domain\Entity\ExtAddrobj\Point\LatLon as PointLatLon;
-use App\Api\Shared\Domain\Entity\ExtAddrobj\Synonym\Synonym;
+use App\Api\Shared\Domain\Entity\ExtAddrobj\Point\Point;
 use App\Api\Shared\Domain\Entity\ExtAddrobj\Synonym\Id as SynonymId;
-use App\Shared\Infrastructure\Doctrine\CreatedAtTrait;
-use App\Shared\Infrastructure\Doctrine\UpdatedAtTrait;
+use App\Api\Shared\Domain\Entity\ExtAddrobj\Synonym\Synonym;
+use App\Shared\Infrastructure\Doctrine\FieldTrait\CreatedAtTrait;
+use App\Shared\Infrastructure\Doctrine\FieldTrait\UpdatedAtTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;

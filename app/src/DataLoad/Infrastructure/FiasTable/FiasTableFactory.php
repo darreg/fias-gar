@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\FiasTable;
 
-use Doctrine\DBAL\Connection;
+use App\Shared\Infrastructure\Doctrine\DatabaseFunctionCaller;
 use Doctrine\DBAL\Exception;
 use LogicException;
 
 class FiasTableFactory
 {
-    private FiasTableParameters $fiasTableParameters;
-    private Connection $connection;
+    private FiasTableParameter $fiasTableParameters;
+    private DatabaseFunctionCaller $databaseFunctionCaller;
 
     public function __construct(
-        FiasTableParameters $fiasTableParameters,
-        Connection $connection
+        FiasTableParameter $fiasTableParameters,
+        DatabaseFunctionCaller $databaseFunctionCaller
     )
     {
         $this->fiasTableParameters = $fiasTableParameters;
-        $this->connection = $connection;
+        $this->databaseFunctionCaller = $databaseFunctionCaller;
     }
 
     /**
@@ -29,25 +29,8 @@ class FiasTableFactory
     public function create(string $fileToken): FiasTable {
         $tableName = $this->fiasTableParameters->getTableNameByFileToken($fileToken);
         $primaryKey = $this->fiasTableParameters->getPrimaryKeyByFileToken($fileToken);
-        $columnNames = $this->getTableColumnNames($tableName);
+        $columnNames = $this->databaseFunctionCaller->tableColumnNames($tableName);
 
         return new FiasTable($tableName, $primaryKey, $columnNames);
-    }
-
-    /**
-     * @throws Exception
-     * @throws LogicException
-     */
-    private function getTableColumnNames(string $tableName): array
-    {
-        $resultSet = $this->connection->executeQuery(
-            sprintf("SELECT array_to_string(tablecolumns('%s'), ',', '*')", $tableName)
-        );
-        $result = $resultSet->fetchOne();
-        if ($result === '') {
-            throw new LogicException("No columns found for the table '$tableName'");
-        }
-
-        return explode(',', $result);
     }
 }

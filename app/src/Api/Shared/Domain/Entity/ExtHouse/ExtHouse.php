@@ -2,8 +2,8 @@
 
 namespace App\Api\Shared\Domain\Entity\ExtHouse;
 
-use App\Shared\Infrastructure\Doctrine\CreatedAtTrait;
-use App\Shared\Infrastructure\Doctrine\UpdatedAtTrait;
+use App\Shared\Infrastructure\Doctrine\FieldTrait\CreatedAtTrait;
+use App\Shared\Infrastructure\Doctrine\FieldTrait\UpdatedAtTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
 
