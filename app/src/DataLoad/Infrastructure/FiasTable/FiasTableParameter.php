@@ -7,7 +7,7 @@ namespace App\DataLoad\Infrastructure\FiasTable;
 use LogicException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class FiasTableParameters
+class FiasTableParameter
 {
     public const TABLES_PKEY = 'fias_tables_pkey';
     public const TABLES = 'fias_tables';

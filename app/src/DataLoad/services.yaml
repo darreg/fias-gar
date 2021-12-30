@@ -76,4 +76,7 @@ services:
 
 
     App\DataLoad\Infrastructure\FiasTable\FiasTableSaver: ~
-    App\DataLoad\Domain\Repository\FiasTableSaverInterface: '@App\DataLoad\Infrastructure\FiasTable\FiasTableSaver'
+    App\DataLoad\Domain\FiasTableSaverInterface: '@App\DataLoad\Infrastructure\FiasTable\FiasTableSaver'
+
+
+    App\Shared\Domain\Bus\Command\CommandBusInterface: '@App\Shared\Infrastructure\Bus\Command\CommandBus'

@@ -13,4 +13,5 @@ framework:
                         save: ~
 
         routing:
-            'App\DataLoad\Application\UseCase\Parse\Command': rabbit_parse
+            'App\DataLoad\Application\UseCase\ParseTag\Command': rabbit_parse
+            'App\DataLoad\Application\UseCase\SaveTag\Command': rabbit_save

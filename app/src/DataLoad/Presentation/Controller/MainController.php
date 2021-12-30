@@ -2,10 +2,10 @@
 
 namespace App\DataLoad\Presentation\Controller;
 
-use App\DataLoad\Application\UseCase\CheckNewVersion\Command;
-use App\DataLoad\Application\UseCase\FirstQuery\Query;
+
+use App\DataLoad\Application\UseCase\ParseTag\Command;
 use App\DataLoad\Infrastructure\FiasTable\FiasTableFactory;
-use App\DataLoad\Infrastructure\FiasTable\FiasTableParameters;
+use App\DataLoad\Infrastructure\FiasTable\FiasTableParameter;
 use App\DataLoad\Infrastructure\FiasTable\FiasTableSaver;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
 use App\Shared\Infrastructure\Bus\Query\QueryBus;
@@ -20,28 +20,28 @@ class MainController extends AbstractController
 {
     private QueryBus $queryBus;
     private CommandBus $commandBus;
-    private DoctrineFlusher $doctrineFlusher;
-    private EntityManagerInterface $entityManager;
-    private FiasTableSaver $dataSaver;
-    private FiasTableParameters $fiasTableParameters;
-    private FiasTableFactory $fiasTableFactory;
+//    private DoctrineFlusher $doctrineFlusher;
+//    private EntityManagerInterface $entityManager;
+//    private FiasTableSaver $dataSaver;
+//    private FiasTableParameter $fiasTableParameters;
+//    private FiasTableFactory $fiasTableFactory;
 
     public function __construct(
-        FiasTableParameters    $fiasTableParameters,
-        FiasTableFactory    $fiasTableFactory,
-        FiasTableSaver         $dataSaver,
-        EntityManagerInterface $entityManager,
-        DoctrineFlusher        $doctrineFlusher,
+//        FiasTableParameter     $fiasTableParameters,
+//        FiasTableFactory       $fiasTableFactory,
+//        FiasTableSaver         $dataSaver,
+//        EntityManagerInterface $entityManager,
+//        DoctrineFlusher        $doctrineFlusher,
         QueryBus               $queryBus,
         CommandBus             $commandBus
     ) {
         $this->queryBus = $queryBus;
         $this->commandBus = $commandBus;
-        $this->doctrineFlusher = $doctrineFlusher;
-        $this->entityManager = $entityManager;
-        $this->dataSaver = $dataSaver;
-        $this->fiasTableParameters = $fiasTableParameters;
-        $this->fiasTableFactory = $fiasTableFactory;
+//        $this->doctrineFlusher = $doctrineFlusher;
+//        $this->entityManager = $entityManager;
+//        $this->dataSaver = $dataSaver;
+//        $this->fiasTableParameters = $fiasTableParameters;
+//        $this->fiasTableFactory = $fiasTableFactory;
     }
 
     /**
@@ -49,10 +49,17 @@ class MainController extends AbstractController
      */
     public function index(Connection $connection): Response
     {
+        $parseCommand = new Command(
+            'house_types',
+            '<HOUSETYPE ID="1" NAME="Владение" SHORTNAME="влд." DESC="Владение" STARTDATE="1900-01-01" ENDDATE="2015-11-05" UPDATEDATE="1900-01-01" ISACTIVE="false" />'
+        );
+
+        $this->commandBus->dispatch($parseCommand);
+        
 
 //        $this->dataSaver->getTableColumns('fias_gar_addrobjtypes');
 
-        $driver = $connection->getDriver();
+//        $driver = $connection->getDriver();
 
 //        $pdo = $connection->getDriver()->getWrappedConnection();
 //        dump($pdo);

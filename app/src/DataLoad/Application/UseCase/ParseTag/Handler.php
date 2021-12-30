@@ -4,25 +4,43 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\ParseTag;
 
+use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
-use App\Shared\Infrastructure\Bus\Command\CommandBus;
 use App\DataLoad\Application\UseCase\SaveTag\Command as SaveCommand;
 use DomainException;
+use Exception;
+use Psr\Log\LoggerInterface;
+use function Lambdish\Phunctional\reindex;
 
 class Handler implements CommandHandlerInterface
 {
-    private CommandBus $commandBus;
+    private CommandBusInterface $commandBus;
+    private LoggerInterface $parseSuccessLogger;
+    private LoggerInterface $parseErrorsLogger;
 
-    public function __construct(CommandBus $commandBus)
+    public function __construct(
+        CommandBusInterface $commandBus,
+        LoggerInterface $parseSuccessLogger,
+        LoggerInterface $parseErrorsLogger
+    )
     {
         $this->commandBus = $commandBus;
+        $this->parseSuccessLogger = $parseSuccessLogger;
+        $this->parseErrorsLogger = $parseErrorsLogger;
     }
 
-    public function __invoke(Command $command): void
+    public function __invoke(Command $command): bool
     {
-        $data = $this->parse($command->getTagXml());
+        try {
+            $data = $this->parse($command->getTagXml());
+            $this->parseSuccessLogger->info($command->getFileToken() . ' ; ' . $command->getTagXml() );
 
-        $this->commandBus->dispatch(new SaveCommand($command->getFileToken(), $data));         
+            $this->commandBus->dispatch(new SaveCommand($command->getFileToken(), $data));
+            return true;
+        } catch (Exception $e) {
+            $this->parseErrorsLogger->info($command->getFileToken() . ' ; ' . $command->getTagXml() . ' ; ' . $e->getMessage());
+            return false;
+        }
     }
 
     private function parse(string $tagXml): array
@@ -37,6 +55,8 @@ class Handler implements CommandHandlerInterface
             throw new DomainException('Failed to get tag attribute values');
         }
 
-        return (array)$xmlData['@attributes'];
+        $xmlAttributes = (array)$xmlData['@attributes'];
+        
+        return reindex(static fn($value, $key) => strtolower($key), $xmlAttributes);
     }
 }

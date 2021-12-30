@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Domain\Repository;
+namespace App\DataLoad\Domain;
 
 interface FiasTableSaverInterface
 {

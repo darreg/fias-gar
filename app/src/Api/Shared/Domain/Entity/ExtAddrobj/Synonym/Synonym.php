@@ -3,8 +3,8 @@
 namespace App\Api\Shared\Domain\Entity\ExtAddrobj\Synonym;
 
 use App\Api\Shared\Domain\Entity\ExtAddrobj\ExtAddrobj;
-use App\Shared\Infrastructure\Doctrine\CreatedAtTrait;
-use App\Shared\Infrastructure\Doctrine\UpdatedAtTrait;
+use App\Shared\Infrastructure\Doctrine\FieldTrait\CreatedAtTrait;
+use App\Shared\Infrastructure\Doctrine\FieldTrait\UpdatedAtTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

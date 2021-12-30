@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Test\Infrastructure\FiasTable;
 
-use App\DataLoad\Infrastructure\FiasTable\FiasTableParameters;
+use App\DataLoad\Infrastructure\FiasTable\FiasTableParameter;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class FiasTableParametersTest extends KernelTestCase
+class FiasTableParameterTest extends KernelTestCase
 {
-    protected FiasTableParameters $fiasTableParameters;
+    protected FiasTableParameter $fiasTableParameters;
     
     protected function setUp(): void
     {
         self::bootKernel(['environment' => 'test']);
         
-        $this->fiasTableParameters = static::getContainer()->get(FiasTableParameters::class);
+        $this->fiasTableParameters = static::getContainer()->get(FiasTableParameter::class);
     }
 
     /**

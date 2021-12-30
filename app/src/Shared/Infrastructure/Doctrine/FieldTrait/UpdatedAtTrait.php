@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Shared\Infrastructure\Doctrine;
+namespace App\Shared\Infrastructure\Doctrine\FieldTrait;
 
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 trait UpdatedAtTrait
@@ -11,10 +11,10 @@ trait UpdatedAtTrait
      * @ORM\Column(name="updated_at", type="datetime")
      * @psalm-suppress PropertyNotSetInConstructor
      */
-    private DateTime $updatedAt;
+    private DateTimeImmutable $updatedAt;
 
 
-    public function getUpdatedAt(): DateTime
+    public function getUpdatedAt(): DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -25,7 +25,7 @@ trait UpdatedAtTrait
      */
     public function setUpdatedAt(): self
     {
-        $this->updatedAt = new DateTime();
+        $this->updatedAt = new DateTimeImmutable();
 
         return $this;
     }

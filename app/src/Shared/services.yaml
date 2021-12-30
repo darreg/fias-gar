@@ -8,6 +8,8 @@ services:
 
     App\Shared\Infrastructure\Symfony\MigrationEventSubscriber:
         tags: [{ name: doctrine.event_subscriber, connection: default }]
+    
+    App\Shared\Infrastructure\Bus\Command\CommandBus: ~
 
 
 #    App\Shared\Infrastructure\Bus\Command\InMemory\CommandBus:
