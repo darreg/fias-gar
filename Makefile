@@ -1,7 +1,6 @@
 include .env
 
-check: lint phpcs psalm
-fix: phpcbf
+check: lint psalm
 build-production: build-prod-rabbit build-prod-nginx build-prod-php-fpm build-prod-php-workers
 push-production: push-prod-rabbit push-prod-nginx push-prod-php-fpm push-prod-php-workers
 
@@ -25,12 +24,6 @@ php-workers:
 
 lint:
 	docker-compose run --rm php-cli composer lint
-
-phpcs:
-	docker-compose run --rm php-cli composer phpcs
-
-phpcbf:
-	docker-compose run --rm php-cli composer phpcbf
 
 psalm:
 	docker-compose run --rm php-cli composer psalm

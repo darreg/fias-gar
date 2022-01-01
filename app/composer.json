@@ -48,7 +48,6 @@
         "psalm/plugin-phpunit": "^0.16.1",
         "psalm/plugin-symfony": "^2.2",
         "roave/security-advisories": "dev-master",
-        "squizlabs/php_codesniffer": "^3.5",
         "symfony/browser-kit": "5.4.*",
         "symfony/css-selector": "5.4.*",
         "symfony/debug-bundle": "5.4.*",
@@ -88,8 +87,6 @@
     },
     "scripts": {
         "lint": "XDEBUG_MODE=off phplint",
-        "phpcs": "XDEBUG_MODE=off phpcs --standard=phpcs.xml",
-        "phpcbf": "XDEBUG_MODE=off phpcbf --standard=phpcs.xml",
         "psalm": "XDEBUG_MODE=off psalm --config=psalm.xml",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
