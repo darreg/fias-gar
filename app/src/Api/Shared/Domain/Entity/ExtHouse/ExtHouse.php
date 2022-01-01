@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
 
 /**
- * ExtHouse
+ * ExtHouse.
  *
  * @ORM\Table(
  *     name="ext_house",

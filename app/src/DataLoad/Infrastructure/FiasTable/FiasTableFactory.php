@@ -8,7 +8,7 @@ use App\Shared\Infrastructure\Doctrine\DatabaseFunctionCaller;
 use Doctrine\DBAL\Exception;
 use LogicException;
 
-class FiasTableFactory
+final class FiasTableFactory
 {
     private FiasTableParameter $fiasTableParameters;
     private DatabaseFunctionCaller $databaseFunctionCaller;
@@ -16,8 +16,7 @@ class FiasTableFactory
     public function __construct(
         FiasTableParameter $fiasTableParameters,
         DatabaseFunctionCaller $databaseFunctionCaller
-    )
-    {
+    ) {
         $this->fiasTableParameters = $fiasTableParameters;
         $this->databaseFunctionCaller = $databaseFunctionCaller;
     }
@@ -25,8 +24,9 @@ class FiasTableFactory
     /**
      * @throws Exception
      * @throws LogicException
-     */    
-    public function create(string $fileToken): FiasTable {
+     */
+    public function create(string $fileToken): FiasTable
+    {
         $tableName = $this->fiasTableParameters->getTableNameByFileToken($fileToken);
         $primaryKey = $this->fiasTableParameters->getPrimaryKeyByFileToken($fileToken);
         $columnNames = $this->databaseFunctionCaller->tableColumnNames($tableName);

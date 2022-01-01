@@ -2,7 +2,6 @@
 
 namespace App\Shared\Infrastructure\Doctrine\FieldTrait;
 
-
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,7 +12,6 @@ trait CreatedAtTrait
      * @psalm-suppress PropertyNotSetInConstructor
      */
     private DateTimeImmutable $createdAt;
-
 
     public function getCreatedAt(): DateTimeImmutable
     {

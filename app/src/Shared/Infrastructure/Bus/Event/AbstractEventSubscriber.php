@@ -9,12 +9,12 @@ use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
 abstract class AbstractEventSubscriber implements MessageSubscriberInterface, EventSubscriberInterface
 {
-    public static function subscribedTo(): array
+    final public static function subscribedTo(): array
     {
         return [];
     }
 
-    public static function getHandledMessages(): iterable
+    final public static function getHandledMessages(): iterable
     {
         foreach (static::subscribedTo() as $className) {
             yield $className => ['bus' => 'event.bus'];

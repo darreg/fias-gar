@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use DomainException;
 
-class ExtHouseRepository implements ExtHouseRepositoryInterface
+final class ExtHouseRepository implements ExtHouseRepositoryInterface
 {
     private EntityManagerInterface $em;
     private EntityRepository $repo;

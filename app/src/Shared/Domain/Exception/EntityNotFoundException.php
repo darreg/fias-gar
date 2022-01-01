@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Exception;
 
-class EntityNotFoundException extends \DomainException
+use DomainException;
+
+final class EntityNotFoundException extends DomainException
 {
 }

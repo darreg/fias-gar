@@ -9,7 +9,6 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionNamedType;
-
 use function Lambdish\Phunctional\map;
 use function Lambdish\Phunctional\reindex;
 
@@ -28,15 +27,16 @@ final class ParameterTypeExtractor
 
     private static function turnIntoArray(): callable
     {
-        return static fn($value) => [$value];
+        return static fn ($value) => [$value];
     }
 
     private static function newKeyFromParameterType(): callable
     {
-        return static fn(callable $handler): ?string => self::extractParameterType($handler);
+        return static fn (callable $handler): ?string => self::extractParameterType($handler);
     }
 
     /**
+     * @param mixed $class
      * @throws ReflectionException
      * @throws LogicException
      */

@@ -7,7 +7,7 @@ namespace App\Api\Shared\Domain\Entity\ExtAddrobj\Synonym;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\GuidType;
 
-class IdType extends GuidType
+final class IdType extends GuidType
 {
     public const NAME = 'ext_addrobj_synonym_id';
 

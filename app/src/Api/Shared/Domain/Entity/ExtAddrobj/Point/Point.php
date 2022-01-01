@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  *         @ORM\UniqueConstraint(
  *              name="ext_addrobj_point__unique__constraint",
  *              columns={"objectid", "latitude", "longitude"}
-*          )
+ *          )
  *     }
  * )
  * @ORM\Entity
@@ -53,6 +53,11 @@ class Point
         $this->latLon = $latLon;
     }
 
+    public function __toString(): string
+    {
+        return (string)$this->latLon;
+    }
+
     public function getId(): Id
     {
         return $this->id;
@@ -66,10 +71,5 @@ class Point
     public function setLatLon(LatLon $latLon): void
     {
         $this->latLon = $latLon;
-    }
-
-    public function __toString(): string
-    {
-        return (string)$this->latLon;
     }
 }

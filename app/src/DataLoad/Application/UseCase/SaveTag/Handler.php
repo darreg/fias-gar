@@ -9,7 +9,7 @@ use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
 
-class Handler implements CommandHandlerInterface
+final class Handler implements CommandHandlerInterface
 {
     private FiasTableSaverInterface $fiasTableSaver;
     private LoggerInterface $saveSuccessLogger;
@@ -19,8 +19,7 @@ class Handler implements CommandHandlerInterface
         FiasTableSaverInterface $fiasTableSaver,
         LoggerInterface $saveSuccessLogger,
         LoggerInterface $saveErrorsLogger
-    )
-    {
+    ) {
         $this->fiasTableSaver = $fiasTableSaver;
         $this->saveSuccessLogger = $saveSuccessLogger;
         $this->saveErrorsLogger = $saveErrorsLogger;
@@ -30,7 +29,7 @@ class Handler implements CommandHandlerInterface
     {
         try {
             $this->fiasTableSaver->upsert($command->getFileToken(), $command->getValues());
-            $this->saveSuccessLogger->info($command->getFileToken() . ' ; ' . serialize($command->getValues()) );
+            $this->saveSuccessLogger->info($command->getFileToken() . ' ; ' . serialize($command->getValues()));
             return true;
         } catch (Exception $e) {
             $this->saveErrorsLogger->info($command->getFileToken() . ' ; ' . serialize($command->getValues()) . ' ; ' . $e->getMessage());

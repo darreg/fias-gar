@@ -8,24 +8,29 @@ use App\DataLoad\Infrastructure\FiasTable\FiasTableParameter;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class FiasTableParameterTest extends KernelTestCase
+/**
+ * @internal
+ */
+final class FiasTableParameterTest extends KernelTestCase
 {
     protected FiasTableParameter $fiasTableParameters;
-    
+
     protected function setUp(): void
     {
         self::bootKernel(['environment' => 'test']);
-        
-        $this->fiasTableParameters = static::getContainer()->get(FiasTableParameter::class);
+
+        $this->fiasTableParameters = self::getContainer()->get(FiasTableParameter::class);
     }
 
     /**
      * @dataProvider primaryKeyDataProvider
+     * @param mixed $token
+     * @param mixed $expected
      */
     public function testPrimaryKeyByFileToken($token, $expected): void
     {
         $primaryKey = $this->fiasTableParameters->getPrimaryKeyByFileToken($token);
-        $this->assertEquals(
+        self::assertEquals(
             $expected,
             $primaryKey
         );
@@ -34,11 +39,11 @@ class FiasTableParameterTest extends KernelTestCase
     public function testTableNameByFileToken(): void
     {
         $tableName = $this->fiasTableParameters->getTableNameByFileToken('addr_obj');
-        $this->assertEquals(
+        self::assertEquals(
             'fias_gar_addrobj',
             $tableName
         );
-        
+
         $this->expectException(LogicException::class);
         $this->fiasTableParameters->getTableNameByFileToken('incorrect_table_name');
     }
@@ -46,7 +51,7 @@ class FiasTableParameterTest extends KernelTestCase
     public function testTagNameByFile(): void
     {
         $tagName = $this->fiasTableParameters->getTagNameByFile('addr_obj');
-        $this->assertEquals(
+        self::assertEquals(
             'OBJECT',
             $tagName
         );

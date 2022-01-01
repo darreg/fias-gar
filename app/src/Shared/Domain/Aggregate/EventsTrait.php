@@ -10,11 +10,6 @@ trait EventsTrait
 {
     private array $recordedEvents = [];
 
-    final protected function recordEvent(EventInterface $event): void
-    {
-        $this->recordedEvents[] = $event;
-    }
-
     final public function clearEvents(): void
     {
         $this->recordedEvents = [];
@@ -26,5 +21,10 @@ trait EventsTrait
         $this->recordedEvents = [];
 
         return $events;
+    }
+
+    final protected function recordEvent(EventInterface $event): void
+    {
+        $this->recordedEvents[] = $event;
     }
 }

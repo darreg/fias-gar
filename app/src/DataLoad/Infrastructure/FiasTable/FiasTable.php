@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\FiasTable;
 
-class FiasTable
+final class FiasTable
 {
     private string $name;
     private string $primaryKey;
     private array $columns;
-    
+
     public function __construct(string $name, string $primaryKey, array $columns)
     {
         $this->name = $name;
@@ -31,12 +31,12 @@ class FiasTable
     {
         return $this->columns;
     }
-    
+
     public function getColumnsAsString(): string
     {
         return implode(',', $this->columns);
     }
-    
+
     public function getValuesAsString(array $values): string
     {
         $clearValues = [];
@@ -59,5 +59,5 @@ class FiasTable
         }
 
         return $result;
-    }    
+    }
 }

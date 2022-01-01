@@ -10,7 +10,6 @@ use Exception;
 use JsonException;
 use ReflectionClass;
 use RuntimeException;
-
 use function Lambdish\Phunctional\filter;
 
 final class Utils
@@ -22,7 +21,7 @@ final class Utils
             return true;
         }
 
-        return (substr($haystack, -$length) === $needle);
+        return substr($haystack, -$length) === $needle;
     }
 
     public static function dateToString(DateTimeInterface $date): string
@@ -62,7 +61,7 @@ final class Utils
 
     public static function toSnakeCase(string $text): string
     {
-        return ctype_lower($text) ? $text : strtolower(preg_replace('/([^A-Z\s])([A-Z])/', "$1_$2", $text));
+        return ctype_lower($text) ? $text : strtolower(preg_replace('/([^A-Z\s])([A-Z])/', '$1_$2', $text));
     }
 
     public static function toCamelCase(string $text): string
@@ -75,7 +74,7 @@ final class Utils
         $results = [];
         foreach ($array as $key => $value) {
             if (\is_array($value) && !empty($value)) {
-                $results = array_merge($results, static::dot($value, $prepend . $key . '.'));
+                $results = array_merge($results, self::dot($value, $prepend . $key . '.'));
             } else {
                 $results[$prepend . $key] = $value;
             }
@@ -87,7 +86,7 @@ final class Utils
     public static function filesIn(string $path, string $fileType): array
     {
         return filter(
-            static fn(string $possibleModule) => strstr($possibleModule, $fileType),
+            static fn (string $possibleModule) => strstr($possibleModule, $fileType),
             scandir($path)
         );
     }

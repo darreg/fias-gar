@@ -4,28 +4,33 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\ValueObject;
 
-use Symfony\Component\Uid\Uuid;
 use InvalidArgumentException;
 use Stringable;
+use Symfony\Component\Uid\Uuid;
 
 class UuidValueObject implements Stringable
 {
-    protected string $value;
+    private string $value;
 
     public function __construct(string $value)
     {
         if (!Uuid::isValid($value)) {
             throw new InvalidArgumentException(
-                sprintf('<%s> does not allow the value <%s>.', static::class, $value)
+                sprintf('<%s> does not allow the value <%s>.', self::class, $value)
             );
         }
 
         $this->value = $value;
     }
 
+    public function __toString(): string
+    {
+        return $this->getValue();
+    }
+
     public static function next(): static
     {
-        return new static((string)Uuid::v4());
+        return new self((string)Uuid::v4());
     }
 
     public function getValue(): string
@@ -33,13 +38,8 @@ class UuidValueObject implements Stringable
         return $this->value;
     }
 
-    public function isEqual(UuidValueObject $other): bool
+    public function isEqual(self $other): bool
     {
         return $this->getValue() === $other->getValue();
-    }
-
-    public function __toString(): string
-    {
-        return $this->getValue();
     }
 }

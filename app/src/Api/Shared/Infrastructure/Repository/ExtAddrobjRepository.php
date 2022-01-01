@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use DomainException;
 
-class ExtAddrobjRepository implements ExtAddrobjRepositoryInterface
+final class ExtAddrobjRepository implements ExtAddrobjRepositoryInterface
 {
     private EntityManagerInterface $em;
     private EntityRepository $repo;

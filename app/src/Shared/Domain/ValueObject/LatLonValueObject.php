@@ -16,9 +16,9 @@ class LatLonValueObject implements Stringable
     private const LONGITUDE_MAX = 180;
     private const LONGITUDE_MIN = -180;
 
-    protected float $latitude;
+    private float $latitude;
 
-    protected float $longitude;
+    private float $longitude;
 
     public function __construct(float $latitude, float $longitude)
     {
@@ -31,6 +31,11 @@ class LatLonValueObject implements Stringable
         $this->longitude = $longitude;
     }
 
+    public function __toString(): string
+    {
+        return $this->latitude . ',' . $this->longitude;
+    }
+
     public function getLatitude(): float
     {
         return $this->latitude;
@@ -41,7 +46,7 @@ class LatLonValueObject implements Stringable
         return $this->longitude;
     }
 
-    public function isEqual(LatLonValueObject $latLon): bool
+    public function isEqual(self $latLon): bool
     {
         return
             self::isFloatEqual($this->latitude, $latLon->getLatitude()) &&
@@ -56,7 +61,7 @@ class LatLonValueObject implements Stringable
             );
         }
         [$latitude, $longitude] = explode(',', $latLon);
-        return new static((float)$latitude, (float)$longitude);
+        return new self((float)$latitude, (float)$longitude);
     }
 
     /**
@@ -64,9 +69,9 @@ class LatLonValueObject implements Stringable
      */
     public static function fromArray(array $latLon): static
     {
-        if (count($latLon) !== 2) {
+        if (\count($latLon) !== 2) {
             throw new InvalidArgumentException(
-                sprintf('Expected an array to contain 2 elements. Got: %d.', count($latLon))
+                sprintf('Expected an array to contain 2 elements. Got: %d.', \count($latLon))
             );
         }
         return new static((float)$latLon[0], (float)$latLon[1]);
@@ -101,12 +106,7 @@ class LatLonValueObject implements Stringable
         return $latitude;
     }
 
-    public function __toString(): string
-    {
-        return $this->latitude . ',' . $this->longitude;
-    }
-
-    protected static function isFloatEqual($one, $two): bool
+    private static function isFloatEqual($one, $two): bool
     {
         return bccomp(
             number_format($one, self::DECIMALS),

@@ -13,7 +13,6 @@ trait UpdatedAtTrait
      */
     private DateTimeImmutable $updatedAt;
 
-
     public function getUpdatedAt(): DateTimeImmutable
     {
         return $this->updatedAt;

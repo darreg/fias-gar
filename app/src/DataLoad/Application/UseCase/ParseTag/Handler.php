@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\ParseTag;
 
+use App\DataLoad\Application\UseCase\SaveTag\Command as SaveCommand;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
-use App\DataLoad\Application\UseCase\SaveTag\Command as SaveCommand;
 use DomainException;
 use Exception;
 use Psr\Log\LoggerInterface;
 use function Lambdish\Phunctional\reindex;
 
-class Handler implements CommandHandlerInterface
+final class Handler implements CommandHandlerInterface
 {
     private CommandBusInterface $commandBus;
     private LoggerInterface $parseSuccessLogger;
@@ -22,8 +22,7 @@ class Handler implements CommandHandlerInterface
         CommandBusInterface $commandBus,
         LoggerInterface $parseSuccessLogger,
         LoggerInterface $parseErrorsLogger
-    )
-    {
+    ) {
         $this->commandBus = $commandBus;
         $this->parseSuccessLogger = $parseSuccessLogger;
         $this->parseErrorsLogger = $parseErrorsLogger;
@@ -33,7 +32,7 @@ class Handler implements CommandHandlerInterface
     {
         try {
             $data = $this->parse($command->getTagXml());
-            $this->parseSuccessLogger->info($command->getFileToken() . ' ; ' . $command->getTagXml() );
+            $this->parseSuccessLogger->info($command->getFileToken() . ' ; ' . $command->getTagXml());
 
             $this->commandBus->dispatch(new SaveCommand($command->getFileToken(), $data));
             return true;
@@ -56,7 +55,7 @@ class Handler implements CommandHandlerInterface
         }
 
         $xmlAttributes = (array)$xmlData['@attributes'];
-        
-        return reindex(static fn($value, $key) => strtolower($key), $xmlAttributes);
+
+        return reindex(static fn ($value, $key) => strtolower($key), $xmlAttributes);
     }
 }

@@ -7,7 +7,7 @@ namespace App\Shared\Infrastructure\Doctrine;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
-class ViewHelper
+final class ViewHelper
 {
     private Connection $connection;
 
@@ -25,5 +25,4 @@ class ViewHelper
             sprintf('REFRESH MATERIALIZED VIEW %s', $viewName)
         );
     }
-
 }

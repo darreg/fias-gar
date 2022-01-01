@@ -11,6 +11,9 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
+/**
+ * @internal
+ */
 final class QueryBusTest extends TestCase
 {
     private QueryBus $queryBus;
@@ -31,7 +34,7 @@ final class QueryBusTest extends TestCase
 
     private function fakeQueryBus(): MessageBusInterface
     {
-        return new class () implements MessageBusInterface {
+        return new class() implements MessageBusInterface {
             private QueryInterface $dispatchedQuery;
 
             public function dispatch($message, array $stamps = []): Envelope

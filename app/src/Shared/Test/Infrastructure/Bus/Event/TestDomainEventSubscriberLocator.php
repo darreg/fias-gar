@@ -7,10 +7,13 @@ namespace App\Shared\Test\Infrastructure\Bus\Event;
 use App\Shared\Domain\Bus\Event\EventInterface;
 use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
 use App\Shared\Infrastructure\Bus\Event\DomainEventSubscriberLocator;
-use RuntimeException;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
-class TestDomainEventSubscriberLocator extends TestCase
+/**
+ * @internal
+ */
+final class TestDomainEventSubscriberLocator extends TestCase
 {
     private string $eventClass;
 
@@ -25,14 +28,14 @@ class TestDomainEventSubscriberLocator extends TestCase
     {
         $subscriberLocator = new DomainEventSubscriberLocator($this->getSubscribers(5, 3));
         $response = $subscriberLocator->getAll();
-        $this->assertCount(5, $response);
+        self::assertCount(5, $response);
     }
 
     public function testSubscribedTo(): void
     {
         $subscriberLocator = new DomainEventSubscriberLocator($this->getSubscribers(5, 3));
         $response = $subscriberLocator->getSubscribedTo($this->eventClass);
-        $this->assertCount(3, $response);
+        self::assertCount(3, $response);
     }
 
     public function testNoSubscribers(): void
@@ -46,11 +49,11 @@ class TestDomainEventSubscriberLocator extends TestCase
     private function getSubscribers(int $num, int $subscribedNum): array
     {
         $result = [];
-        for ($i = 0; $i < $num; $i++) {
+        for ($i = 0; $i < $num; ++$i) {
             $result[$i] = $this->createMock(EventSubscriberInterface::class);
         }
 
-        for ($i = 0; $i < $subscribedNum; $i++) {
+        for ($i = 0; $i < $subscribedNum; ++$i) {
             $result[$i]->method('subscribedTo')->willReturn([$this->eventClass]);
         }
 

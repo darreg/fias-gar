@@ -10,7 +10,10 @@ use App\Shared\Infrastructure\Bus\Event\DomainEventMapping;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-class TestDomainEventMapping extends TestCase
+/**
+ * @internal
+ */
+final class TestDomainEventMapping extends TestCase
 {
     public const EVENT_NAME = 'test_event';
     private string $eventClass;
@@ -33,11 +36,11 @@ class TestDomainEventMapping extends TestCase
     private function getSubscribers(int $num, int $subscribedNum): array
     {
         $result = [];
-        for ($i = 0; $i < $num; $i++) {
+        for ($i = 0; $i < $num; ++$i) {
             $result[$i] = $this->createMock(EventSubscriberInterface::class);
         }
 
-        for ($i = 0; $i < $subscribedNum; $i++) {
+        for ($i = 0; $i < $subscribedNum; ++$i) {
             $result[$i]->method('subscribedTo')->willReturn([$this->eventClass]);
         }
 

@@ -7,7 +7,7 @@ namespace App\Shared\Test\Infrastructure\Bus\Event;
 use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
 use RuntimeException;
 
-class TestHandler implements EventSubscriberInterface
+final class TestHandler implements EventSubscriberInterface
 {
     public function __invoke(): void
     {

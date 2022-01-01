@@ -7,12 +7,12 @@ namespace App\DataLoad\Infrastructure\FiasTable;
 use LogicException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class FiasTableParameter
+final class FiasTableParameter
 {
     public const TABLES_PKEY = 'fias_tables_pkey';
     public const TABLES = 'fias_tables';
     public const TAGS = 'fias_tags';
-    
+
     private ParameterBagInterface $parameterBag;
 
     public function __construct(ParameterBagInterface $parameterBag)
@@ -36,10 +36,10 @@ class FiasTableParameter
      */
     public function getTableNameByFileToken(string $fileToken): string
     {
-        /** @var array $fiasTables */        
+        /** @var array $fiasTables */
         $fiasTables = $this->parameterBag->get(self::TABLES);
         if (empty($fiasTables[$fileToken])) {
-            throw new LogicException("No table name found for the token '$fileToken'");
+            throw new LogicException("No table name found for the token '{$fileToken}'");
         }
 
         return $fiasTables[$fileToken];
@@ -47,15 +47,15 @@ class FiasTableParameter
 
     /**
      * @throws LogicException
-     */    
+     */
     public function getTagNameByFile(string $fileToken): string
     {
         /** @var array $fiasTags */
         $fiasTags = $this->parameterBag->get(self::TAGS);
         if (empty($fiasTags[$fileToken])) {
-            throw new LogicException("No tag name found for the token '$fileToken'");
+            throw new LogicException("No tag name found for the token '{$fileToken}'");
         }
 
         return $fiasTags[$fileToken];
-    }    
+    }
 }

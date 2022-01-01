@@ -8,7 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use LogicException;
 
-class DatabaseFunctionCaller
+final class DatabaseFunctionCaller
 {
     private Connection $connection;
 
@@ -28,9 +28,8 @@ class DatabaseFunctionCaller
         );
         $result = $resultSet->fetchOne();
         if ($result === '') {
-            throw new LogicException("No columns found for the table '$tableName'");
+            throw new LogicException("No columns found for the table '{$tableName}'");
         }
-        
 
         return explode(',', strtolower($result));
     }

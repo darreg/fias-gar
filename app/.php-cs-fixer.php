@@ -52,7 +52,7 @@ return
 
             'yoda_style' => false,
 
-            'final_class' => true,
+            //            'final_class' => true,
             'final_public_method_for_abstract_class' => true,
             'self_static_accessor' => true,
 

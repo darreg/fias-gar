@@ -6,7 +6,7 @@ namespace App\DataLoad\Application\UseCase\SaveTag;
 
 use App\Shared\Domain\Bus\Command\CommandInterface;
 
-class Command implements CommandInterface
+final class Command implements CommandInterface
 {
     public string $fileToken;
     public array $values;

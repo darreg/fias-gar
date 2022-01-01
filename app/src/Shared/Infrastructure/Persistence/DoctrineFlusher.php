@@ -8,7 +8,7 @@ use App\Shared\Domain\Aggregate\AggregateRootInterface;
 use App\Shared\Domain\Bus\Event\EventBusInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-class DoctrineFlusher
+final class DoctrineFlusher
 {
     private EntityManagerInterface $entityManager;
     private EventBusInterface $eventBus;
