@@ -43,7 +43,7 @@
     },
     "require-dev": {
         "lctrs/psalm-psr-container-plugin": "^1.1",
-        "overtrue/phplint": "^2.3",
+        "overtrue/phplint": "^4.0",
         "phpunit/phpunit": "^9.5",
         "psalm/plugin-phpunit": "^0.16.1",
         "psalm/plugin-symfony": "^2.2",
