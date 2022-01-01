@@ -8,7 +8,7 @@ use App\Shared\Domain\Bus\Event\DomainEvent;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class DomainEventNormalizer implements ContextAwareNormalizerInterface
+final class DomainEventNormalizer implements ContextAwareNormalizerInterface
 {
     private ObjectNormalizer $normalizer;
 
@@ -19,9 +19,7 @@ class DomainEventNormalizer implements ContextAwareNormalizerInterface
 
     public function normalize($object, string $format = null, array $context = [])
     {
-        $data = $this->normalizer->normalize($object, $format, $context);
-
-        return $data;
+        return $this->normalizer->normalize($object, $format, $context);
     }
 
     public function supportsNormalization($data, string $format = null, array $context = []): bool

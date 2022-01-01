@@ -2,7 +2,6 @@
 
 namespace App\DataLoad\Presentation\Controller;
 
-
 use App\DataLoad\Application\UseCase\ParseTag\Command;
 use App\DataLoad\Infrastructure\FiasTable\FiasTableFactory;
 use App\DataLoad\Infrastructure\FiasTable\FiasTableParameter;
@@ -16,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MainController extends AbstractController
+final class MainController extends AbstractController
 {
     private QueryBus $queryBus;
     private CommandBus $commandBus;
@@ -32,8 +31,8 @@ class MainController extends AbstractController
 //        FiasTableSaver         $dataSaver,
 //        EntityManagerInterface $entityManager,
 //        DoctrineFlusher        $doctrineFlusher,
-        QueryBus               $queryBus,
-        CommandBus             $commandBus
+        QueryBus $queryBus,
+        CommandBus $commandBus
     ) {
         $this->queryBus = $queryBus;
         $this->commandBus = $commandBus;
@@ -55,7 +54,6 @@ class MainController extends AbstractController
         );
 
         $this->commandBus->dispatch($parseCommand);
-        
 
 //        $this->dataSaver->getTableColumns('fias_gar_addrobjtypes');
 
@@ -84,8 +82,6 @@ class MainController extends AbstractController
 //
 //        $extHouseRepository->add($extHouse);
 //        $this->doctrineFlusher->flush();
-
-
 
 //
 //        $entityRepository = $this->entityManager->getRepository(ExtAddrobj::class);
@@ -116,7 +112,6 @@ class MainController extends AbstractController
 
 //        $extAddrobjRepository->add($extAddrobj);
 
-
 //        $extAddrobj = $extAddrobjRepository->get(1316173);
 //
 //        $synonyms = $extAddrobj->getSynonyms();
@@ -136,7 +131,6 @@ class MainController extends AbstractController
 //        $command = new ParseCommand('id1', 'Parse It!');
 //        $this->commandBus->dispatch($command);
 
-
 //        $command = new Command('id1', 'XXX!');
 //        $this->commandBus->dispatch($command);
 //
@@ -147,6 +141,6 @@ class MainController extends AbstractController
 //        $result = $this->queryBus->ask($query);
 //        dump($result);
 
-        return new Response("<html><body>Welcome!</body></html>");
+        return new Response('<html><body>Welcome!</body></html>');
     }
 }

@@ -32,17 +32,17 @@ abstract class DomainEvent implements EventInterface
 
     abstract public function toArray(): array;
 
-    public function aggregateId(): string
+    final public function aggregateId(): string
     {
         return $this->aggregateId;
     }
 
-    public function eventId(): string
+    final public function eventId(): string
     {
         return $this->eventId;
     }
 
-    public function dateTime(): string
+    final public function dateTime(): string
     {
         return $this->dateTime;
     }

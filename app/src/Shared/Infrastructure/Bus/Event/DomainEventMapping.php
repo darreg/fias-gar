@@ -7,7 +7,6 @@ namespace App\Shared\Infrastructure\Bus\Event;
 use App\Shared\Domain\Bus\Event\EventSubscriberInterface;
 use LogicException;
 use RuntimeException;
-
 use function Lambdish\Phunctional\reduce;
 use function Lambdish\Phunctional\reindex;
 
@@ -23,7 +22,7 @@ final class DomainEventMapping
     public function for(string $eventName)
     {
         if (!isset($this->mapping[$eventName])) {
-            throw new RuntimeException("The Domain Event Class for <$eventName> doesn't exists or have no subscribers");
+            throw new RuntimeException("The Domain Event Class for <{$eventName}> doesn't exists or have no subscribers");
         }
 
         return $this->mapping[$eventName];
@@ -32,7 +31,7 @@ final class DomainEventMapping
     /** @throws LogicException */
     private static function eventsExtractor(): callable
     {
-        return static fn(array $subscribers, EventSubscriberInterface $subscriber) => array_merge(
+        return static fn (array $subscribers, EventSubscriberInterface $subscriber) => array_merge(
             $subscribers,
             reindex(
                 self::eventNameExtractor(),
@@ -45,7 +44,7 @@ final class DomainEventMapping
     {
         return static function (string $eventClass): string {
             if (!method_exists($eventClass, 'eventName')) {
-                throw new LogicException("The Domain Event Class for <$eventClass> have no method 'eventName'");
+                throw new LogicException("The Domain Event Class for <{$eventClass}> have no method 'eventName'");
             }
             return $eventClass::eventName();
         };

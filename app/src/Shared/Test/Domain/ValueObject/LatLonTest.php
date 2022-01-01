@@ -6,13 +6,16 @@ use App\Shared\Domain\ValueObject\LatLonValueObject;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-class LatLonTest extends TestCase
+/**
+ * @internal
+ */
+final class LatLonTest extends TestCase
 {
     public function testCreateFromString(): void
     {
         $result = LatLonValueObject::fromString('11.2222,22.3333');
-        $this->assertEquals(11.2222, $result->getLatitude());
-        $this->assertEquals(22.3333, $result->getLongitude());
+        self::assertEquals(11.2222, $result->getLatitude());
+        self::assertEquals(22.3333, $result->getLongitude());
     }
 
     public function testCreateFromStringException(): void
@@ -23,9 +26,9 @@ class LatLonTest extends TestCase
 
     public function testCreateFromArray(): void
     {
-        $result = LatLonValueObject::fromArray([11.2222,22.3333]);
-        $this->assertEquals(11.2222, $result->getLatitude());
-        $this->assertEquals(22.3333, $result->getLongitude());
+        $result = LatLonValueObject::fromArray([11.2222, 22.3333]);
+        self::assertEquals(11.2222, $result->getLatitude());
+        self::assertEquals(22.3333, $result->getLongitude());
     }
 
     public function testCreateFromArrayException(): void
@@ -36,11 +39,14 @@ class LatLonTest extends TestCase
 
     /**
      * @dataProvider validationDataProvider
+     * @param mixed $latitude
+     * @param mixed $longitude
+     * @param mixed $expected
      */
     public function testValidation($latitude, $longitude, $expected): void
     {
         $result = LatLonValueObject::isValid($latitude, $longitude);
-        $this->assertEquals($expected, $result, "$latitude, $longitude");
+        self::assertEquals($expected, $result, "{$latitude}, {$longitude}");
     }
 
     public function validationDataProvider(): array

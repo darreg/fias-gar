@@ -28,7 +28,7 @@ final class DomainEventJsonDeserializer
         $eventClass = $this->mapping->for($eventName);
 
         if ($eventClass === null) {
-            throw new RuntimeException("The event <$eventName> doesn't exist or has no subscribers");
+            throw new RuntimeException("The event <{$eventName}> doesn't exist or has no subscribers");
         }
 
         return $eventClass::fromArray(

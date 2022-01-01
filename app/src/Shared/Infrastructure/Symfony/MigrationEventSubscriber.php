@@ -6,7 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 
-class MigrationEventSubscriber implements EventSubscriber
+final class MigrationEventSubscriber implements EventSubscriber
 {
     /**
      * @return array<int, string>

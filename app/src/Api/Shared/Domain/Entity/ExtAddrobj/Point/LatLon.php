@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Embeddable
  */
-class LatLon extends LatLonValueObject
+final class LatLon extends LatLonValueObject
 {
     /**
      * @ORM\Column(type="decimal", precision=14, scale=11, options={"comment"="Координаты: широта"})

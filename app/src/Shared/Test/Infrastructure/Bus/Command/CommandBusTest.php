@@ -10,7 +10,10 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class CommandBusTest extends TestCase
+/**
+ * @internal
+ */
+final class CommandBusTest extends TestCase
 {
     private CommandBus $commandBus;
 
@@ -30,7 +33,7 @@ class CommandBusTest extends TestCase
 
     private function fakeCommandBus(): MessageBusInterface
     {
-        return new class () implements MessageBusInterface {
+        return new class() implements MessageBusInterface {
             private CommandInterface $dispatchedCommand;
 
             public function dispatch($message, array $stamps = []): Envelope

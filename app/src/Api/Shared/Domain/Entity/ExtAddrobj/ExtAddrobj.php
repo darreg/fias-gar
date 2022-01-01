@@ -180,7 +180,7 @@ class ExtAddrobj
                 return;
             }
         }
-        throw new \DomainException('Point is not found.');
+        throw new DomainException('Point is not found.');
     }
 
     public function getPoints(): array
@@ -223,7 +223,7 @@ class ExtAddrobj
                 return;
             }
         }
-        throw new \DomainException('Synonym is not found.');
+        throw new DomainException('Synonym is not found.');
     }
 
     public function getSynonyms(): array

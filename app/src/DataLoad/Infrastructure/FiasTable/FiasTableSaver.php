@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use LogicException;
 
-class FiasTableSaver implements FiasTableSaverInterface
+final class FiasTableSaver implements FiasTableSaverInterface
 {
     private Connection $connection;
     private FiasTableFactory $fiasTableFactory;
@@ -17,8 +17,7 @@ class FiasTableSaver implements FiasTableSaverInterface
     public function __construct(
         Connection $connection,
         FiasTableFactory $fiasTableFactory
-    )
-    {
+    ) {
         $this->connection = $connection;
         $this->fiasTableFactory = $fiasTableFactory;
     }
@@ -28,10 +27,9 @@ class FiasTableSaver implements FiasTableSaverInterface
      * @throws LogicException
      */
     public function upsert(
-        string $token, 
+        string $token,
         array $values
-    ): void
-    {
+    ): void {
         $fiasTable = $this->fiasTableFactory->create($token);
         $this->upsertByFiasTable($fiasTable, $values);
     }

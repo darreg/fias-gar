@@ -13,7 +13,7 @@ abstract class StringValueObject
         $this->value = $value;
     }
 
-    public function value(): string
+    final public function value(): string
     {
         return $this->value;
     }
