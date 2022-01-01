@@ -42,6 +42,7 @@
       "ext-pdo": "*"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.4",
         "lctrs/psalm-psr-container-plugin": "^1.1",
         "overtrue/phplint": "^4.0",
         "phpunit/phpunit": "^9.5",
@@ -87,6 +88,7 @@
     },
     "scripts": {
         "lint": "XDEBUG_MODE=off phplint",
+        "php-cs-fixer": "php-cs-fixer --config=.php-cs-fixer.php --allow-risky=yes",
         "psalm": "XDEBUG_MODE=off psalm --config=psalm.xml",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",

@@ -24,6 +24,10 @@ php-workers:
 
 lint:
 	docker-compose run --rm php-cli composer lint
+	docker-compose run --rm php-cli composer php-cs-fixer fix -- --dry-run --diff
+
+fix:
+	docker-compose run --rm php-cli composer php-cs-fixer fix
 
 psalm:
 	docker-compose run --rm php-cli composer psalm
