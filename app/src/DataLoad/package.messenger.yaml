@@ -4,11 +4,15 @@ framework:
             rabbit_parse:
                 dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
                 options:
+                    exchange:
+                        name: messages_parse_queue
                     queues:
                         parse: ~
             rabbit_save:
                 dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
                 options:
+                    exchange:
+                        name: messages_save_queue
                     queues:
                         save: ~
 
