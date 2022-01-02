@@ -3,6 +3,7 @@
 namespace App\DataLoad\Presentation\Controller;
 
 use App\DataLoad\Application\UseCase\ParseTag\Command;
+use App\DataLoad\Application\UseCase\SaveTag\Command as SaveCommand;
 use App\DataLoad\Infrastructure\FiasTable\FiasTableFactory;
 use App\DataLoad\Infrastructure\FiasTable\FiasTableParameter;
 use App\DataLoad\Infrastructure\FiasTable\FiasTableSaver;
@@ -46,14 +47,33 @@ final class MainController extends AbstractController
     /**
      * @Route("/", name="main")
      */
-    public function index(Connection $connection): Response
+    public function index(Connection $connection): Response // \App\DataLoad\Application\UseCase\ParseTag\Handler $handler
     {
         $parseCommand = new Command(
             'house_types',
             '<HOUSETYPE ID="1" NAME="Владение" SHORTNAME="влд." DESC="Владение" STARTDATE="1900-01-01" ENDDATE="2015-11-05" UPDATEDATE="1900-01-01" ISACTIVE="false" />'
         );
 
+//        $handler($parseCommand);
+
         $this->commandBus->dispatch($parseCommand);
+
+
+
+
+//        $this->commandBus->dispatch(new SaveCommand('house_types', [
+//            'id' => '1',
+//            'name' => 'Владение',
+//            'shortname' => 'влд.',
+//            'desc' => 'Владение',
+//            'startdate' => '1900-01-01',
+//            'enddate' => '2015-11-05',
+//            'updatedate' => '1900-01-01',
+//            'isactive' => 'false'
+//        ]));
+
+
+
 
 //        $this->dataSaver->getTableColumns('fias_gar_addrobjtypes');
 

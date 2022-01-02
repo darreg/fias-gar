@@ -11,7 +11,7 @@ final class IdType extends GuidType
 {
     public const NAME = 'ext_addrobj_synonym_id';
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
         return $value instanceof Id ? $value->getValue() : $value;
     }

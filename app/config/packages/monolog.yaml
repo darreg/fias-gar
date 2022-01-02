@@ -1,6 +1,12 @@
 monolog:
     channels: ["parse_success", "parse_errors", "save_success", "save_errors"]
     handlers:
+        deprecation:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
+            level: INFO
+            channels: ["php"]
+            bubble: false
         parse_success:
             type:  rotating_file
             path:  '%kernel.logs_dir%/%kernel.environment%_parse_success.log'

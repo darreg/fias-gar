@@ -25,15 +25,13 @@ final class Handler implements CommandHandlerInterface
         $this->saveErrorsLogger = $saveErrorsLogger;
     }
 
-    public function __invoke(Command $command): bool
+    public function __invoke(Command $command): void
     {
         try {
             $this->fiasTableSaver->upsert($command->getFileToken(), $command->getValues());
             $this->saveSuccessLogger->info($command->getFileToken() . ' ; ' . serialize($command->getValues()));
-            return true;
         } catch (Exception $e) {
             $this->saveErrorsLogger->info($command->getFileToken() . ' ; ' . serialize($command->getValues()) . ' ; ' . $e->getMessage());
-            return false;
         }
     }
 }

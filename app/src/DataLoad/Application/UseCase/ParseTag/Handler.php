@@ -28,17 +28,15 @@ final class Handler implements CommandHandlerInterface
         $this->parseErrorsLogger = $parseErrorsLogger;
     }
 
-    public function __invoke(Command $command): bool
+    public function __invoke(Command $command): void
     {
         try {
             $data = $this->parse($command->getTagXml());
             $this->parseSuccessLogger->info($command->getFileToken() . ' ; ' . $command->getTagXml());
 
             $this->commandBus->dispatch(new SaveCommand($command->getFileToken(), $data));
-            return true;
         } catch (Exception $e) {
             $this->parseErrorsLogger->info($command->getFileToken() . ' ; ' . $command->getTagXml() . ' ; ' . $e->getMessage());
-            return false;
         }
     }
 
