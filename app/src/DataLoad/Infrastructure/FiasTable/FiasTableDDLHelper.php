@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Infrastructure\Doctrine;
+namespace App\DataLoad\Infrastructure\FiasTable;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use LogicException;
 
-final class DatabaseFunctionCaller
+final class FiasTableDDLHelper
 {
     private Connection $connection;
 

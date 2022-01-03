@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\FiasTable;
 
-use App\Shared\Infrastructure\Doctrine\DatabaseFunctionCaller;
 use Doctrine\DBAL\Exception;
 use LogicException;
 
 final class FiasTableFactory
 {
     private FiasTableParameter $fiasTableParameters;
-    private DatabaseFunctionCaller $databaseFunctionCaller;
+    private FiasTableDDLHelper $fiasTableDDLHelper;
 
     public function __construct(
         FiasTableParameter $fiasTableParameters,
-        DatabaseFunctionCaller $databaseFunctionCaller
+        FiasTableDDLHelper $fiasTableDDLHelper
     ) {
         $this->fiasTableParameters = $fiasTableParameters;
-        $this->databaseFunctionCaller = $databaseFunctionCaller;
+        $this->fiasTableDDLHelper = $fiasTableDDLHelper;
     }
 
     /**
@@ -29,7 +28,7 @@ final class FiasTableFactory
     {
         $tableName = $this->fiasTableParameters->getTableNameByFileToken($fileToken);
         $primaryKey = $this->fiasTableParameters->getPrimaryKeyByFileToken($fileToken);
-        $columnNames = $this->databaseFunctionCaller->tableColumnNames($tableName);
+        $columnNames = $this->fiasTableDDLHelper->tableColumnNames($tableName);
 
         return new FiasTable($tableName, $primaryKey, $columnNames);
     }
