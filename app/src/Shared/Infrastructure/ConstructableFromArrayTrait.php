@@ -9,7 +9,6 @@ use ReflectionMethod;
 trait ConstructableFromArrayTrait
 {
     /**
-     * @return static
      * @psalm-suppress MixedArgument
      */
     public static function fromArray(array $data): static
@@ -40,7 +39,7 @@ trait ConstructableFromArrayTrait
                 $parameters = array_merge($parameters, $parameter);
                 continue;
             }
-            
+
             /** @psalm-suppress MixedAssignment */
             $parameters[] = $parameter;
         }
