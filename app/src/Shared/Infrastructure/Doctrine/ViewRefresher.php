@@ -7,7 +7,7 @@ namespace App\Shared\Infrastructure\Doctrine;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
-final class ViewHelper
+final class ViewRefresher
 {
     private Connection $connection;
 
