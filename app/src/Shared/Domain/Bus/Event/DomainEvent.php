@@ -12,13 +12,13 @@ abstract class DomainEvent implements EventInterface
 {
     private string $aggregateId;
     private string $eventId;
-    private string $dateTime;
+    private string $occurredOn;
 
-    public function __construct(string $aggregateId, string $eventId = null, string $dateTime = null)
+    public function __construct(string $aggregateId, string $eventId = null, string $occurredOn = null)
     {
         $this->aggregateId = $aggregateId;
         $this->eventId = $eventId ?: UuidValueObject::next()->getValue();
-        $this->dateTime = $dateTime ?: (new DateTimeImmutable())->format(DateTimeInterface::ATOM);
+        $this->occurredOn = $occurredOn ?: (new DateTimeImmutable())->format(DateTimeInterface::ATOM);
     }
 
     abstract public static function eventName(): string;
@@ -27,7 +27,7 @@ abstract class DomainEvent implements EventInterface
         string $aggregateId,
         array $body,
         string $eventId,
-        string $dateTime
+        string $occurredOn
     ): self;
 
     abstract public function toArray(): array;
@@ -42,8 +42,8 @@ abstract class DomainEvent implements EventInterface
         return $this->eventId;
     }
 
-    final public function dateTime(): string
+    final public function occurredOn(): string
     {
-        return $this->dateTime;
+        return $this->occurredOn;
     }
 }
