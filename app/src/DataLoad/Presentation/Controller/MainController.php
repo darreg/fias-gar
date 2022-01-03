@@ -58,9 +58,6 @@ final class MainController extends AbstractController
 
         $this->commandBus->dispatch($parseCommand);
 
-
-
-
 //        $this->commandBus->dispatch(new SaveCommand('house_types', [
 //            'id' => '1',
 //            'name' => 'Владение',
@@ -71,9 +68,6 @@ final class MainController extends AbstractController
 //            'updatedate' => '1900-01-01',
 //            'isactive' => 'false'
 //        ]));
-
-
-
 
 //        $this->dataSaver->getTableColumns('fias_gar_addrobjtypes');
 

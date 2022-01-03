@@ -20,8 +20,9 @@ final class DomainEventNormalizer implements ContextAwareNormalizerInterface
     }
 
     /**
-     * @return array|ArrayObject|bool|float|int|mixed|string|null
+     * @param mixed $object
      * @throws ExceptionInterface
+     * @return array|ArrayObject|bool|float|int|mixed|string|null
      */
     public function normalize($object, string $format = null, array $context = []): mixed
     {
