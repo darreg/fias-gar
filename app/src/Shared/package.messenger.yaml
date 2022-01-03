@@ -34,6 +34,5 @@ framework:
             failed: '%env(MESSENGER_DOCTRINE_TRANSPORT_DSN)%?queue_name=failed'
 
         routing:
-#            'App\Shared\Domain\Bus\Command\CommandInterface': sync
             'App\Shared\Domain\Bus\Query\QueryInterface': sync
             'App\Shared\Domain\Bus\Event\EventInterface': rabbit_event

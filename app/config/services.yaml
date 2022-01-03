@@ -14,16 +14,3 @@ services:
     # please note that last definitions always *replace* previous ones
 
     Monolog\Formatter\JsonFormatter: ~
-
-#    App\Shared\Infrastructure\Symfony\MigrationEventSubscriber:
-#        tags:
-#            - { name: doctrine.event_subscriber, connection: default }
-
-#    App\Manager\FiasFileManager:
-#        arguments:
-#            $fiasXmlDirectory: '%fias_xml_directory%'
-
-#    App\Service\AsyncService:
-#        calls:
-#            - ['registerProducer', [!php/const App\Service\AsyncService::PARSE, '@old_sound_rabbit_mq.parse_producer']]
-#            - ['registerProducer', [!php/const App\Service\AsyncService::SAVE, '@old_sound_rabbit_mq.save_producer']]

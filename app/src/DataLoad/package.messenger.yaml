@@ -3,6 +3,7 @@ framework:
         transports:
             rabbit_parse:
                 dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
+                serializer: messenger.transport.symfony_serializer
                 options:
                     exchange:
                         name: messages_parse_queue
@@ -10,6 +11,7 @@ framework:
                         parse: ~
             rabbit_save:
                 dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
+                serializer: messenger.transport.symfony_serializer
                 options:
                     exchange:
                         name: messages_save_queue
