@@ -12,7 +12,7 @@ use function Lambdish\Phunctional\reindex;
 
 final class DomainEventMapping
 {
-    private $mapping;
+    private mixed $mapping;
 
     public function __construct(iterable $subscribers)
     {
