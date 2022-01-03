@@ -7,5 +7,5 @@ interface ConstructFromArrayInterface
     /**
      * @return mixed
      */
-    public static function fromArray(array $data);
+    public static function fromArray(array $data): static;
 }

@@ -12,7 +12,7 @@ trait ConstructableFromArrayTrait
      * @return static
      * @psalm-suppress MixedArgument
      */
-    public static function fromArray(array $data)
+    public static function fromArray(array $data): static
     {
         $reflectionMethod = new ReflectionMethod(static::class, '__construct');
         $reflectionParameters = $reflectionMethod->getParameters();
@@ -30,7 +30,7 @@ trait ConstructableFromArrayTrait
             try {
                 /** @psalm-suppress MixedAssignment */
                 $defaultValue = $reflectionParameter->getDefaultValue();
-            } catch (ReflectionException $e) {
+            } catch (ReflectionException) {
                 $defaultValue = null;
             }
 
@@ -40,6 +40,7 @@ trait ConstructableFromArrayTrait
                 $parameters = array_merge($parameters, $parameter);
                 continue;
             }
+            
             /** @psalm-suppress MixedAssignment */
             $parameters[] = $parameter;
         }
