@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Embeddable
+ * @psalm-suppress MissingConstructor
  */
 final class LatLon extends LatLonValueObject
 {
