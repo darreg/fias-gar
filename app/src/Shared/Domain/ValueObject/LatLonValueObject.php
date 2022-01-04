@@ -7,7 +7,7 @@ namespace App\Shared\Domain\ValueObject;
 use InvalidArgumentException;
 use Stringable;
 
-class LatLonValueObject implements Stringable
+abstract class LatLonValueObject implements Stringable
 {
     public const DECIMALS = 6;
 
@@ -53,29 +53,13 @@ class LatLonValueObject implements Stringable
             self::isFloatEqual($this->longitude, $latLon->getLongitude());
     }
 
-    public static function fromString(string $latLon): static
-    {
-        if (substr_count($latLon, ',') !== 1) {
-            throw new InvalidArgumentException(
-                sprintf('Expected a string to contain a single comma (%s)', $latLon)
-            );
-        }
-        [$latitude, $longitude] = explode(',', $latLon);
-        return new self((float)$latitude, (float)$longitude);
-    }
+    abstract public static function fromString(string $latLon): self;
 
     /**
      * @param array<int, float> $latLon
      */
-    public static function fromArray(array $latLon): static
-    {
-        if (\count($latLon) !== 2) {
-            throw new InvalidArgumentException(
-                sprintf('Expected an array to contain 2 elements. Got: %d.', \count($latLon))
-            );
-        }
-        return new static((float)$latLon[0], (float)$latLon[1]);
-    }
+    abstract public static function fromArray(array $latLon): self;
+    
 
     public static function isValid(float $latitude, float $longitude): bool
     {
@@ -106,12 +90,56 @@ class LatLonValueObject implements Stringable
         return $latitude;
     }
 
-    private static function isFloatEqual($one, $two): bool
+    protected static function isFloatEqual(float $one, float $two): bool
     {
         return bccomp(
-            number_format($one, self::DECIMALS),
-            number_format($two, self::DECIMALS),
+            self::numberFormat($one),
+            self::numberFormat($two),
             self::DECIMALS
         ) === 0;
     }
+
+    /**
+     * @return numeric-string
+     * @throws InvalidArgumentException
+     */
+    protected static function numberFormat(float $num): string
+    {
+        $result = number_format($num, self::DECIMALS);
+        if (!is_numeric($result)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid float value. Got: %d.', $num)
+            );
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return list<float>
+     */
+    protected static function fromStringRaw(string $latLon): array
+    {
+        if (substr_count($latLon, ',') !== 1) {
+            throw new InvalidArgumentException(
+                sprintf('Expected a string to contain a single comma (%s)', $latLon)
+            );
+        }
+        $exploded = explode(',', $latLon);
+
+        return [(float)$exploded[0], (float)$exploded[1]];
+    }
+
+    /**
+     * @return list<float>
+     */
+    protected static function fromArrayRaw(array $latLon): array
+    {
+        if (\count($latLon) !== 2) {
+            throw new InvalidArgumentException(
+                sprintf('Expected an array to contain 2 elements. Got: %d.', \count($latLon))
+            );
+        }
+        return [(float)$latLon[0], (float)$latLon[1]];
+    }    
 }

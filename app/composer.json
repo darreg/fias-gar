@@ -4,12 +4,14 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.1",
         "ext-amqp": "*",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
+        "ext-bcmath": "*",
+        "ext-pdo": "*",
         "doctrine/annotations": "^1.12",
         "doctrine/cache": "^1.11",
         "doctrine/doctrine-bundle": "^2.2",
@@ -37,9 +39,7 @@
         "symfony/serializer": "5.4.*",
         "symfony/uid": "5.4.*",
         "symfony/validator": "5.4.*",
-        "symfony/yaml": "5.4.*",
-      "ext-bcmath": "*",
-      "ext-pdo": "*"
+        "symfony/yaml": "5.4.*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.4",
@@ -47,7 +47,7 @@
         "overtrue/phplint": "^4.0",
         "phpunit/phpunit": "^9.5",
         "psalm/plugin-phpunit": "^0.16.1",
-        "psalm/plugin-symfony": "^2.2",
+        "psalm/plugin-symfony": "^3.1",
         "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "5.4.*",
         "symfony/css-selector": "5.4.*",
@@ -57,7 +57,7 @@
         "symfony/stopwatch": "^5.4",
         "symfony/twig-bundle": "^5.4",
         "symfony/web-profiler-bundle": "^5.4",
-        "vimeo/psalm": "^4.6",
+        "vimeo/psalm": "^4.16",
         "weirdan/doctrine-psalm-plugin": "^1.0"
     },
     "config": {
@@ -91,8 +91,10 @@
     },
     "scripts": {
         "lint": "XDEBUG_MODE=off phplint",
-        "php-cs-fixer": "php-cs-fixer --config=.php-cs-fixer.php --allow-risky=yes",
+        "php-cs-fixer": "XDEBUG_MODE=off php-cs-fixer --config=.php-cs-fixer.php --allow-risky=yes",
         "psalm": "XDEBUG_MODE=off psalm --config=psalm.xml",
+        "test": "XDEBUG_MODE=off phpunit",
+        "test-coverage": "XDEBUG_MODE=coverage phpunit --colors=always --coverage-html var/test/coverage",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"

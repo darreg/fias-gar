@@ -9,6 +9,9 @@ use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
 abstract class AbstractEventSubscriber implements MessageSubscriberInterface, EventSubscriberInterface
 {
+    /**
+     * @return list<string>
+     */
     final public static function subscribedTo(): array
     {
         return [];

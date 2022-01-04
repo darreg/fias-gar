@@ -23,6 +23,7 @@ final class FiasTableSaver implements FiasTableSaverInterface
     }
 
     /**
+     * @param array<string, string> $values
      * @throws Exception
      * @throws LogicException
      */
@@ -35,6 +36,7 @@ final class FiasTableSaver implements FiasTableSaverInterface
     }
 
     /**
+     * @param array<string, string> $values
      * @throws Exception
      */
     private function upsertByFiasTable(

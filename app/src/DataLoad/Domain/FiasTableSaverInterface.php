@@ -6,5 +6,8 @@ namespace App\DataLoad\Domain;
 
 interface FiasTableSaverInterface
 {
+    /**
+     * @param array<string, string> $values
+     */
     public function upsert(string $token, array $values): void;
 }

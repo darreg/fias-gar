@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <psalm
-        errorLevel="2"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+
+        errorLevel="1"
         totallyTyped="true"
         resolveFromConfigFile="true"
         cacheDirectory="var/cache/psalm"
@@ -23,7 +28,6 @@
         <directory name="src"/>
         <directory name="tests"/>
         <ignoreFiles>
-            <directory name="src/_old_BackOffice"/>
             <directory name="vendor"/>
             <file name="src/Kernel.php"/>
             <file name="config/preload.php"/>

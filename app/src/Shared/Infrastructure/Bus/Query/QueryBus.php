@@ -21,6 +21,11 @@ final class QueryBus implements QueryBusInterface
 
     public function ask(QueryInterface $query): ?ResponseInterface
     {
-        return $this->handle($query);
+        /**
+         * @var ResponseInterface|null $result
+         */
+        $result = $this->handle($query);
+
+        return $result;
     }
 }

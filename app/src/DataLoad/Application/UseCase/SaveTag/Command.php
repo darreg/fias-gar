@@ -9,8 +9,14 @@ use App\Shared\Domain\Bus\Command\CommandInterface;
 final class Command implements CommandInterface
 {
     public string $fileToken;
+    /**
+     * @var array<string, string> $values
+     */
     public array $values;
 
+    /**
+     * @param array<string, string> $values
+     */    
     public function __construct(string $fileToken, array $values)
     {
         $this->fileToken = $fileToken;
@@ -22,6 +28,9 @@ final class Command implements CommandInterface
         return $this->fileToken;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getValues(): array
     {
         return $this->values;

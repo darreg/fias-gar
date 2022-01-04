@@ -22,7 +22,7 @@ final class FiasTableParameter
 
     public function getPrimaryKeyByFileToken(string $fileToken): string
     {
-        /** @var array $fiasTablePkeys */
+        /** @var array<string, string> $fiasTablePkeys */
         $fiasTablePkeys = $this->parameterBag->get(self::TABLES_PKEY);
         if (empty($fiasTablePkeys[$fileToken])) {
             return 'id';
@@ -36,7 +36,7 @@ final class FiasTableParameter
      */
     public function getTableNameByFileToken(string $fileToken): string
     {
-        /** @var array $fiasTables */
+        /** @var array<string, string> $fiasTables */
         $fiasTables = $this->parameterBag->get(self::TABLES);
         if (empty($fiasTables[$fileToken])) {
             throw new LogicException("No table name found for the token '{$fileToken}'");
@@ -50,7 +50,7 @@ final class FiasTableParameter
      */
     public function getTagNameByFile(string $fileToken): string
     {
-        /** @var array $fiasTags */
+        /** @var array<string, string> $fiasTags */
         $fiasTags = $this->parameterBag->get(self::TAGS);
         if (empty($fiasTags[$fileToken])) {
             throw new LogicException("No tag name found for the token '{$fileToken}'");

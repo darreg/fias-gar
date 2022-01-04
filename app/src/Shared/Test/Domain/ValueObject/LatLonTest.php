@@ -11,44 +11,18 @@ use PHPUnit\Framework\TestCase;
  */
 final class LatLonTest extends TestCase
 {
-    public function testCreateFromString(): void
-    {
-        $result = LatLonValueObject::fromString('11.2222,22.3333');
-        self::assertEquals(11.2222, $result->getLatitude());
-        self::assertEquals(22.3333, $result->getLongitude());
-    }
-
-    public function testCreateFromStringException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        LatLonValueObject::fromString('11.2222');
-    }
-
-    public function testCreateFromArray(): void
-    {
-        $result = LatLonValueObject::fromArray([11.2222, 22.3333]);
-        self::assertEquals(11.2222, $result->getLatitude());
-        self::assertEquals(22.3333, $result->getLongitude());
-    }
-
-    public function testCreateFromArrayException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        LatLonValueObject::fromArray([11.2222]);
-    }
-
     /**
      * @dataProvider validationDataProvider
-     * @param mixed $latitude
-     * @param mixed $longitude
-     * @param mixed $expected
      */
-    public function testValidation($latitude, $longitude, $expected): void
+    public function testValidation(float $latitude, float $longitude, bool $expected): void
     {
         $result = LatLonValueObject::isValid($latitude, $longitude);
         self::assertEquals($expected, $result, "{$latitude}, {$longitude}");
     }
 
+    /**
+     * @return list<array{float, float, bool}>
+     */
     public function validationDataProvider(): array
     {
         return [

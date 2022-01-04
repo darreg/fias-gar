@@ -9,40 +9,39 @@ use App\Shared\Infrastructure\Bus\Command\CommandBus;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\StampInterface;
 
 /**
  * @internal
  */
 final class CommandBusTest extends TestCase
 {
-    private CommandBus $commandBus;
-
-    protected function setUp(): void
-    {
-        $this->symfonyMessageBus = $this->fakeCommandBus();
-        $this->commandBus = new CommandBus($this->symfonyMessageBus);
-    }
-
     public function testDispatching(): void
     {
-        $command = new TestCommand();
-        $this->commandBus->dispatch($command);
+        $symfonyMessageBus = $this->fakeCommandBus();
+        $commandBus = new CommandBus($symfonyMessageBus);
 
-        self::assertSame($command, $this->symfonyMessageBus->lastDispatchedCommand());
+        $command = new TestCommand();
+        $commandBus->dispatch($command);
+
+        /** @psalm-suppress UndefinedInterfaceMethod */
+        self::assertSame($command, $symfonyMessageBus->lastDispatchedCommand());
     }
 
     private function fakeCommandBus(): MessageBusInterface
     {
+        /** @psalm-suppress MissingConstructor */
         return new class() implements MessageBusInterface {
-            private CommandInterface $dispatchedCommand;
+            private object $dispatchedCommand;
 
-            public function dispatch($message, array $stamps = []): Envelope
+            /** @psalm-suppress MethodSignatureMismatch */
+            public function dispatch(object $message, array $stamps = []): Envelope
             {
                 $this->dispatchedCommand = $message;
                 return new Envelope($message);
             }
 
-            public function lastDispatchedCommand(): CommandInterface
+            public function lastDispatchedCommand(): object
             {
                 return $this->dispatchedCommand;
             }

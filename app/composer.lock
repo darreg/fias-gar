@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b7025df35653d0ec1f56c19dfafa930",
+    "content-hash": "b459005ddfb15dec92e19afba9cc602a",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -8825,33 +8825,33 @@
         },
         {
             "name": "psalm/plugin-symfony",
-            "version": "v2.5.1",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/psalm-plugin-symfony.git",
-                "reference": "8a7744a5406c7f61d6eb007b30f721fff3a564c3"
+                "reference": "cd25832215c35770bb3a6a42a00f34cd7672697c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/psalm-plugin-symfony/zipball/8a7744a5406c7f61d6eb007b30f721fff3a564c3",
-                "reference": "8a7744a5406c7f61d6eb007b30f721fff3a564c3",
+                "url": "https://api.github.com/repos/psalm/psalm-plugin-symfony/zipball/cd25832215c35770bb3a6a42a00f34cd7672697c",
+                "reference": "cd25832215c35770bb3a6a42a00f34cd7672697c",
                 "shasum": ""
             },
             "require": {
                 "ext-simplexml": "*",
                 "php": "^7.1 || ^8.0",
-                "symfony/framework-bundle": "^3.0 || ^4.0 || ^5.0",
-                "vimeo/psalm": "^4.9"
+                "symfony/framework-bundle": "^4.0 || ^5.0 || ^6.0",
+                "vimeo/psalm": "^4.12"
             },
             "require-dev": {
                 "doctrine/orm": "^2.7",
                 "phpunit/phpunit": "~7.5 || ~9.5",
                 "symfony/cache-contracts": "^1.0 || ^2.0",
                 "symfony/console": "*",
-                "symfony/form": "^4.0 || ^5.0",
-                "symfony/messenger": "^4.2 || ^5.0",
-                "symfony/security-guard": "^4.0 || ^5.0",
-                "symfony/serializer": "^4.0 || ^5.0",
+                "symfony/form": "^4.0 || ^5.0 || ^6.0",
+                "symfony/messenger": "^4.2 || ^5.0 || ^6.0",
+                "symfony/security-guard": "*",
+                "symfony/serializer": "^4.0 || ^5.0 || ^6.0",
                 "symfony/validator": "*",
                 "twig/twig": "^2.10 || ^3.0",
                 "weirdan/codeception-psalm-module": "^0.13.1"
@@ -8883,9 +8883,9 @@
             "description": "Psalm Plugin for Symfony",
             "support": {
                 "issues": "https://github.com/psalm/psalm-plugin-symfony/issues",
-                "source": "https://github.com/psalm/psalm-plugin-symfony/tree/v2.5.1"
+                "source": "https://github.com/psalm/psalm-plugin-symfony/tree/v3.1.2"
             },
-            "time": "2021-08-17T06:32:09+00:00"
+            "time": "2022-01-02T20:22:02+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -11151,16 +11151,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "65cb6f0b956485e1664f13d023c55298a4bb59ca"
+                "reference": "a0f614a192829a4e7c597491ab0c4d276621af8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/65cb6f0b956485e1664f13d023c55298a4bb59ca",
-                "reference": "65cb6f0b956485e1664f13d023c55298a4bb59ca",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/a0f614a192829a4e7c597491ab0c4d276621af8a",
+                "reference": "a0f614a192829a4e7c597491ab0c4d276621af8a",
                 "shasum": ""
             },
             "require": {
@@ -11211,7 +11211,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.3.4"
+                "source": "https://github.com/twigphp/Twig/tree/v3.3.5"
             },
             "funding": [
                 {
@@ -11223,7 +11223,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-25T13:46:55+00:00"
+            "time": "2022-01-03T11:36:47+00:00"
         },
         {
             "name": "vimeo/psalm",
@@ -11467,7 +11467,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4",
+        "php": ">=8.1",
         "ext-amqp": "*",
         "ext-ctype": "*",
         "ext-iconv": "*",
