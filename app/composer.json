@@ -58,7 +58,7 @@
         "symfony/twig-bundle": "^5.4",
         "symfony/web-profiler-bundle": "^5.4",
         "vimeo/psalm": "^4.16",
-        "weirdan/doctrine-psalm-plugin": "^1.0"
+        "weirdan/doctrine-psalm-plugin": "^2.0"
     },
     "config": {
         "optimize-autoloader": true,
