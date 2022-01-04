@@ -21,4 +21,14 @@ final class LatLon extends LatLonValueObject
      * @ORM\Column(type="decimal", precision=14, scale=11, options={"comment"="Координаты: долгота"})
      */
     protected float $longitude;
+
+    public static function fromString(string $latLon): self
+    {
+        return new self(...parent::fromStringRaw($latLon));
+    }
+
+    public static function fromArray(array $latLon): self
+    {
+        return new self(...parent::fromArrayRaw($latLon));
+    }
 }

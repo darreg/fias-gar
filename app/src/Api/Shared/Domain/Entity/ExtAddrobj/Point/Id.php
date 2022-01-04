@@ -8,4 +8,8 @@ use App\Shared\Domain\ValueObject\UuidValueObject;
 
 final class Id extends UuidValueObject
 {
+    public static function next(): self
+    {
+        return new self(parent::randomUuid());
+    }
 }

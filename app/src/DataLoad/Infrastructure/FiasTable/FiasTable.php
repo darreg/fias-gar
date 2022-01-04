@@ -8,8 +8,14 @@ final class FiasTable
 {
     private string $name;
     private string $primaryKey;
+    /**
+     * @var list<string>
+     */
     private array $columns;
 
+    /**
+     * @param list<string> $columns
+     */
     public function __construct(string $name, string $primaryKey, array $columns)
     {
         $this->name = $name;
@@ -37,6 +43,9 @@ final class FiasTable
         return implode(',', $this->columns);
     }
 
+    /**
+     * @param array<string, string> $values
+     */
     public function getValuesAsString(array $values): string
     {
         $clearValues = [];
@@ -51,6 +60,10 @@ final class FiasTable
         return implode(',', $clearValues);
     }
 
+    /**
+     * @param array<string, string> $values
+     * @return array<string, null|string>
+     */
     private function getAllColumnValuesWithNull(array $values): array
     {
         $result = [];

@@ -4,40 +4,38 @@ declare(strict_types=1);
 
 namespace App\Shared\Test\Infrastructure\Bus\Query;
 
-use App\Shared\Domain\Bus\Query\QueryInterface;
 use App\Shared\Infrastructure\Bus\Query\QueryBus;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
+use Symfony\Component\Messenger\Stamp\StampInterface;
 
 /**
  * @internal
  */
 final class QueryBusTest extends TestCase
 {
-    private QueryBus $queryBus;
-
-    protected function setUp(): void
-    {
-        $this->symfonyMessageBus = $this->fakeQueryBus();
-        $this->queryBus = new QueryBus($this->symfonyMessageBus);
-    }
-
     public function testDispatching(): void
     {
-        $query = new TestQuery();
-        $this->queryBus->ask($query);
+        $symfonyMessageBus = $this->fakeQueryBus();
+        $queryBus = new QueryBus($symfonyMessageBus);
 
-        self::assertSame($query, $this->symfonyMessageBus->lastDispatchedQuery());
+        $query = new TestQuery();
+        $queryBus->ask($query);
+
+        /** @psalm-suppress UndefinedInterfaceMethod */
+        self::assertSame($query, $symfonyMessageBus->lastDispatchedQuery());
     }
 
     private function fakeQueryBus(): MessageBusInterface
     {
+        /** @psalm-suppress MissingConstructor */
         return new class() implements MessageBusInterface {
-            private QueryInterface $dispatchedQuery;
+            private object $dispatchedQuery;
 
-            public function dispatch($message, array $stamps = []): Envelope
+            /** @psalm-suppress MethodSignatureMismatch */
+            public function dispatch(object $message, array $stamps = []): Envelope
             {
                 $this->dispatchedQuery = $message;
                 return (new Envelope($message))->with(new HandledStamp(
@@ -46,7 +44,7 @@ final class QueryBusTest extends TestCase
                 ));
             }
 
-            public function lastDispatchedQuery(): QueryInterface
+            public function lastDispatchedQuery(): object
             {
                 return $this->dispatchedQuery;
             }

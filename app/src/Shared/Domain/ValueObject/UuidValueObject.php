@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\ValueObject;
 
+use App\Shared\Domain\Internal\Uuid;
 use InvalidArgumentException;
 use Stringable;
-use Symfony\Component\Uid\Uuid;
 
-class UuidValueObject implements Stringable
+abstract class UuidValueObject implements Stringable
 {
     private string $value;
 
@@ -23,16 +23,6 @@ class UuidValueObject implements Stringable
         $this->value = $value;
     }
 
-    public function __toString(): string
-    {
-        return $this->getValue();
-    }
-
-    public static function next(): static
-    {
-        return new self((string)Uuid::v4());
-    }
-
     public function getValue(): string
     {
         return $this->value;
@@ -41,5 +31,17 @@ class UuidValueObject implements Stringable
     public function isEqual(self $other): bool
     {
         return $this->getValue() === $other->getValue();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getValue();
+    }
+
+    abstract public static function next(): self;
+    
+    protected static function randomUuid(): string
+    {
+        return Uuid::generate();    
     }
 }

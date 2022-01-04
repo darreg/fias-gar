@@ -21,5 +21,6 @@ final class TestHandler implements EventSubscriberInterface
 
     public static function subscribedTo(): array
     {
+        return [];
     }
 }

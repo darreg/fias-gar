@@ -31,4 +31,23 @@ final class LatLon extends LatLonValueObject
      * @ORM\Column(type="smallint", nullable=true)
      */
     private ?int $zoom;
+
+    public function __construct(float $latitude, float $longitude, ?int $precision = null, ?int $zoom = null)
+    {
+        $this->precision = $precision;
+        $this->zoom = $zoom;
+
+        parent::__construct($latitude, $longitude);
+    }
+
+    public static function fromString(string $latLon): self
+    {
+        return self::fromArray(parent::fromStringRaw($latLon));
+    }
+
+    public static function fromArray(array $latLon): self
+    {
+        [$latitude, $longitude] = parent::fromArrayRaw($latLon);
+        return new self($latitude, $longitude);
+    }
 }

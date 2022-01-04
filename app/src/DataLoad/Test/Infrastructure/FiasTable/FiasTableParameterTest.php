@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @internal
+ * @psalm-suppress MissingConstructor
  */
 final class FiasTableParameterTest extends KernelTestCase
 {
@@ -24,10 +25,8 @@ final class FiasTableParameterTest extends KernelTestCase
 
     /**
      * @dataProvider primaryKeyDataProvider
-     * @param mixed $token
-     * @param mixed $expected
      */
-    public function testPrimaryKeyByFileToken($token, $expected): void
+    public function testPrimaryKeyByFileToken(string $token, string  $expected): void
     {
         $primaryKey = $this->fiasTableParameters->getPrimaryKeyByFileToken($token);
         self::assertEquals(
@@ -60,6 +59,9 @@ final class FiasTableParameterTest extends KernelTestCase
         $this->fiasTableParameters->getTagNameByFile('incorrect_table_name');
     }
 
+    /**
+     * @return list<array{string, string}>
+     */
     private function primaryKeyDataProvider(): array
     {
         return [

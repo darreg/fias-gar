@@ -93,20 +93,18 @@ class ExtAddrobj
     private ?string $locative;
 
     /**
-     * @var ArrayCollection|Point[]
-     *
+     * @var ArrayCollection<int, Point>
      * @ORM\OneToMany(targetEntity=Point::class, mappedBy="extAddrobj", orphanRemoval=true, cascade={"all"})
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
      */
-    private $points;
+    private ArrayCollection $points;
 
     /**
-     * @var ArrayCollection|Synonym[]
-     *
+     * @var ArrayCollection<int, Synonym>
      * @ORM\OneToMany(targetEntity=Synonym::class, mappedBy="extAddrobj", orphanRemoval=true, cascade={"all"})
      * @ORM\JoinColumn(name="objectid", referencedColumnName="objectid", nullable=true)
      */
-    private $synonyms;
+    private ArrayCollection $synonyms;
 
     public function __construct(
         int $objectid,

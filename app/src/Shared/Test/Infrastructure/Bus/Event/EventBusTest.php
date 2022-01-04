@@ -9,40 +9,39 @@ use App\Shared\Infrastructure\Bus\Event\EventBus;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\StampInterface;
 
 /**
  * @internal
  */
 final class EventBusTest extends TestCase
 {
-    private EventBus $eventBus;
-
-    protected function setUp(): void
-    {
-        $this->symfonyMessageBus = $this->fakeEventBus();
-        $this->eventBus = new EventBus($this->symfonyMessageBus);
-    }
-
     public function testDispatching(): void
     {
-        $event = new TestEvent();
-        $this->eventBus->publish($event);
+        $symfonyMessageBus = $this->fakeEventBus();
+        $eventBus = new EventBus($symfonyMessageBus);
 
-        self::assertSame($event, $this->symfonyMessageBus->lastDispatchedEvent());
+        $event = new TestEvent();
+        $eventBus->publish($event);
+
+        /** @psalm-suppress UndefinedInterfaceMethod */
+        self::assertSame($event, $symfonyMessageBus->lastDispatchedEvent());
     }
 
     private function fakeEventBus(): MessageBusInterface
     {
+        /** @psalm-suppress MissingConstructor */
         return new class() implements MessageBusInterface {
-            private EventInterface $dispatchedEvent;
+            private object $dispatchedEvent;
 
-            public function dispatch($message, array $stamps = []): Envelope
+            /** @psalm-suppress MethodSignatureMismatch */
+            public function dispatch(object $message, array $stamps = []): Envelope
             {
                 $this->dispatchedEvent = $message;
                 return new Envelope($message);
             }
 
-            public function lastDispatchedEvent(): EventInterface
+            public function lastDispatchedEvent(): object
             {
                 return $this->dispatchedEvent;
             }

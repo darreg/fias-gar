@@ -40,6 +40,9 @@ final class Handler implements CommandHandlerInterface
         }
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function parse(string $tagXml): array
     {
         $xmlElement = simplexml_load_string($tagXml);
@@ -54,6 +57,12 @@ final class Handler implements CommandHandlerInterface
 
         $xmlAttributes = (array)$xmlData['@attributes'];
 
-        return reindex(static fn ($value, $key) => strtolower($key), $xmlAttributes);
+        /**
+         * @var array<string, string> $result
+         * @psalm-suppress UnusedClosureParam
+         */
+        $result = reindex(static fn (string $value, string $key) => strtolower($key), $xmlAttributes);
+
+        return $result;
     }
 }
