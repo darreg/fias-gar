@@ -62,7 +62,7 @@ final class FiasTable
 
     /**
      * @param array<string, string> $values
-     * @return array<string, null|string>
+     * @return array<string, string|null>
      */
     private function getAllColumnValuesWithNull(array $values): array
     {

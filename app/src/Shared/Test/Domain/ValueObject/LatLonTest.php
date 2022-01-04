@@ -3,7 +3,6 @@
 namespace App\Shared\Test\Domain\ValueObject;
 
 use App\Shared\Domain\ValueObject\LatLonValueObject;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**

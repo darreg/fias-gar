@@ -36,17 +36,17 @@ abstract class LatLonValueObject implements Stringable
         return $this->latitude . ',' . $this->longitude;
     }
 
-    public function getLatitude(): float
+    final public function getLatitude(): float
     {
         return $this->latitude;
     }
 
-    public function getLongitude(): float
+    final public function getLongitude(): float
     {
         return $this->longitude;
     }
 
-    public function isEqual(self $latLon): bool
+    final public function isEqual(self $latLon): bool
     {
         return
             self::isFloatEqual($this->latitude, $latLon->getLatitude()) &&
@@ -59,16 +59,15 @@ abstract class LatLonValueObject implements Stringable
      * @param array<int, float> $latLon
      */
     abstract public static function fromArray(array $latLon): self;
-    
 
-    public static function isValid(float $latitude, float $longitude): bool
+    final public static function isValid(float $latitude, float $longitude): bool
     {
         return
             $latitude >= self::LATITUDE_MIN && $latitude <= self::LATITUDE_MAX &&
             $longitude >= self::LONGITUDE_MIN && $longitude <= self::LONGITUDE_MAX;
     }
 
-    public static function fixLongitude(float $longitude): float
+    final public static function fixLongitude(float $longitude): float
     {
         while ($longitude < self::LONGITUDE_MIN) {
             $longitude += 360;
@@ -79,7 +78,7 @@ abstract class LatLonValueObject implements Stringable
         return $longitude;
     }
 
-    public static function fixLatitude(float $latitude): float
+    final public static function fixLatitude(float $latitude): float
     {
         while ($latitude < self::LATITUDE_MIN) {
             $latitude += 180;
@@ -100,8 +99,8 @@ abstract class LatLonValueObject implements Stringable
     }
 
     /**
-     * @return numeric-string
      * @throws InvalidArgumentException
+     * @return numeric-string
      */
     protected static function numberFormat(float $num): string
     {
@@ -141,5 +140,5 @@ abstract class LatLonValueObject implements Stringable
             );
         }
         return [(float)$latLon[0], (float)$latLon[1]];
-    }    
+    }
 }

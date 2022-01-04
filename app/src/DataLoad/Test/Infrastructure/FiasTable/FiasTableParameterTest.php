@@ -26,7 +26,7 @@ final class FiasTableParameterTest extends KernelTestCase
     /**
      * @dataProvider primaryKeyDataProvider
      */
-    public function testPrimaryKeyByFileToken(string $token, string  $expected): void
+    public function testPrimaryKeyByFileToken(string $token, string $expected): void
     {
         $primaryKey = $this->fiasTableParameters->getPrimaryKeyByFileToken($token);
         self::assertEquals(
