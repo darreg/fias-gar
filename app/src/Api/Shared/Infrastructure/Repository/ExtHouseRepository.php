@@ -23,10 +23,13 @@ final class ExtHouseRepository implements ExtHouseRepositoryInterface
 
     public function get(int $objectid): ExtHouse
     {
-        /** @var ExtHouse $extHouse */
-        if (!$extHouse = $this->repo->find($objectid)) {
+        /** @var ExtHouse|null $extHouse */
+        $extHouse = $this->repo->find($objectid);
+
+        if ($extHouse === null) {
             throw new DomainException('ExtHouse is not found.');
         }
+
         return $extHouse;
     }
 
