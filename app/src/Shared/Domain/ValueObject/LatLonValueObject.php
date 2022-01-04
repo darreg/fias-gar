@@ -55,9 +55,6 @@ abstract class LatLonValueObject implements Stringable
 
     abstract public static function fromString(string $latLon): self;
 
-    /**
-     * @param array<int, float> $latLon
-     */
     abstract public static function fromArray(array $latLon): self;
 
     final public static function isValid(float $latitude, float $longitude): bool
