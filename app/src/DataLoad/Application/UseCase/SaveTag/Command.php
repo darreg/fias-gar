@@ -10,13 +10,13 @@ final class Command implements CommandInterface
 {
     public string $fileToken;
     /**
-     * @var array<string, string> $values
+     * @var array<string, string>
      */
     public array $values;
 
     /**
      * @param array<string, string> $values
-     */    
+     */
     public function __construct(string $fileToken, array $values)
     {
         $this->fileToken = $fileToken;

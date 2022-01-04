@@ -19,13 +19,15 @@ final class QueryBus implements QueryBusInterface
         $this->messageBus = $queryBus;
     }
 
+    /**
+     * @psalm-suppress MixedInferredReturnType
+     */
     public function ask(QueryInterface $query): ?ResponseInterface
     {
         /**
          * @var ResponseInterface|null $result
+         * @psalm-suppress MixedReturnStatement
          */
-        $result = $this->handle($query);
-
-        return $result;
+        return $this->handle($query);
     }
 }

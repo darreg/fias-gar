@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
-use Symfony\Component\Messenger\Stamp\StampInterface;
 
 /**
  * @internal

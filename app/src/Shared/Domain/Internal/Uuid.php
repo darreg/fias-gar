@@ -15,6 +15,6 @@ class Uuid
 
     public static function isValid(string $value): bool
     {
-        return  SymfonyUuid::isValid($value);
+        return SymfonyUuid::isValid($value);
     }
 }

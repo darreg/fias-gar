@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Shared\Test\Infrastructure\Bus\Command;
 
-use App\Shared\Domain\Bus\Command\CommandInterface;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\StampInterface;
 
 /**
  * @internal

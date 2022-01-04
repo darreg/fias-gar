@@ -44,7 +44,7 @@ final class LatLon extends LatLonValueObject
     {
         return self::fromArray(parent::fromStringRaw($latLon));
     }
-    
+
     public static function fromArray(array $latLon): self
     {
         [$latitude, $longitude] = parent::fromArrayRaw($latLon);

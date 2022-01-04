@@ -25,11 +25,11 @@ final class ExtAddrobjRepository implements ExtAddrobjRepositoryInterface
     {
         /** @var ExtAddrobj|null $extAddrobj */
         $extAddrobj = $this->repo->find($objectid);
-        
+
         if ($extAddrobj === null) {
             throw new DomainException('ExtAddrobj is not found.');
         }
-        
+
         return $extAddrobj;
     }
 
