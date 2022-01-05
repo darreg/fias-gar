@@ -8,20 +8,20 @@ use App\Shared\Domain\Bus\Command\CommandInterface;
 
 final class Command implements CommandInterface
 {
-    public string $fileToken;
-    private string $tagXml;
+    private string $fileToken;
+    private string $tagSource;
 
     public function __construct(
         string $fileToken,
-        string $tagXml
+        string $tagSource
     ) {
-        $this->tagXml = $tagXml;
+        $this->tagSource = $tagSource;
         $this->fileToken = $fileToken;
     }
 
-    public function getTagXml(): string
+    public function getTagSource(): string
     {
-        return $this->tagXml;
+        return $this->tagSource;
     }
 
     public function getFileToken(): string

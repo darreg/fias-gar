@@ -2,24 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\FiasTable;
+namespace App\DataLoad\Infrastructure\Table;
 
-use App\DataLoad\Domain\FiasTableSaverInterface;
+use App\DataLoad\Domain\Entity\Table;
+use App\DataLoad\Domain\SaverInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use LogicException;
 
-final class FiasTableSaver implements FiasTableSaverInterface
+final class Saver implements SaverInterface
 {
     private Connection $connection;
-    private FiasTableFactory $fiasTableFactory;
+    private Factory $factory;
 
     public function __construct(
         Connection $connection,
-        FiasTableFactory $fiasTableFactory
+        Factory $factory
     ) {
         $this->connection = $connection;
-        $this->fiasTableFactory = $fiasTableFactory;
+        $this->factory = $factory;
     }
 
     /**
@@ -31,25 +32,25 @@ final class FiasTableSaver implements FiasTableSaverInterface
         string $token,
         array $values
     ): void {
-        $fiasTable = $this->fiasTableFactory->create($token);
-        $this->upsertByFiasTable($fiasTable, $values);
+        $table = $this->factory->create($token);
+        $this->upsertByTable($table, $values);
     }
 
     /**
      * @param array<string, string> $values
      * @throws Exception
      */
-    private function upsertByFiasTable(
-        FiasTable $fiasTable,
+    private function upsertByTable(
+        Table $table,
         array $values
     ): void {
         $this->connection->executeStatement(
             sprintf(
                 "SELECT upsert('%s', '%s', '{%s}',  VARIADIC ARRAY[%s])",
-                $fiasTable->getName(),
-                $fiasTable->getPrimaryKey(),
-                $fiasTable->getColumnsAsString(),
-                $fiasTable->getValuesAsString($values)
+                $table->getName(),
+                $table->getPrimaryKey(),
+                $table->getColumnsAsString(),
+                $table->getValuesAsString($values)
             )
         );
     }

@@ -8,11 +8,11 @@ use App\Shared\Domain\Bus\Command\CommandInterface;
 
 final class Command implements CommandInterface
 {
-    public string $fileToken;
+    private string $fileToken;
     /**
      * @var array<string, string>
      */
-    public array $values;
+    private array $values;
 
     /**
      * @param array<string, string> $values
