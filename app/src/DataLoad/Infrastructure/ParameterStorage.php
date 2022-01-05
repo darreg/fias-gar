@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\FiasTable;
+namespace App\DataLoad\Infrastructure;
 
 use LogicException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-final class FiasTableParameter
+final class ParameterStorage
 {
     public const TABLES_PKEY = 'fias_tables_pkey';
     public const TABLES = 'fias_tables';
@@ -48,7 +48,7 @@ final class FiasTableParameter
     /**
      * @throws LogicException
      */
-    public function getTagNameByFile(string $fileToken): string
+    public function getTagNameByFileToken(string $fileToken): string
     {
         /** @var array<string, string> $fiasTags */
         $fiasTags = $this->parameterBag->get(self::TAGS);

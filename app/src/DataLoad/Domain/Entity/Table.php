@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\FiasTable;
+namespace App\DataLoad\Domain\Entity;
 
-final class FiasTable
+final class Table
 {
     private string $name;
     private string $primaryKey;

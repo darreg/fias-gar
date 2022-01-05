@@ -2,32 +2,32 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Test\Infrastructure\FiasTable;
+namespace App\DataLoad\Test\Infrastructure\Table;
 
-use App\DataLoad\Infrastructure\FiasTable\FiasTableFactory;
+use App\DataLoad\Infrastructure\Table\Factory;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @internal
  */
-final class FiasTableFactoryTest extends KernelTestCase
+final class FactoryTest extends KernelTestCase
 {
-    private FiasTableFactory $fiasTableFactory;
+    private Factory $factory;
 
     protected function setUp(): void
     {
         self::bootKernel(['environment' => 'test']);
-        $this->fiasTableFactory = self::getContainer()->get(FiasTableFactory::class);
+        $this->factory = self::getContainer()->get(Factory::class);
     }
 
     public function testFactory(): void
     {
-        $result = $this->fiasTableFactory->create('addr_obj_types');
+        $result = $this->factory->create('addr_obj_types');
         self::assertCount(9, $result->getColumns());
         self::assertContains('id', $result->getColumns());
 
         $this->expectException(LogicException::class);
-        $this->fiasTableFactory->create('incorrect_token');
+        $this->factory->create('incorrect_token');
     }
 }

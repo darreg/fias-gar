@@ -1,0 +1,38 @@
+monolog:
+    channels: ["split_errors", "parse_success", "parse_errors", "save_success", "save_errors"]
+    handlers:
+        split_errors:
+            type:  rotating_file
+            path:  '%kernel.logs_dir%/%kernel.environment%_split_errors.log'
+            level: info
+            max_files: 10
+            channels: ["split_errors"]
+            formatter: Monolog\Formatter\JsonFormatter
+        parse_success:
+            type:  rotating_file
+            path:  '%kernel.logs_dir%/%kernel.environment%_parse_success.log'
+            level: info
+            max_files: 10
+            channels: ["parse_success"]
+            formatter: Monolog\Formatter\JsonFormatter
+        parse_errors:
+            type:  rotating_file
+            path:  '%kernel.logs_dir%/%kernel.environment%_parse_errors.log'
+            level: info
+            max_files: 10
+            channels: ["parse_errors"]
+            formatter: Monolog\Formatter\JsonFormatter
+        save_success:
+            type:  rotating_file
+            path:  '%kernel.logs_dir%/%kernel.environment%_save_success.log'
+            level: info
+            max_files: 10
+            channels: ["save_success"]
+            formatter: Monolog\Formatter\JsonFormatter
+        save_errors:
+            type:  rotating_file
+            path:  '%kernel.logs_dir%/%kernel.environment%_save_errors.log'
+            level: info
+            max_files: 10
+            channels: ["save_errors"]
+            formatter: Monolog\Formatter\JsonFormatter

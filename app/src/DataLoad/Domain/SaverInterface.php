@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Domain;
 
-interface FiasTableSaverInterface
+interface SaverInterface
 {
     /**
      * @param array<string, string> $values

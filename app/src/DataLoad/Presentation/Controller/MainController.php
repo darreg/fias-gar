@@ -3,15 +3,11 @@
 namespace App\DataLoad\Presentation\Controller;
 
 use App\DataLoad\Application\UseCase\ParseTag\Command;
-use App\DataLoad\Application\UseCase\SaveTag\Command as SaveCommand;
-use App\DataLoad\Infrastructure\FiasTable\FiasTableFactory;
-use App\DataLoad\Infrastructure\FiasTable\FiasTableParameter;
-use App\DataLoad\Infrastructure\FiasTable\FiasTableSaver;
+use App\DataLoad\Application\UseCase\SplitFile\Command as SplitFileCommand;
+use App\DataLoad\Infrastructure\File\Factory as FileFactory;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
 use App\Shared\Infrastructure\Bus\Query\QueryBus;
-use App\Shared\Infrastructure\Persistence\DoctrineFlusher;
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,13 +21,16 @@ final class MainController extends AbstractController
 //    private FiasTableSaver $dataSaver;
 //    private FiasTableParameter $fiasTableParameters;
 //    private FiasTableFactory $fiasTableFactory;
+    private FileFactory $fileFactory;
 
     public function __construct(
+        FileFactory $fileFactory,
 //        FiasTableParameter     $fiasTableParameters,
 //        FiasTableFactory       $fiasTableFactory,
 //        FiasTableSaver         $dataSaver,
 //        EntityManagerInterface $entityManager,
 //        DoctrineFlusher        $doctrineFlusher,
+
         QueryBus $queryBus,
         CommandBus $commandBus
     ) {
@@ -42,6 +41,7 @@ final class MainController extends AbstractController
 //        $this->dataSaver = $dataSaver;
 //        $this->fiasTableParameters = $fiasTableParameters;
 //        $this->fiasTableFactory = $fiasTableFactory;
+        $this->fileFactory = $fileFactory;
     }
 
     /**
@@ -49,14 +49,21 @@ final class MainController extends AbstractController
      */
     public function index(Connection $connection): Response // \App\DataLoad\Application\UseCase\ParseTag\Handler $handler
     {
-        $parseCommand = new Command(
-            'house_types',
-            '<HOUSETYPE ID="1" NAME="Владение" SHORTNAME="влд." DESC="Владение" STARTDATE="1900-01-01" ENDDATE="2015-11-05" UPDATEDATE="1900-01-01" ISACTIVE="false" />'
-        );
+        $fileName = 'AS_HOUSE_TYPES_20210121_d2e6d657-245d-4eaf-b587-fc697580983a.XML';
+        $file = $this->fileFactory->create($fileName);
+
+        $command = new SplitFileCommand($file->getPath(), $file->getToken(), $file->getTagName());
+
+        $this->commandBus->dispatch($command);
+
+//        $parseCommand = new Command(
+//            'house_types',
+//            '<HOUSETYPE ID="1" NAME="Владение" SHORTNAME="влд." DESC="Владение" STARTDATE="1900-01-01" ENDDATE="2015-11-05" UPDATEDATE="1900-01-01" ISACTIVE="false" />'
+//        );
 
 //        $handler($parseCommand);
 
-        $this->commandBus->dispatch($parseCommand);
+//        $this->commandBus->dispatch($parseCommand);
 
 //        $this->commandBus->dispatch(new SaveCommand('house_types', [
 //            'id' => '1',
