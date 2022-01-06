@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\Table;
 
+use App\DataLoad\Application\Service\SaverInterface;
 use App\DataLoad\Domain\Entity\Table;
-use App\DataLoad\Domain\SaverInterface;
 use App\DataLoad\Infrastructure\Exception\RowsNotUpsertedException;
 use App\DataLoad\Infrastructure\Exception\TableColumnNotFoundException;
 use App\DataLoad\Infrastructure\Exception\TableNameNotFoundException;

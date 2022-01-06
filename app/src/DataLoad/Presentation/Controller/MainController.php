@@ -2,9 +2,10 @@
 
 namespace App\DataLoad\Presentation\Controller;
 
+use App\DataLoad\Application\UseCase\FindFile\Query as FindFileQuery;
+use App\DataLoad\Application\UseCase\FindFile\Response as FindFileResponse;
 use App\DataLoad\Application\UseCase\ParseTag\Command;
 use App\DataLoad\Application\UseCase\SplitFile\Command as SplitFileCommand;
-use App\DataLoad\Infrastructure\File\Factory as FileFactory;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
 use App\Shared\Infrastructure\Bus\Query\QueryBus;
 use Doctrine\DBAL\Connection;
@@ -21,10 +22,8 @@ final class MainController extends AbstractController
 //    private FiasTableSaver $dataSaver;
 //    private FiasTableParameter $fiasTableParameters;
 //    private FiasTableFactory $fiasTableFactory;
-    private FileFactory $fileFactory;
 
     public function __construct(
-        FileFactory $fileFactory,
 //        FiasTableParameter     $fiasTableParameters,
 //        FiasTableFactory       $fiasTableFactory,
 //        FiasTableSaver         $dataSaver,
@@ -41,7 +40,6 @@ final class MainController extends AbstractController
 //        $this->dataSaver = $dataSaver;
 //        $this->fiasTableParameters = $fiasTableParameters;
 //        $this->fiasTableFactory = $fiasTableFactory;
-        $this->fileFactory = $fileFactory;
     }
 
     /**
@@ -49,12 +47,20 @@ final class MainController extends AbstractController
      */
     public function index(Connection $connection): Response // \App\DataLoad\Application\UseCase\ParseTag\Handler $handler
     {
-        $fileName = 'AS_HOUSE_TYPES_20210121_d2e6d657-245d-4eaf-b587-fc697580983a.XML';
-        $file = $this->fileFactory->create($fileName);
+        $query = new FindFileQuery('addr_obj');
+        /** @var FindFileResponse $response */
+        $response = $this->queryBus->ask($query);
+        foreach ($response->getAll() as $file) {
+            $command = new SplitFileCommand($file->getPath(), $file->getToken(), $file->getTagName());
+            $this->commandBus->dispatch($command);
+        }
 
-        $command = new SplitFileCommand($file->getPath(), $file->getToken(), $file->getTagName());
-
-        $this->commandBus->dispatch($command);
+//        $fileName = 'AS_HOUSE_TYPES_20210121_d2e6d657-245d-4eaf-b587-fc697580983a.XML';
+//        $file = $this->fileFactory->create($fileName);
+//
+//        $command = new SplitFileCommand($file->getPath(), $file->getToken(), $file->getTagName());
+//
+//        $this->commandBus->dispatch($command);
 
 //        $parseCommand = new Command(
 //            'house_types',

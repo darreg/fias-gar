@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\SaveTag;
 
-use App\DataLoad\Domain\SaverInterface;
+use App\DataLoad\Application\Service\SaverInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;

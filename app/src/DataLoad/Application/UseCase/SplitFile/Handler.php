@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\SplitFile;
 
+use App\DataLoad\Application\Service\TagGeneratorInterface;
 use App\DataLoad\Application\UseCase\ParseTag\Command as ParseCommand;
-use App\DataLoad\Domain\TagGeneratorInterface;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Exception;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\ParseTag;
 
+use App\DataLoad\Application\Service\ParserInterface;
 use App\DataLoad\Application\UseCase\SaveTag\Command as SaveCommand;
-use App\DataLoad\Domain\ParserInterface;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Exception;
