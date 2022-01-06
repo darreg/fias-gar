@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Test\Infrastructure\Table;
+namespace App\DataLoad\Test\Infrastructure\Service;
 
-use App\DataLoad\Infrastructure\Table\Factory;
+use App\DataLoad\Infrastructure\Service\TableFactory;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @internal
  */
-final class FactoryTest extends KernelTestCase
+final class TableFactoryTest extends KernelTestCase
 {
-    private Factory $factory;
+    private TableFactory $factory;
 
     protected function setUp(): void
     {
         self::bootKernel(['environment' => 'test']);
-        $this->factory = self::getContainer()->get(Factory::class);
+        $this->factory = self::getContainer()->get(TableFactory::class);
     }
 
     public function testFactory(): void

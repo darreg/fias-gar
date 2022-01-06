@@ -7,10 +7,9 @@ namespace App\DataLoad\Infrastructure\Service;
 use App\DataLoad\Application\Service\FileFinderInterface;
 use App\DataLoad\Domain\Entity\File;
 use App\DataLoad\Infrastructure\Exception\XmlDirectoryNotReadableException;
-use App\DataLoad\Infrastructure\ParameterStorage;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
-class FileFinderService implements FileFinderInterface
+class FileFinder implements FileFinderInterface
 {
     private string $xmlDirectory;
     private ParameterStorage $parameterStorage;

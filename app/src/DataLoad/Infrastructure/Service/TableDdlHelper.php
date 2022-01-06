@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\Table;
+namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Infrastructure\Exception\TableColumnNotFoundException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use RuntimeException;
 
-final class DdlHelper
+final class TableDdlHelper
 {
     private Connection $connection;
 

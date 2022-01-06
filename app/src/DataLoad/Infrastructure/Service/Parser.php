@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure;
+namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Application\Service\ParserInterface;
 use App\DataLoad\Infrastructure\Exception\TagAttributesNotFoundException;
