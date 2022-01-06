@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Domain;
+namespace App\DataLoad\Application\Service;
 
 use Generator;
 use LogicException;

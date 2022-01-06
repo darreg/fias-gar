@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\File;
 
-use App\DataLoad\Domain\TagGeneratorInterface;
+use App\DataLoad\Application\Service\TagGeneratorInterface;
 use Generator;
 use LogicException;
 use RuntimeException;
@@ -46,7 +46,7 @@ class TagGenerator implements TagGeneratorInterface
         $startPosition = strpos($buffer, $tagBegin);
         if ($startPosition === false) {
             fclose($fh);
-            return null;
+            return;
         }
 
         $buffer = substr($buffer, $startPosition);

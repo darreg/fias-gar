@@ -66,6 +66,8 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            $xmlDirectory: '%fias_xml_directory%'
 
     App\DataLoad\:
         resource: '../../src/DataLoad/*'
@@ -76,16 +78,15 @@ services:
 
     App\Shared\Domain\Bus\Command\CommandBusInterface: '@App\Shared\Infrastructure\Bus\Command\CommandBus'
 
-    App\DataLoad\Infrastructure\File\Factory:
-        arguments:
-            $xmlDirectory: '%fias_xml_directory%'
+    App\DataLoad\Infrastructure\Service\FileFinderService: ~
+    App\DataLoad\Application\Service\FileFinderInterface: '@App\DataLoad\Infrastructure\Service\FileFinderService'
 
     App\DataLoad\Infrastructure\File\TagGenerator: ~
-    App\DataLoad\Domain\TagGeneratorInterface: '@App\DataLoad\Infrastructure\File\TagGenerator'
+    App\DataLoad\Application\Service\TagGeneratorInterface: '@App\DataLoad\Infrastructure\File\TagGenerator'
 
     App\DataLoad\Infrastructure\Table\Saver: ~
-    App\DataLoad\Domain\SaverInterface: '@App\DataLoad\Infrastructure\Table\Saver'
+    App\DataLoad\Application\Service\SaverInterface: '@App\DataLoad\Infrastructure\Table\Saver'
 
     App\DataLoad\Infrastructure\Parser: ~
-    App\DataLoad\Domain\ParserInterface: '@App\DataLoad\Infrastructure\Parser'
+    App\DataLoad\Application\Service\ParserInterface: '@App\DataLoad\Infrastructure\Parser'
 
