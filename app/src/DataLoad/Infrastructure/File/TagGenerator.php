@@ -2,16 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure;
+namespace App\DataLoad\Infrastructure\File;
 
 use App\DataLoad\Domain\TagGeneratorInterface;
 use Generator;
 use LogicException;
+use RuntimeException;
 
+/**
+ * @psalm-suppress MethodSignatureMismatch
+ */
 class TagGenerator implements TagGeneratorInterface
 {
     public const BUFFER_SIZE = 10000;
 
+    /**
+     * @throws RuntimeException
+     * @throws LogicException
+     * @return Generator<string>
+     */
     public function generate(string $filePath, string $tagName): Generator
     {
         if ($filePath === '') {
@@ -24,7 +33,7 @@ class TagGenerator implements TagGeneratorInterface
 
         $fh = fopen($filePath, 'rb');
         if ($fh === false) {
-            throw new LogicException("Could not open the file '{$filePath}'");
+            throw new RuntimeException("Could not open the file '{$filePath}'");
         }
 
         $tagBegin = '<' . $tagName . ' ';

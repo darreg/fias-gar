@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Exception;
 
-use DomainException;
+use LogicException;
 
-final class ErrorRemoveEntityException extends DomainException
+final class ErrorRemoveEntityException extends LogicException
 {
 }

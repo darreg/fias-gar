@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure;
 
-use LogicException;
+use App\DataLoad\Infrastructure\Exception\TableNameNotFoundException;
+use App\DataLoad\Infrastructure\Exception\TagNameNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 final class ParameterStorage
@@ -32,28 +33,28 @@ final class ParameterStorage
     }
 
     /**
-     * @throws LogicException
+     * @throws TableNameNotFoundException
      */
     public function getTableNameByFileToken(string $fileToken): string
     {
         /** @var array<string, string> $fiasTables */
         $fiasTables = $this->parameterBag->get(self::TABLES);
         if (empty($fiasTables[$fileToken])) {
-            throw new LogicException("No table name found for the token '{$fileToken}'");
+            throw new TableNameNotFoundException("No table name found for the token '{$fileToken}'");
         }
 
         return $fiasTables[$fileToken];
     }
 
     /**
-     * @throws LogicException
+     * @throws TagNameNotFoundException
      */
     public function getTagNameByFileToken(string $fileToken): string
     {
         /** @var array<string, string> $fiasTags */
         $fiasTags = $this->parameterBag->get(self::TAGS);
         if (empty($fiasTags[$fileToken])) {
-            throw new LogicException("No tag name found for the token '{$fileToken}'");
+            throw new TagNameNotFoundException("No tag name found for the token '{$fileToken}'");
         }
 
         return $fiasTags[$fileToken];

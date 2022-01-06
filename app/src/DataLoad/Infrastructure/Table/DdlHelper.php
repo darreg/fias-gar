@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\Table;
 
+use App\DataLoad\Infrastructure\Exception\TableColumnNotFoundException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use LogicException;
+use RuntimeException;
 
 final class DdlHelper
 {
@@ -18,19 +19,23 @@ final class DdlHelper
     }
 
     /**
-     * @throws Exception
-     * @throws LogicException
+     * @throws RuntimeException
+     * @throws TableColumnNotFoundException
      * @return list<string>
      */
     public function tableColumnNames(string $tableName): array
     {
-        $resultSet = $this->connection->executeQuery(
-            sprintf("SELECT array_to_string(tablecolumns('%s'), ',', '*')", $tableName)
-        );
+        try {
+            $resultSet = $this->connection->executeQuery(
+                sprintf("SELECT array_to_string(tablecolumns('%s'), ',', '*')", $tableName)
+            );
+            $result = (string)$resultSet->fetchOne();
+        } catch (Exception $e) {
+            throw new RuntimeException('', 0, $e);
+        }
 
-        $result = (string)$resultSet->fetchOne();
         if ($result === '') {
-            throw new LogicException("No columns found for the table '{$tableName}'");
+            throw new TableColumnNotFoundException("No columns found for the table '{$tableName}'");
         }
 
         return explode(',', strtolower($result));
