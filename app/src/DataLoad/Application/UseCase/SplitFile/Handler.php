@@ -34,7 +34,6 @@ final class Handler implements CommandHandlerInterface
 
         try {
             $tagSources = $this->tagGenerator->generate($command->getFilePath(), $command->getTagName());
-            /** @var string $tagSource */
             foreach ($tagSources as $tagSource) {
                 $this->commandBus->dispatch(new ParseCommand($fileToken, $tagSource));
             }

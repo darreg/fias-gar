@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Domain\Entity;
 
-use DomainException;
+use App\DataLoad\Domain\Exception\TokenNotRecognizedException;
+use App\DataLoad\Domain\Exception\VersionNotRecognizedException;
+use RuntimeException;
+use Webmozart\Assert\Assert;
 
 class File
 {
@@ -21,6 +24,9 @@ class File
         ?string $name = null,
         ?string $version = null
     ) {
+        Assert::notEmpty($path);
+        Assert::notEmpty($tagName);
+
         $this->path = $path;
         $this->tagName = $tagName;
 
@@ -55,24 +61,21 @@ class File
     }
 
     /**
-     * @throws DomainException
+     * @throws RuntimeException
      */
     public static function getBaseName(string $filePath): string
     {
-        if ($filePath === '') {
-            throw new DomainException('The file path is not specified');
-        }
-
         $pathInfo = pathinfo($filePath);
         if (empty($pathInfo['basename'])) {
-            throw new DomainException('The file path was not recognized' . $filePath);
+            throw new RuntimeException("The file path '{$filePath}' was not recognized");
         }
 
         return $pathInfo['basename'];
     }
 
     /**
-     * @throws DomainException
+     * @throws TokenNotRecognizedException
+     * @throws RuntimeException
      */
     public static function getFileToken(string $filePath): string
     {
@@ -80,14 +83,15 @@ class File
 
         preg_match('/^AS_(.*?)_\d/i', $fileName, $m);
         if (empty($m[1])) {
-            throw new DomainException('The file token was not recognized' . $filePath);
+            throw new TokenNotRecognizedException("The file token for '{$filePath}' was not recognized");
         }
 
         return strtolower($m[1]);
     }
 
     /**
-     * @throws DomainException
+     * @throws VersionNotRecognizedException
+     * @throws RuntimeException
      */
     public static function getFileVersion(string $filePath): string
     {
@@ -95,7 +99,7 @@ class File
 
         preg_match('/^AS_(?:.*)_([0-9]{8})_/i', $fileName, $m);
         if (empty($m[1])) {
-            throw new DomainException('The file version was not recognized' . $filePath);
+            throw new VersionNotRecognizedException("The file version for '{$filePath}' was not recognized");
         }
 
         $year = substr($m[1], 0, 4);

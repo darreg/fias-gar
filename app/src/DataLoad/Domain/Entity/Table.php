@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Domain\Entity;
 
+use Webmozart\Assert\Assert;
+
 final class Table
 {
     private string $name;
@@ -18,6 +20,9 @@ final class Table
      */
     public function __construct(string $name, string $primaryKey, array $columns)
     {
+        Assert::notEmpty($name);
+        Assert::notEmpty($primaryKey);
+
         $this->name = $name;
         $this->primaryKey = $primaryKey;
         $this->columns = $columns;

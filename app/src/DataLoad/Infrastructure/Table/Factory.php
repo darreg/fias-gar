@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\DataLoad\Infrastructure\Table;
 
 use App\DataLoad\Domain\Entity\Table;
+use App\DataLoad\Infrastructure\Exception\TableColumnNotFoundException;
+use App\DataLoad\Infrastructure\Exception\TableNameNotFoundException;
 use App\DataLoad\Infrastructure\ParameterStorage;
-use Doctrine\DBAL\Exception;
-use LogicException;
+use RuntimeException;
 
 final class Factory
 {
@@ -23,8 +24,9 @@ final class Factory
     }
 
     /**
-     * @throws Exception
-     * @throws LogicException
+     * @throws TableNameNotFoundException
+     * @throws TableColumnNotFoundException
+     * @throws RuntimeException
      */
     public function create(string $fileToken): Table
     {

@@ -80,8 +80,8 @@ services:
         arguments:
             $xmlDirectory: '%fias_xml_directory%'
 
-    App\DataLoad\Infrastructure\TagGenerator: ~
-    App\DataLoad\Domain\TagGeneratorInterface: '@App\DataLoad\Infrastructure\TagGenerator'
+    App\DataLoad\Infrastructure\File\TagGenerator: ~
+    App\DataLoad\Domain\TagGeneratorInterface: '@App\DataLoad\Infrastructure\File\TagGenerator'
 
     App\DataLoad\Infrastructure\Table\Saver: ~
     App\DataLoad\Domain\SaverInterface: '@App\DataLoad\Infrastructure\Table\Saver'
