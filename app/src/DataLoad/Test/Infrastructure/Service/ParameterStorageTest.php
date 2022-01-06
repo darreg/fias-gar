@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Test\Infrastructure;
+namespace App\DataLoad\Test\Infrastructure\Service;
 
-use App\DataLoad\Infrastructure\ParameterStorage;
+use App\DataLoad\Infrastructure\Service\ParameterStorage;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

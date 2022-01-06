@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure;
+namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Infrastructure\Exception\TableNameNotFoundException;
 use App\DataLoad\Infrastructure\Exception\TagNameNotFoundException;

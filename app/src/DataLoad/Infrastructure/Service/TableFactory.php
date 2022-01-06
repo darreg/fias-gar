@@ -2,25 +2,24 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\Table;
+namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Domain\Entity\Table;
 use App\DataLoad\Infrastructure\Exception\TableColumnNotFoundException;
 use App\DataLoad\Infrastructure\Exception\TableNameNotFoundException;
-use App\DataLoad\Infrastructure\ParameterStorage;
 use RuntimeException;
 
-final class Factory
+final class TableFactory
 {
     private ParameterStorage $parameterStorage;
-    private DdlHelper $ddlHelper;
+    private TableDdlHelper $tableDdlHelper;
 
     public function __construct(
         ParameterStorage $parameterStorage,
-        DdlHelper $ddlHelper
+        TableDdlHelper $tableDdlHelper
     ) {
         $this->parameterStorage = $parameterStorage;
-        $this->ddlHelper = $ddlHelper;
+        $this->tableDdlHelper = $tableDdlHelper;
     }
 
     /**
@@ -32,7 +31,7 @@ final class Factory
     {
         $tableName = $this->parameterStorage->getTableNameByFileToken($fileToken);
         $primaryKey = $this->parameterStorage->getPrimaryKeyByFileToken($fileToken);
-        $columnNames = $this->ddlHelper->tableColumnNames($tableName);
+        $columnNames = $this->tableDdlHelper->tableColumnNames($tableName);
 
         return new Table($tableName, $primaryKey, $columnNames);
     }

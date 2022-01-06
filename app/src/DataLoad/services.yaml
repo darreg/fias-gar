@@ -78,15 +78,15 @@ services:
 
     App\Shared\Domain\Bus\Command\CommandBusInterface: '@App\Shared\Infrastructure\Bus\Command\CommandBus'
 
-    App\DataLoad\Infrastructure\Service\FileFinderService: ~
-    App\DataLoad\Application\Service\FileFinderInterface: '@App\DataLoad\Infrastructure\Service\FileFinderService'
+    App\DataLoad\Infrastructure\Service\FileFinder: ~
+    App\DataLoad\Application\Service\FileFinderInterface: '@App\DataLoad\Infrastructure\Service\FileFinder'
 
-    App\DataLoad\Infrastructure\File\TagGenerator: ~
-    App\DataLoad\Application\Service\TagGeneratorInterface: '@App\DataLoad\Infrastructure\File\TagGenerator'
+    App\DataLoad\Infrastructure\Service\TagGenerator: ~
+    App\DataLoad\Application\Service\TagGeneratorInterface: '@App\DataLoad\Infrastructure\Service\TagGenerator'
 
-    App\DataLoad\Infrastructure\Table\Saver: ~
-    App\DataLoad\Application\Service\SaverInterface: '@App\DataLoad\Infrastructure\Table\Saver'
+    App\DataLoad\Infrastructure\Service\TableSaver: ~
+    App\DataLoad\Application\Service\SaverInterface: '@App\DataLoad\Infrastructure\Service\TableSaver'
 
-    App\DataLoad\Infrastructure\Parser: ~
-    App\DataLoad\Application\Service\ParserInterface: '@App\DataLoad\Infrastructure\Parser'
+    App\DataLoad\Infrastructure\Service\Parser: ~
+    App\DataLoad\Application\Service\ParserInterface: '@App\DataLoad\Infrastructure\Service\Parser'
 

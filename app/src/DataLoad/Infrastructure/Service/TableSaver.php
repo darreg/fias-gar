@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\Table;
+namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Application\Service\SaverInterface;
 use App\DataLoad\Domain\Entity\Table;
@@ -16,17 +16,17 @@ use RuntimeException;
 /**
  * @psalm-suppress MethodSignatureMismatch
  */
-final class Saver implements SaverInterface
+final class TableSaver implements SaverInterface
 {
     private Connection $connection;
-    private Factory $factory;
+    private TableFactory $tableFactory;
 
     public function __construct(
         Connection $connection,
-        Factory $factory
+        TableFactory $tableFactory
     ) {
         $this->connection = $connection;
-        $this->factory = $factory;
+        $this->tableFactory = $tableFactory;
     }
 
     /**
@@ -38,7 +38,7 @@ final class Saver implements SaverInterface
      */
     public function upsert(string $token, array $values): void
     {
-        $table = $this->factory->create($token);
+        $table = $this->tableFactory->create($token);
         $this->upsertByTable($table, $values);
     }
 
