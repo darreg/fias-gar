@@ -6,6 +6,6 @@ namespace App\DataLoad\Infrastructure\Exception;
 
 use LogicException;
 
-class XmlDirectoryNotReadableException extends LogicException
+class ConfigParameterNotFoundException extends LogicException
 {
 }

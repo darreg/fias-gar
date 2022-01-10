@@ -6,7 +6,7 @@ namespace App\DataLoad\Application\Service;
 
 use App\DataLoad\Domain\Entity\File;
 
-interface FileFinderInterface
+interface XmlFileFinderInterface
 {
     /**
      * @return list<File>

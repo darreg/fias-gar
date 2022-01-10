@@ -13,6 +13,7 @@
         "ext-bcmath": "*",
         "ext-pdo": "*",
         "ext-libxml": "*",
+        "ext-curl": "*",
         "doctrine/annotations": "^1.12",
         "doctrine/cache": "^1.11",
         "doctrine/doctrine-bundle": "^2.2",

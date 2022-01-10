@@ -1,5 +1,11 @@
 parameters:
+    fias_url_version_format: 'Y.m.d'
+    fias_url_full_xml: 'https://fias.nalog.ru/downloads/#version#/gar_xml.zip'
+    fias_url_delta_xml: 'https://fias.nalog.ru/downloads/#version#/gar_delta_xml.zip'
+
+    fias_zip_directory: '%kernel.project_dir%/var/zip'
     fias_xml_directory: '%kernel.project_dir%/var/xml'
+
     fias_tables_pkey:
         object_levels: 'level'
         reestr_objects: 'objectid'
@@ -68,6 +74,7 @@ services:
         autoconfigure: true
         bind:
             $xmlDirectory: '%fias_xml_directory%'
+            $zipDirectory: '%fias_zip_directory%'
 
     App\DataLoad\:
         resource: '../../src/DataLoad/*'
@@ -78,8 +85,11 @@ services:
 
     App\Shared\Domain\Bus\Command\CommandBusInterface: '@App\Shared\Infrastructure\Bus\Command\CommandBus'
 
-    App\DataLoad\Infrastructure\Service\FileFinder: ~
-    App\DataLoad\Application\Service\FileFinderInterface: '@App\DataLoad\Infrastructure\Service\FileFinder'
+    App\DataLoad\Infrastructure\Service\Downloader: ~
+    App\DataLoad\Application\Service\DownloaderInterface: '@App\DataLoad\Infrastructure\Service\Downloader'
+
+    App\DataLoad\Infrastructure\Service\XmlFileFinder: ~
+    App\DataLoad\Application\Service\XmlFileFinderInterface: '@App\DataLoad\Infrastructure\Service\XmlFileFinder'
 
     App\DataLoad\Infrastructure\Service\TagGenerator: ~
     App\DataLoad\Application\Service\TagGeneratorInterface: '@App\DataLoad\Infrastructure\Service\TagGenerator'
