@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\Service;
 
+use App\DataLoad\Infrastructure\Exception\ConfigParameterNotFoundException;
 use App\DataLoad\Infrastructure\Exception\TableNameNotFoundException;
 use App\DataLoad\Infrastructure\Exception\TagNameNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -58,5 +59,18 @@ final class ParameterStorage
         }
 
         return $fiasTags[$fileToken];
+    }
+
+    public function getParameter(string $name): string
+    {
+        /**
+         * @var string $value
+         */
+        $value = $this->parameterBag->get($name);
+        if (!$value) {
+            throw new ConfigParameterNotFoundException("Config parameter '{$name}' not found");
+        }
+
+        return $value;
     }
 }

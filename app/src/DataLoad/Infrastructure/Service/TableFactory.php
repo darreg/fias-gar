@@ -12,14 +12,14 @@ use RuntimeException;
 final class TableFactory
 {
     private ParameterStorage $parameterStorage;
-    private TableDdlHelper $tableDdlHelper;
+    private TableColumnService $tableColumnService;
 
     public function __construct(
         ParameterStorage $parameterStorage,
-        TableDdlHelper $tableDdlHelper
+        TableColumnService $tableColumnService
     ) {
         $this->parameterStorage = $parameterStorage;
-        $this->tableDdlHelper = $tableDdlHelper;
+        $this->tableColumnService = $tableColumnService;
     }
 
     /**
@@ -31,7 +31,7 @@ final class TableFactory
     {
         $tableName = $this->parameterStorage->getTableNameByFileToken($fileToken);
         $primaryKey = $this->parameterStorage->getPrimaryKeyByFileToken($fileToken);
-        $columnNames = $this->tableDdlHelper->tableColumnNames($tableName);
+        $columnNames = $this->tableColumnService->getColumnNames($tableName);
 
         return new Table($tableName, $primaryKey, $columnNames);
     }

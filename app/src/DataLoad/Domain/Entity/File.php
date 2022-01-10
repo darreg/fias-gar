@@ -6,6 +6,7 @@ namespace App\DataLoad\Domain\Entity;
 
 use App\DataLoad\Domain\Exception\TokenNotRecognizedException;
 use App\DataLoad\Domain\Exception\VersionNotRecognizedException;
+use DateTimeImmutable;
 use RuntimeException;
 use Webmozart\Assert\Assert;
 
@@ -102,9 +103,19 @@ class File
             throw new VersionNotRecognizedException("The file version for '{$filePath}' was not recognized");
         }
 
-        $year = substr($m[1], 0, 4);
-        $month = substr($m[1], 4, 2);
-        $date = substr($m[1], 6, 2);
-        return $year . '-' . $month . '-' . $date;
+        return self::convertVersion($m[1], 'd-m-Y');
+    }
+
+    /**
+     * @throws VersionNotRecognizedException
+     */
+    public static function convertVersion(string $versionId, string $format = 'Y.m.d'): string
+    {
+        $date = DateTimeImmutable::createFromFormat('Ymd', $versionId);
+        if (!$date || !preg_match('/^\d{8}$/', $versionId)) {
+            throw new VersionNotRecognizedException("Version '{$versionId}' has the wrong format");
+        }
+
+        return $date->format($format);
     }
 }

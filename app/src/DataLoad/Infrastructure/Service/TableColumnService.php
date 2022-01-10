@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use RuntimeException;
 
-final class TableDdlHelper
+final class TableColumnService
 {
     private Connection $connection;
 
@@ -23,7 +23,7 @@ final class TableDdlHelper
      * @throws TableColumnNotFoundException
      * @return list<string>
      */
-    public function tableColumnNames(string $tableName): array
+    public function getColumnNames(string $tableName): array
     {
         try {
             $resultSet = $this->connection->executeQuery(

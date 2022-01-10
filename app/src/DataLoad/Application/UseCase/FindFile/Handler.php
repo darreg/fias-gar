@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\FindFile;
 
-use App\DataLoad\Application\Service\FileFinderInterface;
+use App\DataLoad\Application\Service\XmlFileFinderInterface;
 use App\Shared\Domain\Bus\Query\QueryHandlerInterface;
 use App\Shared\Domain\Bus\Query\ResponseInterface;
 
 class Handler implements QueryHandlerInterface
 {
-    private FileFinderInterface $finder;
+    private XmlFileFinderInterface $finder;
 
-    public function __construct(FileFinderInterface $finder)
+    public function __construct(XmlFileFinderInterface $finder)
     {
         $this->finder = $finder;
     }
