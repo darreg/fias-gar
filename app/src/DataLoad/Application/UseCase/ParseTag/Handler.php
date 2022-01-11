@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\ParseTag;
 
-use App\DataLoad\Application\Service\ParserInterface;
+use App\DataLoad\Application\Service\TagParserInterface;
 use App\DataLoad\Application\UseCase\SaveTag\Command as SaveCommand;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
@@ -14,15 +14,15 @@ use Psr\Log\LoggerInterface;
 final class Handler implements CommandHandlerInterface
 {
     private CommandBusInterface $commandBus;
-    private ParserInterface $parser;
+    private TagParserInterface $parser;
     private LoggerInterface $parseSuccessLogger;
     private LoggerInterface $parseErrorsLogger;
 
     public function __construct(
         CommandBusInterface $commandBus,
-        ParserInterface $parser,
-        LoggerInterface $parseSuccessLogger,
-        LoggerInterface $parseErrorsLogger
+        TagParserInterface  $parser,
+        LoggerInterface     $parseSuccessLogger,
+        LoggerInterface     $parseErrorsLogger
     ) {
         $this->commandBus = $commandBus;
         $this->parser = $parser;

@@ -48,7 +48,7 @@ final class MainController extends AbstractController
      */
     public function index(Connection $connection): Response // \App\DataLoad\Application\UseCase\ParseTag\Handler $handler
     {
-        $command = new DownloadCommand('20220111');
+        $command = new DownloadCommand('20220104');
 
         $this->commandBus->dispatch($command);
 

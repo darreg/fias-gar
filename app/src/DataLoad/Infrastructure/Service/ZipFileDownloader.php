@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\Service;
 
-use App\DataLoad\Application\Service\DownloaderInterface;
+use App\DataLoad\Application\Service\ZipFileDownloaderInterface;
 use App\DataLoad\Domain\Entity\File;
 use App\DataLoad\Domain\Exception\VersionNotRecognizedException;
 use App\DataLoad\Infrastructure\Exception\ConfigParameterNotFoundException;
@@ -15,7 +15,7 @@ use App\DataLoad\Infrastructure\Exception\ZipFileDeletionException;
 use App\DataLoad\Infrastructure\Exception\ZipFileNotFoundException;
 use RuntimeException;
 
-class Downloader implements DownloaderInterface
+class ZipFileDownloader implements ZipFileDownloaderInterface
 {
     public const VERSION_PLACEHOLDER = '#version#';
 
