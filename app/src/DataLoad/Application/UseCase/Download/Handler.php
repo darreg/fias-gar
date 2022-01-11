@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\Download;
 
-use App\DataLoad\Application\Service\DownloaderInterface;
+use App\DataLoad\Application\Service\ZipFileDownloaderInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 
 class Handler implements CommandHandlerInterface
 {
-    private DownloaderInterface $downloader;
+    private ZipFileDownloaderInterface $downloader;
 
     public function __construct(
-        DownloaderInterface $downloader
+        ZipFileDownloaderInterface $downloader
     ) {
         $this->downloader = $downloader;
     }

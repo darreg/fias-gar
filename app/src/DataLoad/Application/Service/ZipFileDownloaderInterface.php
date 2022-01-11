@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\Service;
 
-interface DownloaderInterface
+interface ZipFileDownloaderInterface
 {
     public function downloadFull(string $versionId): void;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\Service;
 
-use App\DataLoad\Application\Service\SaverInterface;
+use App\DataLoad\Application\Service\TagSaverInterface;
 use App\DataLoad\Domain\Entity\Table;
 use App\DataLoad\Infrastructure\Exception\RowsNotUpsertedException;
 use App\DataLoad\Infrastructure\Exception\TableColumnNotFoundException;
@@ -16,7 +16,7 @@ use RuntimeException;
 /**
  * @psalm-suppress MethodSignatureMismatch
  */
-final class TableSaver implements SaverInterface
+final class TagSaver implements TagSaverInterface
 {
     private Connection $connection;
     private TableFactory $tableFactory;

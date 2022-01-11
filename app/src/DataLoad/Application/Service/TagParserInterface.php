@@ -7,7 +7,7 @@ namespace App\DataLoad\Application\Service;
 use App\DataLoad\Infrastructure\Exception\TagAttributesNotFoundException;
 use App\DataLoad\Infrastructure\Exception\TagNotParsedException;
 
-interface ParserInterface
+interface TagParserInterface
 {
     /**
      * @throws TagNotParsedException

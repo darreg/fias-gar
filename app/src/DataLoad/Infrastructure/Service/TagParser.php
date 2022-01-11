@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\Service;
 
-use App\DataLoad\Application\Service\ParserInterface;
+use App\DataLoad\Application\Service\TagParserInterface;
 use App\DataLoad\Infrastructure\Exception\TagAttributesNotFoundException;
 use App\DataLoad\Infrastructure\Exception\TagNotParsedException;
 use LibXMLError;
 use function Lambdish\Phunctional\reindex;
 
-class Parser implements ParserInterface
+class TagParser implements TagParserInterface
 {
     /**
      * @throws TagNotParsedException
