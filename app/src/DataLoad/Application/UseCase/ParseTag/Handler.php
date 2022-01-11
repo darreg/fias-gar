@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\ParseTag;
 
-use App\DataLoad\Application\Service\TagParserInterface;
 use App\DataLoad\Application\UseCase\SaveTag\Command as SaveCommand;
+use App\DataLoad\Domain\Tag\Service\TagParserInterface;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Exception;
@@ -20,9 +20,9 @@ final class Handler implements CommandHandlerInterface
 
     public function __construct(
         CommandBusInterface $commandBus,
-        TagParserInterface  $parser,
-        LoggerInterface     $parseSuccessLogger,
-        LoggerInterface     $parseErrorsLogger
+        TagParserInterface $parser,
+        LoggerInterface $parseSuccessLogger,
+        LoggerInterface $parseErrorsLogger
     ) {
         $this->commandBus = $commandBus;
         $this->parser = $parser;

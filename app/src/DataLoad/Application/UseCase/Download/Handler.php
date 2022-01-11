@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\Download;
 
-use App\DataLoad\Application\Service\ZipFileDownloaderInterface;
+use App\DataLoad\Domain\ZipFile\Service\ZipFileDownloaderInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 
 class Handler implements CommandHandlerInterface
