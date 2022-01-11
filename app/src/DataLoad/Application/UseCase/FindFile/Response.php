@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\FindFile;
 
-use App\DataLoad\Domain\Entity\File;
+use App\DataLoad\Domain\XmlFile\Entity\XmlFile;
 use App\Shared\Domain\Bus\Query\ResponseInterface;
 
 /**
@@ -13,17 +13,17 @@ use App\Shared\Domain\Bus\Query\ResponseInterface;
 class Response implements ResponseInterface
 {
     /**
-     * @var array<string, File>
+     * @var array<string, XmlFile>
      */
     private array $files;
 
-    public function add(File $file): void
+    public function add(XmlFile $file): void
     {
         $this->files[md5($file->getPath())] = $file;
     }
 
     /**
-     * @return array<string, File>
+     * @return array<string, XmlFile>
      */
     public function getAll(): array
     {

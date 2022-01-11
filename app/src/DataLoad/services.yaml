@@ -90,28 +90,29 @@ services:
 
     App\Shared\Domain\Bus\Command\CommandBusInterface: '@App\Shared\Infrastructure\Bus\Command\CommandBus'
 
-    App\DataLoad\Infrastructure\Service\Downloader:
+    App\DataLoad\Infrastructure\ZipFile\ZipFileDownloader:
         arguments:
             $versionFormat: '%fias_url_version_format%'
             $urlFullXml: '%fias_url_full_xml%'
             $urlDeltaXml: '%fias_url_delta_xml%'
-    App\DataLoad\Application\Service\DownloaderInterface: '@App\DataLoad\Infrastructure\Service\Downloader'
+    App\DataLoad\Domain\ZipFile\Service\ZipFileDownloaderInterface: '@App\DataLoad\Infrastructure\ZipFile\ZipFileDownloader'
 
-    App\DataLoad\Infrastructure\Service\XmlFileFinder: ~
-    App\DataLoad\Application\Service\XmlFileFinderInterface: '@App\DataLoad\Infrastructure\Service\XmlFileFinder'
+    App\DataLoad\Infrastructure\XmlFile\XmlFileFinder: ~
+    App\DataLoad\Domain\XmlFile\Service\XmlFileFinderInterface: '@App\DataLoad\Infrastructure\XmlFile\XmlFileFinder'
 
-    App\DataLoad\Infrastructure\Service\TagGenerator: ~
-    App\DataLoad\Application\Service\TagGeneratorInterface: '@App\DataLoad\Infrastructure\Service\TagGenerator'
+    App\DataLoad\Infrastructure\Tag\TagGenerator: ~
+    App\DataLoad\Domain\Tag\Service\TagGeneratorInterface: '@App\DataLoad\Infrastructure\Tag\TagGenerator'
 
-    App\DataLoad\Infrastructure\Service\TableSaver: ~
-    App\DataLoad\Application\Service\SaverInterface: '@App\DataLoad\Infrastructure\Service\TableSaver'
+    App\DataLoad\Infrastructure\Tag\TagSaver: ~
+    App\DataLoad\Domain\Tag\Service\TagSaverInterface: '@App\DataLoad\Infrastructure\Tag\TagSaver'
 
-    App\DataLoad\Infrastructure\Service\Parser: ~
-    App\DataLoad\Application\Service\ParserInterface: '@App\DataLoad\Infrastructure\Service\Parser'
+    App\DataLoad\Infrastructure\Tag\TagParser: ~
+    App\DataLoad\Domain\Tag\Service\TagParserInterface: '@App\DataLoad\Infrastructure\Tag\TagParser'
 
-    App\DataLoad\Infrastructure\Service\ZipFileRotator:
+    App\DataLoad\Infrastructure\ZipFile\ZipFileRotator:
         arguments:
             $fullFileName: '%fias_url_full_file%'
             $deltaFileName: '%fias_url_delta_file%'
             $maxFullFileNum: '%fias_zip_max_full_file%'
             $maxDeltaFileNum: '%fias_zip_max_delta_file%'
+    App\DataLoad\Domain\ZipFile\Service\ZipFileRotatorInterface: '@App\DataLoad\Infrastructure\ZipFile\ZipFileRotator'

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\FindFile;
 
-use App\DataLoad\Application\Service\XmlFileFinderInterface;
+use App\DataLoad\Domain\XmlFile\Service\XmlFileFinderInterface;
 use App\Shared\Domain\Bus\Query\QueryHandlerInterface;
 use App\Shared\Domain\Bus\Query\ResponseInterface;
 

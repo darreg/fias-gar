@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\SaveTag;
 
-use App\DataLoad\Application\Service\TagSaverInterface;
+use App\DataLoad\Domain\Tag\Service\TagSaverInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -17,8 +17,8 @@ final class Handler implements CommandHandlerInterface
 
     public function __construct(
         TagSaverInterface $saver,
-        LoggerInterface   $saveSuccessLogger,
-        LoggerInterface   $saveErrorsLogger
+        LoggerInterface $saveSuccessLogger,
+        LoggerInterface $saveErrorsLogger
     ) {
         $this->saver = $saver;
         $this->saveSuccessLogger = $saveSuccessLogger;
