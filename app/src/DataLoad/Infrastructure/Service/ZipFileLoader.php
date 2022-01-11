@@ -17,13 +17,14 @@ class ZipFileLoader
         $this->zipDirectory = $zipDirectory;
     }
 
-    public function load(string $url): string
+    public function load(string $url, string $versionId): string
     {
-        $path = parse_url($url, PHP_URL_PATH);
-        $fileName = $this->zipDirectory . '/' . basename($path);
+        $urlPath = parse_url($url, PHP_URL_PATH);
+        $fileName = $versionId . '_' . basename($urlPath);
+        $filePath = $this->zipDirectory . '/' . $fileName;
 
         try {
-            $fp = fopen($fileName, 'wb');
+            $fp = fopen($filePath, 'wb');
             self::useCurl($url, $fp);
             fclose($fp);
         } catch (Exception $e) {

@@ -19,15 +19,13 @@ class Handler implements CommandHandlerInterface
 
     public function __invoke(Command $command)
     {
-        $type = $command->getType();
-        $version = $command->getVersion();
-
-        switch ($type) {
+        $versionId = $command->getVersionId();
+        switch ($command->getType()) {
             case Command::TYPE_FULL:
-                $this->downloader->downloadFull($version);
+                $this->downloader->downloadFull($versionId);
                 break;
             case Command::TYPE_DELTA:
-                $this->downloader->downloadDelta($version);
+                $this->downloader->downloadDelta($versionId);
                 break;
         }
     }

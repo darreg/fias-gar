@@ -42,7 +42,7 @@ class ZipFileExtractor
         }
 
         $paths = $this->xmlFileFinder->getAllFindPath();
-        if (\count($paths) === 0) {
+        if (\count($paths) !== 0) {
             throw new XmlFilesCleanUpException('The xml files have not been deleted');
         }
 
@@ -57,7 +57,7 @@ class ZipFileExtractor
         }
 
         $paths = $this->xmlFileFinder->getAllFindPath();
-        if (empty($paths)) {
+        if (\count($paths) === 0) {
             throw new NoFilesAfterUnpackingException('No xml files found after unpacking the archive');
         }
 
