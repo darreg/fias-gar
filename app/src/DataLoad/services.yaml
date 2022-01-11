@@ -1,9 +1,14 @@
 parameters:
     fias_url_version_format: 'Y.m.d'
-    fias_url_full_xml: 'https://fias.nalog.ru/downloads/#version#/gar_xml.zip'
-    fias_url_delta_xml: 'https://fias.nalog.ru/downloads/#version#/gar_delta_xml.zip'
+    fias_url_xml: 'https://fias.nalog.ru/downloads/#version#'
+    fias_url_full_file: 'gar_xml.zip'
+    fias_url_delta_file: 'gar_delta_xml.zip'
+    fias_url_full_xml: '%fias_url_xml%/%fias_url_full_file%'
+    fias_url_delta_xml: '%fias_url_xml%/%fias_url_delta_file%'
 
     fias_zip_directory: '%kernel.project_dir%/var/zip'
+    fias_zip_max_full_file: 1
+    fias_zip_max_delta_file: 2
     fias_xml_directory: '%kernel.project_dir%/var/xml'
 
     fias_tables_pkey:
@@ -85,7 +90,11 @@ services:
 
     App\Shared\Domain\Bus\Command\CommandBusInterface: '@App\Shared\Infrastructure\Bus\Command\CommandBus'
 
-    App\DataLoad\Infrastructure\Service\Downloader: ~
+    App\DataLoad\Infrastructure\Service\Downloader:
+        arguments:
+            $versionFormat: '%fias_url_version_format%'
+            $urlFullXml: '%fias_url_full_xml%'
+            $urlDeltaXml: '%fias_url_delta_xml%'
     App\DataLoad\Application\Service\DownloaderInterface: '@App\DataLoad\Infrastructure\Service\Downloader'
 
     App\DataLoad\Infrastructure\Service\XmlFileFinder: ~
@@ -100,3 +109,9 @@ services:
     App\DataLoad\Infrastructure\Service\Parser: ~
     App\DataLoad\Application\Service\ParserInterface: '@App\DataLoad\Infrastructure\Service\Parser'
 
+    App\DataLoad\Infrastructure\Service\ZipFileRotator:
+        arguments:
+            $fullFileName: '%fias_url_full_file%'
+            $deltaFileName: '%fias_url_delta_file%'
+            $maxFullFileNum: '%fias_zip_max_full_file%'
+            $maxDeltaFileNum: '%fias_zip_max_delta_file%'

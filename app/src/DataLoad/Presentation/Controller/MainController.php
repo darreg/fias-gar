@@ -2,6 +2,7 @@
 
 namespace App\DataLoad\Presentation\Controller;
 
+use App\DataLoad\Application\UseCase\Download\Command as DownloadCommand;
 use App\DataLoad\Application\UseCase\FindFile\Query as FindFileQuery;
 use App\DataLoad\Application\UseCase\FindFile\Response as FindFileResponse;
 use App\DataLoad\Application\UseCase\ParseTag\Command;
@@ -47,13 +48,17 @@ final class MainController extends AbstractController
      */
     public function index(Connection $connection): Response // \App\DataLoad\Application\UseCase\ParseTag\Handler $handler
     {
-        $query = new FindFileQuery('addr_obj');
-        /** @var FindFileResponse $response */
-        $response = $this->queryBus->ask($query);
-        foreach ($response->getAll() as $file) {
-            $command = new SplitFileCommand($file->getPath(), $file->getToken(), $file->getTagName());
-            $this->commandBus->dispatch($command);
-        }
+        $command = new DownloadCommand('20220111');
+
+        $this->commandBus->dispatch($command);
+
+//        $query = new FindFileQuery('addr_obj');
+//        /** @var FindFileResponse $response */
+//        $response = $this->queryBus->ask($query);
+//        foreach ($response->getAll() as $file) {
+//            $command = new SplitFileCommand($file->getPath(), $file->getToken(), $file->getTagName());
+//            $this->commandBus->dispatch($command);
+//        }
 
 //        $fileName = 'AS_HOUSE_TYPES_20210121_d2e6d657-245d-4eaf-b587-fc697580983a.XML';
 //        $file = $this->fileFactory->create($fileName);

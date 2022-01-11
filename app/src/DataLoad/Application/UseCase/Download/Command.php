@@ -11,18 +11,18 @@ class Command implements CommandInterface
     public const TYPE_FULL = 'full';
     public const TYPE_DELTA = 'delta';
 
-    private string $version;
+    private string $versionId;
     private string $type;
 
-    public function __construct(string $version, string $type)
+    public function __construct(string $versionId, string $type = self::TYPE_DELTA)
     {
-        $this->version = $version;
+        $this->versionId = $versionId;
         $this->type = $type;
     }
 
-    public function getVersion(): string
+    public function getVersionId(): string
     {
-        return $this->version;
+        return $this->versionId;
     }
 
     public function getType(): string

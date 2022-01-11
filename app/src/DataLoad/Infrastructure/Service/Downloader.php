@@ -11,31 +11,38 @@ use App\DataLoad\Infrastructure\Exception\ConfigParameterNotFoundException;
 use App\DataLoad\Infrastructure\Exception\DirectoryIsNotReadableException;
 use App\DataLoad\Infrastructure\Exception\NoFilesAfterUnpackingException;
 use App\DataLoad\Infrastructure\Exception\XmlFilesCleanUpException;
+use App\DataLoad\Infrastructure\Exception\ZipFileDeletionException;
 use App\DataLoad\Infrastructure\Exception\ZipFileNotFoundException;
 use RuntimeException;
 
 class Downloader implements DownloaderInterface
 {
     public const VERSION_PLACEHOLDER = '#version#';
-    public const VERSION_FORMAT = 'fias_url_version_format';
-    public const FULL_FIAS_DB_URL = 'fias_url_full_xml';
-    public const DELTA_FIAS_DB_URL = 'fias_url_delta_xml';
 
     private ZipFileLoader $zipFileLoader;
     private ZipFileExtractor $zipFileExtractor;
+    private ZipFileRotator $zipFileRotator;
     private XmlFileCleaner $xmlFileCleaner;
-    private ParameterStorage $parameterStorage;
+    private string $versionFormat;
+    private string $urlFullXml;
+    private string $urlDeltaXml;
 
     public function __construct(
         ZipFileLoader $zipFileLoader,
         ZipFileExtractor $zipFileExtractor,
+        ZipFileRotator $zipFileRotator,
         XmlFileCleaner $xmlFileCleaner,
-        ParameterStorage $parameterStorage
+        string $versionFormat,
+        string $urlFullXml,
+        string $urlDeltaXml,
     ) {
         $this->zipFileLoader = $zipFileLoader;
         $this->zipFileExtractor = $zipFileExtractor;
+        $this->zipFileRotator = $zipFileRotator;
         $this->xmlFileCleaner = $xmlFileCleaner;
-        $this->parameterStorage = $parameterStorage;
+        $this->versionFormat = $versionFormat;
+        $this->urlFullXml = $urlFullXml;
+        $this->urlDeltaXml = $urlDeltaXml;
     }
 
     /**
@@ -43,14 +50,14 @@ class Downloader implements DownloaderInterface
      * @throws DirectoryIsNotReadableException
      * @throws XmlFilesCleanUpException
      * @throws ZipFileNotFoundException
+     * @throws ZipFileDeletionException
      * @throws NoFilesAfterUnpackingException
      * @throws VersionNotRecognizedException
      * @throws RuntimeException
      */
     public function downloadFull(string $versionId): void
     {
-        $urlTemplate = $this->parameterStorage->getParameter(self::FULL_FIAS_DB_URL);
-        $this->download($urlTemplate, $versionId);
+        $this->download($this->urlFullXml, $versionId);
     }
 
     /**
@@ -58,28 +65,31 @@ class Downloader implements DownloaderInterface
      * @throws DirectoryIsNotReadableException
      * @throws XmlFilesCleanUpException
      * @throws ZipFileNotFoundException
+     * @throws ZipFileDeletionException
      * @throws NoFilesAfterUnpackingException
      * @throws VersionNotRecognizedException
      * @throws RuntimeException
      */
     public function downloadDelta(string $versionId): void
     {
-        $urlTemplate = $this->parameterStorage->getParameter(self::DELTA_FIAS_DB_URL);
-        $this->download($urlTemplate, $versionId);
+        $this->download($this->urlDeltaXml, $versionId);
     }
 
     /**
      * @throws DirectoryIsNotReadableException
      * @throws XmlFilesCleanUpException
      * @throws ZipFileNotFoundException
+     * @throws ZipFileDeletionException
      * @throws NoFilesAfterUnpackingException
      * @throws VersionNotRecognizedException
      * @throws RuntimeException
      */
     private function download(string $urlTemplate, string $versionId): void
     {
+        $this->zipFileRotator->rotate();
         $fileName = $this->zipFileLoader->load(
-            $this->buildUrl($urlTemplate, $versionId)
+            $this->buildUrl($urlTemplate, $versionId),
+            $versionId
         );
         $this->xmlFileCleaner->clean();
         $this->zipFileExtractor->extract($fileName);
@@ -91,12 +101,9 @@ class Downloader implements DownloaderInterface
      */
     private function buildUrl(string $template, string $versionId): string
     {
-        $versionPlaceholder = $this->parameterStorage->getParameter(self::VERSION_PLACEHOLDER);
-        $versionFormat =$this->parameterStorage->getParameter(self::VERSION_FORMAT);
-
         return str_replace(
-            $versionPlaceholder,
-            File::convertVersion($versionId, $versionFormat),
+            self::VERSION_PLACEHOLDER,
+            File::convertVersion($versionId, $this->versionFormat),
             $template
         );
     }
