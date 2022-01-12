@@ -15,11 +15,15 @@ final class TableFactoryTest extends KernelTestCase
 {
     private TableFactory $factory;
 
+    /**
+     * @psalm-suppress  ServiceNotFound
+     * @psalm-suppress  PropertyTypeCoercion
+     */
     protected function setUp(): void
     {
         self::bootKernel(['environment' => 'test']);
-        $container = self::getContainer();
 
+        $container = self::getContainer();
         $this->factory = $container->get(TableFactory::class);
     }
 
