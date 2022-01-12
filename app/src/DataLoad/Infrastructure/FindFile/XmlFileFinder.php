@@ -24,8 +24,8 @@ class XmlFileFinder implements XmlFileFinderInterface
     }
 
     /**
-     *@return XmlFile
-     *@throws DirectoryIsNotReadableException
+     * @throws DirectoryIsNotReadableException
+     * @return list<XmlFile>
      */
     public function find(string $token): array
     {
@@ -41,10 +41,10 @@ class XmlFileFinder implements XmlFileFinderInterface
     }
 
     /**
-     *@return XmlFile
-     *@throws RuntimeException
+     * @throws RuntimeException
      * @throws DirectoryIsNotReadableException
      * @throws TokenNotRecognizedException
+     * @return list<XmlFile>
      */
     public function findAll(): array
     {

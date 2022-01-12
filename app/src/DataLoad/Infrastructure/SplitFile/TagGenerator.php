@@ -6,8 +6,6 @@ namespace App\DataLoad\Infrastructure\SplitFile;
 
 use App\DataLoad\Domain\Tag\Service\TagGeneratorInterface;
 use Generator;
-use LogicException;
-use RuntimeException;
 
 /**
  * @psalm-suppress MethodSignatureMismatch
@@ -17,23 +15,17 @@ class TagGenerator implements TagGeneratorInterface
     public const BUFFER_SIZE = 10000;
 
     /**
-     * @throws RuntimeException
-     * @throws LogicException
      * @return Generator<string>
      */
     public function generate(string $filePath, string $tagName): Generator
     {
-        if ($filePath === '') {
-            throw new LogicException('The file path is not specified');
-        }
-
-        if ($tagName === '') {
-            throw new LogicException('Tag name not specified');
+        if ($tagName === '' || !file_exists($filePath)) {
+            return;
         }
 
         $fh = fopen($filePath, 'rb');
         if ($fh === false) {
-            throw new RuntimeException("Could not open the file '{$filePath}'");
+            return;
         }
 
         $tagBegin = '<' . $tagName . ' ';
