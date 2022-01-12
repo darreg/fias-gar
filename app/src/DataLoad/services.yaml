@@ -90,29 +90,42 @@ services:
 
     App\Shared\Domain\Bus\Command\CommandBusInterface: '@App\Shared\Infrastructure\Bus\Command\CommandBus'
 
-    App\DataLoad\Infrastructure\ZipFile\ZipFileDownloader:
+    App\DataLoad\Infrastructure\Download\ZipFileDownloader:
         arguments:
             $versionFormat: '%fias_url_version_format%'
             $urlFullXml: '%fias_url_full_xml%'
             $urlDeltaXml: '%fias_url_delta_xml%'
-    App\DataLoad\Domain\ZipFile\Service\ZipFileDownloaderInterface: '@App\DataLoad\Infrastructure\ZipFile\ZipFileDownloader'
+    App\DataLoad\Domain\ZipFile\Service\ZipFileDownloaderInterface: '@App\DataLoad\Infrastructure\Download\ZipFileDownloader'
 
-    App\DataLoad\Infrastructure\XmlFile\XmlFileFinder: ~
-    App\DataLoad\Domain\XmlFile\Service\XmlFileFinderInterface: '@App\DataLoad\Infrastructure\XmlFile\XmlFileFinder'
-
-    App\DataLoad\Infrastructure\Tag\TagGenerator: ~
-    App\DataLoad\Domain\Tag\Service\TagGeneratorInterface: '@App\DataLoad\Infrastructure\Tag\TagGenerator'
-
-    App\DataLoad\Infrastructure\Tag\TagSaver: ~
-    App\DataLoad\Domain\Tag\Service\TagSaverInterface: '@App\DataLoad\Infrastructure\Tag\TagSaver'
-
-    App\DataLoad\Infrastructure\Tag\TagParser: ~
-    App\DataLoad\Domain\Tag\Service\TagParserInterface: '@App\DataLoad\Infrastructure\Tag\TagParser'
-
-    App\DataLoad\Infrastructure\ZipFile\ZipFileRotator:
+    App\DataLoad\Infrastructure\Download\ZipFileRotator:
         arguments:
             $fullFileName: '%fias_url_full_file%'
             $deltaFileName: '%fias_url_delta_file%'
             $maxFullFileNum: '%fias_zip_max_full_file%'
             $maxDeltaFileNum: '%fias_zip_max_delta_file%'
-    App\DataLoad\Domain\ZipFile\Service\ZipFileRotatorInterface: '@App\DataLoad\Infrastructure\ZipFile\ZipFileRotator'
+    App\DataLoad\Domain\ZipFile\Service\ZipFileRotatorInterface: '@App\DataLoad\Infrastructure\Download\ZipFileRotator'
+
+    App\DataLoad\Infrastructure\Download\ZipFileExtractor: ~
+    App\DataLoad\Domain\ZipFile\Service\ZipFileExtractorInterface: '@App\DataLoad\Infrastructure\Download\ZipFileExtractor'
+
+    App\DataLoad\Infrastructure\Download\ZipFileLoader: ~
+    App\DataLoad\Domain\ZipFile\Service\ZipFileLoaderInterface: '@App\DataLoad\Infrastructure\Download\ZipFileLoader'
+
+    App\DataLoad\Infrastructure\Download\XmlFileCleaner: ~
+    App\DataLoad\Domain\XmlFile\Service\XmlFileCleanerInterface: '@App\DataLoad\Infrastructure\Download\XmlFileCleaner'
+
+    App\DataLoad\Infrastructure\FindFile\XmlFileFinder: ~
+    App\DataLoad\Domain\XmlFile\Service\XmlFileFinderInterface: '@App\DataLoad\Infrastructure\FindFile\XmlFileFinder'
+
+    App\DataLoad\Infrastructure\SplitFile\TagGenerator: ~
+    App\DataLoad\Domain\Tag\Service\TagGeneratorInterface: '@App\DataLoad\Infrastructure\SplitFile\TagGenerator'
+
+    App\DataLoad\Infrastructure\SaveTag\TagSaver: ~
+    App\DataLoad\Domain\Tag\Service\TagSaverInterface: '@App\DataLoad\Infrastructure\SaveTag\TagSaver'
+
+    App\DataLoad\Infrastructure\ParseTag\TagParser: ~
+    App\DataLoad\Domain\Tag\Service\TagParserInterface: '@App\DataLoad\Infrastructure\ParseTag\TagParser'
+
+    App\DataLoad\Infrastructure\SaveTag\TableColumner: ~
+    App\DataLoad\Domain\Table\Service\TableColumnerInterface: '@App\DataLoad\Infrastructure\SaveTag\TableColumner'
+

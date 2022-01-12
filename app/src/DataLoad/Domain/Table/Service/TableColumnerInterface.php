@@ -14,5 +14,5 @@ interface TableColumnerInterface
      * @throws TableColumnNotFoundException
      * @return list<string>
      */
-    public function getColumnNames(string $tableName): array;
+    public function getNames(string $tableName): array;
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\Table;
+namespace App\DataLoad\Infrastructure\SaveTag;
 
 use App\DataLoad\Domain\Table\Exception\TableColumnNotFoundException;
 use App\DataLoad\Domain\Table\Service\TableColumnerInterface;
@@ -24,7 +24,7 @@ final class TableColumner implements TableColumnerInterface
      * @throws TableColumnNotFoundException
      * @return list<string>
      */
-    public function getColumnNames(string $tableName): array
+    public function getNames(string $tableName): array
     {
         try {
             $resultSet = $this->connection->executeQuery(

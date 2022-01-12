@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\ZipFile;
+namespace App\DataLoad\Infrastructure\Download;
 
 use App\DataLoad\Domain\ZipFile\Service\ZipFileLoaderInterface;
 use Exception;

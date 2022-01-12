@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\Tag;
+namespace App\DataLoad\Infrastructure\SplitFile;
 
 use App\DataLoad\Domain\Tag\Service\TagGeneratorInterface;
 use Generator;
