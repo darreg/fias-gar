@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Test\Infrastructure\Table;
 
-use App\DataLoad\Infrastructure\Table\TableFactory;
+use App\DataLoad\Infrastructure\SaveTag\TableFactory;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

@@ -2,37 +2,40 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\ZipFile;
+namespace App\DataLoad\Infrastructure\Download;
 
 use App\DataLoad\Domain\Shared\Exception\DirectoryIsNotReadableException;
 use App\DataLoad\Domain\XmlFile\Entity\XmlFile;
 use App\DataLoad\Domain\XmlFile\Exception\CleanUpException;
 use App\DataLoad\Domain\XmlFile\Exception\VersionNotRecognizedException;
+use App\DataLoad\Domain\XmlFile\Service\XmlFileCleanerInterface;
 use App\DataLoad\Domain\ZipFile\Exception\FileRemoveException;
 use App\DataLoad\Domain\ZipFile\Exception\NoFilesAfterUnpackingException;
 use App\DataLoad\Domain\ZipFile\Exception\ZipFileNotFoundException;
 use App\DataLoad\Domain\ZipFile\Service\ZipFileDownloaderInterface;
+use App\DataLoad\Domain\ZipFile\Service\ZipFileExtractorInterface;
+use App\DataLoad\Domain\ZipFile\Service\ZipFileLoaderInterface;
+use App\DataLoad\Domain\ZipFile\Service\ZipFileRotatorInterface;
 use App\DataLoad\Infrastructure\Shared\ConfigParameterNotFoundException;
-use App\DataLoad\Infrastructure\XmlFile\XmlFileCleaner;
 use RuntimeException;
 
 class ZipFileDownloader implements ZipFileDownloaderInterface
 {
     public const VERSION_PLACEHOLDER = '#version#';
 
-    private ZipFileLoader $zipFileLoader;
-    private ZipFileExtractor $zipFileExtractor;
-    private ZipFileRotator $zipFileRotator;
-    private XmlFileCleaner $xmlFileCleaner;
+    private ZipFileLoaderInterface $zipFileLoader;
+    private ZipFileExtractorInterface $zipFileExtractor;
+    private ZipFileRotatorInterface $zipFileRotator;
+    private XmlFileCleanerInterface $xmlFileCleaner;
     private string $versionFormat;
     private string $urlFullXml;
     private string $urlDeltaXml;
 
     public function __construct(
-        ZipFileLoader $zipFileLoader,
-        ZipFileExtractor $zipFileExtractor,
-        ZipFileRotator $zipFileRotator,
-        XmlFileCleaner $xmlFileCleaner,
+        ZipFileLoaderInterface $zipFileLoader,
+        ZipFileExtractorInterface $zipFileExtractor,
+        ZipFileRotatorInterface $zipFileRotator,
+        XmlFileCleanerInterface $xmlFileCleaner,
         string $versionFormat,
         string $urlFullXml,
         string $urlDeltaXml,

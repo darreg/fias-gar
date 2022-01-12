@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\Tag;
+namespace App\DataLoad\Infrastructure\SaveTag;
 
 use App\DataLoad\Domain\Table\Entity\Table;
 use App\DataLoad\Domain\Table\Exception\TableColumnNotFoundException;
 use App\DataLoad\Domain\Table\Exception\TableNameNotFoundException;
 use App\DataLoad\Domain\Tag\Exception\RowsNotUpsertedException;
 use App\DataLoad\Domain\Tag\Service\TagSaverInterface;
-use App\DataLoad\Infrastructure\Table\TableFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use RuntimeException;

@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\XmlFile;
+namespace App\DataLoad\Infrastructure\Download;
 
 use App\DataLoad\Domain\Shared\Exception\DirectoryIsNotReadableException;
 use App\DataLoad\Domain\XmlFile\Exception\CleanUpException;
 use App\DataLoad\Domain\XmlFile\Service\XmlFileCleanerInterface;
+use App\DataLoad\Infrastructure\FindFile\XmlFileFinder;
 
 class XmlFileCleaner implements XmlFileCleanerInterface
 {

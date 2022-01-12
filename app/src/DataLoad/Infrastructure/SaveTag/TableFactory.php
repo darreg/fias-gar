@@ -2,22 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\Table;
+namespace App\DataLoad\Infrastructure\SaveTag;
 
 use App\DataLoad\Domain\Table\Entity\Table;
 use App\DataLoad\Domain\Table\Exception\TableColumnNotFoundException;
 use App\DataLoad\Domain\Table\Exception\TableNameNotFoundException;
+use App\DataLoad\Domain\Table\Service\TableColumnerInterface;
 use App\DataLoad\Infrastructure\Shared\ParameterStorage;
 use RuntimeException;
 
 final class TableFactory
 {
     private ParameterStorage $parameterStorage;
-    private TableColumner $tableColumnService;
+    private TableColumnerInterface $tableColumnService;
 
     public function __construct(
         ParameterStorage $parameterStorage,
-        TableColumner $tableColumnService
+        TableColumnerInterface $tableColumnService
     ) {
         $this->parameterStorage = $parameterStorage;
         $this->tableColumnService = $tableColumnService;
@@ -32,7 +33,7 @@ final class TableFactory
     {
         $tableName = $this->parameterStorage->getTableNameByFileToken($fileToken);
         $primaryKey = $this->parameterStorage->getPrimaryKeyByFileToken($fileToken);
-        $columnNames = $this->tableColumnService->getColumnNames($tableName);
+        $columnNames = $this->tableColumnService->getNames($tableName);
 
         return new Table($tableName, $primaryKey, $columnNames);
     }

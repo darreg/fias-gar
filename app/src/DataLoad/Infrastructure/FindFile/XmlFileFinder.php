@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\XmlFile;
+namespace App\DataLoad\Infrastructure\FindFile;
 
 use App\DataLoad\Domain\Shared\Exception\DirectoryIsNotReadableException;
 use App\DataLoad\Domain\XmlFile\Entity\XmlFile;
@@ -24,8 +24,8 @@ class XmlFileFinder implements XmlFileFinderInterface
     }
 
     /**
+     *@return XmlFile
      *@throws DirectoryIsNotReadableException
-     * @return list<XmlFile>
      */
     public function find(string $token): array
     {
@@ -41,10 +41,10 @@ class XmlFileFinder implements XmlFileFinderInterface
     }
 
     /**
-     *@throws TokenNotRecognizedException
-     * @throws RuntimeException
+     *@return XmlFile
+     *@throws RuntimeException
      * @throws DirectoryIsNotReadableException
-     * @return list<XmlFile>
+     * @throws TokenNotRecognizedException
      */
     public function findAll(): array
     {
