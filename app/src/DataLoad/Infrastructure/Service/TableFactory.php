@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\SaveTag;
+namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Domain\Table\Entity\Table;
 use App\DataLoad\Domain\Table\Exception\TableColumnNotFoundException;
 use App\DataLoad\Domain\Table\Exception\TableNameNotFoundException;
 use App\DataLoad\Domain\Table\Service\TableColumnerInterface;
-use App\DataLoad\Infrastructure\Shared\ParameterStorage;
 use RuntimeException;
 
 final class TableFactory

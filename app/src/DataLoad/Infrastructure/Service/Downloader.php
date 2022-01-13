@@ -2,24 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\Download;
+namespace App\DataLoad\Infrastructure\Service;
 
-use App\DataLoad\Domain\Shared\Exception\DirectoryIsNotReadableException;
+use App\DataLoad\Application\Exception\DownloadException;
+use App\DataLoad\Application\Service\DownloaderInterface;
 use App\DataLoad\Domain\XmlFile\Entity\XmlFile;
-use App\DataLoad\Domain\XmlFile\Exception\CleanUpException;
 use App\DataLoad\Domain\XmlFile\Exception\VersionNotRecognizedException;
 use App\DataLoad\Domain\XmlFile\Service\XmlFileCleanerInterface;
-use App\DataLoad\Domain\ZipFile\Exception\FileRemoveException;
-use App\DataLoad\Domain\ZipFile\Exception\NoFilesAfterUnpackingException;
-use App\DataLoad\Domain\ZipFile\Exception\ZipFileNotFoundException;
-use App\DataLoad\Domain\ZipFile\Service\ZipFileDownloaderInterface;
 use App\DataLoad\Domain\ZipFile\Service\ZipFileExtractorInterface;
 use App\DataLoad\Domain\ZipFile\Service\ZipFileLoaderInterface;
 use App\DataLoad\Domain\ZipFile\Service\ZipFileRotatorInterface;
-use App\DataLoad\Infrastructure\Shared\ConfigParameterNotFoundException;
+use App\DataLoad\Infrastructure\Exception\ConfigParameterNotFoundException;
+use LogicException;
 use RuntimeException;
 
-class ZipFileDownloader implements ZipFileDownloaderInterface
+class Downloader implements DownloaderInterface
 {
     public const VERSION_PLACEHOLDER = '#version#';
 
@@ -50,53 +47,47 @@ class ZipFileDownloader implements ZipFileDownloaderInterface
     }
 
     /**
-     * @throws ConfigParameterNotFoundException
-     * @throws DirectoryIsNotReadableException
-     * @throws CleanUpException
-     * @throws ZipFileNotFoundException
-     * @throws FileRemoveException
-     * @throws NoFilesAfterUnpackingException
-     * @throws VersionNotRecognizedException
+     * @throws DownloadException
      * @throws RuntimeException
      */
-    public function downloadFull(string $versionId): void
+    public function full(string $versionId): void
     {
-        $this->download($this->urlFullXml, $versionId);
+        $this->download(DownloaderInterface::TYPE_FULL, $versionId);
     }
 
     /**
-     * @throws ConfigParameterNotFoundException
-     * @throws DirectoryIsNotReadableException
-     * @throws CleanUpException
-     * @throws ZipFileNotFoundException
-     * @throws FileRemoveException
-     * @throws NoFilesAfterUnpackingException
-     * @throws VersionNotRecognizedException
+     * @throws DownloadException
      * @throws RuntimeException
      */
-    public function downloadDelta(string $versionId): void
+    public function delta(string $versionId): void
     {
-        $this->download($this->urlDeltaXml, $versionId);
+        $this->download(DownloaderInterface::TYPE_DELTA, $versionId);
     }
 
     /**
-     * @throws DirectoryIsNotReadableException
-     * @throws CleanUpException
-     * @throws ZipFileNotFoundException
-     * @throws FileRemoveException
-     * @throws NoFilesAfterUnpackingException
-     * @throws VersionNotRecognizedException
+     * @param DownloaderInterface::TYPE_* $type
+     * @throws DownloadException
      * @throws RuntimeException
      */
-    private function download(string $urlTemplate, string $versionId): void
+    public function download(string $type, string $versionId): void
     {
-        $this->zipFileRotator->rotate();
-        $fileName = $this->zipFileLoader->load(
-            $this->buildUrl($urlTemplate, $versionId),
-            $versionId
-        );
-        $this->xmlFileCleaner->clean();
-        $this->zipFileExtractor->extract($fileName);
+        $urlTemplate = match ($type) {
+            DownloaderInterface::TYPE_FULL => $this->urlFullXml,
+            DownloaderInterface::TYPE_DELTA => $this->urlDeltaXml,
+            default => throw new DownloadException("Incorrect download type '{$type}'"),
+        };
+
+        try {
+            $this->zipFileRotator->rotate();
+            $fileName = $this->zipFileLoader->load(
+                $this->buildUrl($urlTemplate, $versionId),
+                $versionId
+            );
+            $this->xmlFileCleaner->clean();
+            $this->zipFileExtractor->extract($fileName);
+        } catch (LogicException $e) {
+            throw new DownloadException("Error loading the {$type} database version '{$versionId}'", 0, $e);
+        }
     }
 
     /**

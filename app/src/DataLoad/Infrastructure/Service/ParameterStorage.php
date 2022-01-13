@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\Shared;
+namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Domain\Table\Exception\TableNameNotFoundException;
 use App\DataLoad\Domain\Tag\Exception\TagNameNotFoundException;
+use App\DataLoad\Infrastructure\Exception\ConfigParameterNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 final class ParameterStorage

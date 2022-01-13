@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Test\Infrastructure\Shared;
 
-use App\DataLoad\Infrastructure\Shared\ParameterStorage;
+use App\DataLoad\Infrastructure\Service\ParameterStorage;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -16,6 +16,10 @@ final class ParameterStorageTest extends KernelTestCase
 {
     protected ParameterStorage $parameterStorage;
 
+    /**
+     * @psalm-suppress  ServiceNotFound
+     * @psalm-suppress  PropertyTypeCoercion
+     */
     protected function setUp(): void
     {
         self::bootKernel(['environment' => 'test']);

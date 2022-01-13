@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\Download;
+namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Domain\Shared\Exception\DirectoryIsNotReadableException;
 use App\DataLoad\Domain\XmlFile\Exception\CleanUpException;
 use App\DataLoad\Domain\ZipFile\Exception\NoFilesAfterUnpackingException;
 use App\DataLoad\Domain\ZipFile\Exception\ZipFileNotFoundException;
 use App\DataLoad\Domain\ZipFile\Service\ZipFileExtractorInterface;
-use App\DataLoad\Infrastructure\FindFile\XmlFileFinder;
 use RuntimeException;
 
 class ZipFileExtractor implements ZipFileExtractorInterface

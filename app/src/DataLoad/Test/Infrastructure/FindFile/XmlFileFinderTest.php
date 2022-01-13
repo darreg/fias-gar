@@ -6,12 +6,13 @@ namespace App\DataLoad\Test\Infrastructure\FindFile;
 
 use App\DataLoad\Domain\Shared\Exception\DirectoryIsNotReadableException;
 use App\DataLoad\Domain\XmlFile\Entity\XmlFile;
-use App\DataLoad\Infrastructure\FindFile\XmlFileFinder;
-use App\DataLoad\Infrastructure\Shared\ParameterStorage;
+use App\DataLoad\Infrastructure\Service\ParameterStorage;
+use App\DataLoad\Infrastructure\Service\XmlFileFinder;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @internal
+ * @psalm-suppress MissingConstructor
  */
 final class XmlFileFinderTest extends KernelTestCase
 {
@@ -23,6 +24,10 @@ final class XmlFileFinderTest extends KernelTestCase
 
     private ParameterStorage $parameterStorage;
 
+    /**
+     * @psalm-suppress  ServiceNotFound
+     * @psalm-suppress  PropertyTypeCoercion
+     */
     protected function setUp(): void
     {
         self::bootKernel(['environment' => 'test']);

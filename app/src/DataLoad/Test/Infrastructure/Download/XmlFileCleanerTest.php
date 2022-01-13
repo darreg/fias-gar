@@ -6,8 +6,8 @@ namespace App\DataLoad\Test\Infrastructure\Download;
 
 use App\DataLoad\Domain\Shared\Exception\DirectoryIsNotReadableException;
 use App\DataLoad\Domain\XmlFile\Exception\CleanUpException;
-use App\DataLoad\Infrastructure\Download\XmlFileCleaner;
-use App\DataLoad\Infrastructure\FindFile\XmlFileFinder;
+use App\DataLoad\Infrastructure\Service\XmlFileCleaner;
+use App\DataLoad\Infrastructure\Service\XmlFileFinder;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\SaveTag;
+namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Domain\Table\Entity\Table;
 use App\DataLoad\Domain\Table\Exception\TableColumnNotFoundException;
