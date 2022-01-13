@@ -10,3 +10,11 @@ services:
         tags: [{ name: doctrine.event_subscriber, connection: default }]
     
     App\Shared\Infrastructure\Bus\Command\CommandBus: ~
+    App\Shared\Domain\Bus\Command\CommandBusInterface: '@App\Shared\Infrastructure\Bus\Command\CommandBus'
+
+    App\Shared\Infrastructure\Bus\Query\QueryBus: ~
+    App\Shared\Domain\Bus\Query\QueryBusInterface: '@App\Shared\Infrastructure\Bus\Query\QueryBus'
+
+    App\Shared\Infrastructure\Bus\Event\EventBus: ~
+    App\Shared\Domain\Bus\Event\EventBusInterface: '@App\Shared\Infrastructure\Bus\Event\EventBus'
+

@@ -14,6 +14,7 @@ parameters:
     fias_tables_pkey:
         object_levels: 'level'
         reestr_objects: 'objectid'
+
     fias_tables:
         addr_obj: 'fias_gar_addrobj'
         addr_obj_division: 'fias_gar_addrobjdivision'
@@ -43,6 +44,7 @@ parameters:
         operation_types: 'fias_gar_operationtypes'
         param_types: 'fias_gar_paramtypes'
         room_types: 'fias_gar_roomtypes'
+
     fias_tags:
         addr_obj: 'OBJECT'
         addr_obj_division: 'ITEM'
@@ -73,6 +75,17 @@ parameters:
         param_types: 'PARAMTYPE'
         room_types: 'ROOMTYPE'
 
+    fias_import_tokens:
+        - object_levels
+        - operation_types
+        - addr_obj
+        - adm_hierarchy
+        - mun_hierarchy
+        - addr_obj_types
+        - houses
+        - addhouse_types
+        - house_types
+
 services:
     _defaults:
         autowire: true
@@ -80,6 +93,7 @@ services:
         bind:
             $xmlDirectory: '%fias_xml_directory%'
             $zipDirectory: '%fias_zip_directory%'
+            $importTokens: '%fias_import_tokens%'
 
     App\DataLoad\:
         resource: '../../src/DataLoad/*'
@@ -88,44 +102,42 @@ services:
         resource: '../../src/DataLoad/Presentation/Controller'
         tags: ['controller.service_arguments']
 
-    App\Shared\Domain\Bus\Command\CommandBusInterface: '@App\Shared\Infrastructure\Bus\Command\CommandBus'
-
-    App\DataLoad\Infrastructure\Download\ZipFileDownloader:
+    App\DataLoad\Infrastructure\Service\Downloader:
         arguments:
             $versionFormat: '%fias_url_version_format%'
             $urlFullXml: '%fias_url_full_xml%'
             $urlDeltaXml: '%fias_url_delta_xml%'
-    App\DataLoad\Domain\ZipFile\Service\ZipFileDownloaderInterface: '@App\DataLoad\Infrastructure\Download\ZipFileDownloader'
+    App\DataLoad\Application\Service\DownloaderInterface: '@App\DataLoad\Infrastructure\Service\Downloader'
 
-    App\DataLoad\Infrastructure\Download\ZipFileRotator:
+    App\DataLoad\Infrastructure\Service\ZipFileRotator:
         arguments:
             $fullFileName: '%fias_url_full_file%'
             $deltaFileName: '%fias_url_delta_file%'
             $maxFullFileNum: '%fias_zip_max_full_file%'
             $maxDeltaFileNum: '%fias_zip_max_delta_file%'
-    App\DataLoad\Domain\ZipFile\Service\ZipFileRotatorInterface: '@App\DataLoad\Infrastructure\Download\ZipFileRotator'
+    App\DataLoad\Domain\ZipFile\Service\ZipFileRotatorInterface: '@App\DataLoad\Infrastructure\Service\ZipFileRotator'
 
-    App\DataLoad\Infrastructure\Download\ZipFileExtractor: ~
-    App\DataLoad\Domain\ZipFile\Service\ZipFileExtractorInterface: '@App\DataLoad\Infrastructure\Download\ZipFileExtractor'
+    App\DataLoad\Infrastructure\Service\ZipFileExtractor: ~
+    App\DataLoad\Domain\ZipFile\Service\ZipFileExtractorInterface: '@App\DataLoad\Infrastructure\Service\ZipFileExtractor'
 
-    App\DataLoad\Infrastructure\Download\ZipFileLoader: ~
-    App\DataLoad\Domain\ZipFile\Service\ZipFileLoaderInterface: '@App\DataLoad\Infrastructure\Download\ZipFileLoader'
+    App\DataLoad\Infrastructure\Service\ZipFileLoader: ~
+    App\DataLoad\Domain\ZipFile\Service\ZipFileLoaderInterface: '@App\DataLoad\Infrastructure\Service\ZipFileLoader'
 
-    App\DataLoad\Infrastructure\Download\XmlFileCleaner: ~
-    App\DataLoad\Domain\XmlFile\Service\XmlFileCleanerInterface: '@App\DataLoad\Infrastructure\Download\XmlFileCleaner'
+    App\DataLoad\Infrastructure\Service\XmlFileCleaner: ~
+    App\DataLoad\Domain\XmlFile\Service\XmlFileCleanerInterface: '@App\DataLoad\Infrastructure\Service\XmlFileCleaner'
 
-    App\DataLoad\Infrastructure\FindFile\XmlFileFinder: ~
-    App\DataLoad\Domain\XmlFile\Service\XmlFileFinderInterface: '@App\DataLoad\Infrastructure\FindFile\XmlFileFinder'
+    App\DataLoad\Infrastructure\Service\XmlFileFinder: ~
+    App\DataLoad\Domain\XmlFile\Service\XmlFileFinderInterface: '@App\DataLoad\Infrastructure\Service\XmlFileFinder'
 
-    App\DataLoad\Infrastructure\SplitFile\TagGenerator: ~
-    App\DataLoad\Domain\Tag\Service\TagGeneratorInterface: '@App\DataLoad\Infrastructure\SplitFile\TagGenerator'
+    App\DataLoad\Infrastructure\Service\TagGenerator: ~
+    App\DataLoad\Domain\Tag\Service\TagGeneratorInterface: '@App\DataLoad\Infrastructure\Service\TagGenerator'
 
-    App\DataLoad\Infrastructure\SaveTag\TagSaver: ~
-    App\DataLoad\Domain\Tag\Service\TagSaverInterface: '@App\DataLoad\Infrastructure\SaveTag\TagSaver'
+    App\DataLoad\Infrastructure\Service\TagSaver: ~
+    App\DataLoad\Domain\Tag\Service\TagSaverInterface: '@App\DataLoad\Infrastructure\Service\TagSaver'
 
-    App\DataLoad\Infrastructure\ParseTag\TagParser: ~
-    App\DataLoad\Domain\Tag\Service\TagParserInterface: '@App\DataLoad\Infrastructure\ParseTag\TagParser'
+    App\DataLoad\Infrastructure\Service\TagParser: ~
+    App\DataLoad\Domain\Tag\Service\TagParserInterface: '@App\DataLoad\Infrastructure\Service\TagParser'
 
-    App\DataLoad\Infrastructure\SaveTag\TableColumner: ~
-    App\DataLoad\Domain\Table\Service\TableColumnerInterface: '@App\DataLoad\Infrastructure\SaveTag\TableColumner'
+    App\DataLoad\Infrastructure\Service\TableColumner: ~
+    App\DataLoad\Domain\Table\Service\TableColumnerInterface: '@App\DataLoad\Infrastructure\Service\TableColumner'
 
