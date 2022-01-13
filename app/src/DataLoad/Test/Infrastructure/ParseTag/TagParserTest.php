@@ -6,7 +6,7 @@ namespace App\DataLoad\Test\Infrastructure\ParseTag;
 
 use App\DataLoad\Domain\Tag\Exception\TagAttributesNotFoundException;
 use App\DataLoad\Domain\Tag\Exception\TagNotParsedException;
-use App\DataLoad\Infrastructure\ParseTag\TagParser;
+use App\DataLoad\Infrastructure\Service\TagParser;
 use PHPUnit\Framework\TestCase;
 
 /**

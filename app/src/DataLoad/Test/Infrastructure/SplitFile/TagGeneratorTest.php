@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Test\Infrastructure\SplitFile;
 
-use App\DataLoad\Infrastructure\SplitFile\TagGenerator;
+use App\DataLoad\Infrastructure\Service\TagGenerator;
 use PHPUnit\Framework\TestCase;
 
 /**

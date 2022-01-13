@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\Download;
+namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Domain\ZipFile\Exception\FileRemoveException;
 use App\DataLoad\Domain\ZipFile\Service\ZipFileRotatorInterface;

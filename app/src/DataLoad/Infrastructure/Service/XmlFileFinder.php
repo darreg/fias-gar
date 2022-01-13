@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\FindFile;
+namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Domain\Shared\Exception\DirectoryIsNotReadableException;
 use App\DataLoad\Domain\XmlFile\Entity\XmlFile;
 use App\DataLoad\Domain\XmlFile\Exception\TokenNotRecognizedException;
 use App\DataLoad\Domain\XmlFile\Service\XmlFileFinderInterface;
-use App\DataLoad\Infrastructure\Shared\ParameterStorage;
 use RuntimeException;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
@@ -41,9 +40,9 @@ class XmlFileFinder implements XmlFileFinderInterface
     }
 
     /**
-     * @throws RuntimeException
      * @throws DirectoryIsNotReadableException
      * @throws TokenNotRecognizedException
+     * @throws RuntimeException
      * @return list<XmlFile>
      */
     public function findAll(): array
