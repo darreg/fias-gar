@@ -15,18 +15,18 @@ class ZipFileExtractor implements ZipFileExtractorInterface
 {
     public const SCHEMAS_DIR = 'Schemas';
 
+    private XmlFileFinder $xmlFileFinder;
     private string $zipDirectory;
     private string $xmlDirectory;
-    private XmlFileFinder $xmlFileFinder;
 
     public function __construct(
+        XmlFileFinder $xmlFileFinder,
         string $zipDirectory,
-        string $xmlDirectory,
-        XmlFileFinder $xmlFileFinder
+        string $xmlDirectory
     ) {
+        $this->xmlFileFinder = $xmlFileFinder;
         $this->zipDirectory = $zipDirectory;
         $this->xmlDirectory = $xmlDirectory;
-        $this->xmlFileFinder = $xmlFileFinder;
     }
 
     /**
@@ -62,7 +62,9 @@ class ZipFileExtractor implements ZipFileExtractorInterface
             throw new NoFilesAfterUnpackingException('No xml files found after unpacking the archive');
         }
 
-        exec('chmod 777 ' . $this->xmlDirectory . '/' . self::SCHEMAS_DIR);
+        if (is_dir($this->xmlDirectory . '/' . self::SCHEMAS_DIR)) {
+            exec('chmod 777 ' . $this->xmlDirectory . '/' . self::SCHEMAS_DIR);
+        }
         exec('chmod -R 644 ' . $this->xmlDirectory . '/*.XML');
     }
 }
