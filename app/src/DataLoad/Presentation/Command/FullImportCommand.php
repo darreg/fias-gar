@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class DeltaImportCommand extends Command
+final class FullImportCommand extends Command
 {
     private CommandBusInterface $commandBus;
     private LoggerInterface $logger;
@@ -27,21 +27,21 @@ final class DeltaImportCommand extends Command
      */
     public function __construct(
         CommandBusInterface $commandBus,
-        LoggerInterface $deltaImportLogger,
+        LoggerInterface $fullImportLogger,
         array $importTokens
     ) {
         parent::__construct();
         $this->commandBus = $commandBus;
-        $this->logger = $deltaImportLogger;
+        $this->logger = $fullImportLogger;
         $this->importTokens = $importTokens;
     }
 
     protected function configure(): void
     {
         $this
-            ->setName('fias:import:delta')
-            ->setDescription('Скачивание и импорт изменений базы ФИАС')
-            ->setHelp('fias:import:delta VERSION')
+            ->setName('fias:import:full')
+            ->setDescription('Скачивание и импорт полной базы ФИАС')
+            ->setHelp('fias:import:full VERSION')
             ->addArgument('version', InputArgument::REQUIRED);
     }
 
@@ -51,12 +51,12 @@ final class DeltaImportCommand extends Command
 
         $startTime = time();
         $output->writeln('=====');
-        $output->writeln("Скачивание и импорт изменений версии '{$version}'");
+        $output->writeln("Скачивание и импорт полной базы версии '{$version}'");
         $output->writeln('Начало работы : ' . date('d.m.Y H:i:s', $startTime));
 
         try {
             $output->writeln('Скачиваем zip-файл');
-            $this->commandBus->dispatch(new DownloadCommand($version, DownloaderInterface::TYPE_DELTA));
+            $this->commandBus->dispatch(new DownloadCommand($version, DownloaderInterface::TYPE_FULL));
 
             $output->writeln('Заполняем очередь импорта xml-файлов');
             /** @psalm-suppress MixedArgumentTypeCoercion */
