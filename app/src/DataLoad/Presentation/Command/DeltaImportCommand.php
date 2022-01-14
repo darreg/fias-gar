@@ -27,12 +27,12 @@ final class DeltaImportCommand extends Command
      */
     public function __construct(
         CommandBusInterface $commandBus,
-        LoggerInterface $logger,
+        LoggerInterface $deltaImportLogger,
         array $importTokens
     ) {
         parent::__construct();
         $this->commandBus = $commandBus;
-        $this->logger = $logger;
+        $this->logger = $deltaImportLogger;
         $this->importTokens = $importTokens;
     }
 
@@ -62,7 +62,7 @@ final class DeltaImportCommand extends Command
             /** @psalm-suppress MixedArgumentTypeCoercion */
             $this->commandBus->dispatch(new ImportCommand($this->importTokens));
         } catch (Exception $e) {
-            $this->logger->critical($e->getMessage() . ' ; ' . $e->getFile() . ' ; ' . $e->getLine());
+            $this->logger->error($e->getMessage() . ' ; ' . $e->getFile() . ' ; ' . $e->getLine(), [$e->getPrevious()]);
             return Command::FAILURE;
         }
 

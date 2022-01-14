@@ -1,38 +1,66 @@
 monolog:
-    channels: ["split_errors", "parse_success", "parse_errors", "save_success", "save_errors"]
+    channels:
+        - 'delta_import'
+        - 'full_import'
+        - 'split_errors'
+        - 'parse_success'
+        - 'parse_errors'
+        - 'save_success'
+        - 'save_errors'
     handlers:
+        delta_import:
+            type:  rotating_file
+            path:  '%kernel.logs_dir%/%kernel.environment%_delta_import.log'
+            level: info
+            max_files: 10
+            channels: ["delta_import"]
+            formatter: monolog.formatter.json
+            bubble: false
+        full_import:
+            type:  rotating_file
+            path:  '%kernel.logs_dir%/%kernel.environment%_full_import.log'
+            level: info
+            max_files: 10
+            channels: ["full_import"]
+            formatter: monolog.formatter.json
+            bubble: false
         split_errors:
             type:  rotating_file
             path:  '%kernel.logs_dir%/%kernel.environment%_split_errors.log'
             level: info
             max_files: 10
             channels: ["split_errors"]
-            formatter: Monolog\Formatter\JsonFormatter
+            formatter: monolog.formatter.json
+            bubble: false
         parse_success:
             type:  rotating_file
             path:  '%kernel.logs_dir%/%kernel.environment%_parse_success.log'
             level: info
             max_files: 10
             channels: ["parse_success"]
-            formatter: Monolog\Formatter\JsonFormatter
+            formatter: monolog.formatter.json
+            bubble: false
         parse_errors:
             type:  rotating_file
             path:  '%kernel.logs_dir%/%kernel.environment%_parse_errors.log'
             level: info
             max_files: 10
             channels: ["parse_errors"]
-            formatter: Monolog\Formatter\JsonFormatter
+            formatter: monolog.formatter.json
+            bubble: false
         save_success:
             type:  rotating_file
             path:  '%kernel.logs_dir%/%kernel.environment%_save_success.log'
             level: info
             max_files: 10
             channels: ["save_success"]
-            formatter: Monolog\Formatter\JsonFormatter
+            formatter: monolog.formatter.json
+            bubble: false
         save_errors:
             type:  rotating_file
             path:  '%kernel.logs_dir%/%kernel.environment%_save_errors.log'
             level: info
             max_files: 10
             channels: ["save_errors"]
-            formatter: Monolog\Formatter\JsonFormatter
+            formatter: monolog.formatter.json
+            bubble: false

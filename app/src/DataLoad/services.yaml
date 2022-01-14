@@ -76,15 +76,15 @@ parameters:
         room_types: 'ROOMTYPE'
 
     fias_import_tokens:
-        - object_levels
-        - operation_types
-        - addr_obj
-        - adm_hierarchy
-        - mun_hierarchy
-        - addr_obj_types
-        - houses
-        - addhouse_types
-        - house_types
+        - 'object_levels'
+        - 'operation_types'
+        - 'addr_obj'
+        - 'adm_hierarchy'
+        - 'mun_hierarchy'
+        - 'addr_obj_types'
+        - 'houses'
+        - 'addhouse_types'
+        - 'house_types'
 
 services:
     _defaults:

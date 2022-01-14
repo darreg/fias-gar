@@ -1,8 +1,9 @@
 monolog:
+    channels: ["deprecation"]
     handlers:
         deprecation:
-            type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
-            level: INFO
-            channels: ["php"]
+            type: rotating_file
+            path: "%kernel.logs_dir%/deprecations.log"
+            channels: ["deprecation"]
             bubble: false
+            max_files: 1
