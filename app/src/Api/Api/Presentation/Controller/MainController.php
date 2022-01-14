@@ -1,12 +1,8 @@
 <?php
 
-namespace App\DataLoad\Presentation\Controller;
+namespace App\Api\Api\Presentation\Controller;
 
 use App\DataLoad\Application\UseCase\Download\Command as DownloadCommand;
-use App\DataLoad\Application\UseCase\FindFile\Query as FindFileQuery;
-use App\DataLoad\Application\UseCase\FindFile\Response as FindFileResponse;
-use App\DataLoad\Application\UseCase\ParseTag\Command;
-use App\DataLoad\Application\UseCase\SplitFile\Command as SplitFileCommand;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
 use App\Shared\Infrastructure\Bus\Query\QueryBus;
 use Doctrine\DBAL\Connection;
@@ -48,9 +44,9 @@ final class MainController extends AbstractController
      */
     public function index(Connection $connection): Response // \App\DataLoad\Application\UseCase\ParseTag\Handler $handler
     {
-        $command = new DownloadCommand('20220104');
-
-        $this->commandBus->dispatch($command);
+//        $command = new DownloadCommand('20220104');
+//
+//        $this->commandBus->dispatch($command);
 
 //        $query = new FindFileQuery('addr_obj');
 //        /** @var FindFileResponse $response */

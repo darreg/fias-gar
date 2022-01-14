@@ -5,3 +5,7 @@ services:
 
     App\Api\:
         resource: '../../src/Api/*'
+
+    App\Api\Api\Presentation\Controller\:
+        resource: '../../src/Api/Api/Presentation/Controller'
+        tags: ['controller.service_arguments']
