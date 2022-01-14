@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Application\UseCase\Import;
+namespace App\DataLoad\Application\UseCase\ImportXmlFiles;
 
-use App\DataLoad\Application\UseCase\FindFile\Query as FindFileQuery;
-use App\DataLoad\Application\UseCase\FindFile\Response as FindFileResponse;
-use App\DataLoad\Application\UseCase\SplitFile\Command as SplitFileCommand;
+use App\DataLoad\Application\UseCase\FindXmlFile\Query as FindFileQuery;
+use App\DataLoad\Application\UseCase\FindXmlFile\Response as FindFileResponse;
+use App\DataLoad\Application\UseCase\SplitXmlFile\Command as SplitFileCommand;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use App\Shared\Domain\Bus\Query\QueryBusInterface;

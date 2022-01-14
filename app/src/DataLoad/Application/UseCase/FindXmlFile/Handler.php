@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Application\UseCase\FindFile;
+namespace App\DataLoad\Application\UseCase\FindXmlFile;
 
 use App\DataLoad\Domain\XmlFile\Service\XmlFileFinderInterface;
 use App\Shared\Domain\Bus\Query\QueryHandlerInterface;

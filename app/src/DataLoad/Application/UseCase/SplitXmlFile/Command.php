@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Application\UseCase\SplitFile;
+namespace App\DataLoad\Application\UseCase\SplitXmlFile;
 
 use App\Shared\Domain\Bus\Command\CommandInterface;
 

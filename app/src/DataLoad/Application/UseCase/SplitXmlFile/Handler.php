@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Application\UseCase\SplitFile;
+namespace App\DataLoad\Application\UseCase\SplitXmlFile;
 
 use App\DataLoad\Application\UseCase\ParseTag\Command as ParseCommand;
 use App\DataLoad\Domain\Tag\Service\TagGeneratorInterface;

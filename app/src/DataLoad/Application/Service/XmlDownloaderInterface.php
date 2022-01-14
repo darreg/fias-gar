@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\Service;
 
-interface DownloaderInterface
+interface XmlDownloaderInterface
 {
     public const TYPE_FULL = 'full';
     public const TYPE_DELTA = 'delta';
 
     /**
-     * @param DownloaderInterface::TYPE_* $type
+     * @param XmlDownloaderInterface::TYPE_* $type
      */
     public function download(string $type, string $versionId): void;
 
