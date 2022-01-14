@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Application\UseCase\Import;
+namespace App\DataLoad\Application\UseCase\ImportXmlFiles;
 
 use App\Shared\Domain\Bus\Command\CommandInterface;
 

@@ -2,7 +2,7 @@
 
 namespace App\Api\Api\Presentation\Controller;
 
-use App\DataLoad\Application\UseCase\Download\Command as DownloadCommand;
+use App\DataLoad\Application\UseCase\DownloadXmlFiles\Command as DownloadCommand;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
 use App\Shared\Infrastructure\Bus\Query\QueryBus;
 use Doctrine\DBAL\Connection;

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Application\UseCase\Download;
+namespace App\DataLoad\Application\UseCase\DownloadXmlFiles;
 
-use App\DataLoad\Application\Service\DownloaderInterface;
+use App\DataLoad\Application\Service\XmlDownloaderInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 
 class Handler implements CommandHandlerInterface
 {
-    private DownloaderInterface $downloader;
+    private XmlDownloaderInterface $downloader;
 
-    public function __construct(DownloaderInterface $downloader)
+    public function __construct(XmlDownloaderInterface $downloader)
     {
         $this->downloader = $downloader;
     }

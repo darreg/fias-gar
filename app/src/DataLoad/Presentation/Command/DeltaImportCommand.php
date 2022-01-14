@@ -2,9 +2,9 @@
 
 namespace App\DataLoad\Presentation\Command;
 
-use App\DataLoad\Application\Service\DownloaderInterface;
-use App\DataLoad\Application\UseCase\Download\Command as DownloadCommand;
-use App\DataLoad\Application\UseCase\Import\Command as ImportCommand;
+use App\DataLoad\Application\Service\XmlDownloaderInterface;
+use App\DataLoad\Application\UseCase\DownloadXmlFiles\Command as DownloadCommand;
+use App\DataLoad\Application\UseCase\ImportXmlFiles\Command as ImportCommand;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -56,7 +56,7 @@ final class DeltaImportCommand extends Command
 
         try {
             $output->writeln('Скачиваем zip-файл');
-            $this->commandBus->dispatch(new DownloadCommand($version, DownloaderInterface::TYPE_DELTA));
+            $this->commandBus->dispatch(new DownloadCommand($version, XmlDownloaderInterface::TYPE_DELTA));
 
             $output->writeln('Заполняем очередь импорта xml-файлов');
             /** @psalm-suppress MixedArgumentTypeCoercion */
