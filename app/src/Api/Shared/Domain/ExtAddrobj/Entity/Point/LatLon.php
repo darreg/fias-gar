@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Shared\Domain\Entity\ExtAddrobj\Point;
+namespace App\Api\Shared\Domain\ExtAddrobj\Entity\Point;
 
 use App\Shared\Domain\ValueObject\LatLonValueObject;
 use Doctrine\ORM\Mapping as ORM;

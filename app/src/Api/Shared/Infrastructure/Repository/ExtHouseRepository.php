@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Api\Shared\Infrastructure\Repository;
 
-use App\Api\Shared\Domain\Entity\ExtHouse\ExtHouse;
-use App\Api\Shared\Domain\Entity\ExtHouse\ExtHouseRepositoryInterface;
+use App\Api\Shared\Domain\ExtHouse\Entity\ExtHouse;
+use App\Api\Shared\Domain\ExtHouse\Repository\ExtHouseRepositoryInterface;
 use App\Shared\Domain\Exception\EntityNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use DomainException;
 
 final class ExtHouseRepository implements ExtHouseRepositoryInterface
 {

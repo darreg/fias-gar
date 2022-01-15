@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Shared\Domain\Entity\ExtHouse;
+namespace App\Api\Shared\Domain\ExtAddrobj\Entity;
 
 use App\Shared\Domain\ValueObject\LatLonValueObject;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +10,7 @@ use Webmozart\Assert\Assert;
 
 /**
  * @ORM\Embeddable
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 final class LatLon extends LatLonValueObject
 {
@@ -28,12 +29,12 @@ final class LatLon extends LatLonValueObject
     /**
      * @ORM\Column(type="smallint", nullable=true, options={"comment"="Код точности координат"})
      */
-    private ?int $precision;
+    protected ?int $precision;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    private ?int $zoom;
+    protected ?int $zoom;
 
     public function __construct(float $latitude, float $longitude, ?int $precision = null, ?int $zoom = null)
     {

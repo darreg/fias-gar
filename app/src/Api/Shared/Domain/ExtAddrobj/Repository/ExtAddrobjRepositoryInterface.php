@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Shared\Domain\Entity\ExtAddrobj;
+namespace App\Api\Shared\Domain\ExtAddrobj\Repository;
 
+use App\Api\Shared\Domain\ExtAddrobj\Entity\ExtAddrobj;
 use App\Shared\Domain\Exception\EntityNotFoundException;
 
 interface ExtAddrobjRepositoryInterface

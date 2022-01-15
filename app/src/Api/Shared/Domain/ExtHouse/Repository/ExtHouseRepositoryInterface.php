@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Shared\Domain\Entity\ExtHouse;
+namespace App\Api\Shared\Domain\ExtHouse\Repository;
 
+use App\Api\Shared\Domain\ExtHouse\Entity\ExtHouse;
 use App\Shared\Domain\Exception\EntityNotFoundException;
 
 interface ExtHouseRepositoryInterface
