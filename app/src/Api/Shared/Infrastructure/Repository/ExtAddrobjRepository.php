@@ -6,6 +6,7 @@ namespace App\Api\Shared\Infrastructure\Repository;
 
 use App\Api\Shared\Domain\Entity\ExtAddrobj\ExtAddrobj;
 use App\Api\Shared\Domain\Entity\ExtAddrobj\ExtAddrobjRepositoryInterface;
+use App\Shared\Domain\Exception\EntityNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use DomainException;
@@ -15,19 +16,22 @@ final class ExtAddrobjRepository implements ExtAddrobjRepositoryInterface
     private EntityManagerInterface $em;
     private EntityRepository $repo;
 
-    public function __construct(EntityManagerInterface $em, EntityRepository $repo)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->repo = $repo;
+        $this->repo = $em->getRepository(ExtAddrobj::class);
     }
 
-    public function get(int $objectid): ExtAddrobj
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function findOrFail(int $objectid): ExtAddrobj
     {
         /** @var ExtAddrobj|null $extAddrobj */
         $extAddrobj = $this->repo->find($objectid);
 
         if ($extAddrobj === null) {
-            throw new DomainException('ExtAddrobj is not found.');
+            throw new EntityNotFoundException('ExtAddrobj is not found.');
         }
 
         return $extAddrobj;

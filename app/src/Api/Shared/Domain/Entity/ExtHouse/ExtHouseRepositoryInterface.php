@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace App\Api\Shared\Domain\Entity\ExtHouse;
 
+use App\Shared\Domain\Exception\EntityNotFoundException;
+
 interface ExtHouseRepositoryInterface
 {
-    public function get(int $objectid): ExtHouse;
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function findOrFail(int $objectid): ExtHouse;
 
     public function add(ExtHouse $extHouse): void;
 
