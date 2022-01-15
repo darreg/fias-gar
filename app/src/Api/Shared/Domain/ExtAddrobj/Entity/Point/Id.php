@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Shared\Domain\Entity\ExtAddrobj\Synonym;
+namespace App\Api\Shared\Domain\ExtAddrobj\Entity\Point;
 
 use App\Shared\Domain\ValueObject\UuidValueObject;
 

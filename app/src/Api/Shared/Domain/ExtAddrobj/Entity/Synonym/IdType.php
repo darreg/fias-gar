@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Shared\Domain\Entity\ExtAddrobj\Point;
+namespace App\Api\Shared\Domain\ExtAddrobj\Entity\Synonym;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\GuidType;
 
 final class IdType extends GuidType
 {
-    public const NAME = 'ext_addrobj_point_id';
+    public const NAME = 'ext_addrobj_synonym_id';
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {

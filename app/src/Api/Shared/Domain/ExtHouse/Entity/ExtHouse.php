@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Shared\Domain\Entity\ExtHouse;
+namespace App\Api\Shared\Domain\ExtHouse\Entity;
 
 use App\Shared\Infrastructure\Doctrine\FieldTrait\CreatedAtTrait;
 use App\Shared\Infrastructure\Doctrine\FieldTrait\UpdatedAtTrait;

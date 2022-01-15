@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Api\Shared\Domain\Entity\ExtAddrobj\Synonym;
+namespace App\Api\Shared\Domain\ExtAddrobj\Entity\Synonym;
 
-use App\Api\Shared\Domain\Entity\ExtAddrobj\ExtAddrobj;
+use App\Api\Shared\Domain\ExtAddrobj\Entity\ExtAddrobj;
 use App\Shared\Infrastructure\Doctrine\FieldTrait\CreatedAtTrait;
 use App\Shared\Infrastructure\Doctrine\FieldTrait\UpdatedAtTrait;
 use Doctrine\ORM\Mapping as ORM;
