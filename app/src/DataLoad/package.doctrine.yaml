@@ -4,6 +4,5 @@ doctrine:
            App\DataLoad\Domain\Version\Entity:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/DataLoad/Version/Domain/Entity'
+                dir: '%kernel.project_dir%/src/DataLoad/Domain/Version/Entity'
                 prefix: 'App\DataLoad\Domain\Version\Entity'
-                alias: App

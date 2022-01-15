@@ -1,14 +1,18 @@
 doctrine:
     dbal:
         types:
-            ext_addrobj_point_id: 'App\Api\Shared\Domain\Entity\ExtAddrobj\Point\IdType'
-            ext_addrobj_synonym_id: 'App\Api\Shared\Domain\Entity\ExtAddrobj\Synonym\IdType'
+            ext_addrobj_point_id: 'App\Api\Shared\Domain\ExtAddrobj\Entity\Point\IdType'
+            ext_addrobj_synonym_id: 'App\Api\Shared\Domain\ExtAddrobj\Entity\Synonym\IdType'
 
     orm:
         mappings:
-            App\Api\Shared\Domain\Entity:
+            App\Api\Shared\Domain\ExtAddrobj\Entity:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Api/Shared/Domain/Entity'
-                prefix: 'App\Api\Shared\Domain\Entity'
-                alias: ApiShared
+                dir: '%kernel.project_dir%/src/Api/Shared/Domain/ExtAddrobj/Entity'
+                prefix: 'App\Api\Shared\Domain\ExtAddrobj\Entity'
+            App\Api\Shared\Domain\ExtHouse\Entity:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Api/Shared/Domain/ExtHouse/Entity'
+                prefix: 'App\Api\Shared\Domain\ExtHouse\Entity'
