@@ -6,6 +6,7 @@ namespace App\Api\Shared\Infrastructure\Repository;
 
 use App\Api\Shared\Domain\Entity\ExtHouse\ExtHouse;
 use App\Api\Shared\Domain\Entity\ExtHouse\ExtHouseRepositoryInterface;
+use App\Shared\Domain\Exception\EntityNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use DomainException;
@@ -15,19 +16,22 @@ final class ExtHouseRepository implements ExtHouseRepositoryInterface
     private EntityManagerInterface $em;
     private EntityRepository $repo;
 
-    public function __construct(EntityManagerInterface $em, EntityRepository $repo)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->repo = $repo;
+        $this->repo = $em->getRepository(ExtHouse::class);
     }
 
-    public function get(int $objectid): ExtHouse
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function findOrFail(int $objectid): ExtHouse
     {
         /** @var ExtHouse|null $extHouse */
         $extHouse = $this->repo->find($objectid);
 
         if ($extHouse === null) {
-            throw new DomainException('ExtHouse is not found.');
+            throw new EntityNotFoundException('ExtHouse is not found.');
         }
 
         return $extHouse;
