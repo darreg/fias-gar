@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Infrastructure\Service;
+namespace App\DataLoad\Infrastructure\Repository;
 
 use App\DataLoad\Domain\Version\Entity\Version;
-use App\DataLoad\Domain\Version\Entity\VersionRepositoryInterface;
+use App\DataLoad\Domain\Version\Repository\VersionRepositoryInterface;
+use App\Shared\Domain\Exception\EntityNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use DomainException;
 
 final class VersionRepository implements VersionRepositoryInterface
 {
     private EntityManagerInterface $em;
     private EntityRepository $repo;
 
-    public function __construct(EntityManagerInterface $em, EntityRepository $repo)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->repo = $repo;
+        $this->repo = $em->getRepository(Version::class);
     }
 
     /**
@@ -31,18 +31,25 @@ final class VersionRepository implements VersionRepositoryInterface
     }
 
     /**
-     * @throws DomainException
+     * @throws EntityNotFoundException
      */
-    public function get(string $id): Version
+    public function findOrFail(string $id): Version
     {
-        /** @var Version|null $version */
-        $version = $this->repo->find($id);
-
+        $version = $this->find($id);
         if ($version === null) {
-            throw new DomainException('Version is not found.');
+            throw new EntityNotFoundException('Version is not found.');
         }
 
         return $version;
+    }
+
+    /**
+     * @return array<int, Version>
+     * @psalm-suppress MixedReturnTypeCoercion
+     */
+    public function findAll(): array
+    {
+        return $this->repo->findAll();
     }
 
     public function add(Version $version): void

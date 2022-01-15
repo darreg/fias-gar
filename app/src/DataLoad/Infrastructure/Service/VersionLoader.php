@@ -9,11 +9,11 @@ use RuntimeException;
 
 class VersionLoader implements VersionLoaderInterface
 {
-    private string $allVersionUrl;
+    private string $versionListUrl;
 
-    public function __construct(string $allVersionUrl)
+    public function __construct(string $versionListUrl)
     {
-        $this->allVersionUrl = $allVersionUrl;
+        $this->versionListUrl = $versionListUrl;
     }
 
     /**
@@ -21,7 +21,7 @@ class VersionLoader implements VersionLoaderInterface
      */
     public function load(): string
     {
-        $result = file_get_contents($this->allVersionUrl);
+        $result = file_get_contents($this->versionListUrl);
         if (!$result) {
             throw new RuntimeException('Versions data download error');
         }

@@ -1,5 +1,5 @@
 parameters:
-    fias_all_version_url: 'https://fias.nalog.ru/WebServices/Public/GetAllDownloadFileInfo'
+    fias_version_list_url: 'https://fias.nalog.ru/WebServices/Public/GetAllDownloadFileInfo'
 
     fias_url_version_format: 'Y.m.d'
     fias_url_xml: 'https://fias.nalog.ru/downloads/#version#'
@@ -145,14 +145,14 @@ services:
 
     App\DataLoad\Infrastructure\Service\VersionLoader:
         arguments:
-            $allVersionUrl: '%fias_all_version_url%'
+            $versionListUrl: '%fias_version_list_url%'
     App\DataLoad\Domain\Version\Service\VersionLoaderInterface: '@App\DataLoad\Infrastructure\Service\VersionLoader'
 
     App\DataLoad\Infrastructure\Service\VersionDecoder: ~
     App\DataLoad\Domain\Version\Service\VersionDecoderInterface: '@App\DataLoad\Infrastructure\Service\VersionDecoder'
 
-    App\DataLoad\Infrastructure\Service\VersionRepository: ~
-    App\DataLoad\Domain\Version\Entity\VersionRepositoryInterface: '@App\DataLoad\Infrastructure\Service\VersionRepository'
+    App\DataLoad\Infrastructure\Repository\VersionRepository: ~
+    App\DataLoad\Domain\Version\Entity\VersionRepositoryInterface: '@App\DataLoad\Infrastructure\Repository\VersionRepository'
 
     App\DataLoad\Infrastructure\Service\VersionDownloader: ~
     App\DataLoad\Application\Service\VersionDownloaderInterface: '@App\DataLoad\Infrastructure\Service\VersionDownloader'
