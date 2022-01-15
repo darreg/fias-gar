@@ -9,6 +9,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\DataLoad\Application\UseCase\DownloadVersions\Command as DownloadVersionsCommand;
 
 final class MainController extends AbstractController
 {
@@ -44,6 +45,9 @@ final class MainController extends AbstractController
      */
     public function index(Connection $connection): Response // \App\DataLoad\Application\UseCase\ParseTag\Handler $handler
     {
+        $this->commandBus->dispatch(new DownloadVersionsCommand());
+        
+        
 //        $command = new DownloadCommand('20220104');
 //
 //        $this->commandBus->dispatch($command);

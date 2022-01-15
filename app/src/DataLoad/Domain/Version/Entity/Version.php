@@ -24,7 +24,7 @@ class Version
     private string $title;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime_immutable")
      */
     private DateTimeImmutable $date;
 
@@ -39,12 +39,12 @@ class Version
     private bool $hasDeltaXml;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private ?DateTimeImmutable $fullLoadedAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private ?DateTimeImmutable $deltaLoadedAt;
 
