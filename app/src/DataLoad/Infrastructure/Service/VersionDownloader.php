@@ -6,7 +6,8 @@ namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Application\Exception\DownloadException;
 use App\DataLoad\Application\Service\VersionDownloaderInterface;
-use App\DataLoad\Domain\Version\Entity\VersionRepositoryInterface;
+use App\DataLoad\Domain\Version\Entity\Version;
+use App\DataLoad\Domain\Version\Repository\VersionRepositoryInterface;
 use App\DataLoad\Domain\Version\Service\VersionDecoderInterface;
 use App\DataLoad\Domain\Version\Service\VersionLoaderInterface;
 use App\Shared\Infrastructure\Persistence\DoctrineFlusher;
@@ -34,10 +35,11 @@ class VersionDownloader implements VersionDownloaderInterface
     public function download(): void
     {
         try {
+            $existsVersions = $this->getExistsVersions();
             $versionsString = $this->versionLoader->load();
             $versions = $this->versionDecoder->decode($versionsString);
             foreach ($versions as $version) {
-                if ($this->versionRepository->find($version->getId()) === null) {
+                if (!\array_key_exists($version->getId(), $existsVersions)) {
                     $this->versionRepository->add($version);
                 }
             }
@@ -45,5 +47,19 @@ class VersionDownloader implements VersionDownloaderInterface
         } catch (LogicException $e) {
             throw new DownloadException('Error downloading versions', 0, $e);
         }
+    }
+
+    /**
+     * @return array<string, Version>
+     */
+    private function getExistsVersions(): array
+    {
+         $versions = $this->versionRepository->findAll();
+         $result = [];
+         foreach ($versions as $version) {
+             $result[$version->getId()] = $version;
+         }
+         
+         return $result;
     }
 }
