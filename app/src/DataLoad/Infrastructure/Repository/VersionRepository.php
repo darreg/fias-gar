@@ -52,7 +52,7 @@ final class VersionRepository implements VersionRepositoryInterface
         return $this->repo->findAll();
     }
 
-    public function add(Version $version): void
+    public function persist(Version $version): void
     {
         $this->em->persist($version);
     }

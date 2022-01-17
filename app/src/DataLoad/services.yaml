@@ -79,14 +79,14 @@ parameters:
 
     fias_import_tokens:
         - 'object_levels'
-        - 'operation_types'
-        - 'addr_obj'
-        - 'adm_hierarchy'
-        - 'mun_hierarchy'
-        - 'addr_obj_types'
-        - 'houses'
-        - 'addhouse_types'
-        - 'house_types'
+#        - 'operation_types'
+#        - 'addr_obj'
+#        - 'adm_hierarchy'
+#        - 'mun_hierarchy'
+#        - 'addr_obj_types'
+#        - 'houses'
+#        - 'addhouse_types'
+#        - 'house_types'
 
 services:
     _defaults:
@@ -152,7 +152,17 @@ services:
     App\DataLoad\Domain\Version\Service\VersionDecoderInterface: '@App\DataLoad\Infrastructure\Service\VersionDecoder'
 
     App\DataLoad\Infrastructure\Repository\VersionRepository: ~
-    App\DataLoad\Domain\Version\Entity\VersionRepositoryInterface: '@App\DataLoad\Infrastructure\Repository\VersionRepository'
+    App\DataLoad\Domain\Version\Repository\VersionRepositoryInterface: '@App\DataLoad\Infrastructure\Repository\VersionRepository'
 
-    App\DataLoad\Infrastructure\Service\VersionDownloader: ~
-    App\DataLoad\Application\Service\VersionDownloaderInterface: '@App\DataLoad\Infrastructure\Service\VersionDownloader'
+    App\DataLoad\Infrastructure\Service\VersionListRefresher: ~
+    App\DataLoad\Application\Service\VersionListRefresherInterface: '@App\DataLoad\Infrastructure\Service\VersionListRefresher'
+
+    App\DataLoad\Infrastructure\Service\CounterIncrementor:
+        arguments:
+            $redis: '@Redis'
+    App\DataLoad\Domain\Counter\Service\CounterIncrementorInterface: '@App\DataLoad\Infrastructure\Service\CounterIncrementor'
+
+    App\DataLoad\Infrastructure\Repository\CounterRedisRepository:
+        arguments:
+            $redis: '@Redis'
+    App\DataLoad\Domain\Counter\Repository\CounterRepositoryInterface: '@App\DataLoad\Infrastructure\Repository\CounterRedisRepository'

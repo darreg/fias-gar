@@ -8,6 +8,13 @@ services:
 
     App\Shared\Infrastructure\Symfony\FixDefaultSchemaSubscriber:
         tags: [{ name: doctrine.event_subscriber, connection: default }]
+
+    Redis:
+        class: Redis
+        calls:
+            - connect:
+                  - '%env(REDIS_HOST)%'
+                  - '%env(int:REDIS_PORT)%'
     
     App\Shared\Infrastructure\Bus\Command\CommandBus: ~
     App\Shared\Domain\Bus\Command\CommandBusInterface: '@App\Shared\Infrastructure\Bus\Command\CommandBus'

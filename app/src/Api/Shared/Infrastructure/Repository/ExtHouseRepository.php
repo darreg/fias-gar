@@ -36,7 +36,7 @@ final class ExtHouseRepository implements ExtHouseRepositoryInterface
         return $extHouse;
     }
 
-    public function add(ExtHouse $extHouse): void
+    public function persist(ExtHouse $extHouse): void
     {
         $this->em->persist($extHouse);
     }

@@ -36,7 +36,7 @@ final class ExtAddrobjRepository implements ExtAddrobjRepositoryInterface
         return $extAddrobj;
     }
 
-    public function add(ExtAddrobj $extAddrobj): void
+    public function persist(ExtAddrobj $extAddrobj): void
     {
         $this->em->persist($extAddrobj);
     }

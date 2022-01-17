@@ -60,7 +60,7 @@ final class FullImportCommand extends Command
 
             $output->writeln('Заполняем очередь импорта xml-файлов');
             /** @psalm-suppress MixedArgumentTypeCoercion */
-            $this->commandBus->dispatch(new ImportCommand($versionId, $this->importTokens));
+            $this->commandBus->dispatch(new ImportCommand(XmlDownloaderInterface::TYPE_FULL, $versionId, $this->importTokens));
         } catch (Exception $e) {
             $this->logger->error($versionId . ' ; ' . $e->getMessage() . ' ; ' . $e->getFile() . ' ; ' . $e->getLine(), [$e->getPrevious()]);
             return Command::FAILURE;

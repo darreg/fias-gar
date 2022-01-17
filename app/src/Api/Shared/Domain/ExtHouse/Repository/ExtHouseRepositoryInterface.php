@@ -14,7 +14,7 @@ interface ExtHouseRepositoryInterface
      */
     public function findOrFail(int $objectid): ExtHouse;
 
-    public function add(ExtHouse $extHouse): void;
+    public function persist(ExtHouse $extHouse): void;
 
     public function remove(ExtHouse $extHouse): void;
 }

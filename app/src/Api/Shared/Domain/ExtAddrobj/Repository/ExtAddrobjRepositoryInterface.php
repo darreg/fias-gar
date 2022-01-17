@@ -14,7 +14,7 @@ interface ExtAddrobjRepositoryInterface
      */
     public function findOrFail(int $objectid): ExtAddrobj;
 
-    public function add(ExtAddrobj $extAddrobj): void;
+    public function persist(ExtAddrobj $extAddrobj): void;
 
     public function remove(ExtAddrobj $extAddrobj): void;
 }

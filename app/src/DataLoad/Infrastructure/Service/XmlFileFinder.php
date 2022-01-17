@@ -58,7 +58,7 @@ class XmlFileFinder implements XmlFileFinderInterface
 
         return $files;
     }
-    
+
     public function versionDirectoryExists(string $versionId): bool
     {
         return is_dir($this->xmlDirectory . '/' . $versionId);
