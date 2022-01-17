@@ -21,7 +21,7 @@ interface VersionRepositoryInterface
      */
     public function findAll(): array;
 
-    public function add(Version $version): void;
+    public function persist(Version $version): void;
 
     public function remove(Version $version): void;
 }

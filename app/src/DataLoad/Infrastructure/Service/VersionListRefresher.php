@@ -40,7 +40,7 @@ class VersionListRefresher implements VersionListRefresherInterface
             $versions = $this->versionDecoder->decode($versionsString);
             foreach ($versions as $version) {
                 if (!\array_key_exists($version->getId(), $existsVersions)) {
-                    $this->versionRepository->add($version);
+                    $this->versionRepository->persist($version);
                 }
             }
             $this->flusher->flush();

@@ -7,7 +7,6 @@ namespace App\DataLoad\Infrastructure\Service;
 use App\DataLoad\Domain\Table\Entity\Table;
 use App\DataLoad\Domain\Table\Exception\TableColumnNotFoundException;
 use App\DataLoad\Domain\Table\Exception\TableNameNotFoundException;
-use App\DataLoad\Domain\Tag\Exception\RowsNotUpsertedException;
 use App\DataLoad\Domain\Tag\Service\TagSaverInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -33,7 +32,6 @@ final class TagSaver implements TagSaverInterface
      * @param array<string, string> $values
      * @throws TableNameNotFoundException
      * @throws TableColumnNotFoundException
-     * @throws RowsNotUpsertedException
      * @throws RuntimeException
      */
     public function upsert(string $token, array $values): void
@@ -44,13 +42,12 @@ final class TagSaver implements TagSaverInterface
 
     /**
      * @param array<string, string> $values
-     * @throws RowsNotUpsertedException
      * @throws RuntimeException
      */
     private function upsertByTable(Table $table, array $values): void
     {
         try {
-            $affectedRows = $this->connection->executeStatement(
+            $this->connection->executeStatement(
                 sprintf(
                     "SELECT upsert('%s', '%s', '{%s}',  VARIADIC ARRAY[%s])",
                     $table->getName(),
@@ -61,10 +58,6 @@ final class TagSaver implements TagSaverInterface
             );
         } catch (Exception $e) {
             throw new RuntimeException('', 0, $e);
-        }
-
-        if ($affectedRows === 0) {
-            throw new RowsNotUpsertedException('Not one row has been affected');
         }
     }
 }
