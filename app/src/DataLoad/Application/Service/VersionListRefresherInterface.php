@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\Service;
 
-interface VersionDownloaderInterface
+interface VersionListRefresherInterface
 {
-    public function download(): void;
+    public function refresh(): void;
 }

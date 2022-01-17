@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\DataLoad\Application\UseCase\DownloadVersions\Command as DownloadVersionsCommand;
+use App\DataLoad\Application\UseCase\RefreshVersionList\Command as DownloadVersionsCommand;
 
 final class MainController extends AbstractController
 {
