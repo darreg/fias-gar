@@ -29,9 +29,9 @@ final class Handler implements CommandHandlerInterface
     {
         try {
             $this->saver->upsert($command->getFileToken(), $command->getValues());
-            $this->saveSuccessLogger->info($command->getFileToken() . ' ; ' . serialize($command->getValues()));
+            $this->saveSuccessLogger->info($command->getVersionId() . ';' . $command->getFileToken() . ' ; ' . serialize($command->getValues()));
         } catch (Exception $e) {
-            $this->saveErrorsLogger->info($command->getFileToken() . ' ; ' . serialize($command->getValues()) . ' ; ' . $e->getMessage());
+            $this->saveErrorsLogger->info($command->getVersionId() . ';' . $command->getFileToken() . ' ; ' . serialize($command->getValues()) . ' ; ' . $e->getMessage());
         }
     }
 }

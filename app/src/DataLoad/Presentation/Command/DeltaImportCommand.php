@@ -47,22 +47,22 @@ final class DeltaImportCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $version = $input->getArgument('version');
+        $versionId = $input->getArgument('version');
 
         $startTime = time();
         $output->writeln('=====');
-        $output->writeln("Скачивание и импорт изменений версии '{$version}'");
+        $output->writeln("Скачивание и импорт изменений версии '{$versionId}'");
         $output->writeln('Начало работы : ' . date('d.m.Y H:i:s', $startTime));
 
         try {
             $output->writeln('Скачиваем zip-файл');
-            $this->commandBus->dispatch(new DownloadCommand($version, XmlDownloaderInterface::TYPE_DELTA));
+            $this->commandBus->dispatch(new DownloadCommand($versionId, XmlDownloaderInterface::TYPE_DELTA));
 
             $output->writeln('Заполняем очередь импорта xml-файлов');
             /** @psalm-suppress MixedArgumentTypeCoercion */
-            $this->commandBus->dispatch(new ImportCommand($this->importTokens));
+            $this->commandBus->dispatch(new ImportCommand($versionId, $this->importTokens));
         } catch (Exception $e) {
-            $this->logger->error($e->getMessage() . ' ; ' . $e->getFile() . ' ; ' . $e->getLine(), [$e->getPrevious()]);
+            $this->logger->error($versionId . ' ; ' . $e->getMessage() . ' ; ' . $e->getFile() . ' ; ' . $e->getLine(), [$e->getPrevious()]);
             return Command::FAILURE;
         }
 

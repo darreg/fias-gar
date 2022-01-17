@@ -27,12 +27,13 @@ class Handler implements CommandHandlerInterface
     public function __invoke(Command $command)
     {
         $tokens = $command->getTokens();
+        $versionId = $command->getVersionId();
         foreach ($tokens as $token) {
             /** @var FindFileResponse $response */
-            $response = $this->queryBus->ask(new FindFileQuery($token));
+            $response = $this->queryBus->ask(new FindFileQuery($versionId, $token));
             foreach ($response->getAll() as $file) {
                 $this->commandBus->dispatch(
-                    new SplitFileCommand($file->getPath(), $file->getToken(), $file->getTagName())
+                    new SplitFileCommand($versionId, $file->getPath(), $file->getToken(), $file->getTagName())
                 );
             }
         }

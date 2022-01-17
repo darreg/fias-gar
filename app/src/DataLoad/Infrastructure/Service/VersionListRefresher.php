@@ -54,12 +54,12 @@ class VersionListRefresher implements VersionListRefresherInterface
      */
     private function getExistsVersions(): array
     {
-         $versions = $this->versionRepository->findAll();
-         $result = [];
-         foreach ($versions as $version) {
-             $result[$version->getId()] = $version;
-         }
+        $versions = $this->versionRepository->findAll();
+        $result = [];
+        foreach ($versions as $version) {
+            $result[$version->getId()] = $version;
+        }
 
-         return $result;
+        return $result;
     }
 }

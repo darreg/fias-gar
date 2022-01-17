@@ -8,6 +8,7 @@ use App\Shared\Domain\Bus\Command\CommandInterface;
 
 class Command implements CommandInterface
 {
+    private string $versionId;
     /**
      * @var list<string>
      */
@@ -16,9 +17,15 @@ class Command implements CommandInterface
     /**
      * @param list<string> $tokens
      */
-    public function __construct(array $tokens)
+    public function __construct(string $versionId, array $tokens)
     {
+        $this->versionId = $versionId;
         $this->tokens = $tokens;
+    }
+
+    public function getVersionId(): string
+    {
+        return $this->versionId;
     }
 
     /**

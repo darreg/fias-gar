@@ -19,5 +19,5 @@ interface ZipFileExtractorInterface
      * @throws NoFilesAfterUnpackingException
      * @throws RuntimeException
      */
-    public function extract(string $fileName): void;
+    public function extract(string $versionId, string $fileName): void;
 }

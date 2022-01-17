@@ -16,7 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 final class XmlFileFinderTest extends KernelTestCase
 {
-    private const TEST_DIR = '/tmp/test-xml';
+    private const VERSION_ID = '20020202';
+    private const TEST_DIR = '/tmp/test-xml/';
 
     private const XML_FILE_1 = 'AS_ADDHOUSE_TYPES_20220106_2959f2f1-9f14-4325-a16a-3a25e69c4461.XML';
     private const XML_FILE_2 = 'AS_ADDR_OBJ_TYPES_20220106_94fb1ccd-bd8c-4958-b07a-fde6e9e5b05e.XML';
@@ -39,9 +40,13 @@ final class XmlFileFinderTest extends KernelTestCase
             mkdir(self::TEST_DIR);
         }
 
-        touch(self::TEST_DIR . '/' . self::XML_FILE_1);
-        touch(self::TEST_DIR . '/' . self::XML_FILE_2);
-        touch(self::TEST_DIR . '/' . self::XML_FILE_3);
+        if (!is_dir(self::TEST_DIR . '/' . self::VERSION_ID)) {
+            mkdir(self::TEST_DIR . '/' . self::VERSION_ID);
+        }
+
+        touch(self::TEST_DIR . '/' . self::VERSION_ID . '/' . self::XML_FILE_1);
+        touch(self::TEST_DIR . '/' . self::VERSION_ID . '/' . self::XML_FILE_2);
+        touch(self::TEST_DIR . '/' . self::VERSION_ID . '/' . self::XML_FILE_3);
     }
 
     /**
@@ -51,7 +56,7 @@ final class XmlFileFinderTest extends KernelTestCase
     {
         $this->expectException(DirectoryIsNotReadableException::class);
         $xmlFileFinder = new XmlFileFinder('no-dir', $this->parameterStorage);
-        $xmlFiles = $xmlFileFinder->find('addr_obj_types');
+        $xmlFiles = $xmlFileFinder->find(self::VERSION_ID, 'addr_obj_types');
     }
 
     public function testFind(): void
@@ -59,18 +64,18 @@ final class XmlFileFinderTest extends KernelTestCase
         $xmlFileFinder = new XmlFileFinder(self::TEST_DIR, $this->parameterStorage);
 
         $token = 'addr_obj_types';
-        $xmlFiles = $xmlFileFinder->find($token);
+        $xmlFiles = $xmlFileFinder->find(self::VERSION_ID, $token);
         self::assertCount(1, $xmlFiles);
         $xmlFile = $xmlFiles[0];
-        self::assertEquals(self::TEST_DIR . '/' . self::XML_FILE_2, $xmlFile->getPath());
+        self::assertEquals(self::TEST_DIR . '/' . self::VERSION_ID . '/' . self::XML_FILE_2, $xmlFile->getPath());
         self::assertEquals($token, $xmlFile->getToken());
         self::assertEquals('ADDRESSOBJECTTYPE', $xmlFile->getTagName());
 
         $token = 'house_types';
-        $xmlFiles = $xmlFileFinder->find($token);
+        $xmlFiles = $xmlFileFinder->find(self::VERSION_ID, $token);
         self::assertCount(1, $xmlFiles);
         $xmlFile = $xmlFiles[0];
-        self::assertEquals(self::TEST_DIR . '/' . self::XML_FILE_3, $xmlFile->getPath());
+        self::assertEquals(self::TEST_DIR . '/' . self::VERSION_ID . '/' . self::XML_FILE_3, $xmlFile->getPath());
         self::assertEquals($token, $xmlFile->getToken());
         self::assertEquals('HOUSETYPE', $xmlFile->getTagName());
     }
@@ -79,7 +84,7 @@ final class XmlFileFinderTest extends KernelTestCase
     {
         $xmlFileFinder = new XmlFileFinder(self::TEST_DIR, $this->parameterStorage);
 
-        $xmlFiles = $xmlFileFinder->findAll();
+        $xmlFiles = $xmlFileFinder->findAll(self::VERSION_ID);
         self::assertCount(3, $xmlFiles);
         self::assertContainsOnly(XmlFile::class, $xmlFiles);
     }
@@ -88,7 +93,7 @@ final class XmlFileFinderTest extends KernelTestCase
     {
         $xmlFileFinder = new XmlFileFinder(self::TEST_DIR, $this->parameterStorage);
 
-        $xmlFiles = $xmlFileFinder->getAllFindPath();
+        $xmlFiles = $xmlFileFinder->getAllFindPathByVersion(self::VERSION_ID);
         self::assertCount(3, $xmlFiles);
         self::assertContainsOnly('string', $xmlFiles);
     }

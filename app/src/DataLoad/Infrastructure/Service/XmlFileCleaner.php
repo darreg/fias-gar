@@ -32,7 +32,7 @@ class XmlFileCleaner implements XmlFileCleanerInterface
 
         exec('rm -rf ' . $this->xmlDirectory . '/*');
 
-        $paths = $this->xmlFileFinder->getAllFindPath();
+        $paths = $this->xmlFileFinder->getAllFindPath($this->xmlDirectory);
         if (\count($paths) !== 0) {
             throw new CleanUpException('The xml files have not been deleted');
         }

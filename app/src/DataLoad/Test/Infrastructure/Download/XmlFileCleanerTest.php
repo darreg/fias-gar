@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 final class XmlFileCleanerTest extends KernelTestCase
 {
+    private const VERSION_ID = '20020202';
     private const TEST_DIR = '/tmp/test-xml';
 
     protected function setUp(): void

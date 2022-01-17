@@ -10,10 +10,12 @@ use App\Shared\Domain\Exception\EntityNotFoundException;
 interface VersionRepositoryInterface
 {
     public function find(string $id): ?Version;
+
     /**
      * @throws EntityNotFoundException
      */
     public function findOrFail(string $id): Version;
+
     /**
      * @return array<int, Version>
      */

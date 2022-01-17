@@ -31,11 +31,12 @@ final class Handler implements CommandHandlerInterface
     public function __invoke(Command $command): void
     {
         $fileToken = $command->getFileToken();
+        $versionId = $command->getVersionId();
 
         try {
             $tagSources = $this->tagGenerator->generate($command->getFilePath(), $command->getTagName());
             foreach ($tagSources as $tagSource) {
-                $this->commandBus->dispatch(new ParseCommand($fileToken, $tagSource));
+                $this->commandBus->dispatch(new ParseCommand($versionId, $fileToken, $tagSource));
             }
         } catch (Exception $e) {
             $this->splitErrorsLogger->info($command->getFilePath() . ' ; ' . $command->getTagName() . ' ; ' . $e->getMessage());
