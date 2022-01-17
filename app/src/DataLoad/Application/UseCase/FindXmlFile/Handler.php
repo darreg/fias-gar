@@ -19,7 +19,7 @@ class Handler implements QueryHandlerInterface
 
     public function __invoke(Query $query): ?ResponseInterface
     {
-        $files = $this->finder->find($query->getToken());
+        $files = $this->finder->find($query->getVersionId(), $query->getToken());
 
         $response = new Response();
         foreach ($files as $file) {

@@ -11,5 +11,10 @@ interface XmlFileFinderInterface
     /**
      * @return list<XmlFile>
      */
-    public function find(string $token): array;
+    public function find(string $versionId, string $token): array;
+
+    /**
+     * @return list<XmlFile>
+     */
+    public function findAll(string $versionId): array;
 }

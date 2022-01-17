@@ -34,11 +34,10 @@ final class Handler implements CommandHandlerInterface
     {
         try {
             $data = $this->parser->parse($command->getTagSource());
-            $this->parseSuccessLogger->info($command->getFileToken() . ' ; ' . $command->getTagSource());
-
-            $this->commandBus->dispatch(new SaveCommand($command->getFileToken(), $data));
+            $this->parseSuccessLogger->info($command->getVersionId() . ';' . $command->getFileToken() . ' ; ' . $command->getTagSource());
+            $this->commandBus->dispatch(new SaveCommand($command->getVersionId(), $command->getFileToken(), $data));
         } catch (Exception $e) {
-            $this->parseErrorsLogger->info($command->getFileToken() . ' ; ' . $command->getTagSource() . ' ; ' . $e->getMessage());
+            $this->parseErrorsLogger->info($command->getVersionId() . ';' . $command->getFileToken() . ' ; ' . $command->getTagSource() . ' ; ' . $e->getMessage());
         }
     }
 }

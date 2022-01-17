@@ -3,13 +3,13 @@
 namespace App\Api\Api\Presentation\Controller;
 
 use App\DataLoad\Application\UseCase\DownloadXmlFiles\Command as DownloadCommand;
+use App\DataLoad\Application\UseCase\RefreshVersionList\Command as DownloadVersionsCommand;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
 use App\Shared\Infrastructure\Bus\Query\QueryBus;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\DataLoad\Application\UseCase\RefreshVersionList\Command as DownloadVersionsCommand;
 
 final class MainController extends AbstractController
 {
@@ -46,8 +46,7 @@ final class MainController extends AbstractController
     public function index(Connection $connection): Response // \App\DataLoad\Application\UseCase\ParseTag\Handler $handler
     {
         $this->commandBus->dispatch(new DownloadVersionsCommand());
-        
-        
+
 //        $command = new DownloadCommand('20220104');
 //
 //        $this->commandBus->dispatch($command);

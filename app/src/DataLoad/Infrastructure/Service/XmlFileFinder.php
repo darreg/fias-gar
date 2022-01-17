@@ -26,13 +26,13 @@ class XmlFileFinder implements XmlFileFinderInterface
      * @throws DirectoryIsNotReadableException
      * @return list<XmlFile>
      */
-    public function find(string $token): array
+    public function find(string $versionId, string $token): array
     {
         $tagName = $this->parameterStorage->getTagNameByFileToken($token);
         $finder = new SymfonyFinder();
 
         $files = [];
-        foreach ($this->getFilePathsByToken($token, $finder) as $path) {
+        foreach ($this->getFilePathsByToken($versionId, $token, $finder) as $path) {
             $files[] = new XmlFile($path, $tagName, $token);
         }
 
@@ -45,9 +45,9 @@ class XmlFileFinder implements XmlFileFinderInterface
      * @throws RuntimeException
      * @return list<XmlFile>
      */
-    public function findAll(): array
+    public function findAll(string $versionId): array
     {
-        $paths = $this->getAllFindPath();
+        $paths = $this->getAllFindPathByVersion($versionId);
 
         $files = [];
         foreach ($paths as $path) {
@@ -58,19 +58,35 @@ class XmlFileFinder implements XmlFileFinderInterface
 
         return $files;
     }
+    
+    public function versionDirectoryExists(string $versionId): bool
+    {
+        return is_dir($this->xmlDirectory . '/' . $versionId);
+    }
 
     /**
      * @throws DirectoryIsNotReadableException
      * @return list<string>
      */
-    public function getAllFindPath(): array
+    public function getAllFindPathByVersion(string $versionId): array
     {
-        if (!is_readable($this->xmlDirectory)) {
-            throw new DirectoryIsNotReadableException("Invalid directory for xml files - {$this->xmlDirectory}");
+        $xmlDirectory = $this->xmlDirectory . '/' . $versionId;
+
+        return $this->getAllFindPath($xmlDirectory);
+    }
+
+    /**
+     * @throws DirectoryIsNotReadableException
+     * @return list<string>
+     */
+    public function getAllFindPath(string $dir): array
+    {
+        if (!is_readable($dir)) {
+            throw new DirectoryIsNotReadableException("Invalid directory for xml files - {$dir}");
         }
 
         $finder = new SymfonyFinder();
-        $finder->files()->in($this->xmlDirectory)->name('/\.xml$/i');
+        $finder->files()->in($dir)->name('/\.xml$/i');
 
         $paths = [];
         foreach ($finder as $file) {
@@ -84,14 +100,15 @@ class XmlFileFinder implements XmlFileFinderInterface
      * @throws DirectoryIsNotReadableException
      * @return list<string>
      */
-    private function getFilePathsByToken(string $token, SymfonyFinder $finder): array
+    private function getFilePathsByToken(string $versionId, string $token, SymfonyFinder $finder): array
     {
-        if (!is_readable($this->xmlDirectory)) {
-            throw new DirectoryIsNotReadableException("Invalid directory for xml files - {$this->xmlDirectory}");
+        $xmlDirectory = $this->xmlDirectory . '/' . $versionId;
+        if (!is_readable($xmlDirectory)) {
+            throw new DirectoryIsNotReadableException("Invalid directory for xml files - {$xmlDirectory}");
         }
 
         $pattern = '/^AS_' . $token . '_([0-9]{8})_(?:.*)\.xml$/i';
-        $finder->files()->in($this->xmlDirectory)->name($pattern);
+        $finder->files()->in($xmlDirectory)->name($pattern);
 
         $paths = [];
         foreach ($finder as $file) {

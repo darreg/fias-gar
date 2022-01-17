@@ -8,6 +8,7 @@ use App\Shared\Domain\Bus\Command\CommandInterface;
 
 final class Command implements CommandInterface
 {
+    private string $versionId;
     private string $fileToken;
     /**
      * @var array<string, string>
@@ -17,10 +18,19 @@ final class Command implements CommandInterface
     /**
      * @param array<string, string> $values
      */
-    public function __construct(string $fileToken, array $values)
-    {
+    public function __construct(
+        string $versionId,
+        string $fileToken,
+        array $values
+    ) {
+        $this->versionId = $versionId;
         $this->fileToken = $fileToken;
         $this->values = $values;
+    }
+
+    public function getVersionId(): string
+    {
+        return $this->versionId;
     }
 
     public function getFileToken(): string

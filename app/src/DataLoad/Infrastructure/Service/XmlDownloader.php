@@ -84,7 +84,7 @@ class XmlDownloader implements XmlDownloaderInterface
                 $versionId
             );
             $this->xmlFileCleaner->clean();
-            $this->zipFileExtractor->extract($fileName);
+            $this->zipFileExtractor->extract($versionId, $fileName);
         } catch (LogicException $e) {
             throw new DownloadException("Error loading the {$type} database version '{$versionId}'", 0, $e);
         }
