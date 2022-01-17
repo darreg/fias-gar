@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Application\UseCase\DownloadVersions;
+namespace App\DataLoad\Application\UseCase\RefreshVersionList;
 
 use App\Shared\Domain\Bus\Command\CommandInterface;
 

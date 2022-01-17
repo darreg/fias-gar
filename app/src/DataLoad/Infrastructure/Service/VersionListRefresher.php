@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Application\Exception\DownloadException;
-use App\DataLoad\Application\Service\VersionDownloaderInterface;
+use App\DataLoad\Application\Service\VersionListRefresherInterface;
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\DataLoad\Domain\Version\Repository\VersionRepositoryInterface;
 use App\DataLoad\Domain\Version\Service\VersionDecoderInterface;
@@ -13,7 +13,7 @@ use App\DataLoad\Domain\Version\Service\VersionLoaderInterface;
 use App\Shared\Infrastructure\Persistence\DoctrineFlusher;
 use LogicException;
 
-class VersionDownloader implements VersionDownloaderInterface
+class VersionListRefresher implements VersionListRefresherInterface
 {
     private VersionLoaderInterface $versionLoader;
     private VersionDecoderInterface $versionDecoder;
@@ -32,7 +32,7 @@ class VersionDownloader implements VersionDownloaderInterface
         $this->flusher = $flusher;
     }
 
-    public function download(): void
+    public function refresh(): void
     {
         try {
             $existsVersions = $this->getExistsVersions();
@@ -59,7 +59,7 @@ class VersionDownloader implements VersionDownloaderInterface
          foreach ($versions as $version) {
              $result[$version->getId()] = $version;
          }
-         
+
          return $result;
     }
 }
