@@ -2,9 +2,9 @@
 
 namespace App\DataLoad\Presentation\Command;
 
-use App\DataLoad\Application\Service\XmlDownloaderInterface;
 use App\DataLoad\Application\UseCase\DownloadXmlFiles\Command as DownloadCommand;
 use App\DataLoad\Application\UseCase\ImportXmlFiles\Command as ImportCommand;
+use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -56,11 +56,11 @@ final class FullImportCommand extends Command
 
         try {
             $output->writeln('Скачиваем zip-файл');
-            $this->commandBus->dispatch(new DownloadCommand($versionId, XmlDownloaderInterface::TYPE_FULL));
+            $this->commandBus->dispatch(new DownloadCommand($versionId, Version::TYPE_FULL));
 
             $output->writeln('Заполняем очередь импорта xml-файлов');
             /** @psalm-suppress MixedArgumentTypeCoercion */
-            $this->commandBus->dispatch(new ImportCommand(XmlDownloaderInterface::TYPE_FULL, $versionId, $this->importTokens));
+            $this->commandBus->dispatch(new ImportCommand(Version::TYPE_FULL, $versionId, $this->importTokens));
         } catch (Exception $e) {
             $this->logger->error($versionId . ' ; ' . $e->getMessage() . ' ; ' . $e->getFile() . ' ; ' . $e->getLine(), [$e->getPrevious()]);
             return Command::FAILURE;

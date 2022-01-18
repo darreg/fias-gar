@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\Service;
 
+use App\DataLoad\Domain\Version\Entity\Version;
+
 interface XmlDownloaderInterface
 {
-    public const TYPE_FULL = 'full';
-    public const TYPE_DELTA = 'delta';
-
     /**
-     * @param XmlDownloaderInterface::TYPE_* $type
+     * @param Version::TYPE_* $type
      */
     public function download(string $type, string $versionId): void;
 

@@ -11,6 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Version
 {
+    public const TYPE_FULL = 'full';
+    public const TYPE_DELTA = 'delta';
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="string")
@@ -46,6 +49,10 @@ class Version
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private ?DateTimeImmutable $deltaLoadedAt;
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isCovered;
 
     public function __construct(
         string $id,
@@ -53,14 +60,16 @@ class Version
         DateTimeImmutable $date,
         bool $hasFullXml,
         bool $hasDeltaXml,
+        bool $isCovered = false,
         ?DateTimeImmutable $fullLoadedAt = null,
-        ?DateTimeImmutable $deltaLoadedAt = null
+        ?DateTimeImmutable $deltaLoadedAt = null,
     ) {
         $this->id = $id;
         $this->title = $title;
         $this->date = $date;
         $this->hasFullXml = $hasFullXml;
         $this->hasDeltaXml = $hasDeltaXml;
+        $this->isCovered = $isCovered;
         $this->fullLoadedAt = $fullLoadedAt;
         $this->deltaLoadedAt = $deltaLoadedAt;
     }
@@ -88,6 +97,11 @@ class Version
     public function hasDeltaXml(): bool
     {
         return $this->hasDeltaXml;
+    }
+
+    public function isCovered(): bool
+    {
+        return $this->isCovered;
     }
 
     public function getFullLoadedAt(): ?DateTimeImmutable

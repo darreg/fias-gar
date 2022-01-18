@@ -3,7 +3,9 @@
 namespace App\Api\Api\Presentation\Controller;
 
 use App\DataLoad\Application\UseCase\DownloadXmlFiles\Command as DownloadCommand;
+use App\DataLoad\Application\UseCase\GetNextVersion\Query as GetNextVersionQuery;
 use App\DataLoad\Application\UseCase\RefreshVersionList\Command as DownloadVersionsCommand;
+use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
 use App\Shared\Infrastructure\Bus\Query\QueryBus;
 use Doctrine\DBAL\Connection;
@@ -45,7 +47,10 @@ final class MainController extends AbstractController
      */
     public function index(Connection $connection): Response // \App\DataLoad\Application\UseCase\ParseTag\Handler $handler
     {
-        $this->commandBus->dispatch(new DownloadVersionsCommand());
+        $query = new GetNextVersionQuery(Version::TYPE_DELTA);
+        dump($this->queryBus->ask($query));
+
+//        $this->commandBus->dispatch(new DownloadVersionsCommand());
 
 //        $command = new DownloadCommand('20220104');
 //
