@@ -166,3 +166,9 @@ services:
         arguments:
             $redis: '@Redis'
     App\DataLoad\Domain\Counter\Repository\CounterRepositoryInterface: '@App\DataLoad\Infrastructure\Repository\CounterRedisRepository'
+
+    App\DataLoad\Infrastructure\Repository\VersionFetcher: ~
+    App\DataLoad\Domain\Version\Repository\VersionFetcherInterface: '@App\DataLoad\Infrastructure\Repository\VersionFetcher'
+
+    App\DataLoad\Infrastructure\Service\NextVersionFinder: ~
+    App\DataLoad\Domain\Version\Service\NextVersionFinderInterface: '@App\DataLoad\Infrastructure\Service\NextVersionFinder'

@@ -64,7 +64,7 @@ class CounterRedisRepository implements CounterRepositoryInterface
         $keys = $this->redis->keys(Counter::KEY_PREFIX . ':');
 
         $counters = [];
-        foreach($keys as $key) {
+        foreach ($keys as $key) {
             $counters[] = $this->findOrFail($key);
         }
 

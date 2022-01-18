@@ -141,8 +141,8 @@ class Counter
     }
 
     /**
-     * @return list<string>
      * @throws InvalidCounterKeyException
+     * @return list<string>
      */
     public static function splitKey(string $key): array
     {

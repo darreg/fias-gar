@@ -25,17 +25,17 @@ final class CounterRepository implements CounterRepositoryInterface
      * @psalm-suppress MixedReturnStatement
      * @psalm-suppress MixedInferredReturnType
      */
-    public function find(string $id): ?Counter
+    public function find(string $key): ?Counter
     {
-        return $this->repo->find($id);
+        return $this->repo->find($key);
     }
 
     /**
      * @throws EntityNotFoundException
      */
-    public function findOrFail(string $id): Counter
+    public function findOrFail(string $key): Counter
     {
-        $version = $this->find($id);
+        $version = $this->find($key);
         if ($version === null) {
             throw new EntityNotFoundException('Counter is not found.');
         }

@@ -6,6 +6,7 @@ namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Application\Exception\DownloadException;
 use App\DataLoad\Application\Service\XmlDownloaderInterface;
+use App\DataLoad\Domain\Version\Entity\Version;
 use App\DataLoad\Domain\XmlFile\Entity\XmlFile;
 use App\DataLoad\Domain\XmlFile\Exception\VersionNotRecognizedException;
 use App\DataLoad\Domain\XmlFile\Service\XmlFileCleanerInterface;
@@ -52,7 +53,7 @@ class XmlDownloader implements XmlDownloaderInterface
      */
     public function full(string $versionId): void
     {
-        $this->download(XmlDownloaderInterface::TYPE_FULL, $versionId);
+        $this->download(Version::TYPE_FULL, $versionId);
     }
 
     /**
@@ -61,19 +62,19 @@ class XmlDownloader implements XmlDownloaderInterface
      */
     public function delta(string $versionId): void
     {
-        $this->download(XmlDownloaderInterface::TYPE_DELTA, $versionId);
+        $this->download(Version::TYPE_DELTA, $versionId);
     }
 
     /**
-     * @param XmlDownloaderInterface::TYPE_* $type
+     * @param Version::TYPE_* $type
      * @throws DownloadException
      * @throws RuntimeException
      */
     public function download(string $type, string $versionId): void
     {
         $urlTemplate = match ($type) {
-            XmlDownloaderInterface::TYPE_FULL => $this->urlFullXml,
-            XmlDownloaderInterface::TYPE_DELTA => $this->urlDeltaXml,
+            Version::TYPE_FULL => $this->urlFullXml,
+            Version::TYPE_DELTA => $this->urlDeltaXml,
             default => throw new DownloadException("Incorrect download type '{$type}'"),
         };
 

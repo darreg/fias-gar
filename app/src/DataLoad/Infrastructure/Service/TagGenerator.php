@@ -16,6 +16,7 @@ class TagGenerator implements TagGeneratorInterface
 
     /**
      * @return Generator<string>
+     * @psalm-suppress InvalidReturnStatement
      */
     public function generate(string $filePath, string $tagName): Generator
     {
