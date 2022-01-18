@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Table(name="version")
  * @ORM\Entity
- * @psalm-suppress MissingConstructor
  */
 class Version
 {

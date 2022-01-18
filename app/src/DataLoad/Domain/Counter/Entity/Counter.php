@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Domain\Counter\Entity;
 
+use App\DataLoad\Domain\Counter\Exception\InvalidCounterKeyException;
 use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Table(name="counter")
+ * @ORM\Entity
+ */
 class Counter
 {
-    public const FIELD_TYPE = 'type';
+    public const KEY_PREFIX = 'icounter';
     public const FIELD_CREATED_AT = 'createdAt';
     public const FIELD_UPDATED_AT = 'updatedAt';
 
@@ -18,14 +24,43 @@ class Counter
     public const COUNTER_FIELD_SAVE_ERROR_NUM = 'saveErrorNum';
     public const COUNTER_FIELD_SAVE_SUCCESS_NUM = 'saveSuccessNum';
 
+    /**
+     * @ORM\Id()
+     * @ORM\Column(type="string")
+     */
     private string $type;
+    /**
+     * @ORM\Id()
+     * @ORM\Column(type="string")
+     */
     private string $versionId;
+    /**
+     * @ORM\Column(type="integer")
+     */
     private int $taskNum;
+    /**
+     * @ORM\Column(type="integer")
+     */
     private int $parseErrorNum;
+    /**
+     * @ORM\Column(type="integer")
+     */
     private int $parseSuccessNum;
+    /**
+     * @ORM\Column(type="integer")
+     */
     private int $saveErrorNum;
+    /**
+     * @ORM\Column(type="integer")
+     */
     private int $saveSuccessNum;
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
     private DateTimeImmutable $createdAt;
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
     private DateTimeImmutable $updatedAt;
 
     public function __construct(
@@ -102,14 +137,19 @@ class Counter
 
     public static function buildKey(string $type, string $versionId): string
     {
-        return $type . ':' . $versionId;
+        return self::KEY_PREFIX . ':' . $type . ':' . $versionId;
     }
 
     /**
      * @return list<string>
+     * @throws InvalidCounterKeyException
      */
     public static function splitKey(string $key): array
     {
-        return explode(':', $key);
+        [$prefix, $type, $versionId] = explode(':', $key);
+        if ($prefix !== self::KEY_PREFIX) {
+            throw new InvalidCounterKeyException('It is not an import counter prefix');
+        }
+        return [$type, $versionId];
     }
 }

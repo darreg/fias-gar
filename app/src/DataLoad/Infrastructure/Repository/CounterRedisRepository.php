@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataLoad\Infrastructure\Repository;
 
 use App\DataLoad\Domain\Counter\Entity\Counter;
+use App\DataLoad\Domain\Counter\Exception\InvalidCounterKeyException;
 use App\DataLoad\Domain\Counter\Repository\CounterRepositoryInterface;
 use App\Shared\Domain\Exception\EntityNotFoundException;
 use DateTimeImmutable;
@@ -19,6 +20,9 @@ class CounterRedisRepository implements CounterRepositoryInterface
         $this->redis = $redis;
     }
 
+    /**
+     * @throws InvalidCounterKeyException
+     */
     public function find(string $key): ?Counter
     {
         if ($this->redis->hExists($key, Counter::COUNTER_FIELD_TASK_NUM) === false) {
@@ -42,6 +46,7 @@ class CounterRedisRepository implements CounterRepositoryInterface
     }
 
     /**
+     * @throws InvalidCounterKeyException
      * @throws EntityNotFoundException
      */
     public function findOrFail(string $key): Counter
@@ -52,6 +57,18 @@ class CounterRedisRepository implements CounterRepositoryInterface
         }
 
         return $counter;
+    }
+
+    public function findAll(): array
+    {
+        $keys = $this->redis->keys(Counter::KEY_PREFIX . ':');
+
+        $counters = [];
+        foreach($keys as $key) {
+            $counters[] = $this->findOrFail($key);
+        }
+
+        return $counters;
     }
 
     public function persist(Counter $counter): void
