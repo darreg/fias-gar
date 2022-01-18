@@ -16,6 +16,11 @@ interface CounterRepositoryInterface
      */
     public function findOrFail(string $key): Counter;
 
+    /**
+     * @return array<int, Counter>
+     */
+    public function findAll(): array;
+
     public function persist(Counter $counter): void;
 
     public function remove(Counter $counter): void;
