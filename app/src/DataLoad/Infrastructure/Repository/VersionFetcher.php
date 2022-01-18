@@ -8,6 +8,7 @@ use App\DataLoad\Domain\Version\ReadModel\VersionRow;
 use App\DataLoad\Domain\Version\Repository\VersionFetcherInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Types\Types;
 
 class VersionFetcher implements VersionFetcherInterface
 {
@@ -63,5 +64,31 @@ class VersionFetcher implements VersionFetcherInterface
         }
 
         return new VersionRow((string)$result['id']);
+    }
+
+    /**
+     * @throws DBALException
+     * @return list<VersionRow>
+     */
+    public function findPrevious(string $id): array
+    {
+        if ($id === '') {
+            throw new DBALException\InvalidArgumentException();
+        }
+
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->select('id')
+            ->from('version')
+            ->andWhere('is_covered = false')
+            ->andWhere('id <= :id')
+            ->setParameter('id', $id, Types::STRING)
+            ->executeQuery();
+
+        $versionRow = [];
+        foreach ($queryBuilder->fetchAllAssociative() as $row) {
+            $versionRow[] = new VersionRow((string)$row['id']);
+        }
+
+        return $versionRow;
     }
 }

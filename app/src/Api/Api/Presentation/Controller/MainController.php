@@ -6,6 +6,7 @@ use App\DataLoad\Application\UseCase\DownloadXmlFiles\Command as DownloadCommand
 use App\DataLoad\Application\UseCase\GetNextVersion\Query as GetNextVersionQuery;
 use App\DataLoad\Application\UseCase\RefreshVersionList\Command as DownloadVersionsCommand;
 use App\DataLoad\Domain\Version\Entity\Version;
+use App\DataLoad\Infrastructure\Service\DeltaVersionCoverer;
 use App\Shared\Infrastructure\Bus\Command\CommandBus;
 use App\Shared\Infrastructure\Bus\Query\QueryBus;
 use Doctrine\DBAL\Connection;
@@ -22,6 +23,7 @@ final class MainController extends AbstractController
 //    private FiasTableSaver $dataSaver;
 //    private FiasTableParameter $fiasTableParameters;
 //    private FiasTableFactory $fiasTableFactory;
+    private DeltaVersionCoverer $deltaVersionCoverer;
 
     public function __construct(
 //        FiasTableParameter     $fiasTableParameters,
@@ -29,7 +31,7 @@ final class MainController extends AbstractController
 //        FiasTableSaver         $dataSaver,
 //        EntityManagerInterface $entityManager,
 //        DoctrineFlusher        $doctrineFlusher,
-
+        DeltaVersionCoverer $deltaVersionCoverer,
         QueryBus $queryBus,
         CommandBus $commandBus
     ) {
@@ -40,6 +42,7 @@ final class MainController extends AbstractController
 //        $this->dataSaver = $dataSaver;
 //        $this->fiasTableParameters = $fiasTableParameters;
 //        $this->fiasTableFactory = $fiasTableFactory;
+        $this->deltaVersionCoverer = $deltaVersionCoverer;
     }
 
     /**
@@ -47,8 +50,10 @@ final class MainController extends AbstractController
      */
     public function index(Connection $connection): Response // \App\DataLoad\Application\UseCase\ParseTag\Handler $handler
     {
-        $query = new GetNextVersionQuery(Version::TYPE_DELTA);
-        dump($this->queryBus->ask($query));
+        $this->deltaVersionCoverer->cover('20211116');
+
+//        $query = new GetNextVersionQuery(Version::TYPE_DELTA);
+//        dump($this->queryBus->ask($query));
 
 //        $this->commandBus->dispatch(new DownloadVersionsCommand());
 
