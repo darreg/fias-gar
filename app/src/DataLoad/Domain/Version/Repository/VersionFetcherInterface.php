@@ -18,4 +18,10 @@ interface VersionFetcherInterface
      * @throws DBALException
      */
     public function findNewestUnloadedFullVersion(): ?VersionRow;
+
+    /**
+     * @throws DBALException
+     * @return list<VersionRow>
+     */
+    public function findPrevious(string $id): array;
 }

@@ -172,3 +172,6 @@ services:
 
     App\DataLoad\Infrastructure\Service\NextVersionFinder: ~
     App\DataLoad\Domain\Version\Service\NextVersionFinderInterface: '@App\DataLoad\Infrastructure\Service\NextVersionFinder'
+
+    App\DataLoad\Infrastructure\Service\DeltaVersionCoverer: ~
+    App\DataLoad\Domain\Version\Service\DeltaVersionCovererInterface: '@App\DataLoad\Infrastructure\Service\DeltaVersionCoverer'
