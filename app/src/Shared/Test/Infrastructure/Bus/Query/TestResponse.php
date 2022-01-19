@@ -15,7 +15,7 @@ final class TestResponse implements ResponseInterface
         $this->number = $number;
     }
 
-    public function number(): int
+    public function answer(): int
     {
         return $this->number;
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Application\UseCase\GetNextVersion;
+namespace App\DataLoad\Application\UseCase\NextVersion;
 
 use App\Shared\Domain\Bus\Query\ResponseInterface;
 
@@ -18,7 +18,7 @@ class Response implements ResponseInterface
         $this->versionId = $versionId;
     }
 
-    public function getVersionId(): ?string
+    public function answer(): ?string
     {
         return $this->versionId;
     }

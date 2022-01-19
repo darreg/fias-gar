@@ -40,7 +40,7 @@ class Handler implements CommandHandlerInterface
         foreach ($tokens as $token) {
             /** @var FindFileResponse $response */
             $response = $this->queryBus->ask(new FindFileQuery($versionId, $token));
-            foreach ($response->getAll() as $file) {
+            foreach ($response->answer() as $file) {
                 $this->commandBus->dispatch(
                     new SplitFileCommand($type, $versionId, $file->getPath(), $file->getToken(), $file->getTagName())
                 );

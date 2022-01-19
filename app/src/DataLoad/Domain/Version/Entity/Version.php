@@ -55,12 +55,12 @@ class Version
     private bool $covered;
 
     public function __construct(
-        string             $id,
-        string             $title,
-        DateTimeImmutable  $date,
-        bool               $hasFullXml,
-        bool               $hasDeltaXml,
-        bool               $covered = false,
+        string $id,
+        string $title,
+        DateTimeImmutable $date,
+        bool $hasFullXml,
+        bool $hasDeltaXml,
+        bool $covered = false,
         ?DateTimeImmutable $fullLoadedAt = null,
         ?DateTimeImmutable $deltaLoadedAt = null,
     ) {

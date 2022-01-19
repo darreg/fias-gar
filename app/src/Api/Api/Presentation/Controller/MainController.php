@@ -3,7 +3,7 @@
 namespace App\Api\Api\Presentation\Controller;
 
 use App\DataLoad\Application\UseCase\DownloadXmlFiles\Command as DownloadCommand;
-use App\DataLoad\Application\UseCase\GetNextVersion\Query as GetNextVersionQuery;
+use App\DataLoad\Application\UseCase\NextVersion\Query as NextVersionQuery;
 use App\DataLoad\Application\UseCase\RefreshVersionList\Command as DownloadVersionsCommand;
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\DataLoad\Infrastructure\Service\DeltaVersionCoverer;
@@ -52,7 +52,7 @@ final class MainController extends AbstractController
     {
         $this->deltaVersionCoverer->cover('20211116');
 
-//        $query = new GetNextVersionQuery(Version::TYPE_DELTA);
+//        $query = new NextVersionQuery(Version::TYPE_DELTA);
 //        dump($this->queryBus->ask($query));
 
 //        $this->commandBus->dispatch(new DownloadVersionsCommand());

@@ -6,4 +6,5 @@ namespace App\Shared\Domain\Bus\Query;
 
 interface ResponseInterface
 {
+    public function answer(): mixed;
 }

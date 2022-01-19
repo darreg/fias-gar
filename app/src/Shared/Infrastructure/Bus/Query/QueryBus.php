@@ -22,10 +22,10 @@ final class QueryBus implements QueryBusInterface
     /**
      * @psalm-suppress MixedInferredReturnType
      */
-    public function ask(QueryInterface $query): ?ResponseInterface
+    public function ask(QueryInterface $query): ResponseInterface
     {
         /**
-         * @var ResponseInterface|null $result
+         * @var ResponseInterface $result
          * @psalm-suppress MixedReturnStatement
          */
         return $this->handle($query);

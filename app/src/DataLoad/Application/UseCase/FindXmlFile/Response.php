@@ -25,7 +25,7 @@ class Response implements ResponseInterface
     /**
      * @return array<string, XmlFile>
      */
-    public function getAll(): array
+    public function answer(): array
     {
         return $this->files;
     }
