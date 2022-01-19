@@ -38,12 +38,12 @@ class DeltaVersionCoverer implements DeltaVersionCovererInterface
         $versionIds = array_map(static fn (VersionRow $versionRow) => $versionRow->id, $previousVersionRows);
         try {
             $this->connection->executeStatement(
-                'UPDATE version SET is_covered=true WHERE id in (?)',
+                'UPDATE version SET covered=true WHERE id in (?)',
                 [$versionIds],
                 [Connection::PARAM_INT_ARRAY]
             );
         } catch (DBALException $e) {
-            throw new RuntimeException('Unable to set is_covered', 0, $e);
+            throw new RuntimeException('Unable to set covered field', 0, $e);
         }
     }
 }

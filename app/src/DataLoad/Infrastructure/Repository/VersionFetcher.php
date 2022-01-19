@@ -28,7 +28,7 @@ class VersionFetcher implements VersionFetcherInterface
             ->select('id')
             ->from('version')
             ->andWhere('has_delta_xml = true')
-            ->andWhere('is_covered = false')
+            ->andWhere('covered = false')
             ->andWhere('delta_loaded_at is null')
             ->orderBy('date', 'ASC')
             ->setMaxResults(1)
@@ -79,7 +79,7 @@ class VersionFetcher implements VersionFetcherInterface
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select('id')
             ->from('version')
-            ->andWhere('is_covered = false')
+            ->andWhere('covered = false')
             ->andWhere('id <= :id')
             ->setParameter('id', $id, Types::STRING)
             ->executeQuery();
