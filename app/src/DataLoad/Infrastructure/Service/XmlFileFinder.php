@@ -67,7 +67,7 @@ class XmlFileFinder implements XmlFileFinderInterface
     public function getVersionDirectory(string $versionId): string
     {
         return $this->xmlDirectory . '/' . $versionId;
-    }    
+    }
 
     /**
      * @throws DirectoryIsNotReadableException

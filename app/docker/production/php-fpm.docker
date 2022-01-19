@@ -51,6 +51,7 @@ RUN apk add --update --virtual .build-deps \
         bash \
         icu-dev \
         postgresql-dev \
+        unzip \
     && pecl install \
         redis \
     && docker-php-ext-enable \

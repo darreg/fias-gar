@@ -49,7 +49,7 @@ final class DeltaImportCommand extends Command
     {
         $this
             ->setName('fias:import:delta')
-            ->setDescription('Downloading and importing database delta')
+            ->setDescription('Download and import FIAS delta database')
             ->setHelp('fias:import:delta VERSION')
             ->addArgument('version', InputArgument::OPTIONAL);
     }

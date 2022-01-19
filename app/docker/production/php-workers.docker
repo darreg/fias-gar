@@ -51,6 +51,7 @@ RUN apk add --update --virtual .build-deps \
         bash \
         icu-dev \
         postgresql-dev \
+        unzip \
         rabbitmq-c-dev \
         supervisor \
     && pecl install \

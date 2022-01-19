@@ -9,8 +9,19 @@ parameters:
     fias_url_delta_xml: '%fias_url_xml%/%fias_url_delta_file%'
 
     fias_zip_directory: '%kernel.project_dir%/var/zip'
-    fias_zip_max_full_file: 1
-    fias_zip_max_delta_file: 2
+    fias_zip_max_full_file: 2
+    fias_zip_max_delta_file: 3
+    fias_zip_reload_if_exists: false
+    fias_zip_excludes:
+        - '*_APARTMENTS_*'
+        - '*_ROOMS_*'
+        - '*_STEADS_*'
+        - '*_CHANGE_HISTORY_*'
+        - '*_NORMATIVE_DOCS_*'
+        - '*_REESTR_OBJECTS_*'
+        - '*_CARPLACES_*'
+        - '*_PARAMS_*'
+
     fias_xml_directory: '%kernel.project_dir%/var/xml'
 
     fias_tables_pkey:
@@ -81,12 +92,13 @@ parameters:
         - 'object_levels'
         - 'operation_types'
         - 'addr_obj'
-        - 'adm_hierarchy'
-        - 'mun_hierarchy'
+        - 'addr_obj_division'
         - 'addr_obj_types'
-        - 'houses'
         - 'addhouse_types'
         - 'house_types'
+#        - 'houses'
+#        - 'adm_hierarchy'
+#        - 'mun_hierarchy'
 
 services:
     _defaults:
@@ -119,10 +131,14 @@ services:
             $maxDeltaFileNum: '%fias_zip_max_delta_file%'
     App\DataLoad\Domain\ZipFile\Service\ZipFileRotatorInterface: '@App\DataLoad\Infrastructure\Service\ZipFileRotator'
 
-    App\DataLoad\Infrastructure\Service\ZipFileExtractor: ~
+    App\DataLoad\Infrastructure\Service\ZipFileExtractor:
+        arguments:
+            $excludes: '%fias_zip_excludes%'
     App\DataLoad\Domain\ZipFile\Service\ZipFileExtractorInterface: '@App\DataLoad\Infrastructure\Service\ZipFileExtractor'
 
-    App\DataLoad\Infrastructure\Service\ZipFileLoader: ~
+    App\DataLoad\Infrastructure\Service\ZipFileLoader:
+        arguments:
+            $reloadIfExists: '%fias_zip_reload_if_exists%'
     App\DataLoad\Domain\ZipFile\Service\ZipFileLoaderInterface: '@App\DataLoad\Infrastructure\Service\ZipFileLoader'
 
     App\DataLoad\Infrastructure\Service\XmlFileCleaner: ~
