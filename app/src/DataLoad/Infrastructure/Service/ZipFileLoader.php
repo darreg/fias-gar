@@ -11,11 +11,14 @@ use RuntimeException;
 class ZipFileLoader implements ZipFileLoaderInterface
 {
     private string $zipDirectory;
+    private bool $reloadIfExists;
 
     public function __construct(
-        string $zipDirectory
+        string $zipDirectory,
+        bool $reloadIfExists
     ) {
         $this->zipDirectory = $zipDirectory;
+        $this->reloadIfExists = $reloadIfExists;
     }
 
     public function load(string $url, string $versionId): string
@@ -23,6 +26,10 @@ class ZipFileLoader implements ZipFileLoaderInterface
         $urlPath = parse_url($url, PHP_URL_PATH);
         $fileName = $versionId . '_' . basename($urlPath);
         $filePath = $this->zipDirectory . '/' . $fileName;
+
+        if (!$this->reloadIfExists && file_exists($filePath)) {
+            return $fileName;
+        }
 
         try {
             $fp = fopen($filePath, 'wb');

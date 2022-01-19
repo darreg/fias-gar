@@ -72,9 +72,9 @@ class ZipFileRotator implements ZipFileRotatorInterface
         foreach ($paths as $path) {
             if (preg_match('/' . $this->deltaFileName . '$/i', $path)) {
                 ++$i;
-                if ($i >= $this->maxDeltaFileNum) {
-                    $this->removeFile($path);
-                }
+            }
+            if ($i >= $this->maxDeltaFileNum) {
+                $this->removeFile($path);
             }
         }
     }
@@ -89,9 +89,9 @@ class ZipFileRotator implements ZipFileRotatorInterface
         foreach ($paths as $path) {
             if (preg_match('/' . $this->fullFileName . '$/i', $path)) {
                 ++$i;
-                if ($i >= $this->maxFullFileNum) {
-                    $this->removeFile($path);
-                }
+            }
+            if ($i >= $this->maxFullFileNum) {
+                $this->removeFile($path);
             }
         }
     }

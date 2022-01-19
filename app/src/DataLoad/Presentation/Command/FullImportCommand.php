@@ -49,7 +49,7 @@ final class FullImportCommand extends Command
     {
         $this
             ->setName('fias:import:full')
-            ->setDescription('Downloading and importing full database')
+            ->setDescription('Download and import FIAS full database')
             ->setHelp('fias:import:full VERSION')
             ->addArgument('version', InputArgument::OPTIONAL);
     }

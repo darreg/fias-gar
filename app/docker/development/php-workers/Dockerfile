@@ -19,6 +19,7 @@ RUN apk add --update --virtual .build-deps \
         grep \
         bash \
         shadow \
+        unzip \
         bash-completion \
         icu-dev \
         postgresql-dev \

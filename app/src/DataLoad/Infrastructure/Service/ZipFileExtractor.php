@@ -16,13 +16,22 @@ class ZipFileExtractor implements ZipFileExtractorInterface
     public const SCHEMAS_DIR = 'Schemas';
 
     private XmlFileFinder $xmlFileFinder;
+    /**
+     * @var list<string>
+     */
+    private array $excludes;
     private string $zipDirectory;
 
+    /**
+     * @param list<string> $excludes
+     */
     public function __construct(
         XmlFileFinder $xmlFileFinder,
+        array $excludes,
         string $zipDirectory
     ) {
         $this->xmlFileFinder = $xmlFileFinder;
+        $this->excludes = $excludes;
         $this->zipDirectory = $zipDirectory;
     }
 
@@ -66,7 +75,12 @@ class ZipFileExtractor implements ZipFileExtractorInterface
             throw new ZipFileNotFoundException("Zip file '{$zipFilePath}' not found");
         }
 
-        exec('unzip  ' . $zipFilePath . ' -d ' . $resultDir, $output, $exitCode);
+        $unzipCommand = 'unzip  ' . $zipFilePath . ' -d ' . $resultDir;
+        foreach ($this->excludes as $exclude) {
+            $unzipCommand .= ' -x ' . $exclude;
+        }
+
+        exec($unzipCommand . ' 2>&1', $output, $exitCode);
         if ($exitCode !== 0) {
             throw new RuntimeException('Unzipping error');
         }
