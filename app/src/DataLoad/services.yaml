@@ -79,14 +79,14 @@ parameters:
 
     fias_import_tokens:
         - 'object_levels'
-#        - 'operation_types'
-#        - 'addr_obj'
-#        - 'adm_hierarchy'
-#        - 'mun_hierarchy'
-#        - 'addr_obj_types'
-#        - 'houses'
-#        - 'addhouse_types'
-#        - 'house_types'
+        - 'operation_types'
+        - 'addr_obj'
+        - 'adm_hierarchy'
+        - 'mun_hierarchy'
+        - 'addr_obj_types'
+        - 'houses'
+        - 'addhouse_types'
+        - 'house_types'
 
 services:
     _defaults:

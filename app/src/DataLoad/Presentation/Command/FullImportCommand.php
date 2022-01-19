@@ -65,14 +65,14 @@ final class FullImportCommand extends Command
         $this->showStartMessage($output, $versionId);
 
         try {
-            $output->writeln('Downloading zip');
+            $output->writeln('- Downloading zip');
             $this->commandBus->dispatch(new DownloadCommand($versionId, Version::TYPE_FULL));
 
-            $output->writeln('Filling the xml import queue');
+            $output->writeln('- Filling the xml import queue');
             /** @psalm-suppress MixedArgumentTypeCoercion */
             $this->commandBus->dispatch(new ImportCommand(Version::TYPE_FULL, $versionId, $this->importTokens));
 
-            $output->writeln('Mark all previous delta version as covered');
+            $output->writeln('- Mark all previous delta version as covered');
             $this->commandBus->dispatch(new MarkLoadedCommand(Version::TYPE_FULL, $versionId));
         } catch (Exception $e) {
             $this->logger->error(

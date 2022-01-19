@@ -61,8 +61,13 @@ class XmlFileFinder implements XmlFileFinderInterface
 
     public function versionDirectoryExists(string $versionId): bool
     {
-        return is_dir($this->xmlDirectory . '/' . $versionId);
+        return is_dir($this->getVersionDirectory($versionId));
     }
+
+    public function getVersionDirectory(string $versionId): string
+    {
+        return $this->xmlDirectory . '/' . $versionId;
+    }    
 
     /**
      * @throws DirectoryIsNotReadableException
@@ -70,7 +75,7 @@ class XmlFileFinder implements XmlFileFinderInterface
      */
     public function getAllFindPathByVersion(string $versionId): array
     {
-        $xmlDirectory = $this->xmlDirectory . '/' . $versionId;
+        $xmlDirectory = $this->getVersionDirectory($versionId);
 
         return $this->getAllFindPath($xmlDirectory);
     }

@@ -17,16 +17,13 @@ class ZipFileExtractor implements ZipFileExtractorInterface
 
     private XmlFileFinder $xmlFileFinder;
     private string $zipDirectory;
-    private string $xmlDirectory;
 
     public function __construct(
         XmlFileFinder $xmlFileFinder,
-        string $zipDirectory,
-        string $xmlDirectory
+        string $zipDirectory
     ) {
         $this->xmlFileFinder = $xmlFileFinder;
         $this->zipDirectory = $zipDirectory;
-        $this->xmlDirectory = $xmlDirectory;
     }
 
     /**
@@ -46,17 +43,16 @@ class ZipFileExtractor implements ZipFileExtractorInterface
             throw new CleanUpException('The xml files have not been deleted');
         }
 
-        $this->unzip($fileName, $this->getResultDirectory($versionId));
+        $resultDirectory = $this->getResultDirectory($versionId);
+
+        $this->unzip($fileName, $resultDirectory);
 
         $paths = $this->xmlFileFinder->getAllFindPathByVersion($versionId);
         if (\count($paths) === 0) {
             throw new NoFilesAfterUnpackingException('No xml files found after unpacking the archive');
         }
 
-        if (is_dir($this->xmlDirectory . '/' . self::SCHEMAS_DIR)) {
-            exec('chmod 777 ' . $this->xmlDirectory . '/' . self::SCHEMAS_DIR);
-        }
-        exec('chmod -R 644 ' . $this->xmlDirectory . '/*.XML');
+        self::setFilePermissions($resultDirectory);
     }
 
     /**
@@ -70,8 +66,7 @@ class ZipFileExtractor implements ZipFileExtractorInterface
             throw new ZipFileNotFoundException("Zip file '{$zipFilePath}' not found");
         }
 
-        $shellCommand = 'unzip  ' . $zipFilePath . ' -d ' . $resultDir;
-        exec($shellCommand, $output, $exitCode);
+        exec('unzip  ' . $zipFilePath . ' -d ' . $resultDir, $output, $exitCode);
         if ($exitCode !== 0) {
             throw new RuntimeException('Unzipping error');
         }
@@ -82,7 +77,7 @@ class ZipFileExtractor implements ZipFileExtractorInterface
      */
     private function getResultDirectory(string $versionId): string
     {
-        $resultDir = $this->xmlDirectory . '/' . $versionId;
+        $resultDir = $this->xmlFileFinder->getVersionDirectory($versionId);
         if (is_dir($resultDir)) {
             return $resultDir;
         }
@@ -92,5 +87,15 @@ class ZipFileExtractor implements ZipFileExtractorInterface
         }
 
         return $resultDir;
+    }
+
+    private static function setFilePermissions(string $resultDirectory): void
+    {
+        if (is_dir($resultDirectory . '/' . self::SCHEMAS_DIR)) {
+            exec('chmod 777 ' . $resultDirectory . '/' . self::SCHEMAS_DIR);
+        }
+
+        exec('find ' . $resultDirectory . ' -type d -exec chmod 0755 {} +');
+        exec('find ' . $resultDirectory . ' -type f -exec chmod 0644 {} +');
     }
 }

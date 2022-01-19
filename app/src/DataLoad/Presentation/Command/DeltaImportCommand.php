@@ -65,14 +65,14 @@ final class DeltaImportCommand extends Command
         $this->showStartMessage($output, $versionId);
 
         try {
-            $output->writeln('Downloading zip');
+            $output->writeln('- Downloading zip');
             $this->commandBus->dispatch(new DownloadCommand($versionId, Version::TYPE_DELTA));
 
-            $output->writeln('Filling the xml import queue');
+            $output->writeln('- Filling the xml import queue');
             /** @psalm-suppress MixedArgumentTypeCoercion */
             $this->commandBus->dispatch(new ImportCommand(Version::TYPE_DELTA, $versionId, $this->importTokens));
 
-            $output->writeln('Mark this version as loaded');
+            $output->writeln('- Mark this version as loaded');
             $this->commandBus->dispatch(new MarkLoadedCommand(Version::TYPE_DELTA, $versionId));
         } catch (Exception $e) {
             $this->logger->error(
