@@ -52,15 +52,15 @@ class Version
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $isCovered;
+    private bool $covered;
 
     public function __construct(
-        string $id,
-        string $title,
-        DateTimeImmutable $date,
-        bool $hasFullXml,
-        bool $hasDeltaXml,
-        bool $isCovered = false,
+        string             $id,
+        string             $title,
+        DateTimeImmutable  $date,
+        bool               $hasFullXml,
+        bool               $hasDeltaXml,
+        bool               $covered = false,
         ?DateTimeImmutable $fullLoadedAt = null,
         ?DateTimeImmutable $deltaLoadedAt = null,
     ) {
@@ -69,7 +69,7 @@ class Version
         $this->date = $date;
         $this->hasFullXml = $hasFullXml;
         $this->hasDeltaXml = $hasDeltaXml;
-        $this->isCovered = $isCovered;
+        $this->covered = $covered;
         $this->fullLoadedAt = $fullLoadedAt;
         $this->deltaLoadedAt = $deltaLoadedAt;
     }
@@ -101,7 +101,7 @@ class Version
 
     public function isCovered(): bool
     {
-        return $this->isCovered;
+        return $this->covered;
     }
 
     public function getFullLoadedAt(): ?DateTimeImmutable
