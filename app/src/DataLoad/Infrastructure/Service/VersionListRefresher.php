@@ -10,7 +10,7 @@ use App\DataLoad\Domain\Version\Entity\Version;
 use App\DataLoad\Domain\Version\Repository\VersionRepositoryInterface;
 use App\DataLoad\Domain\Version\Service\VersionDecoderInterface;
 use App\DataLoad\Domain\Version\Service\VersionLoaderInterface;
-use App\Shared\Infrastructure\Persistence\DoctrineFlusher;
+use App\Shared\Domain\Persistence\FlusherInterface;
 use LogicException;
 
 class VersionListRefresher implements VersionListRefresherInterface
@@ -18,13 +18,13 @@ class VersionListRefresher implements VersionListRefresherInterface
     private VersionLoaderInterface $versionLoader;
     private VersionDecoderInterface $versionDecoder;
     private VersionRepositoryInterface $versionRepository;
-    private DoctrineFlusher $flusher;
+    private FlusherInterface $flusher;
 
     public function __construct(
         VersionLoaderInterface $versionLoader,
         VersionDecoderInterface $versionDecoder,
         VersionRepositoryInterface $versionRepository,
-        DoctrineFlusher $flusher
+        FlusherInterface $flusher
     ) {
         $this->versionLoader = $versionLoader;
         $this->versionDecoder = $versionDecoder;
