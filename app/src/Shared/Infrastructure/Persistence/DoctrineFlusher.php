@@ -6,9 +6,10 @@ namespace App\Shared\Infrastructure\Persistence;
 
 use App\Shared\Domain\Aggregate\AggregateRootInterface;
 use App\Shared\Domain\Bus\Event\EventBusInterface;
+use App\Shared\Domain\Persistence\FlusherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class DoctrineFlusher
+final class DoctrineFlusher implements FlusherInterface
 {
     private EntityManagerInterface $entityManager;
     private EventBusInterface $eventBus;

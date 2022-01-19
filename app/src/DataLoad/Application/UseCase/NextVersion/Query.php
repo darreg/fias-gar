@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Application\UseCase\GetNextVersion;
+namespace App\DataLoad\Application\UseCase\NextVersion;
 
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Query\QueryInterface;
