@@ -15,7 +15,7 @@ class Response implements ResponseInterface
     /**
      * @var array<string, XmlFile>
      */
-    private array $files;
+    private array $files = [];
 
     public function add(XmlFile $file): void
     {
