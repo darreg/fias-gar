@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Test\Infrastructure\ParseTag;
+namespace App\DataLoad\Test\Infrastructure\Service;
 
 use App\DataLoad\Domain\Tag\Exception\TagAttributesNotFoundException;
 use App\DataLoad\Domain\Tag\Exception\TagNotParsedException;

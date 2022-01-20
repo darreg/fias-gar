@@ -17,21 +17,28 @@ class ZipFileExtractor implements ZipFileExtractorInterface
 
     private XmlFileFinder $xmlFileFinder;
     /**
-     * @var list<string>
+     * @var array<string, string>
      */
     private array $excludes;
+    /**
+     * @var list<string>
+     */
+    private array $importTokens;
     private string $zipDirectory;
 
     /**
-     * @param list<string> $excludes
+     * @param list<string> $importTokens
+     * @param array<string, string> $excludes
      */
     public function __construct(
         XmlFileFinder $xmlFileFinder,
         array $excludes,
+        array $importTokens,
         string $zipDirectory
     ) {
         $this->xmlFileFinder = $xmlFileFinder;
         $this->excludes = $excludes;
+        $this->importTokens = $importTokens;
         $this->zipDirectory = $zipDirectory;
     }
 
@@ -76,9 +83,7 @@ class ZipFileExtractor implements ZipFileExtractorInterface
         }
 
         $unzipCommand = 'unzip  ' . $zipFilePath . ' -d ' . $resultDir;
-        foreach ($this->excludes as $exclude) {
-            $unzipCommand .= ' -x ' . $exclude;
-        }
+        $unzipCommand .= self::excludes($this->excludes, $this->importTokens);
 
         exec($unzipCommand . ' 2>&1', $output, $exitCode);
         if ($exitCode !== 0) {
@@ -111,5 +116,28 @@ class ZipFileExtractor implements ZipFileExtractorInterface
 
         exec('find ' . $resultDirectory . ' -type d -exec chmod 0755 {} +');
         exec('find ' . $resultDirectory . ' -type f -exec chmod 0644 {} +');
+    }
+
+    /**
+     * @param array<string, string> $excludes
+     * @param list<string> $importTokens
+     */
+    private static function excludes(array $excludes, array $importTokens): string
+    {
+        $params = [];
+        foreach ($excludes as $token => $exclude) {
+            if (!\in_array($token, $importTokens, true)) {
+                continue;
+            }
+            $params[] = $exclude;
+        }
+
+        $params = array_unique($params);
+
+        if (\count($params) === 0) {
+            return '';
+        }
+
+        return ' -x ' . implode(' -x ', $params);
     }
 }

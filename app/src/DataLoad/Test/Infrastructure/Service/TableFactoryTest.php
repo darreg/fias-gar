@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Test\Infrastructure\Table;
+namespace App\DataLoad\Test\Infrastructure\Service;
 
 use App\DataLoad\Infrastructure\Service\TableFactory;
 use LogicException;
@@ -30,7 +30,7 @@ final class TableFactoryTest extends KernelTestCase
     public function testFactory(): void
     {
         $result = $this->factory->create('addr_obj_types');
-        self::assertCount(9, $result->getColumns());
+        self::assertCount(10, $result->getColumns());
         self::assertContains('id', $result->getColumns());
 
         $this->expectException(LogicException::class);

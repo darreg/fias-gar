@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Test\Infrastructure\Download;
+namespace App\DataLoad\Test\Infrastructure\Service;
 
 use App\DataLoad\Domain\Shared\Exception\DirectoryIsNotReadableException;
 use App\DataLoad\Domain\XmlFile\Exception\CleanUpException;

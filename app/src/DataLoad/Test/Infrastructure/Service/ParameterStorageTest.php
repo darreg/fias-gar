@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Test\Infrastructure\Shared;
+namespace App\DataLoad\Test\Infrastructure\Service;
 
 use App\DataLoad\Infrastructure\Service\ParameterStorage;
 use LogicException;
