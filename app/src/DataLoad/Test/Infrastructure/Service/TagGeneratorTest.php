@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Test\Infrastructure\SplitFile;
+namespace App\DataLoad\Test\Infrastructure\Service;
 
 use App\DataLoad\Infrastructure\Service\TagGenerator;
 use PHPUnit\Framework\TestCase;
@@ -29,6 +29,11 @@ final class TagGeneratorTest extends TestCase
             self::TEST_FILE,
             '<ADDRESSOBJECTTYPE ID="1" /><ADDRESSOBJECTTYPE ID="2" /><ADDRESSOBJECTTYPE ID="3" />'
         );
+    }
+
+    protected function tearDown(): void
+    {
+        unlink(self::TEST_FILE);
     }
 
     public function testGeneratorSuccess(): void
