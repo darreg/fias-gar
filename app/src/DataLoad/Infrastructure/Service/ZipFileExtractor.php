@@ -126,7 +126,7 @@ class ZipFileExtractor implements ZipFileExtractorInterface
     {
         $params = [];
         foreach ($excludes as $token => $exclude) {
-            if (!\in_array($token, $importTokens, true)) {
+            if (\in_array($token, $importTokens, true)) {
                 continue;
             }
             $params[] = $exclude;

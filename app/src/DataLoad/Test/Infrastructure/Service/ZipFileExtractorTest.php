@@ -22,8 +22,8 @@ final class ZipFileExtractorTest extends TestCase
             [
                 'addr_obj' => '*_ADDR_OBJ_*',
                 'addr_obj_division' => '*_ADDR_OBJ_DIVISION_*',
-                'addr_obj_params' => '*_PARAMS_*',
-                'carplaces_params' => '*_PARAMS_*',
+                'addr_obj_params' => '*_ADDR_OBJ_PARAMS_*',
+                'carplaces_params' => '*_CARPLACES_PARAMS_*',
             ],
             [
                 'object_levels',
@@ -31,19 +31,19 @@ final class ZipFileExtractorTest extends TestCase
                 'addr_obj',
             ],
         ]);
-        self::assertEquals(' -x *_ADDR_OBJ_* -x *_PARAMS_*', $result);
+        self::assertEquals(' -x *_ADDR_OBJ_DIVISION_* -x *_CARPLACES_PARAMS_*', $result);
 
         /** @var string $result */
         $result = $this->callPrivateStaticMethod(ZipFileExtractor::class, 'excludes', [
             [
-                'addr_obj_params' => '*_PARAMS_*',
-                'carplaces_params' => '*_PARAMS_*',
+                'addr_obj_params' => '*_ADDR_OBJ_PARAMS_*',
+                'carplaces_params' => '*_CARPLACES_PARAMS_*',
             ],
             [
                 'addr_obj_params',
                 'carplaces_params',
             ],
         ]);
-        self::assertEquals(' -x *_PARAMS_*', $result);
+        self::assertEquals('', $result);
     }
 }

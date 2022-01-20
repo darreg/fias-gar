@@ -1,7 +1,7 @@
 language: php
 
 php:
-  - "7.4"
+  - "8.1"
 
 services:
   - redis
@@ -17,5 +17,6 @@ install:
 
 script:
   - composer lint
-  - composer phpcs
+  - composer php-cs-fixer
   - composer psalm
+  - composer test

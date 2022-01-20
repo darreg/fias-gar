@@ -13,34 +13,34 @@ parameters:
     fias_zip_max_delta_file: 3
     fias_zip_reload_if_exists: false
     fias_zip_exclude_patterns:
-        addr_obj: '*_ADDR_OBJ_*'
-        addr_obj_division: '*_ADDR_OBJ_DIVISION_*'
-        addr_obj_params: '*_PARAMS_*'
-        adm_hierarchy: '*_ADM_HIERARCHY_*'
-        apartments: '*_APARTMENTS_*'
-        apartments_params: '*_PARAMS_*'
-        carplaces: '*_CARPLACES_*'
-        carplaces_params: '*_PARAMS_*'
-        change_history: '*_CHANGE_HISTORY_*'
-        houses: '*_HOUSES_*'
-        houses_params: '*_PARAMS_*'
-        mun_hierarchy: '*_MUN_HIERARCHY_*'
-        normative_docs: '*_NORMATIVE_DOCS_*'
-        reestr_objects: '*_REESTR_OBJECTS_*'
-        rooms: '*_ROOMS_*'
-        rooms_params: '*_PARAMS_*'
-        steads: '*_STEADS_*'
-        steads_params: '*_PARAMS_*'
-        addhouse_types: '*_ADDHOUSE_TYPES_*'
-        addr_obj_types: '*_ADDR_OBJ_TYPES_*'
-        apartment_types: '*_APARTMENT_TYPES_*'
-        house_types: '*_HOUSE_TYPES_*'
-        normative_docs_kinds: '*_NORMATIVE_DOCS_KINDS_*'
-        normative_docs_types: '*_NORMATIVE_DOCS_TYPES_*'
-        object_levels: '*_OBJECT_LEVELS_*'
-        operation_types: '*_OPERATION_TYPES_*'
-        param_types: '*_PARAM_TYPES_*'
-        room_types: '*_ROOM_TYPES_*'
+        addr_obj: '*_ADDR_OBJ_[0-9]*'
+        addr_obj_division: '*_ADDR_OBJ_DIVISION_[0-9]*'
+        addr_obj_params: '*_ADDR_OBJ_PARAMS_[0-9]*'
+        adm_hierarchy: '*_ADM_HIERARCHY_[0-9]*'
+        apartments: '*_APARTMENTS_[0-9]*'
+        apartments_params: '*_APARTMENTS_PARAMS_[0-9]*'
+        carplaces: '*_CARPLACES_[0-9]*'
+        carplaces_params: '*_CARPLACES_PARAMS_[0-9]*'
+        change_history: '*_CHANGE_HISTORY_[0-9]*'
+        houses: '*_HOUSES_[0-9]*'
+        houses_params: '*_HOUSES_PARAMS_[0-9]*'
+        mun_hierarchy: '*_MUN_HIERARCHY_[0-9]*'
+        normative_docs: '*_NORMATIVE_DOCS_[0-9]*'
+        reestr_objects: '*_REESTR_OBJECTS_[0-9]*'
+        rooms: '*_ROOMS_[0-9]*'
+        rooms_params: '*_ROOMS_PARAMS_[0-9]*'
+        steads: '*_STEADS_[0-9]*'
+        steads_params: '*_STEADS_PARAMS_[0-9]*'
+        addhouse_types: '*_ADDHOUSE_TYPES_[0-9]*'
+        addr_obj_types: '*_ADDR_OBJ_TYPES_[0-9]*'
+        apartment_types: '*_APARTMENT_TYPES_[0-9]*'
+        house_types: '*_HOUSE_TYPES_[0-9]*'
+        normative_docs_kinds: '*_NORMATIVE_DOCS_KINDS_[0-9]*'
+        normative_docs_types: '*_NORMATIVE_DOCS_TYPES_[0-9]*'
+        object_levels: '*_OBJECT_LEVELS_[0-9]*'
+        operation_types: '*_OPERATION_TYPES_[0-9]*'
+        param_types: '*_PARAM_TYPES_[0-9]*'
+        room_types: '*_ROOM_TYPES_[0-9]*'
 
     fias_xml_directory: '%kernel.project_dir%/var/xml'
 
@@ -116,9 +116,9 @@ parameters:
         - addr_obj_types
         - addhouse_types
         - house_types
-#        - houses
-#        - adm_hierarchy
-#        - mun_hierarchy
+        - houses
+        - adm_hierarchy
+        - mun_hierarchy
 
 #        - addr_obj_params
 #        - apartments
