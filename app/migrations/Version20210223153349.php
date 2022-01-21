@@ -19,7 +19,7 @@ final class Version20210223153349 extends AbstractMigration
 
     public function up(Schema $schema) : void
     {
-        $this->addSql('create table fias_gar_addrobj (id numeric(19)  not null constraint fias_gar_addrobj_pkey primary key, objectid numeric(19), objectguid varchar(36) default NULL::character varying, changeid numeric(19), name   varchar(250) default NULL::character varying, typename   varchar(50)  default NULL::character varying, level   varchar(10)  default NULL::character varying, opertypeid   integer, previd  numeric(19), nextid   numeric(19), startdate date, enddate   date, updatedate date, isactive  smallint, isactual smallint)');
+        $this->addSql('create table fias_gar_addrobj (id numeric(19)  not null constraint fias_gar_addrobj_pkey primary key, objectid numeric(19), objectguid varchar(36) default NULL::character varying, changeid numeric(19), name   varchar(250) default NULL::character varying, typename   varchar(50)  default NULL::character varying, level   varchar(10)  default NULL::character varying, opertypeid   integer, previd  numeric(19), nextid   numeric(19), startdate date, enddate   date, updatedate date, isactive  smallint, isactual smallint, changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_addrobj.id is \'Уникальный идентификатор записи. Ключевое поле\'');
         $this->addSql('comment on column fias_gar_addrobj.objectid is \'Глобальный уникальный идентификатор адресного объекта типа INTEGER\'');
         $this->addSql('comment on column fias_gar_addrobj.objectguid is \'Глобальный уникальный идентификатор адресного объекта типа UUID\'');
@@ -36,7 +36,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_addrobj.isactive is \'Признак действующего адресного объекта\'');
         $this->addSql('comment on column fias_gar_addrobj.isactual is \'Статус актуальности адресного объекта ФИАС\'');
 
-        $this->addSql('create table fias_gar_addrobjtypes(id numeric(10)  not null constraint fias_gar_addrobjtypes_pkey primary key,level integer,shortname varchar(50) default NULL::character varying,name   varchar(250) default NULL::character varying,"desc"   varchar(250) default NULL::character varying,startdate date,enddate   date,updatedate date,isactive  boolean)');
+        $this->addSql('create table fias_gar_addrobjtypes(id numeric(10)  not null constraint fias_gar_addrobjtypes_pkey primary key,level integer,shortname varchar(50) default NULL::character varying,name   varchar(250) default NULL::character varying,"desc"   varchar(250) default NULL::character varying,startdate date,enddate   date,updatedate date,isactive  boolean, changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_addrobjtypes.id is \'Идентификатор записи\'');
         $this->addSql('comment on column fias_gar_addrobjtypes.level is \'Уровень адресного объекта\'');
         $this->addSql('comment on column fias_gar_addrobjtypes.shortname is \'Краткое наименование типа объекта\'');
@@ -47,14 +47,12 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_addrobjtypes.updatedate is \'Дата внесения (обновления) записи\'');
         $this->addSql('comment on column fias_gar_addrobjtypes.isactive is \'Статус активности\'');
 
-        $this->addSql('create table fias_gar_addrobjdivision(id numeric(19)  not null constraint fias_gar_addrobjdivision_pkey primary key, parentid numeric(19), childid numeric(19), changeid numeric(19))');
+        $this->addSql('create table fias_gar_addrobjdivision(id numeric(19)  not null constraint fias_gar_addrobjdivision_pkey primary key, parentid numeric(19), childid numeric(19), changeid numeric(19), changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_addrobjdivision.id is \'Уникальный идентификатор записи. Ключевое поле\'');
         $this->addSql('comment on column fias_gar_addrobjdivision.parentid is \'Родительский ID\'');
         $this->addSql('comment on column fias_gar_addrobjdivision.childid is \'Дочерний ID\'');
         $this->addSql('comment on column fias_gar_addrobjdivision.changeid is \'ID изменившей транзакции\'');
-
-
-        $this->addSql('create table fias_gar_admhierarchy(id numeric(19)  not null constraint fias_gar_admhierarchy_pkey primary key,objectid numeric(19),parentobjid numeric(19),changeid numeric(19),regioncode varchar(4) default NULL::character varying,areacode varchar(4) default NULL::character varying,citycode varchar(4) default NULL::character varying,placecode varchar(4) default NULL::character varying,plancode varchar(4) default NULL::character varying,streetcode varchar(4) default NULL::character varying,previd numeric(19),nextid numeric(19),updatedate date,startdate date,enddate date,isactive smallint)');
+        $this->addSql('create table fias_gar_admhierarchy(id numeric(19)  not null constraint fias_gar_admhierarchy_pkey primary key,objectid numeric(19),parentobjid numeric(19),changeid numeric(19),regioncode varchar(4) default NULL::character varying,areacode varchar(4) default NULL::character varying,citycode varchar(4) default NULL::character varying,placecode varchar(4) default NULL::character varying,plancode varchar(4) default NULL::character varying,streetcode varchar(4) default NULL::character varying,previd numeric(19),nextid numeric(19),updatedate date,startdate date,enddate date,isactive smallint,changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_admhierarchy.id is \'Уникальный идентификатор записи. Ключевое поле\'');
         $this->addSql('comment on column fias_gar_admhierarchy.objectid is \'Глобальный уникальный идентификатор объекта\'');
         $this->addSql('comment on column fias_gar_admhierarchy.changeid is \'ID изменившей транзакции\'');
@@ -71,7 +69,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_admhierarchy.enddate is \'Окончание действия записи\'');
         $this->addSql('comment on column fias_gar_admhierarchy.isactive is \'Признак действующего адресного объекта\'');
 
-        $this->addSql('create table fias_gar_apartmenttypes(id numeric(10)  not null constraint fias_gar_apartmenttypes_pkey primary key,name varchar(50) default NULL::character varying,shortname varchar(50) default NULL::character varying,"desc" varchar(250) default NULL::character varying,updatedate date,startdate date,enddate date,isactive boolean)');
+        $this->addSql('create table fias_gar_apartmenttypes(id numeric(10)  not null constraint fias_gar_apartmenttypes_pkey primary key,name varchar(50) default NULL::character varying,shortname varchar(50) default NULL::character varying,"desc" varchar(250) default NULL::character varying,updatedate date,startdate date,enddate date,isactive boolean,changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_apartmenttypes.id is \'Идентификатор типа (ключ)\'');
         $this->addSql('comment on column fias_gar_apartmenttypes.name is \'Наименование\'');
         $this->addSql('comment on column fias_gar_apartmenttypes.shortname is \'Краткое наименование\'');
@@ -81,7 +79,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_apartmenttypes.enddate is \'Окончание действия записи\'');
         $this->addSql('comment on column fias_gar_apartmenttypes.isactive is \'Статус активности\'');
 
-        $this->addSql('create table fias_gar_apartments(id numeric(19)  not null constraint fias_gar_apartments_pkey primary key,objectid numeric(19),objectguid varchar(36) default NULL::character varying,changeid numeric(19),number varchar(50) default NULL::character varying,aparttype integer,opertypeid integer,previd  numeric(19),nextid   numeric(19),startdate date,enddate   date,updatedate date,isactive  smallint,isactual smallint)');
+        $this->addSql('create table fias_gar_apartments(id numeric(19)  not null constraint fias_gar_apartments_pkey primary key,objectid numeric(19),objectguid varchar(36) default NULL::character varying,changeid numeric(19),number varchar(50) default NULL::character varying,aparttype integer,opertypeid integer,previd  numeric(19),nextid   numeric(19),startdate date,enddate   date,updatedate date,isactive  smallint,isactual smallint,changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_apartments.id is \'Уникальный идентификатор записи. Ключевое поле\'');
         $this->addSql('comment on column fias_gar_apartments.objectid is \'Глобальный уникальный идентификатор объекта типа INTEGER\'');
         $this->addSql('comment on column fias_gar_apartments.objectguid is \'Глобальный уникальный идентификатор адресного объекта типа UUID\'');
@@ -97,7 +95,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_apartments.isactive is \'Признак действующего адресного объекта\'');
         $this->addSql('comment on column fias_gar_apartments.isactual is \'Статус актуальности адресного объекта ФИАС\'');
 
-        $this->addSql('create table fias_gar_carplaces(id numeric(19)  not null constraint fias_gar_carplaces_pkey primary key,objectid numeric(19),objectguid varchar(36) default NULL::character varying,changeid numeric(19),number varchar(50) default NULL::character varying,opertypeid integer,previd  numeric(19),nextid   numeric(19),startdate date,enddate   date,updatedate date,isactive  smallint,isactual smallint)');
+        $this->addSql('create table fias_gar_carplaces(id numeric(19)  not null constraint fias_gar_carplaces_pkey primary key,objectid numeric(19),objectguid varchar(36) default NULL::character varying,changeid numeric(19),number varchar(50) default NULL::character varying,opertypeid integer,previd  numeric(19),nextid   numeric(19),startdate date,enddate   date,updatedate date,isactive  smallint,isactual smallint,changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_carplaces.id is \'Уникальный идентификатор записи. Ключевое поле\'');
         $this->addSql('comment on column fias_gar_carplaces.objectid is \'Глобальный уникальный идентификатор объекта типа INTEGER\'');
         $this->addSql('comment on column fias_gar_carplaces.objectguid is \'Глобальный уникальный идентификатор адресного объекта типа UUID\'');
@@ -112,7 +110,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_carplaces.isactive is \'Признак действующего адресного объекта\'');
         $this->addSql('comment on column fias_gar_carplaces.isactual is \'Статус актуальности адресного объекта ФИАС\'');
 
-        $this->addSql('create table fias_gar_changehistory(changeid numeric(19),objectid numeric(19),adrobjectid varchar(36) default NULL::character varying,opertypeid numeric(10),ndocid  numeric(19),changedate date)');
+        $this->addSql('create table fias_gar_changehistory(changeid numeric(19),objectid numeric(19),adrobjectid varchar(36) default NULL::character varying,opertypeid numeric(10),ndocid  numeric(19),changedate date,changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_changehistory.changeid is \'ID изменившей транзакции\'');
         $this->addSql('comment on column fias_gar_changehistory.objectid is \'Уникальный ID объекта\'');
         $this->addSql('comment on column fias_gar_changehistory.adrobjectid is \'Уникальный ID изменившей транзакции (GUID)\'');
@@ -120,7 +118,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_changehistory.ndocid is \'ID документа\'');
         $this->addSql('comment on column fias_gar_changehistory.changedate is \'Дата изменения\'');
 
-        $this->addSql('create table fias_gar_housetypes(id numeric(19)  not null constraint fias_gar_housetypes_pkey primary key,name varchar(50) default NULL::character varying,shortname varchar(50) default NULL::character varying,"desc" varchar(250) default NULL::character varying,updatedate date,startdate date,enddate date,isactive boolean)');
+        $this->addSql('create table fias_gar_housetypes(id numeric(19)  not null constraint fias_gar_housetypes_pkey primary key,name varchar(50) default NULL::character varying,shortname varchar(50) default NULL::character varying,"desc" varchar(250) default NULL::character varying,updatedate date,startdate date,enddate date,isactive boolean,changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_housetypes.id is \'Идентификатор\'');
         $this->addSql('comment on column fias_gar_housetypes.name is \'Наименование\'');
         $this->addSql('comment on column fias_gar_housetypes.shortname is \'Краткое наименование\'');
@@ -130,7 +128,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_housetypes.enddate is \'Окончание действия записи\'');
         $this->addSql('comment on column fias_gar_housetypes.isactive is \'Статус активности\'');
 
-        $this->addSql('create table fias_gar_addhousetypes(id numeric(19) not null constraint fias_gar_addhousetypes_pkey primary key, name varchar(50)  default NULL::character varying,shortname  varchar(50)  default NULL::character varying,"desc" varchar(250) default NULL::character varying,updatedate date,startdate  date,enddate    date,isactive   boolean)');
+        $this->addSql('create table fias_gar_addhousetypes(id numeric(19) not null constraint fias_gar_addhousetypes_pkey primary key, name varchar(50)  default NULL::character varying,shortname  varchar(50)  default NULL::character varying,"desc" varchar(250) default NULL::character varying,updatedate date,startdate date,enddate date,isactive boolean,changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_addhousetypes.id is \'Идентификатор\'');
         $this->addSql('comment on column fias_gar_addhousetypes.name is \'Наименование\'');
         $this->addSql('comment on column fias_gar_addhousetypes.shortname is \'Краткое наименование\'');
@@ -140,7 +138,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_addhousetypes.enddate is \'Окончание действия записи\'');
         $this->addSql('comment on column fias_gar_addhousetypes.isactive is \'Статус активности\'');
 
-        $this->addSql('create table fias_gar_houses(id numeric(19)  not null constraint fias_gar_houses_pkey primary key,objectid numeric(19),objectguid varchar(36) default NULL::character varying,changeid numeric(19),housenum varchar(50) default NULL::character varying,addnum1 varchar(50) default NULL::character varying,addnum2 varchar(50) default NULL::character varying,housetype integer,addtype1 integer,addtype2 integer,opertypeid integer,previd  numeric(19),nextid   numeric(19),startdate date,enddate   date,updatedate date,isactive  smallint,isactual smallint)');
+        $this->addSql('create table fias_gar_houses(id numeric(19)  not null constraint fias_gar_houses_pkey primary key,objectid numeric(19),objectguid varchar(36) default NULL::character varying,changeid numeric(19),housenum varchar(50) default NULL::character varying,addnum1 varchar(50) default NULL::character varying,addnum2 varchar(50) default NULL::character varying,housetype integer,addtype1 integer,addtype2 integer,opertypeid integer,previd  numeric(19),nextid   numeric(19),startdate date,enddate   date,updatedate date,isactive  smallint,isactual smallint, changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_houses.id is \'Уникальный идентификатор записи. Ключевое поле\'');
         $this->addSql('comment on column fias_gar_houses.objectid is \'Глобальный уникальный идентификатор объекта типа INTEGER\'');
         $this->addSql('comment on column fias_gar_houses.objectguid is \'Глобальный уникальный идентификатор адресного объекта типа UUID\'');
@@ -160,7 +158,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_houses.isactive is \'Признак действующего адресного объекта\'');
         $this->addSql('comment on column fias_gar_houses.isactual is \'Статус актуальности адресного объекта ФИАС\'');
 
-        $this->addSql('create table fias_gar_munhierarchy(id numeric(19)  not null constraint fias_gar_munhierarchy_pkey primary key,objectid numeric(19),parentobjid numeric(19),changeid numeric(19),oktmo varchar(11) default NULL::character varying,previd  numeric(19),nextid   numeric(19),startdate date,enddate   date,updatedate date,isactive  smallint)');
+        $this->addSql('create table fias_gar_munhierarchy(id numeric(19)  not null constraint fias_gar_munhierarchy_pkey primary key,objectid numeric(19),parentobjid numeric(19),changeid numeric(19),oktmo varchar(11) default NULL::character varying,previd  numeric(19),nextid   numeric(19),startdate date,enddate   date,updatedate date,isactive smallint, changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_munhierarchy.id is \'Уникальный идентификатор записи. Ключевое поле\'');
         $this->addSql('comment on column fias_gar_munhierarchy.objectid is \'Глобальный уникальный идентификатор адресного объекта\'');
         $this->addSql('comment on column fias_gar_munhierarchy.parentobjid is \'Идентификатор родительского объекта\'');
@@ -173,7 +171,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_munhierarchy.updatedate is \'Дата внесения (обновления) записи\'');
         $this->addSql('comment on column fias_gar_munhierarchy.isactive is \'Признак действующего адресного объекта\'');
 
-        $this->addSql('create table fias_gar_normativedocs(id numeric(19) not null constraint fias_gar_normativedocs_pkey primary key,name text,date date,number varchar(150) default NULL::character varying,type numeric(10),kind numeric(10),updatedate date,orgname varchar(255) default NULL::character varying,regnum varchar(100) default NULL::character varying,regdate date,accdate date,comment text)');
+        $this->addSql('create table fias_gar_normativedocs(id numeric(19) not null constraint fias_gar_normativedocs_pkey primary key,name text,date date,number varchar(150) default NULL::character varying,type numeric(10),kind numeric(10),updatedate date,orgname varchar(255) default NULL::character varying,regnum varchar(100) default NULL::character varying,regdate date,accdate date,comment text, changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_normativedocs.id is \'Уникальный идентификатор документа\'');
         $this->addSql('comment on column fias_gar_normativedocs.name is \'Наименование документа\'');
         $this->addSql('comment on column fias_gar_normativedocs.date is \'Дата документа\'');
@@ -198,7 +196,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_normativedocstypes.enddate is \'Дата окончания действия записи\'');
 
 
-        $this->addSql('create table fias_gar_objectlevels(level integer not null constraint fias_gar_objectlevels_pkey primary key,name varchar(250) default NULL::character varying,shortname varchar(50) default NULL::character varying,startdate date,enddate   date,updatedate date,isactive  boolean)');
+        $this->addSql('create table fias_gar_objectlevels(level integer not null constraint fias_gar_objectlevels_pkey primary key,name varchar(250) default NULL::character varying,shortname varchar(50) default NULL::character varying,startdate date,enddate date,updatedate date,isactive  boolean,changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_objectlevels.level is \'Уникальный идентификатор записи. Ключевое поле. Номер уровня объекта\'');
         $this->addSql('comment on column fias_gar_objectlevels.name is \'Наименование\'');
         $this->addSql('comment on column fias_gar_objectlevels.shortname is \'Краткое наименование\'');
@@ -207,7 +205,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_objectlevels.updatedate is \'Дата внесения (обновления) записи\'');
         $this->addSql('comment on column fias_gar_objectlevels.isactive is \'Признак действующего адресного объекта\'');
 
-        $this->addSql('create table fias_gar_operationtypes(id integer not null constraint fias_gar_operationtypes_pkey primary key,name varchar(100) default NULL::character varying,shortname varchar(100) default NULL::character varying,"desc" varchar(250) default NULL::character varying,startdate date,enddate   date,updatedate date,isactive  boolean)');
+        $this->addSql('create table fias_gar_operationtypes(id integer not null constraint fias_gar_operationtypes_pkey primary key,name varchar(100) default NULL::character varying,shortname varchar(100) default NULL::character varying,"desc" varchar(250) default NULL::character varying,startdate date,enddate date,updatedate date,isactive boolean,changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_operationtypes.id is \'Идентификатор статуса (ключ)\'');
         $this->addSql('comment on column fias_gar_operationtypes.name is \'Наименование\'');
         $this->addSql('comment on column fias_gar_operationtypes.shortname is \'Краткое наименование\'');
@@ -217,18 +215,73 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_operationtypes.updatedate is \'Дата внесения (обновления) записи\'');
         $this->addSql('comment on column fias_gar_operationtypes.isactive is \'Статус активности\'');
 
-        $this->addSql('create table fias_gar_param(id numeric(19) not null constraint fias_gar_param_pkey primary key,objectid numeric(19) not null,changeid numeric(19),changeidend numeric(19) not null,typeid integer not null,value text not null,startdate date not null,enddate   date not null,updatedate date not null)');
-        $this->addSql('comment on column fias_gar_param.id is \'Идентификатор записи\'');
-        $this->addSql('comment on column fias_gar_param.objectid is \'Глобальный уникальный идентификатор адресного объекта\'');
-        $this->addSql('comment on column fias_gar_param.changeid is \'ID изменившей транзакции\'');
-        $this->addSql('comment on column fias_gar_param.changeidend is \'ID завершившей транзакции\'');
-        $this->addSql('comment on column fias_gar_param.typeid is \'Тип параметра\'');
-        $this->addSql('comment on column fias_gar_param.value is \'Значение параметра\'');
-        $this->addSql('comment on column fias_gar_param.startdate is \'Дата начала действия записи\'');
-        $this->addSql('comment on column fias_gar_param.enddate is \'Дата окончания действия записи\'');
-        $this->addSql('comment on column fias_gar_param.updatedate is \'Дата внесения (обновления) записи\'');
+        $this->addSql('create table fias_gar_addrobjparam(id numeric(19) not null constraint fias_gar_addrobjparam_pkey primary key,objectid numeric(19) not null,changeid numeric(19),changeidend numeric(19) not null,typeid integer not null,value text not null,startdate date not null,enddate   date not null,updatedate date not null,changed_at timestamp(0) default now() not null)');
+        $this->addSql('comment on column fias_gar_addrobjparam.id is \'Идентификатор записи\'');
+        $this->addSql('comment on column fias_gar_addrobjparam.objectid is \'Глобальный уникальный идентификатор адресного объекта\'');
+        $this->addSql('comment on column fias_gar_addrobjparam.changeid is \'ID изменившей транзакции\'');
+        $this->addSql('comment on column fias_gar_addrobjparam.changeidend is \'ID завершившей транзакции\'');
+        $this->addSql('comment on column fias_gar_addrobjparam.typeid is \'Тип параметра\'');
+        $this->addSql('comment on column fias_gar_addrobjparam.value is \'Значение параметра\'');
+        $this->addSql('comment on column fias_gar_addrobjparam.startdate is \'Дата начала действия записи\'');
+        $this->addSql('comment on column fias_gar_addrobjparam.enddate is \'Дата окончания действия записи\'');
+        $this->addSql('comment on column fias_gar_addrobjparam.updatedate is \'Дата внесения (обновления) записи\'');
 
-        $this->addSql('create table fias_gar_paramtypes(id integer not null constraint fias_gar_paramtypes_pkey primary key,name varchar(50) default NULL::character varying,code varchar(50) default NULL::character varying,"desc" varchar(120) default NULL::character varying,startdate date,enddate   date,updatedate date,isactive  boolean)');
+        $this->addSql('create table fias_gar_apartmentsparam(id numeric(19) not null constraint fias_gar_apartmentsparam_pkey primary key,objectid numeric(19) not null,changeid numeric(19),changeidend numeric(19) not null,typeid integer not null,value text not null,startdate date not null,enddate   date not null,updatedate date not null,changed_at timestamp(0) default now() not null)');
+        $this->addSql('comment on column fias_gar_apartmentsparam.id is \'Идентификатор записи\'');
+        $this->addSql('comment on column fias_gar_apartmentsparam.objectid is \'Глобальный уникальный идентификатор адресного объекта\'');
+        $this->addSql('comment on column fias_gar_apartmentsparam.changeid is \'ID изменившей транзакции\'');
+        $this->addSql('comment on column fias_gar_apartmentsparam.changeidend is \'ID завершившей транзакции\'');
+        $this->addSql('comment on column fias_gar_apartmentsparam.typeid is \'Тип параметра\'');
+        $this->addSql('comment on column fias_gar_apartmentsparam.value is \'Значение параметра\'');
+        $this->addSql('comment on column fias_gar_apartmentsparam.startdate is \'Дата начала действия записи\'');
+        $this->addSql('comment on column fias_gar_apartmentsparam.enddate is \'Дата окончания действия записи\'');
+        $this->addSql('comment on column fias_gar_apartmentsparam.updatedate is \'Дата внесения (обновления) записи\'');
+
+        $this->addSql('create table fias_gar_carplacesparam(id numeric(19) not null constraint fias_gar_carplacesparam_pkey primary key,objectid numeric(19) not null,changeid numeric(19),changeidend numeric(19) not null,typeid integer not null,value text not null,startdate date not null,enddate   date not null,updatedate date not null,changed_at timestamp(0) default now() not null)');
+        $this->addSql('comment on column fias_gar_carplacesparam.id is \'Идентификатор записи\'');
+        $this->addSql('comment on column fias_gar_carplacesparam.objectid is \'Глобальный уникальный идентификатор адресного объекта\'');
+        $this->addSql('comment on column fias_gar_carplacesparam.changeid is \'ID изменившей транзакции\'');
+        $this->addSql('comment on column fias_gar_carplacesparam.changeidend is \'ID завершившей транзакции\'');
+        $this->addSql('comment on column fias_gar_carplacesparam.typeid is \'Тип параметра\'');
+        $this->addSql('comment on column fias_gar_carplacesparam.value is \'Значение параметра\'');
+        $this->addSql('comment on column fias_gar_carplacesparam.startdate is \'Дата начала действия записи\'');
+        $this->addSql('comment on column fias_gar_carplacesparam.enddate is \'Дата окончания действия записи\'');
+        $this->addSql('comment on column fias_gar_carplacesparam.updatedate is \'Дата внесения (обновления) записи\'');
+
+        $this->addSql('create table fias_gar_housesparam(id numeric(19) not null constraint fias_gar_housesparam_pkey primary key,objectid numeric(19) not null,changeid numeric(19),changeidend numeric(19) not null,typeid integer not null,value text not null,startdate date not null,enddate   date not null,updatedate date not null,changed_at timestamp(0) default now() not null)');
+        $this->addSql('comment on column fias_gar_housesparam.id is \'Идентификатор записи\'');
+        $this->addSql('comment on column fias_gar_housesparam.objectid is \'Глобальный уникальный идентификатор адресного объекта\'');
+        $this->addSql('comment on column fias_gar_housesparam.changeid is \'ID изменившей транзакции\'');
+        $this->addSql('comment on column fias_gar_housesparam.changeidend is \'ID завершившей транзакции\'');
+        $this->addSql('comment on column fias_gar_housesparam.typeid is \'Тип параметра\'');
+        $this->addSql('comment on column fias_gar_housesparam.value is \'Значение параметра\'');
+        $this->addSql('comment on column fias_gar_housesparam.startdate is \'Дата начала действия записи\'');
+        $this->addSql('comment on column fias_gar_housesparam.enddate is \'Дата окончания действия записи\'');
+        $this->addSql('comment on column fias_gar_housesparam.updatedate is \'Дата внесения (обновления) записи\'');
+
+        $this->addSql('create table fias_gar_roomsparam(id numeric(19) not null constraint fias_gar_roomsparam_pkey primary key,objectid numeric(19) not null,changeid numeric(19),changeidend numeric(19) not null,typeid integer not null,value text not null,startdate date not null,enddate   date not null,updatedate date not null,changed_at timestamp(0) default now() not null)');
+        $this->addSql('comment on column fias_gar_roomsparam.id is \'Идентификатор записи\'');
+        $this->addSql('comment on column fias_gar_roomsparam.objectid is \'Глобальный уникальный идентификатор адресного объекта\'');
+        $this->addSql('comment on column fias_gar_roomsparam.changeid is \'ID изменившей транзакции\'');
+        $this->addSql('comment on column fias_gar_roomsparam.changeidend is \'ID завершившей транзакции\'');
+        $this->addSql('comment on column fias_gar_roomsparam.typeid is \'Тип параметра\'');
+        $this->addSql('comment on column fias_gar_roomsparam.value is \'Значение параметра\'');
+        $this->addSql('comment on column fias_gar_roomsparam.startdate is \'Дата начала действия записи\'');
+        $this->addSql('comment on column fias_gar_roomsparam.enddate is \'Дата окончания действия записи\'');
+        $this->addSql('comment on column fias_gar_roomsparam.updatedate is \'Дата внесения (обновления) записи\'');
+
+        $this->addSql('create table fias_gar_steadsparam(id numeric(19) not null constraint fias_gar_steadsparam_pkey primary key,objectid numeric(19) not null,changeid numeric(19),changeidend numeric(19) not null,typeid integer not null,value text not null,startdate date not null,enddate   date not null,updatedate date not null,changed_at timestamp(0) default now() not null)');
+        $this->addSql('comment on column fias_gar_steadsparam.id is \'Идентификатор записи\'');
+        $this->addSql('comment on column fias_gar_steadsparam.objectid is \'Глобальный уникальный идентификатор адресного объекта\'');
+        $this->addSql('comment on column fias_gar_steadsparam.changeid is \'ID изменившей транзакции\'');
+        $this->addSql('comment on column fias_gar_steadsparam.changeidend is \'ID завершившей транзакции\'');
+        $this->addSql('comment on column fias_gar_steadsparam.typeid is \'Тип параметра\'');
+        $this->addSql('comment on column fias_gar_steadsparam.value is \'Значение параметра\'');
+        $this->addSql('comment on column fias_gar_steadsparam.startdate is \'Дата начала действия записи\'');
+        $this->addSql('comment on column fias_gar_steadsparam.enddate is \'Дата окончания действия записи\'');
+        $this->addSql('comment on column fias_gar_steadsparam.updatedate is \'Дата внесения (обновления) записи\'');
+
+        $this->addSql('create table fias_gar_paramtypes(id integer not null constraint fias_gar_paramtypes_pkey primary key,name varchar(50) default NULL::character varying,code varchar(50) default NULL::character varying,"desc" varchar(120) default NULL::character varying,startdate date,enddate   date,updatedate date,isactive  boolean,changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_paramtypes.id is \'Идентификатор записи\'');
         $this->addSql('comment on column fias_gar_paramtypes.name is \'Наименование\'');
         $this->addSql('comment on column fias_gar_paramtypes.code is \'Краткое наименование\'');
@@ -238,7 +291,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_paramtypes.updatedate is \'Дата внесения (обновления) записи\'');
         $this->addSql('comment on column fias_gar_paramtypes.isactive is \'Статус активности\'');
 
-        $this->addSql('create table fias_gar_reestrobjects(objectid numeric(19) not null constraint fias_gar_reestrobjects_pkey primary key,createdate date,changeid numeric(19),levelid numeric(10),updatedate date,objectguid varchar(36) default NULL::character varying,isactive  smallint)');
+        $this->addSql('create table fias_gar_reestrobjects(objectid numeric(19) not null constraint fias_gar_reestrobjects_pkey primary key,createdate date,changeid numeric(19),levelid numeric(10),updatedate date,objectguid varchar(36) default NULL::character varying,isactive smallint, changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_reestrobjects.objectid is \'Уникальный идентификатор объекта\'');
         $this->addSql('comment on column fias_gar_reestrobjects.createdate is \'Дата создания\'');
         $this->addSql('comment on column fias_gar_reestrobjects.changeid is \'ID изменившей транзакции\'');
@@ -247,7 +300,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_reestrobjects.objectguid is \'GUID объекта\'');
         $this->addSql('comment on column fias_gar_reestrobjects.isactive is \'Признак действующего объекта\'');
 
-        $this->addSql('create table fias_gar_roomtypes(id numeric(10) not null constraint fias_gar_roomtypes_pkey primary key,name varchar(100) default NULL::character varying,shortname varchar(50) default NULL::character varying,"desc" varchar(250) default NULL::character varying,startdate date,enddate   date,updatedate date,isactive  boolean)');
+        $this->addSql('create table fias_gar_roomtypes(id numeric(10) not null constraint fias_gar_roomtypes_pkey primary key,name varchar(100) default NULL::character varying,shortname varchar(50) default NULL::character varying,"desc" varchar(250) default NULL::character varying,startdate date,enddate date,updatedate date,isactive boolean, changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_roomtypes.id is \'Идентификатор типа (ключ)\'');
         $this->addSql('comment on column fias_gar_roomtypes.name is \'Наименование\'');
         $this->addSql('comment on column fias_gar_roomtypes.shortname is \'Краткое наименование\'');
@@ -257,7 +310,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_roomtypes.updatedate is \'Дата внесения (обновления) записи\'');
         $this->addSql('comment on column fias_gar_roomtypes.isactive is \'Статус активности\'');
 
-        $this->addSql('create table fias_gar_rooms(id numeric(19) not null constraint fias_gar_rooms_pkey primary key,objectid numeric(19),objectguid varchar(36) default NULL::character varying,changeid numeric(19),number varchar(50) default NULL::character varying,roomtype integer,opertypeid integer,previd  numeric(19),nextid   numeric(19),startdate date,enddate   date,updatedate date,isactive  smallint,isactual smallint)');
+        $this->addSql('create table fias_gar_rooms(id numeric(19) not null constraint fias_gar_rooms_pkey primary key,objectid numeric(19),objectguid varchar(36) default NULL::character varying,changeid numeric(19),number varchar(50) default NULL::character varying,roomtype integer,opertypeid integer,previd  numeric(19),nextid numeric(19),startdate date,enddate date,updatedate date,isactive  smallint,isactual smallint,changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_rooms.id is \'Уникальный идентификатор записи. Ключевое поле\'');
         $this->addSql('comment on column fias_gar_rooms.objectid is \'Глобальный уникальный идентификатор объекта типа INTEGER\'');
         $this->addSql('comment on column fias_gar_rooms.objectguid is \'Глобальный уникальный идентификатор адресного объекта типа UUID\'');
@@ -273,7 +326,7 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('comment on column fias_gar_rooms.isactive is \'Признак действующего адресного объекта\'');
         $this->addSql('comment on column fias_gar_rooms.isactual is \'Статус актуальности адресного объекта ФИАС\'');
 
-        $this->addSql('create table fias_gar_steads(id numeric(19) not null constraint fias_gar_steads_pkey primary key,objectid numeric(19),objectguid varchar(36) default NULL::character varying,changeid numeric(19),number varchar(250) default NULL::character varying,opertypeid integer,previd  numeric(19),nextid   numeric(19),startdate date,enddate   date,updatedate date,isactive  smallint,isactual smallint)');
+        $this->addSql('create table fias_gar_steads(id numeric(19) not null constraint fias_gar_steads_pkey primary key,objectid numeric(19),objectguid varchar(36) default NULL::character varying,changeid numeric(19),number varchar(250) default NULL::character varying,opertypeid integer,previd  numeric(19),nextid   numeric(19),startdate date,enddate   date,updatedate date,isactive  smallint,isactual smallint, changed_at timestamp(0) default now() not null)');
         $this->addSql('comment on column fias_gar_steads.id is \'Уникальный идентификатор записи. Ключевое поле\'');
         $this->addSql('comment on column fias_gar_steads.objectid is \'Глобальный уникальный идентификатор объекта типа INTEGER\'');
         $this->addSql('comment on column fias_gar_steads.objectguid is \'Глобальный уникальный идентификатор адресного объекта типа UUID\'');
@@ -300,7 +353,12 @@ final class Version20210223153349 extends AbstractMigration
         $this->addSql('DROP TABLE fias_gar_roomtypes');
         $this->addSql('DROP TABLE fias_gar_reestrobjects');
         $this->addSql('DROP TABLE fias_gar_paramtypes');
-        $this->addSql('DROP TABLE fias_gar_param');
+        $this->addSql('DROP TABLE fias_gar_addrobjparam');
+        $this->addSql('DROP TABLE fias_gar_apartmentsparam');
+        $this->addSql('DROP TABLE fias_gar_carplacesparam');
+        $this->addSql('DROP TABLE fias_gar_housesparam');
+        $this->addSql('DROP TABLE fias_gar_roomsparam');
+        $this->addSql('DROP TABLE fias_gar_steadsparam');
         $this->addSql('DROP TABLE fias_gar_operationtypes');
         $this->addSql('DROP TABLE fias_gar_objectlevels');
         $this->addSql('DROP TABLE fias_gar_normativedocstypes');
