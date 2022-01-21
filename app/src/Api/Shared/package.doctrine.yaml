@@ -3,6 +3,8 @@ doctrine:
         types:
             ext_addrobj_point_id: 'App\Api\Shared\Domain\ExtAddrobj\Entity\Point\IdType'
             ext_addrobj_synonym_id: 'App\Api\Shared\Domain\ExtAddrobj\Entity\Synonym\IdType'
+            ext_add_house_type_id: 'App\Api\Shared\Domain\ExtAddHouseType\Entity\IdType'
+            ext_addrobj_types_type_id: 'App\Api\Shared\Domain\ExtAddrobjType\Entity\IdType'
 
     orm:
         mappings:
@@ -16,3 +18,13 @@ doctrine:
                 type: annotation
                 dir: '%kernel.project_dir%/src/Api/Shared/Domain/ExtHouse/Entity'
                 prefix: 'App\Api\Shared\Domain\ExtHouse\Entity'
+            App\Api\Shared\Domain\ExtAddHouseType\Entity:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Api/Shared/Domain/ExtAddHouseType/Entity'
+                prefix: 'App\Api\Shared\Domain\ExtAddHouseType\Entity'
+            App\Api\Shared\Domain\ExtAddrobjType\Entity:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Api/Shared/Domain/ExtAddrobjType/Entity'
+                prefix: 'App\Api\Shared\Domain\ExtAddrobjType\Entity'
