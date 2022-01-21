@@ -10,7 +10,7 @@ use Stringable;
 
 abstract class UuidValueObject implements Stringable
 {
-    private string $value;
+    protected string $value;
 
     public function __construct(string $value)
     {

@@ -41,16 +41,16 @@ class Version
     private bool $hasDeltaXml;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="datetime_immutable", nullable=true, options={"default" : null})
      */
     private ?DateTimeImmutable $fullLoadedAt;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="datetime_immutable", nullable=true, options={"default" : null})
      */
     private ?DateTimeImmutable $deltaLoadedAt;
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default" : false})
      */
     private bool $covered;
 
