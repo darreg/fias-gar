@@ -9,16 +9,16 @@ use Stringable;
 
 abstract class LatLonValueObject implements Stringable
 {
-    public const DECIMALS = 6;
+    protected const DECIMALS = 6;
 
-    private const LATITUDE_MAX = 90;
-    private const LATITUDE_MIN = -90;
-    private const LONGITUDE_MAX = 180;
-    private const LONGITUDE_MIN = -180;
+    protected const LATITUDE_MAX = 90;
+    protected const LATITUDE_MIN = -90;
+    protected const LONGITUDE_MAX = 180;
+    protected const LONGITUDE_MIN = -180;
 
-    private float $latitude;
+    protected float $latitude;
 
-    private float $longitude;
+    protected float $longitude;
 
     public function __construct(float $latitude, float $longitude)
     {

@@ -56,4 +56,14 @@ final class LatLon extends LatLonValueObject
         [$latitude, $longitude] = parent::fromArrayRaw($latLon);
         return new self($latitude, $longitude);
     }
+
+    public function getPrecision(): ?int
+    {
+        return $this->precision;
+    }
+
+    public function getZoom(): ?int
+    {
+        return $this->zoom;
+    }
 }
