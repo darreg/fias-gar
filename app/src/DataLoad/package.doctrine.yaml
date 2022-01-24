@@ -6,3 +6,8 @@ doctrine:
                 type: annotation
                 dir: '%kernel.project_dir%/src/DataLoad/Domain/Version/Entity'
                 prefix: 'App\DataLoad\Domain\Version\Entity'
+           App\DataLoad\Domain\Counter\Entity:
+             is_bundle: false
+             type: annotation
+             dir: '%kernel.project_dir%/src/DataLoad/Domain/Counter/Entity'
+             prefix: 'App\DataLoad\Domain\Counter\Entity'
