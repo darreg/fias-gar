@@ -31,7 +31,7 @@ final class RefreshViewsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('fias:refresh_view')
+            ->setName('fias:refresh_views')
             ->setDescription('Refresh materialized views');
     }
 
@@ -40,14 +40,23 @@ final class RefreshViewsCommand extends Command
         $this->showStartMessage($output);
 
         try {
+            $output->writeln('- v_addrobj_adm');
             $this->viewRefresher->refresh('v_addrobj_adm');
+            $output->writeln('- v_addrobj_mun');
             $this->viewRefresher->refresh('v_addrobj_mun');
+            $output->writeln('- v_addrobj_plain_adm');
             $this->viewRefresher->refresh('v_addrobj_plain_adm');
+            $output->writeln('- v_addrobj_plain_mun');
             $this->viewRefresher->refresh('v_addrobj_plain_mun');
+            $output->writeln('- v_addrobj_names');
             $this->viewRefresher->refresh('v_addrobj_names');
+            $output->writeln('- v_addrobj_address_strings');
             $this->viewRefresher->refresh('v_addrobj_address_strings');
+            $output->writeln('- v_search_types');
             $this->viewRefresher->refresh('v_search_types');
+            $output->writeln('- v_search_addrobjects');
             $this->viewRefresher->refresh('v_search_addrobjects');
+            $output->writeln('- v_search_houses');
             $this->viewRefresher->refresh('v_search_houses');
         } catch (Exception $e) {
             $this->logger->error(
