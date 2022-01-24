@@ -9,6 +9,7 @@ use App\DataLoad\Application\UseCase\ImportXmlFiles\Command as ImportCommand;
 use App\DataLoad\Application\UseCase\MarkLoaded\Command as MarkLoadedCommand;
 use App\DataLoad\Application\UseCase\NextVersion\Query as NextVersionQuery;
 use App\DataLoad\Application\UseCase\NextVersion\Response as NextVersionResponse;
+use App\DataLoad\Domain\Counter\Service\IncompleteCounterFinderInterface;
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Query\QueryBusInterface;
@@ -28,6 +29,7 @@ final class DeltaImportCommand extends Command
      * @param list<string> $importTokens
      */
     private array $importTokens;
+    private IncompleteCounterFinderInterface $incompleteCounterFinder;
 
     /**
      * @param list<string> $importTokens
@@ -35,6 +37,7 @@ final class DeltaImportCommand extends Command
     public function __construct(
         CommandBusInterface $commandBus,
         QueryBusInterface $queryBus,
+        IncompleteCounterFinderInterface $incompleteCounterFinder,
         LoggerInterface $deltaImportLogger,
         array $importTokens
     ) {
@@ -43,6 +46,7 @@ final class DeltaImportCommand extends Command
         $this->queryBus = $queryBus;
         $this->logger = $deltaImportLogger;
         $this->importTokens = $importTokens;
+        $this->incompleteCounterFinder = $incompleteCounterFinder;
     }
 
     protected function configure(): void
@@ -62,10 +66,15 @@ final class DeltaImportCommand extends Command
             return Command::FAILURE;
         }
 
+        if ($this->incompleteCounterFinder->check()) {
+            $output->writeln('<fg=red>There are incomplete imports. Wait for them to complete</>');
+            return Command::FAILURE;
+        }
+
         $this->showStartMessage($output, $versionId);
 
         try {
-            $output->writeln('- Downloading zip');
+            $output->writeln('- Downloading');
             $this->commandBus->dispatch(new DownloadCommand($versionId, Version::TYPE_DELTA));
 
             $output->writeln('- Filling the xml import queue');

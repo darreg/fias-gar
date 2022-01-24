@@ -61,7 +61,7 @@ class CounterRedisRepository implements CounterRepositoryInterface
 
     public function findAll(): array
     {
-        $keys = $this->redis->keys(Counter::KEY_PREFIX . ':');
+        $keys = $this->redis->keys(Counter::KEY_PREFIX . ':*');
 
         $counters = [];
         foreach ($keys as $key) {
