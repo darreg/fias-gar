@@ -23,32 +23,38 @@ final class Version20220122134308 extends AbstractMigration
             create materialized view v_search_types as
             SELECT types.level,
                    types.short,
-                   types.name
+                   types.name,
+                   max(types.changed_at) as changed_at
             FROM (SELECT fga.level,
                          lower(btrim(regexp_replace(regexp_replace(fga.shortname::text, '[^-а-я0-9]'::text, ' '::text, 'gi'::text),
                                                     '\s+'::text, ' '::text, 'gi'::text))) AS short,
-                         lower(btrim(fga.name::text))                                     AS name
+                         lower(btrim(fga.name::text)) AS name,
+                         fga.changed_at
                   FROM fias_gar_addrobjtypes fga
                   WHERE lower(btrim(fga.name::text)) <> 'чувашия'::text
                   UNION
                   SELECT fga.level,
                          lower(btrim(regexp_replace(eah.name::text, '[^а-я0-9-]'::text, ' '::text, 'gi'::text))) AS short,
-                         lower(btrim(fga.name::text))                                                            AS name
+                         lower(btrim(fga.name::text)) AS name,
+                         greatest(eah.updated_at, fga.changed_at) AS changed_at
                   FROM ext_addrobj_types eah
                            LEFT JOIN fias_gar_addrobjtypes fga ON fga.id = eah.type_id::numeric
                   UNION
                   SELECT 10                                                                                           AS level,
                          lower(btrim(regexp_replace(fgh.shortname::text, '[^а-я0-9-]'::text, ' '::text, 'gi'::text))) AS short,
-                         lower(btrim(fgh.name::text))                                                                 AS name
+                         lower(btrim(fgh.name::text)) AS name,
+                         fgh.changed_at
                   FROM fias_gar_housetypes fgh
                   UNION
                   SELECT 10                                                                                      AS level,
                          lower(btrim(regexp_replace(eah.name::text, '[^а-я0-9-]'::text, ' '::text, 'gi'::text))) AS short,
-                         lower(btrim(fgat.name::text))                                                           AS name
+                         lower(btrim(fgat.name::text)) AS name,
+                         greatest(eah.updated_at, fgat.changed_at) AS changed_at
                   FROM ext_add_house_types eah
                            LEFT JOIN fias_gar_addhousetypes fgat ON fgat.id = eah.type_id::numeric) types
             GROUP BY types.level, types.short, types.name
-            ORDER BY (length(types.short)) DESC;
+            ORDER BY (length(types.short)) DESC
+            WITH NO DATA
         SQL);
 
 
@@ -58,15 +64,18 @@ final class Version20220122134308 extends AbstractMigration
                    va.formalname AS name,
                    va.socrname   AS typename,
                    va.shortname  AS stypename,
-                   va.aoguid     AS guid
+                   va.aoguid     AS guid,
+                   va.changed_at
             FROM v_addrobj_adm va
             UNION
             SELECT va.objectid,
                    va.formalname AS name,
                    va.socrname   AS typename,
                    va.shortname  AS stypename,
-                   va.aoguid     AS guid
-            FROM v_addrobj_mun va;
+                   va.aoguid     AS guid,
+                   va.changed_at
+            FROM v_addrobj_mun va
+            WITH NO DATA
         SQL);
 
 
@@ -153,7 +162,8 @@ final class Version20220122134308 extends AbstractMigration
                        when appppp.aolevel=8 then appppp.objectid
                        when apppppp.aolevel=8 then apppppp.objectid
                        when appppppp.aolevel=8 then appppppp.objectid
-                       end as level8
+                       end as level8,
+                       greatest(a.changed_at, ap.changed_at, app.changed_at, appp.changed_at, apppp.changed_at, appppp.changed_at, apppppp.changed_at, appppppp.changed_at) AS changed_at                   
             from v_addrobj_adm a
                      left join v_addrobj_adm ap on ap.objectid = a.parentobjid
                      left join v_addrobj_adm app on app.objectid = ap.parentobjid
@@ -162,7 +172,7 @@ final class Version20220122134308 extends AbstractMigration
                      left join v_addrobj_adm appppp on appppp.objectid = apppp.parentobjid
                      left join v_addrobj_adm apppppp on apppppp.objectid = appppp.parentobjid
                      left join v_addrobj_adm appppppp on appppppp.objectid = apppppp.parentobjid
-            ;
+            WITH NO DATA            
         SQL);
         $this->addSql('create index v_addrobj_plain_adm__objectid__ind on v_addrobj_plain_adm (objectid)');
 
@@ -249,7 +259,8 @@ final class Version20220122134308 extends AbstractMigration
                        when appppp.aolevel=8 then appppp.objectid
                        when apppppp.aolevel=8 then apppppp.objectid
                        when appppppp.aolevel=8 then appppppp.objectid
-                       end as level8
+                       end as level8,
+                       greatest(a.changed_at, ap.changed_at, app.changed_at, appp.changed_at, apppp.changed_at, appppp.changed_at, apppppp.changed_at, appppppp.changed_at) AS changed_at
             from v_addrobj_mun a
                      left join v_addrobj_mun ap on ap.objectid = a.parentobjid
                      left join v_addrobj_mun app on app.objectid = ap.parentobjid
@@ -258,24 +269,27 @@ final class Version20220122134308 extends AbstractMigration
                      left join v_addrobj_mun appppp on appppp.objectid = apppp.parentobjid
                      left join v_addrobj_mun apppppp on apppppp.objectid = appppp.parentobjid
                      left join v_addrobj_mun appppppp on appppppp.objectid = apppppp.parentobjid
-            ;
+            WITH NO DATA            
         SQL);
         $this->addSql('create index v_addrobj_plain_mun__objectid__ind on v_addrobj_plain_mun (objectid)');
 
 
         $this->addSql(<<<SQL
             create materialized view v_addrobj_address_strings as
-            SELECT 1                                            AS type,
+            SELECT 1 AS type,
                    va.objectid,
                    va.aolevel,
-                   address_string(va.objectid) AS address_string
+                   address_string(va.objectid) AS address_string,
+                   va.changed_at
             FROM v_addrobj_adm va
             UNION
-            SELECT 2                                                AS type,
+            SELECT 2 AS type,
                    va.objectid,
                    va.aolevel,
-                   address_string_mun(va.objectid) AS address_string
-            FROM v_addrobj_mun va;
+                   address_string_mun(va.objectid) AS address_string,
+                   va.changed_at
+            FROM v_addrobj_mun va
+            WITH NO DATA
         SQL);
     }
 

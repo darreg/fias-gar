@@ -255,11 +255,11 @@ final class Version20220122115317 extends AbstractMigration
                    pao.typename                                  AS parentshortname,
                    lower(patp.name::text)                        AS parentsocrname,
                    pao.level::integer                            AS parentaolevel,
-                   round(random() * 100000000::double precision) AS random,
-                   0                                             AS priority
+                   greatest(ao.changed_at, hr.changed_at, pao.changed_at, atp.changed_at, patp.changed_at) AS changed_at
             FROM fias_gar_addrobj ao
                      JOIN (SELECT mhr.objectid,
-                                  min(mhr.parentobjid) AS parentobjid
+                                  max(mhr.parentobjid) AS parentobjid,
+                                  max(mhr.changed_at) as changed_at
                            FROM fias_gar_munhierarchy mhr
                            WHERE mhr.isactive = 1
                            GROUP BY mhr.objectid) hr ON hr.objectid = ao.objectid
@@ -269,7 +269,8 @@ final class Version20220122115317 extends AbstractMigration
                      LEFT JOIN fias_gar_addrobjtypes patp
                                ON patp.isactive = true AND patp.level = pao.level::integer AND patp.shortname::text = pao.typename::text
             WHERE ao.isactive = 1
-              AND ao.isactual = 1;
+              AND ao.isactual = 1
+            WITH NO DATA
         SQL);
         $this->addSql('create index v_addrobj_mun__aolevel_formalname_objectid__ind on v_addrobj_mun (aolevel, formalname, objectid)');
         $this->addSql('create index v_addrobj_mun__objectid__ind on v_addrobj_mun (objectid)');
@@ -291,10 +292,15 @@ final class Version20220122115317 extends AbstractMigration
                    pao.name                                      AS parentformalname,
                    pao.typename                                  AS parentshortname,
                    lower(patp.name::text)                        AS parentsocrname,
-                   round(random() * 100000000::double precision) AS random,
-                   0                                             AS priority
+                   pao.level::integer                            AS parentaolevel,
+                   greatest(ao.changed_at, hr.changed_at, pao.changed_at, atp.changed_at, patp.changed_at) AS changed_at
             FROM fias_gar_addrobj ao
-                     JOIN fias_gar_admhierarchy hr ON hr.isactive = 1 AND hr.objectid = ao.objectid
+                     JOIN (SELECT ahr.objectid,
+                                  max(ahr.parentobjid) AS parentobjid,
+                                  max(ahr.changed_at) as changed_at
+                           FROM fias_gar_admhierarchy ahr
+                           WHERE ahr.isactive = 1
+                           GROUP BY ahr.objectid) hr ON hr.objectid = ao.objectid
                      LEFT JOIN fias_gar_addrobj pao ON pao.isactive = 1 AND pao.isactual = 1 AND pao.objectid = hr.parentobjid
                      LEFT JOIN fias_gar_addrobjtypes atp
                                ON atp.isactive = true AND atp.level = ao.level::integer AND atp.shortname::text = ao.typename::text
@@ -302,6 +308,7 @@ final class Version20220122115317 extends AbstractMigration
                                ON patp.isactive = true AND patp.level = pao.level::integer AND patp.shortname::text = pao.typename::text
             WHERE ao.isactive = 1
               AND ao.isactual = 1
+            WITH NO DATA
         SQL);
         $this->addSql('create index v_addrobj_adm__aolevel_formalname_objectid__ind on v_addrobj_adm (aolevel, formalname, objectid)');
         $this->addSql('create index v_addrobj_adm__objectid__ind on v_addrobj_adm (objectid)');
