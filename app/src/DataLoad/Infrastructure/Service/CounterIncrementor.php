@@ -23,7 +23,13 @@ class CounterIncrementor implements CounterIncrementorInterface
     public function inc(string $type, string $versionId, string $fieldName): void
     {
         $key = Counter::buildKey($type, $versionId);
+
+        $createdAt = $this->redis->hGet($key, Counter::FIELD_CREATED_AT);
+
         $this->redis->multi();
+        if (!$createdAt) {
+            $this->redis->hSet($key, Counter::FIELD_CREATED_AT, (string)time());
+        }
         $this->redis->hIncrBy($key, $fieldName, 1);
         $this->redis->hSet($key, Counter::FIELD_UPDATED_AT, (string)time());
         $this->redis->exec();

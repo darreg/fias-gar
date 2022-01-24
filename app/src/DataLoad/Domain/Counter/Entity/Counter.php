@@ -9,7 +9,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="counter")
+ * @ORM\Table(name="import_counter")
  * @ORM\Entity
  */
 class Counter
@@ -133,6 +133,11 @@ class Counter
     public function getKey(): string
     {
         return self::buildKey($this->type, $this->versionId);
+    }
+
+    public function isFinished(): bool
+    {
+        return ($this->saveSuccessNum + $this->saveErrorNum + $this->parseErrorNum) >= $this->taskNum;
     }
 
     public static function buildKey(string $type, string $versionId): string
