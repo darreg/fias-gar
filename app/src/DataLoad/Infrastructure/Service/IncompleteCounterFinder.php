@@ -24,7 +24,7 @@ class IncompleteCounterFinder implements IncompleteCounterFinderInterface
     {
         $incompleteCounters = [];
         $counters = $this->counterRepository->findAll();
-        foreach($counters as $counter) {
+        foreach ($counters as $counter) {
             if ($counter->isFinished()) {
                 continue;
             }
