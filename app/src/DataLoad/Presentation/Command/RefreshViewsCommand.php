@@ -24,7 +24,7 @@ final class RefreshViewsCommand extends Command
         LoggerInterface $deltaImportLogger
     ) {
         parent::__construct();
-        $this->viewRefresher = $viewRefresher;        
+        $this->viewRefresher = $viewRefresher;
         $this->logger = $deltaImportLogger;
     }
 
@@ -40,7 +40,6 @@ final class RefreshViewsCommand extends Command
         $this->showStartMessage($output);
 
         try {
-
             $this->viewRefresher->refresh('v_addrobj_adm');
             $this->viewRefresher->refresh('v_addrobj_mun');
             $this->viewRefresher->refresh('v_addrobj_plain_adm');
@@ -50,9 +49,9 @@ final class RefreshViewsCommand extends Command
             $this->viewRefresher->refresh('v_search_types');
             $this->viewRefresher->refresh('v_search_addrobjects');
             $this->viewRefresher->refresh('v_search_houses');
-            
         } catch (Exception $e) {
-            $this->logger->error($e->getMessage() . ' ; ' . $e->getFile() . ' ; ' . $e->getLine(),
+            $this->logger->error(
+                $e->getMessage() . ' ; ' . $e->getFile() . ' ; ' . $e->getLine(),
                 [$e->getPrevious()]
             );
             return Command::FAILURE;
@@ -62,7 +61,7 @@ final class RefreshViewsCommand extends Command
 
         return Command::SUCCESS;
     }
-    
+
     private function showStartMessage(OutputInterface $output): void
     {
         $output->writeln('=====');
