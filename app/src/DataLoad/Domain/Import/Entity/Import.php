@@ -17,6 +17,7 @@ class Import
     public const KEY_PREFIX = 'import';
     public const FIELD_CREATED_AT = 'createdAt';
     public const FIELD_UPDATED_AT = 'updatedAt';
+    public const FIELD_VIEWS_REFRESHED = 'viewsRefreshed';
 
     public const COUNTER_FIELD_TASK_NUM = 'taskNum';
     public const COUNTER_FIELD_PARSE_ERROR_NUM = 'parseErrorNum';
@@ -55,6 +56,10 @@ class Import
      */
     private int $saveSuccessNum;
     /**
+     * @ORM\Column(type="boolean", options={"default" : false})
+     */
+    private bool $viewsRefreshed;
+    /**
      * @ORM\Column(type="datetime_immutable")
      */
     private DateTimeImmutable $createdAt;
@@ -71,6 +76,7 @@ class Import
         int $parseSuccessNum = 0,
         int $saveErrorNum = 0,
         int $saveSuccessNum = 0,
+        bool $viewsRefreshed = false,
         DateTimeImmutable $createdAt = new DateTimeImmutable(),
         DateTimeImmutable $updatedAt = new DateTimeImmutable()
     ) {
@@ -81,6 +87,7 @@ class Import
         $this->parseSuccessNum = $parseSuccessNum;
         $this->saveErrorNum = $saveErrorNum;
         $this->saveSuccessNum = $saveSuccessNum;
+        $this->viewsRefreshed = $viewsRefreshed;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
     }
@@ -138,6 +145,11 @@ class Import
     public function isFinished(): bool
     {
         return ($this->saveSuccessNum + $this->saveErrorNum + $this->parseErrorNum) >= $this->taskNum;
+    }
+
+    public function isViewsRefreshed(): bool
+    {
+        return $this->viewsRefreshed;
     }
 
     public static function buildKey(string $type, string $versionId): string
