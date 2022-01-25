@@ -7,6 +7,7 @@ namespace App\DataLoad\Infrastructure\Repository;
 use App\DataLoad\Domain\Import\Entity\Import;
 use App\DataLoad\Domain\Import\ReadModel\ImportRow;
 use App\DataLoad\Domain\Import\Repository\ImportFetcherInterface;
+use DateTimeImmutable;
 use Redis;
 
 class ImportRedisFetcher implements ImportFetcherInterface
@@ -87,9 +88,26 @@ class ImportRedisFetcher implements ImportFetcherInterface
         return $completedImports;
     }
 
-    public function isIncompleteExists(): bool
+    /**
+     * @return list<ImportRow>
+     */
+    public function findCompletedOlderThan(DateTimeImmutable $dateTime): array
     {
+        $olderImports = [];
         $imports = $this->findCompleted();
+        foreach ($imports as $import) {
+            if ($import->updatedAt->getTimestamp() > $dateTime->getTimestamp()) {
+                continue;
+            }
+            $olderImports[] = $import;
+        }
+
+        return $olderImports;
+    }
+
+    public function isUncompletedExists(): bool
+    {
+        $imports = $this->findUncompleted();
         return \count($imports) > 0;
     }
 }

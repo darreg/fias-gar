@@ -13,8 +13,8 @@ use Redis;
 
 class ImportRedisRepository implements ImportRepositoryInterface
 {
-    private const TRUE = 'true';
-    private const FALSE = 'false';
+    public const TRUE = 'true';
+    public const FALSE = 'false';
 
     private Redis $redis;
 
