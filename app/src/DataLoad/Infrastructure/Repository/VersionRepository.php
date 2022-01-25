@@ -43,15 +43,6 @@ final class VersionRepository implements VersionRepositoryInterface
         return $version;
     }
 
-    /**
-     * @return array<int, Version>
-     * @psalm-suppress MixedReturnTypeCoercion
-     */
-    public function findAll(): array
-    {
-        return $this->repo->findAll();
-    }
-
     public function persist(Version $version): void
     {
         $this->em->persist($version);

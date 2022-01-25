@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Presentation\Command;
 
+use App\DataLoad\Domain\Import\Repository\ImportFetcherInterface;
 use App\Shared\Infrastructure\Doctrine\ViewRefresher;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -14,6 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class RefreshViewsCommand extends Command
 {
     private LoggerInterface $logger;
+    private ImportFetcherInterface $importFinder;
     private ViewRefresher $viewRefresher;
 
     /**
@@ -21,10 +23,12 @@ final class RefreshViewsCommand extends Command
      */
     public function __construct(
         ViewRefresher $viewRefresher,
+        ImportFetcherInterface $importFetcher,
         LoggerInterface $deltaImportLogger
     ) {
         parent::__construct();
         $this->viewRefresher = $viewRefresher;
+        $this->importFinder = $importFetcher;
         $this->logger = $deltaImportLogger;
     }
 
@@ -37,6 +41,11 @@ final class RefreshViewsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if ($this->importFinder->isIncompleteExists()) {
+            $output->writeln('<fg=red>There are incomplete imports. Wait for them to complete</>');
+            return Command::FAILURE;
+        }
+
         $this->showStartMessage($output);
 
         try {

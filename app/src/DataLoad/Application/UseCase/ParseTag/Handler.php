@@ -21,10 +21,10 @@ final class Handler implements CommandHandlerInterface
     private LoggerInterface $parseErrorsLogger;
 
     public function __construct(
-        CommandBusInterface               $commandBus,
-        TagParserInterface                $parser,
+        CommandBusInterface $commandBus,
+        TagParserInterface $parser,
         ImportCounterIncrementorInterface $incrementor,
-        LoggerInterface                   $parseErrorsLogger
+        LoggerInterface $parseErrorsLogger
     ) {
         $this->commandBus = $commandBus;
         $this->parser = $parser;

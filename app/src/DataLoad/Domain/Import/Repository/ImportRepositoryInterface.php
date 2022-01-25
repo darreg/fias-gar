@@ -9,17 +9,12 @@ use App\Shared\Domain\Exception\EntityNotFoundException;
 
 interface ImportRepositoryInterface
 {
-    public function find(string $key): ?Import;
+    public function find(string $type, string $versionId): ?Import;
 
     /**
      * @throws EntityNotFoundException
      */
-    public function findOrFail(string $key): Import;
-
-    /**
-     * @return array<int, Import>
-     */
-    public function findAll(): array;
+    public function findOrFail(string $type, string $versionId): Import;
 
     public function persist(Import $import): void;
 
