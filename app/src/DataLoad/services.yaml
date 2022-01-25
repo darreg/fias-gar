@@ -213,15 +213,15 @@ services:
     App\DataLoad\Infrastructure\Service\VersionListRefresher: ~
     App\DataLoad\Application\Service\VersionListRefresherInterface: '@App\DataLoad\Infrastructure\Service\VersionListRefresher'
 
-    App\DataLoad\Infrastructure\Service\CounterIncrementor:
+    App\DataLoad\Infrastructure\Service\ImportCounterIncrementor:
         arguments:
             $redis: '@Redis'
-    App\DataLoad\Domain\Counter\Service\CounterIncrementorInterface: '@App\DataLoad\Infrastructure\Service\CounterIncrementor'
+    App\DataLoad\Domain\Import\Service\ImportCounterIncrementorInterface: '@App\DataLoad\Infrastructure\Service\ImportCounterIncrementor'
 
-    App\DataLoad\Infrastructure\Repository\CounterRedisRepository:
+    App\DataLoad\Infrastructure\Repository\ImportRedisRepository:
         arguments:
             $redis: '@Redis'
-    App\DataLoad\Domain\Counter\Repository\CounterRepositoryInterface: '@App\DataLoad\Infrastructure\Repository\CounterRedisRepository'
+    App\DataLoad\Domain\Import\Repository\ImportRepositoryInterface: '@App\DataLoad\Infrastructure\Repository\ImportRedisRepository'
 
     App\DataLoad\Infrastructure\Repository\VersionFetcher: ~
     App\DataLoad\Domain\Version\Repository\VersionFetcherInterface: '@App\DataLoad\Infrastructure\Repository\VersionFetcher'
@@ -232,5 +232,5 @@ services:
     App\DataLoad\Infrastructure\Service\DeltaVersionCoverer: ~
     App\DataLoad\Domain\Version\Service\DeltaVersionCovererInterface: '@App\DataLoad\Infrastructure\Service\DeltaVersionCoverer'
 
-    App\DataLoad\Infrastructure\Service\IncompleteCounterFinder: ~
-    App\DataLoad\Domain\Counter\Service\IncompleteCounterFinderInterface: '@App\DataLoad\Infrastructure\Service\IncompleteCounterFinder'
+    App\DataLoad\Infrastructure\Service\IncompleteImportFinder: ~
+    App\DataLoad\Domain\Import\Service\IncompleteImportFinderInterface: '@App\DataLoad\Infrastructure\Service\IncompleteImportFinder'

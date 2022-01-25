@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Domain\Counter\Entity;
+namespace App\DataLoad\Domain\Import\Entity;
 
-use App\DataLoad\Domain\Counter\Exception\InvalidCounterKeyException;
+use App\DataLoad\Domain\Import\Exception\InvalidImportKeyException;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="import_counter")
+ * @ORM\Table(name="imports")
  * @ORM\Entity
  */
-class Counter
+class Import
 {
-    public const KEY_PREFIX = 'icounter';
+    public const KEY_PREFIX = 'import';
     public const FIELD_CREATED_AT = 'createdAt';
     public const FIELD_UPDATED_AT = 'updatedAt';
 
@@ -146,14 +146,14 @@ class Counter
     }
 
     /**
-     * @throws InvalidCounterKeyException
      * @return list<string>
+     * @throws InvalidImportKeyException
      */
     public static function splitKey(string $key): array
     {
         [$prefix, $type, $versionId] = explode(':', $key);
         if ($prefix !== self::KEY_PREFIX) {
-            throw new InvalidCounterKeyException('It is not an import counter prefix');
+            throw new InvalidImportKeyException('It is not an import prefix');
         }
         return [$type, $versionId];
     }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\DataLoad\Application\UseCase\ParseTag;
 
 use App\DataLoad\Application\UseCase\SaveTag\Command as SaveCommand;
-use App\DataLoad\Domain\Counter\Entity\Counter;
-use App\DataLoad\Domain\Counter\Service\CounterIncrementorInterface;
+use App\DataLoad\Domain\Import\Entity\Import;
+use App\DataLoad\Domain\Import\Service\ImportCounterIncrementorInterface;
 use App\DataLoad\Domain\Tag\Service\TagParserInterface;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
@@ -17,18 +17,18 @@ final class Handler implements CommandHandlerInterface
 {
     private CommandBusInterface $commandBus;
     private TagParserInterface $parser;
-    private CounterIncrementorInterface $counter;
+    private ImportCounterIncrementorInterface $incrementor;
     private LoggerInterface $parseErrorsLogger;
 
     public function __construct(
-        CommandBusInterface $commandBus,
-        TagParserInterface $parser,
-        CounterIncrementorInterface $counter,
-        LoggerInterface $parseErrorsLogger
+        CommandBusInterface               $commandBus,
+        TagParserInterface                $parser,
+        ImportCounterIncrementorInterface $incrementor,
+        LoggerInterface                   $parseErrorsLogger
     ) {
         $this->commandBus = $commandBus;
         $this->parser = $parser;
-        $this->counter = $counter;
+        $this->incrementor = $incrementor;
         $this->parseErrorsLogger = $parseErrorsLogger;
     }
 
@@ -46,10 +46,10 @@ final class Handler implements CommandHandlerInterface
                     $data
                 )
             );
-            $this->counter->inc(
+            $this->incrementor->inc(
                 $command->getType(),
                 $command->getVersionId(),
-                Counter::COUNTER_FIELD_PARSE_SUCCESS_NUM
+                Import::COUNTER_FIELD_PARSE_SUCCESS_NUM
             );
         } catch (Exception $e) {
             $this->parseErrorsLogger->info(
@@ -58,10 +58,10 @@ final class Handler implements CommandHandlerInterface
                 $command->getTagSource() . ' ; ' .
                 $e->getMessage()
             );
-            $this->counter->inc(
+            $this->incrementor->inc(
                 $command->getType(),
                 $command->getVersionId(),
-                Counter::COUNTER_FIELD_PARSE_ERROR_NUM
+                Import::COUNTER_FIELD_PARSE_ERROR_NUM
             );
         }
     }
