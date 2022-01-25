@@ -9,7 +9,7 @@ use App\DataLoad\Application\UseCase\ImportXmlFiles\Command as ImportCommand;
 use App\DataLoad\Application\UseCase\MarkLoaded\Command as MarkLoadedCommand;
 use App\DataLoad\Application\UseCase\NextVersion\Query as NextVersionQuery;
 use App\DataLoad\Application\UseCase\NextVersion\Response as NextVersionResponse;
-use App\DataLoad\Domain\Counter\Service\IncompleteCounterFinderInterface;
+use App\DataLoad\Domain\Import\Service\IncompleteImportFinderInterface;
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Query\QueryBusInterface;
@@ -29,24 +29,24 @@ final class DeltaImportCommand extends Command
      * @param list<string> $importTokens
      */
     private array $importTokens;
-    private IncompleteCounterFinderInterface $incompleteCounterFinder;
+    private IncompleteImportFinderInterface $incompleteImportFinder;
 
     /**
      * @param list<string> $importTokens
      */
     public function __construct(
-        CommandBusInterface $commandBus,
-        QueryBusInterface $queryBus,
-        IncompleteCounterFinderInterface $incompleteCounterFinder,
-        LoggerInterface $deltaImportLogger,
-        array $importTokens
+        CommandBusInterface             $commandBus,
+        QueryBusInterface               $queryBus,
+        IncompleteImportFinderInterface $incompleteImportFinder,
+        LoggerInterface                 $deltaImportLogger,
+        array                           $importTokens
     ) {
         parent::__construct();
         $this->commandBus = $commandBus;
         $this->queryBus = $queryBus;
         $this->logger = $deltaImportLogger;
         $this->importTokens = $importTokens;
-        $this->incompleteCounterFinder = $incompleteCounterFinder;
+        $this->incompleteImportFinder = $incompleteImportFinder;
     }
 
     protected function configure(): void
@@ -66,7 +66,7 @@ final class DeltaImportCommand extends Command
             return Command::FAILURE;
         }
 
-        if ($this->incompleteCounterFinder->check()) {
+        if ($this->incompleteImportFinder->check()) {
             $output->writeln('<fg=red>There are incomplete imports. Wait for them to complete</>');
             return Command::FAILURE;
         }

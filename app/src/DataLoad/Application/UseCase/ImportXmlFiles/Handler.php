@@ -7,8 +7,8 @@ namespace App\DataLoad\Application\UseCase\ImportXmlFiles;
 use App\DataLoad\Application\UseCase\FindXmlFile\Query as FindFileQuery;
 use App\DataLoad\Application\UseCase\FindXmlFile\Response as FindFileResponse;
 use App\DataLoad\Application\UseCase\SplitXmlFile\Command as SplitFileCommand;
-use App\DataLoad\Domain\Counter\Entity\Counter;
-use App\DataLoad\Domain\Counter\Repository\CounterRepositoryInterface;
+use App\DataLoad\Domain\Import\Entity\Import;
+use App\DataLoad\Domain\Import\Repository\ImportRepositoryInterface;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use App\Shared\Domain\Bus\Query\QueryBusInterface;
@@ -17,16 +17,16 @@ class Handler implements CommandHandlerInterface
 {
     private CommandBusInterface $commandBus;
     private QueryBusInterface $queryBus;
-    private CounterRepositoryInterface $counterRepository;
+    private ImportRepositoryInterface $importRepository;
 
     public function __construct(
         CommandBusInterface $commandBus,
         QueryBusInterface $queryBus,
-        CounterRepositoryInterface $counterRepository
+        ImportRepositoryInterface $importRepository
     ) {
         $this->commandBus = $commandBus;
         $this->queryBus = $queryBus;
-        $this->counterRepository = $counterRepository;
+        $this->importRepository = $importRepository;
     }
 
     public function __invoke(Command $command)
@@ -35,7 +35,7 @@ class Handler implements CommandHandlerInterface
         $versionId = $command->getVersionId();
         $tokens = $command->getTokens();
 
-        $this->restartCounterIfExists($type, $versionId);
+        $this->restartImportIfExists($type, $versionId);
 
         foreach ($tokens as $token) {
             /** @var FindFileResponse $response */
@@ -48,11 +48,11 @@ class Handler implements CommandHandlerInterface
         }
     }
 
-    private function restartCounterIfExists(string $type, string $versionId): void
+    private function restartImportIfExists(string $type, string $versionId): void
     {
-        $counter = $this->counterRepository->find(Counter::buildKey($type, $versionId));
-        if ($counter !== null) {
-            $this->counterRepository->remove($counter);
+        $import = $this->importRepository->find(Import::buildKey($type, $versionId));
+        if ($import !== null) {
+            $this->importRepository->remove($import);
         }
     }
 }

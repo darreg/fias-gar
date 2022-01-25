@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\Repository;
 
-use App\DataLoad\Domain\Counter\Entity\Counter;
-use App\DataLoad\Domain\Counter\Repository\CounterRepositoryInterface;
+use App\DataLoad\Domain\Import\Entity\Import;
+use App\DataLoad\Domain\Import\Repository\ImportRepositoryInterface;
 use App\Shared\Domain\Exception\EntityNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
-final class CounterRepository implements CounterRepositoryInterface
+final class ImportRepository implements ImportRepositoryInterface
 {
     private EntityManagerInterface $em;
     private EntityRepository $repo;
@@ -18,14 +18,14 @@ final class CounterRepository implements CounterRepositoryInterface
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->repo = $em->getRepository(Counter::class);
+        $this->repo = $em->getRepository(Import::class);
     }
 
     /**
      * @psalm-suppress MixedReturnStatement
      * @psalm-suppress MixedInferredReturnType
      */
-    public function find(string $key): ?Counter
+    public function find(string $key): ?Import
     {
         return $this->repo->find($key);
     }
@@ -33,18 +33,18 @@ final class CounterRepository implements CounterRepositoryInterface
     /**
      * @throws EntityNotFoundException
      */
-    public function findOrFail(string $key): Counter
+    public function findOrFail(string $key): Import
     {
         $version = $this->find($key);
         if ($version === null) {
-            throw new EntityNotFoundException('Counter is not found.');
+            throw new EntityNotFoundException('Import is not found.');
         }
 
         return $version;
     }
 
     /**
-     * @return array<int, Counter>
+     * @return array<int, Import>
      * @psalm-suppress MixedReturnTypeCoercion
      */
     public function findAll(): array
@@ -52,13 +52,13 @@ final class CounterRepository implements CounterRepositoryInterface
         return $this->repo->findAll();
     }
 
-    public function persist(Counter $counter): void
+    public function persist(Import $import): void
     {
-        $this->em->persist($counter);
+        $this->em->persist($import);
     }
 
-    public function remove(Counter $counter): void
+    public function remove(Import $import): void
     {
-        $this->em->remove($counter);
+        $this->em->remove($import);
     }
 }
