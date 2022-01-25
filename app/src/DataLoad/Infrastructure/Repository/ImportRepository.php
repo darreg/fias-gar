@@ -25,31 +25,22 @@ final class ImportRepository implements ImportRepositoryInterface
      * @psalm-suppress MixedReturnStatement
      * @psalm-suppress MixedInferredReturnType
      */
-    public function find(string $key): ?Import
+    public function find(string $type, string $versionId): ?Import
     {
-        return $this->repo->find($key);
+        return $this->repo->find([$type, $versionId]);
     }
 
     /**
      * @throws EntityNotFoundException
      */
-    public function findOrFail(string $key): Import
+    public function findOrFail(string $type, string $versionId): Import
     {
-        $version = $this->find($key);
+        $version = $this->find($type, $versionId);
         if ($version === null) {
             throw new EntityNotFoundException('Import is not found.');
         }
 
         return $version;
-    }
-
-    /**
-     * @return array<int, Import>
-     * @psalm-suppress MixedReturnTypeCoercion
-     */
-    public function findAll(): array
-    {
-        return $this->repo->findAll();
     }
 
     public function persist(Import $import): void

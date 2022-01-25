@@ -9,7 +9,7 @@ use App\DataLoad\Application\UseCase\ImportXmlFiles\Command as ImportCommand;
 use App\DataLoad\Application\UseCase\MarkLoaded\Command as MarkLoadedCommand;
 use App\DataLoad\Application\UseCase\NextVersion\Query as NextVersionQuery;
 use App\DataLoad\Application\UseCase\NextVersion\Response as NextVersionResponse;
-use App\DataLoad\Domain\Import\Service\IncompleteImportFinderInterface;
+use App\DataLoad\Domain\Import\Repository\ImportFetcherInterface;
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Query\QueryBusInterface;
@@ -24,29 +24,29 @@ final class DeltaImportCommand extends Command
 {
     private CommandBusInterface $commandBus;
     private QueryBusInterface $queryBus;
+    private ImportFetcherInterface $importFetcher;
     private LoggerInterface $logger;
     /**
      * @param list<string> $importTokens
      */
     private array $importTokens;
-    private IncompleteImportFinderInterface $incompleteImportFinder;
 
     /**
      * @param list<string> $importTokens
      */
     public function __construct(
-        CommandBusInterface             $commandBus,
-        QueryBusInterface               $queryBus,
-        IncompleteImportFinderInterface $incompleteImportFinder,
-        LoggerInterface                 $deltaImportLogger,
-        array                           $importTokens
+        CommandBusInterface $commandBus,
+        QueryBusInterface $queryBus,
+        ImportFetcherInterface $importFetcher,
+        LoggerInterface $deltaImportLogger,
+        array $importTokens
     ) {
         parent::__construct();
         $this->commandBus = $commandBus;
         $this->queryBus = $queryBus;
         $this->logger = $deltaImportLogger;
         $this->importTokens = $importTokens;
-        $this->incompleteImportFinder = $incompleteImportFinder;
+        $this->importFetcher = $importFetcher;
     }
 
     protected function configure(): void
@@ -66,7 +66,7 @@ final class DeltaImportCommand extends Command
             return Command::FAILURE;
         }
 
-        if ($this->incompleteImportFinder->check()) {
+        if ($this->importFetcher->isIncompleteExists()) {
             $output->writeln('<fg=red>There are incomplete imports. Wait for them to complete</>');
             return Command::FAILURE;
         }

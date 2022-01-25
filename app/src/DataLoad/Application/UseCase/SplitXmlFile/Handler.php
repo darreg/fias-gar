@@ -21,10 +21,10 @@ final class Handler implements CommandHandlerInterface
     private LoggerInterface $splitErrorsLogger;
 
     public function __construct(
-        TagGeneratorInterface             $tagGenerator,
-        CommandBusInterface               $commandBus,
+        TagGeneratorInterface $tagGenerator,
+        CommandBusInterface $commandBus,
         ImportCounterIncrementorInterface $incrementor,
-        LoggerInterface                   $splitErrorsLogger
+        LoggerInterface $splitErrorsLogger
     ) {
         $this->tagGenerator = $tagGenerator;
         $this->commandBus = $commandBus;

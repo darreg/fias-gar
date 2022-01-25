@@ -26,8 +26,10 @@ class ImportRedisRepository implements ImportRepositoryInterface
     /**
      * @throws InvalidImportKeyException
      */
-    public function find(string $key): ?Import
+    public function find(string $type, string $versionId): ?Import
     {
+        $key = Import::buildKey($type, $versionId);
+
         if ($this->redis->hExists($key, Import::COUNTER_FIELD_TASK_NUM) === false) {
             return null;
         }
@@ -53,26 +55,14 @@ class ImportRedisRepository implements ImportRepositoryInterface
      * @throws InvalidImportKeyException
      * @throws EntityNotFoundException
      */
-    public function findOrFail(string $key): Import
+    public function findOrFail(string $type, string $versionId): Import
     {
-        $import = $this->find($key);
+        $import = $this->find($type, $versionId);
         if ($import === null) {
             throw new EntityNotFoundException('Import is not found.');
         }
 
         return $import;
-    }
-
-    public function findAll(): array
-    {
-        $keys = $this->redis->keys(Import::KEY_PREFIX . ':*');
-
-        $imports = [];
-        foreach ($keys as $key) {
-            $imports[] = $this->findOrFail($key);
-        }
-
-        return $imports;
     }
 
     public function persist(Import $import): void
@@ -87,8 +77,8 @@ class ImportRedisRepository implements ImportRepositoryInterface
         $this->redis->hSet($key, Import::FIELD_CREATED_AT, (string)$import->getCreatedAt()->getTimestamp());
         $this->redis->hSet($key, Import::FIELD_UPDATED_AT, (string)time());
         $this->redis->hSet(
-            $key, 
-            Import::FIELD_VIEWS_REFRESHED, 
+            $key,
+            Import::FIELD_VIEWS_REFRESHED,
             $import->isViewsRefreshed() ? self::TRUE : self::FALSE
         );
         $this->redis->exec();
@@ -116,8 +106,8 @@ class ImportRedisRepository implements ImportRepositoryInterface
         }
 
         return $redisData[$fieldName] === self::TRUE;
-    }    
-    
+    }
+
     private static function getDateTimeImmutable(array $redisData, string $fieldName): DateTimeImmutable
     {
         if (!\array_key_exists($fieldName, $redisData) || !$redisData[$fieldName]) {

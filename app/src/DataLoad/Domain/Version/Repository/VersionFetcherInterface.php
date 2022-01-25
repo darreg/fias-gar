@@ -5,22 +5,19 @@ declare(strict_types=1);
 namespace App\DataLoad\Domain\Version\Repository;
 
 use App\DataLoad\Domain\Version\ReadModel\VersionRow;
-use Doctrine\DBAL\Exception as DBALException;
 
 interface VersionFetcherInterface
 {
     /**
-     * @throws DBALException
+     * @return array<int, VersionRow>
      */
+    public function findAll(): array;
+
     public function findOldestUncoveredDeltaVersion(): ?VersionRow;
 
-    /**
-     * @throws DBALException
-     */
     public function findNewestUnloadedFullVersion(): ?VersionRow;
 
     /**
-     * @throws DBALException
      * @return list<VersionRow>
      */
     public function findPrevious(string $id): array;

@@ -142,14 +142,34 @@ class Import
         return self::buildKey($this->type, $this->versionId);
     }
 
-    public function isFinished(): bool
-    {
-        return ($this->saveSuccessNum + $this->saveErrorNum + $this->parseErrorNum) >= $this->taskNum;
-    }
-
     public function isViewsRefreshed(): bool
     {
         return $this->viewsRefreshed;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            $this->type,
+            $this->versionId,
+            $this->taskNum,
+            $this->parseErrorNum,
+            $this->parseSuccessNum,
+            $this->saveErrorNum,
+            $this->saveSuccessNum,
+            $this->viewsRefreshed,
+            $this->createdAt,
+            $this->updatedAt,
+        ];
+    }
+
+    public static function isFinished(
+        int $taskNum,
+        int $saveSuccessNum,
+        int $saveErrorNum,
+        int $parseErrorNum
+    ): bool {
+        return ($saveSuccessNum + $saveErrorNum + $parseErrorNum) >= $taskNum;
     }
 
     public static function buildKey(string $type, string $versionId): string
@@ -158,8 +178,8 @@ class Import
     }
 
     /**
-     * @return list<string>
      * @throws InvalidImportKeyException
+     * @return list<string>
      */
     public static function splitKey(string $key): array
     {

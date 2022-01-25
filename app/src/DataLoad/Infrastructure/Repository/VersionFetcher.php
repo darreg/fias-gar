@@ -21,6 +21,33 @@ class VersionFetcher implements VersionFetcherInterface
 
     /**
      * @throws DBALException
+     * @return array<int, VersionRow>
+     */
+    public function findAll(): array
+    {
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->select('id')
+            ->from('version')
+            ->orderBy('date', 'ASC')
+            ->executeQuery();
+
+        $results = $queryBuilder->fetchAllAssociative();
+
+        if (!$results) {
+            return [];
+        }
+
+        $rows = [];
+        /** @var array $result */
+        foreach ($results as $result) {
+            $rows[] = new VersionRow((string)$result['id']);
+        }
+
+        return $rows;
+    }
+
+    /**
+     * @throws DBALException
      */
     public function findOldestUncoveredDeltaVersion(): ?VersionRow
     {

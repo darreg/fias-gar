@@ -7,7 +7,6 @@ namespace App\DataLoad\Application\UseCase\ImportXmlFiles;
 use App\DataLoad\Application\UseCase\FindXmlFile\Query as FindFileQuery;
 use App\DataLoad\Application\UseCase\FindXmlFile\Response as FindFileResponse;
 use App\DataLoad\Application\UseCase\SplitXmlFile\Command as SplitFileCommand;
-use App\DataLoad\Domain\Import\Entity\Import;
 use App\DataLoad\Domain\Import\Repository\ImportRepositoryInterface;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
@@ -50,7 +49,7 @@ class Handler implements CommandHandlerInterface
 
     private function restartImportIfExists(string $type, string $versionId): void
     {
-        $import = $this->importRepository->find(Import::buildKey($type, $versionId));
+        $import = $this->importRepository->find($type, $versionId);
         if ($import !== null) {
             $this->importRepository->remove($import);
         }

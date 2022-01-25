@@ -232,5 +232,6 @@ services:
     App\DataLoad\Infrastructure\Service\DeltaVersionCoverer: ~
     App\DataLoad\Domain\Version\Service\DeltaVersionCovererInterface: '@App\DataLoad\Infrastructure\Service\DeltaVersionCoverer'
 
-    App\DataLoad\Infrastructure\Service\IncompleteImportFinder: ~
-    App\DataLoad\Domain\Import\Service\IncompleteImportFinderInterface: '@App\DataLoad\Infrastructure\Service\IncompleteImportFinder'
+    App\DataLoad\Infrastructure\Repository\ImportRedisFetcher: ~
+    App\DataLoad\Domain\Import\Repository\ImportFetcherInterface: '@App\DataLoad\Infrastructure\Repository\ImportRedisFetcher'
+

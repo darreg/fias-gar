@@ -16,11 +16,6 @@ interface VersionRepositoryInterface
      */
     public function findOrFail(string $id): Version;
 
-    /**
-     * @return array<int, Version>
-     */
-    public function findAll(): array;
-
     public function persist(Version $version): void;
 
     public function remove(Version $version): void;

@@ -18,9 +18,9 @@ final class Handler implements CommandHandlerInterface
     private LoggerInterface $saveErrorsLogger;
 
     public function __construct(
-        TagSaverInterface                 $saver,
+        TagSaverInterface $saver,
         ImportCounterIncrementorInterface $incrementor,
-        LoggerInterface                   $saveErrorsLogger
+        LoggerInterface $saveErrorsLogger
     ) {
         $this->saver = $saver;
         $this->incrementor = $incrementor;
