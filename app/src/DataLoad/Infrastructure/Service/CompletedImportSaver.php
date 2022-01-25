@@ -33,7 +33,7 @@ class CompletedImportSaver
     }
 
     /** @throws CompletedImportSaverException */
-    public function move(): void
+    public function save(): void
     {
         try {
             $redisImportRows = $this->redisFetcher->findCompleted();
@@ -45,7 +45,7 @@ class CompletedImportSaver
 
             foreach ($redisImportRows as $row) {
                 $key = $row->type . '|' . $row->versionId;
-                if (\in_array($key, $newImportIds, true)) {
+                if (!\in_array($key, $newImportIds, true)) {
                     continue;
                 }
 

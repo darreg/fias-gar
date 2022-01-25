@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Domain\Import\ReadModel;
 
+use App\DataLoad\Domain\Import\Entity\Import;
 use App\Shared\Domain\Exception\ConstructFromArrayException;
 use App\Shared\Infrastructure\ConstructFromArrayInterface;
 use DateTimeImmutable;
@@ -32,16 +33,16 @@ class ImportRow implements ConstructFromArrayInterface
     {
         try {
             return new self(
-                (string)$data['type'],
-                (string)$data['versionId'],
-                (int)$data['taskNum'],
-                (int)$data['parseErrorNum'],
-                (int)$data['parseSuccessNum'],
-                (int)$data['saveErrorNum'],
-                (int)$data['saveSuccessNum'],
-                (bool)$data['viewsRefreshed'],
-                new DateTimeImmutable((string)$data['createdAt']),
-                new DateTimeImmutable((string)$data['updatedAt'])
+                (string)$data[Import::FIELD_TYPE],
+                (string)$data[Import::FIELD_VERSION_ID],
+                (int)$data[Import::COUNTER_FIELD_TASK_NUM],
+                (int)$data[Import::COUNTER_FIELD_PARSE_ERROR_NUM],
+                (int)$data[Import::COUNTER_FIELD_PARSE_SUCCESS_NUM],
+                (int)$data[Import::COUNTER_FIELD_SAVE_ERROR_NUM],
+                (int)$data[Import::COUNTER_FIELD_SAVE_SUCCESS_NUM],
+                (bool)$data[Import::FIELD_VIEWS_REFRESHED],
+                new DateTimeImmutable((string)$data[Import::FIELD_CREATED_AT]),
+                new DateTimeImmutable((string)$data[Import::FIELD_UPDATED_AT])
             );
         } catch (Exception $e) {
             throw new ConstructFromArrayException(

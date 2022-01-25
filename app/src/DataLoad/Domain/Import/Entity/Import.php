@@ -15,15 +15,18 @@ use Doctrine\ORM\Mapping as ORM;
 class Import
 {
     public const KEY_PREFIX = 'import';
-    public const FIELD_CREATED_AT = 'createdAt';
-    public const FIELD_UPDATED_AT = 'updatedAt';
-    public const FIELD_VIEWS_REFRESHED = 'viewsRefreshed';
 
-    public const COUNTER_FIELD_TASK_NUM = 'taskNum';
-    public const COUNTER_FIELD_PARSE_ERROR_NUM = 'parseErrorNum';
-    public const COUNTER_FIELD_PARSE_SUCCESS_NUM = 'parseSuccessNum';
-    public const COUNTER_FIELD_SAVE_ERROR_NUM = 'saveErrorNum';
-    public const COUNTER_FIELD_SAVE_SUCCESS_NUM = 'saveSuccessNum';
+    public const FIELD_TYPE = 'type';
+    public const FIELD_VERSION_ID = 'version_id';
+    public const FIELD_CREATED_AT = 'created_at';
+    public const FIELD_UPDATED_AT = 'updated_at';
+    public const FIELD_VIEWS_REFRESHED = 'views_refreshed';
+
+    public const COUNTER_FIELD_TASK_NUM = 'task_num';
+    public const COUNTER_FIELD_PARSE_ERROR_NUM = 'parse_error_num';
+    public const COUNTER_FIELD_PARSE_SUCCESS_NUM = 'parse_success_num';
+    public const COUNTER_FIELD_SAVE_ERROR_NUM = 'save_error_num';
+    public const COUNTER_FIELD_SAVE_SUCCESS_NUM = 'save_success_num';
 
     /**
      * @ORM\Id()
@@ -150,16 +153,16 @@ class Import
     public function toArray(): array
     {
         return [
-            $this->type,
-            $this->versionId,
-            $this->taskNum,
-            $this->parseErrorNum,
-            $this->parseSuccessNum,
-            $this->saveErrorNum,
-            $this->saveSuccessNum,
-            $this->viewsRefreshed,
-            $this->createdAt,
-            $this->updatedAt,
+            self::FIELD_TYPE => $this->type,
+            self::FIELD_VERSION_ID => $this->versionId,
+            self::COUNTER_FIELD_TASK_NUM => $this->taskNum,
+            self::COUNTER_FIELD_PARSE_ERROR_NUM => $this->parseErrorNum,
+            self::COUNTER_FIELD_PARSE_SUCCESS_NUM => $this->parseSuccessNum,
+            self::COUNTER_FIELD_SAVE_ERROR_NUM => $this->saveErrorNum,
+            self::COUNTER_FIELD_SAVE_SUCCESS_NUM => $this->saveSuccessNum,
+            self::FIELD_VIEWS_REFRESHED => $this->viewsRefreshed,
+            self::FIELD_CREATED_AT => $this->createdAt->format('Y-m-d H:i:s'),
+            self::FIELD_UPDATED_AT => $this->updatedAt->format('Y-m-d H:i:s'),
         ];
     }
 

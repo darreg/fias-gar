@@ -66,7 +66,7 @@ final class DeltaImportCommand extends Command
             return Command::FAILURE;
         }
 
-        if ($this->importFetcher->isIncompleteExists()) {
+        if ($this->importFetcher->isUncompletedExists()) {
             $output->writeln('<fg=red>There are incomplete imports. Wait for them to complete</>');
             return Command::FAILURE;
         }

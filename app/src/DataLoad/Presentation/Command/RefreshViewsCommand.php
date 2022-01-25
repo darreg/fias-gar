@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\DataLoad\Presentation\Command;
 
 use App\DataLoad\Domain\Import\Repository\ImportFetcherInterface;
+use App\DataLoad\Infrastructure\Service\ImportMarker;
+use App\DataLoad\Infrastructure\Service\ImportRedisMarker;
 use App\Shared\Infrastructure\Doctrine\ViewRefresher;
+use DateTimeImmutable;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -14,9 +17,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class RefreshViewsCommand extends Command
 {
-    private LoggerInterface $logger;
-    private ImportFetcherInterface $importFinder;
     private ViewRefresher $viewRefresher;
+    private ImportFetcherInterface $importFinder;
+    private ImportMarker $importMarker;
+    private ImportRedisMarker $importRedisMarker;
+    private LoggerInterface $logger;
 
     /**
      * @param list<string> $importTokens
@@ -24,24 +29,28 @@ final class RefreshViewsCommand extends Command
     public function __construct(
         ViewRefresher $viewRefresher,
         ImportFetcherInterface $importFetcher,
+        ImportMarker $importMarker,
+        ImportRedisMarker $importRedisMarker,
         LoggerInterface $deltaImportLogger
     ) {
         parent::__construct();
         $this->viewRefresher = $viewRefresher;
         $this->importFinder = $importFetcher;
+        $this->importMarker = $importMarker;
+        $this->importRedisMarker = $importRedisMarker;
         $this->logger = $deltaImportLogger;
     }
 
     protected function configure(): void
     {
         $this
-            ->setName('fias:refresh_views')
+            ->setName('fias:refresh-views')
             ->setDescription('Refresh materialized views');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if ($this->importFinder->isIncompleteExists()) {
+        if ($this->importFinder->isUncompletedExists()) {
             $output->writeln('<fg=red>There are incomplete imports. Wait for them to complete</>');
             return Command::FAILURE;
         }
@@ -67,6 +76,11 @@ final class RefreshViewsCommand extends Command
             $this->viewRefresher->refresh('v_search_addrobjects');
             $output->writeln('- v_search_houses');
             $this->viewRefresher->refresh('v_search_houses');
+
+            $now = new DateTimeImmutable();
+            $this->importMarker->markViewsRefreshed($now);
+            $this->importRedisMarker->markViewsRefreshed($now);
+            
         } catch (Exception $e) {
             $this->logger->error(
                 $e->getMessage() . ' ; ' . $e->getFile() . ' ; ' . $e->getLine(),
