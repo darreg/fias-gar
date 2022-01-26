@@ -13,8 +13,8 @@ services:
     depends_on:
       - php-fpm
     ports:
-      - "${NGINX_LOCAL_HTTP_PORT}:80"
-      - "${NGINX_LOCAL_HTTPS_PORT}:443"
+      - "${NGINX_HTTP_PORT}:80"
+      - "${NGINX_HTTPS_PORT}:443"
     networks:
       internal:
         ipv4_address: ${PROJECT_IP}
@@ -103,7 +103,7 @@ services:
       - ./volumes/postgres/data:/var/lib/postgresql/data
     restart: always
     ports:
-      - "${POSTGRES_LOCAL_PORT}:5432"
+      - "${POSTGRES_PORT}:5432"
     env_file:
       - .env
     networks:
@@ -116,8 +116,8 @@ services:
     volumes:
       - ./volumes/rabbit/data:/var/lib/rabbitmq/mnesia/
     ports:
-      - "${RABBIT_LOCAL_PORT}:5672"
-      - "${RABBIT_MANAGER_LOCAL_PORT}:15672"
+      - "${RABBIT_PORT}:5672"
+      - "${RABBIT_MANAGER_PORT}:15672"
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
@@ -125,6 +125,9 @@ services:
       retries: 3
     env_file:
       - .env
+    environment:
+        RABBITMQ_DEFAULT_USER: ${RABBIT_USER}
+        RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD}
     networks:
       - internal
 
@@ -133,20 +136,27 @@ services:
     image: redis:latest
     restart: always
     ports:
-      - "${REDIS_LOCAL_PORT}:6379"
+      - "${REDIS_PORT}:6379"
     volumes:
       - ./volumes/redis/data:/data
+    command:
+      - 'redis-server'
+      - '--databases ${REDIS_DATABASES}'
+      - '--save 900 1'
+      - '--save 300 10'
+      - '--save 60 10000'
+      - '--requirepass ${REDIS_PASSWORD}'
     networks:
       - internal
 
-#  mailhog:
-#    image: mailhog/mailhog
-#    container_name: ${PROJECT_NAME}-mailhog
-#    ports:
-#      - "${MAILHOG_LOCAL_PORT}:1025"
-#      - "${MAILHOG_MANAGER_PORT}:8025"
-#    networks:
-#      - internal
+  mailer:
+    image: mailhog/mailhog
+    container_name: ${PROJECT_NAME}-mailhog
+    ports:
+      - "${MAILHOG_PORT}:1025"
+      - "${MAILHOG_MANAGER_PORT}:8025"
+    networks:
+      - internal
 
 networks:
   internal:

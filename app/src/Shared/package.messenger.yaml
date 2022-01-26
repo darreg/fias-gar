@@ -22,12 +22,12 @@ framework:
                     use_notify: true
                     queue_name: default_event
             rabbit_command:
-                dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
+                dsn: 'amqp://%env(RABBIT_USER)%:%env(RABBIT_PASSWORD)%@%env(RABBIT_HOST)%:%env(RABBIT_PORT)%/%2f/messages'
                 options:
                     queues:
                         default_command: ~
             rabbit_event:
-                dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
+                dsn: 'amqp://%env(RABBIT_USER)%:%env(RABBIT_PASSWORD)%@%env(RABBIT_HOST)%:%env(RABBIT_PORT)%/%2f/messages'
                 options:
                     queues:
                         default_event: ~

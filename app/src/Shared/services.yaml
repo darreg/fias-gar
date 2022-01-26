@@ -15,6 +15,8 @@ services:
             - connect:
                   - '%env(REDIS_HOST)%'
                   - '%env(int:REDIS_PORT)%'
+            - auth:
+                  - '%env(REDIS_PASSWORD)%'
 
     App\Shared\Infrastructure\Persistence\DoctrineFlusher: ~
     App\Shared\Domain\Persistence\FlusherInterface: '@App\Shared\Infrastructure\Persistence\DoctrineFlusher'

@@ -7,8 +7,8 @@ services:
     depends_on:
       - php-fpm
     ports:
-      - "${NGINX_LOCAL_HTTP_PORT}:80"
-      - "${NGINX_LOCAL_HTTPS_PORT}:443"
+      - "${NGINX_HTTP_PORT}:80"
+      - "${NGINX_HTTPS_PORT}:443"
 
   php-fpm:
     image: ${REGISTRY_ADDRESS}/${PROJECT_NAME}-php-fpm:${PHP_FPM_IMAGE_TAG}
@@ -25,8 +25,23 @@ services:
       - ./volumes/rabbit/data:/var/lib/rabbitmq/mnesia/
     restart: always
     ports:
-      - "${RABBIT_LOCAL_PORT}:5672"
-      - "${RABBIT_MANAGER_LOCAL_PORT}:15672"
-#    environment:
-#      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
-#      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      - "${RABBIT_PORT}:5672"
+      - "${RABBIT_MANAGER_PORT}:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBIT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD}
+      
+  redis:
+    image: ${REGISTRY_ADDRESS}/${PROJECT_NAME}-redis:${REDIS_IMAGE_TAG}
+    volumes:
+      - ./volumes/redis/data:/data
+    restart: always
+    ports:
+      - "${REDIS_PORT}:6379"
+    command:
+      - 'redis-server'
+      - '--databases ${REDIS_DATABASES}'
+      - '--save 900 1'
+      - '--save 300 10'
+      - '--save 60 10000'
+      - '--requirepass ${REDIS_PASSWORD}'

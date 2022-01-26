@@ -2,7 +2,7 @@ framework:
     messenger:
         transports:
             rabbit_parse:
-                dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
+                dsn: 'amqp://%env(RABBIT_USER)%:%env(RABBIT_PASSWORD)%@%env(RABBIT_HOST)%:%env(RABBIT_PORT)%/%2f/messages'
                 serializer: messenger.transport.symfony_serializer
                 options:
                     exchange:
@@ -10,7 +10,7 @@ framework:
                     queues:
                         parse: ~
             rabbit_save:
-                dsn: '%env(MESSENGER_RABBIT_TRANSPORT_DSN)%'
+                dsn: 'amqp://%env(RABBIT_USER)%:%env(RABBIT_PASSWORD)%@%env(RABBIT_HOST)%:%env(RABBIT_PORT)%/%2f/messages'
                 serializer: messenger.transport.symfony_serializer
                 options:
                     exchange:

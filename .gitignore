@@ -1,7 +1,11 @@
 _!/
 .idea/
+.env
+.env.prod.local
 volumes/
 !volumes/rabbit/data/.gitignore
 !volumes/redis/data/.gitignore
 scratches/
-.env
+yandex.cloud/*.yaml
+yandex.cloud/*.yml
+

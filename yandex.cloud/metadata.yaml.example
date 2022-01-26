@@ -1,0 +1,10 @@
+#cloud-config
+runcmd:
+  - [ sudo, chmod, 666, /dev/ttyS1]
+users:
+  - name: dev
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - <YOUR SSH PUBLIC KEY>
