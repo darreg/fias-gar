@@ -10,10 +10,13 @@ RUN apk add --update --virtual .build-deps \
         bash \
         icu-dev \
         postgresql-dev \
+        rabbitmq-c-dev \
     && pecl install \
         redis \
+        amqp \
     && docker-php-ext-enable \
         redis \
+        amqp \
     && docker-php-ext-configure \
         bcmath \
     && docker-php-ext-install \
@@ -39,7 +42,7 @@ RUN composer install --no-dev --no-scripts --prefer-dist --optimize-autoloader
 
 ######################
 
-FROM php:7.4-fpm-alpine
+FROM php:8-fpm-alpine
 
 RUN apk add --update --virtual .build-deps \
         autoconf \
@@ -52,10 +55,13 @@ RUN apk add --update --virtual .build-deps \
         icu-dev \
         postgresql-dev \
         unzip \
+        rabbitmq-c-dev \
     && pecl install \
         redis \
+        amqp \
     && docker-php-ext-enable \
         redis \
+        amqp \
     && docker-php-ext-configure \
         bcmath \
     && docker-php-ext-install \
@@ -80,6 +86,8 @@ COPY ./bin ./bin
 COPY ./config ./config
 COPY ./public ./public
 COPY ./src ./src
+COPY ./migrations ./migrations
+COPY ./.env ./.env
 
 ENV APP_ENV prod
 

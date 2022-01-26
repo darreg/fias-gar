@@ -1,8 +1,8 @@
 include .env
 
 check: lint psalm
-build-production: build-prod-rabbit build-prod-nginx build-prod-php-fpm build-prod-php-workers
-push-production: push-prod-rabbit push-prod-nginx push-prod-php-fpm push-prod-php-workers
+build-production: build-prod-rabbit build-prod-nginx build-prod-php-fpm build-prod-php-workers build-prod-redis
+push-production: push-prod-rabbit push-prod-nginx push-prod-php-fpm push-prod-php-workers push-prod-redis
 
 up:
 	docker-compose up -d --build --scale php-cli=0
@@ -53,6 +53,9 @@ build-prod-php-workers:
 build-prod-rabbit:
 	docker build -f=app/docker/production/rabbit.docker -t $(REGISTRY_ADDRESS)/$(PROJECT_NAME)-rabbit:$(RABBITMQ_IMAGE_TAG) app
 
+build-prod-redis:
+	docker build -f=app/docker/production/redis.docker -t $(REGISTRY_ADDRESS)/$(PROJECT_NAME)-redis:$(RABBITMQ_IMAGE_TAG) app
+
 push-prod-nginx:
 	docker push $(REGISTRY_ADDRESS)/$(PROJECT_NAME)-nginx:$(NGINX_IMAGE_TAG)
 
@@ -64,3 +67,6 @@ push-prod-php-workers:
 
 push-prod-rabbit:
 	docker push $(REGISTRY_ADDRESS)/$(PROJECT_NAME)-rabbit:$(RABBITMQ_IMAGE_TAG)
+
+push-prod-redis:
+	docker push $(REGISTRY_ADDRESS)/$(PROJECT_NAME)-redis:$(RABBITMQ_IMAGE_TAG)

@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  nginx:
+    image: cr.yandex/<YOUR REGISTRY CODE>/fias-gar-nginx:1.0.0
+    restart: always
+    depends_on:
+      - php-fpm
+    ports:
+      - "80:80"
+
+  php-fpm:
+    image: cr.yandex/<YOUR REGISTRY CODE>/fias-gar-php-fpm:1.0.0
+    restart: always
+
+  php-workers:
+    image: cr.yandex/<YOUR REGISTRY CODE>/fias-gar-php-workers:1.0.0
+    restart: always
+    command: ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+
+  rabbit:
+    image: cr.yandex/<YOUR REGISTRY CODE>/fias-gar-rabbit:1.0.0
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: <YOUR RABBITMQ USER>
+      RABBITMQ_DEFAULT_PASS: <YOUR RABBITMQ PASSWORD>
+
+  redis:
+    image: cr.yandex/<YOUR REGISTRY CODE>/fias-gar-redis:1.0.0
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - fias-gar-redis:/data
+    command:
+      - 'redis-server'
+      - '--databases 2'
+      - '--save 900 1'
+      - '--save 300 10'
+      - '--save 60 10000'
+      - '--requirepass <YOUR REDIS PASSWORD>'
+
+volumes:
+  fias-gar-redis:

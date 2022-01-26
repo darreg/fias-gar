@@ -80,7 +80,6 @@ final class RefreshViewsCommand extends Command
             $now = new DateTimeImmutable();
             $this->importMarker->markViewsRefreshed($now);
             $this->importRedisMarker->markViewsRefreshed($now);
-            
         } catch (Exception $e) {
             $this->logger->error(
                 $e->getMessage() . ' ; ' . $e->getFile() . ' ; ' . $e->getLine(),
