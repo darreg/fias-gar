@@ -96,6 +96,8 @@ COPY ./.env ./.env
 ENV APP_ENV prod
 
 RUN mkdir ./var
+RUN mkdir ./var/cache
+RUN mkdir ./var/log
 RUN chown -R www-data:www-data ./var
 
 

@@ -7,7 +7,7 @@ namespace App\DataLoad\Application\UseCase\MarkLoaded;
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\DataLoad\Domain\Version\Exception\InvalidVersionTypeException;
 use App\DataLoad\Domain\Version\Repository\VersionRepositoryInterface;
-use App\DataLoad\Domain\Version\Service\DeltaVersionCovererInterface;
+use App\DataLoad\Domain\Version\Service\VersionCovererInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use App\Shared\Domain\Exception\EntityNotFoundException;
 use App\Shared\Domain\Persistence\FlusherInterface;
@@ -16,12 +16,12 @@ use DateTimeImmutable;
 class Handler implements CommandHandlerInterface
 {
     private VersionRepositoryInterface $versionRepository;
-    private DeltaVersionCovererInterface $deltaVersionCoverer;
+    private VersionCovererInterface $deltaVersionCoverer;
     private FlusherInterface $flusher;
 
     public function __construct(
         VersionRepositoryInterface $versionRepository,
-        DeltaVersionCovererInterface $deltaVersionCoverer,
+        VersionCovererInterface $deltaVersionCoverer,
         FlusherInterface $flusher
     ) {
         $this->versionRepository = $versionRepository;
@@ -41,10 +41,10 @@ class Handler implements CommandHandlerInterface
 
         switch ($type) {
             case Version::TYPE_DELTA:
-                $version->setDeltaLoadedAt(new DateTimeImmutable());
+                $version->getDelta()->setLoadedAt(new DateTimeImmutable());
                 break;
             case Version::TYPE_FULL:
-                $version->setFullLoadedAt(new DateTimeImmutable());
+                $version->getFull()->setLoadedAt(new DateTimeImmutable());
                 $this->deltaVersionCoverer->cover($versionId);
                 break;
             default:

@@ -36,6 +36,7 @@ class ImportMarker implements ImportMarkerInterface
         );
 
         $sql = "UPDATE imports SET views_refreshed = true WHERE concat(type, '|', version_id) IN (?)";
+        /** @psalm-suppress InvalidArgument */
         $this->connection->executeStatement($sql, [$importIds], [Connection::PARAM_STR_ARRAY]);
     }
 }

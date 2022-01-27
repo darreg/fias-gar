@@ -2,6 +2,7 @@
 
 namespace App\DataLoad\Domain\Version\Entity;
 
+use App\DataLoad\Domain\Version\Exception\InvalidVersionTypeException;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,24 +32,15 @@ class Version
     private DateTimeImmutable $date;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Embedded(class=Full::class)
      */
-    private bool $hasFullXml;
+    private Full $full;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Embedded(class=Delta::class)
      */
-    private bool $hasDeltaXml;
+    private Delta $delta;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true, options={"default" : null})
-     */
-    private ?DateTimeImmutable $fullLoadedAt;
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true, options={"default" : null})
-     */
-    private ?DateTimeImmutable $deltaLoadedAt;
     /**
      * @ORM\Column(type="boolean", options={"default" : false})
      */
@@ -58,20 +50,16 @@ class Version
         string $id,
         string $title,
         DateTimeImmutable $date,
-        bool $hasFullXml,
-        bool $hasDeltaXml,
-        bool $covered = false,
-        ?DateTimeImmutable $fullLoadedAt = null,
-        ?DateTimeImmutable $deltaLoadedAt = null,
+        Full $full,
+        Delta $delta,
+        bool $covered = false
     ) {
         $this->id = $id;
         $this->title = $title;
         $this->date = $date;
-        $this->hasFullXml = $hasFullXml;
-        $this->hasDeltaXml = $hasDeltaXml;
+        $this->full = $full;
+        $this->delta = $delta;
         $this->covered = $covered;
-        $this->fullLoadedAt = $fullLoadedAt;
-        $this->deltaLoadedAt = $deltaLoadedAt;
     }
 
     public function getId(): string
@@ -89,14 +77,14 @@ class Version
         return $this->date;
     }
 
-    public function hasFullXml(): bool
+    public function getFull(): Full
     {
-        return $this->hasFullXml;
+        return $this->full;
     }
 
-    public function hasDeltaXml(): bool
+    public function getDelta(): Delta
     {
-        return $this->hasDeltaXml;
+        return $this->delta;
     }
 
     public function isCovered(): bool
@@ -104,27 +92,15 @@ class Version
         return $this->covered;
     }
 
-    public function getFullLoadedAt(): ?DateTimeImmutable
+    /**
+     * @param Version::TYPE_* $type
+     */
+    public function getVersionType(string $type): VersionTypeInterface
     {
-        return $this->fullLoadedAt;
-    }
-
-    public function setFullLoadedAt(DateTimeImmutable $fullLoadedAt): self
-    {
-        $this->fullLoadedAt = $fullLoadedAt;
-
-        return $this;
-    }
-
-    public function getDeltaLoadedAt(): ?DateTimeImmutable
-    {
-        return $this->deltaLoadedAt;
-    }
-
-    public function setDeltaLoadedAt(DateTimeImmutable $deltaLoadedAt): self
-    {
-        $this->deltaLoadedAt = $deltaLoadedAt;
-
-        return $this;
+        return match ($type) {
+            self::TYPE_FULL => $this->getFull(),
+            self::TYPE_DELTA => $this->getDelta(),
+            default => throw new InvalidVersionTypeException("Invalid version type '{$type}'"),
+        };
     }
 }

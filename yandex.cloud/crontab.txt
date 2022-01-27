@@ -1,0 +1,1 @@
+10 * * * * dev   sudo docker exec -t --user www-data $(sudo docker ps -qf "name=coi-php-fpm-1") bin/console fias:import:delta >> /dev/null 2>&1
