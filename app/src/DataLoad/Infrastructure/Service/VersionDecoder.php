@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Infrastructure\Service;
 
+use App\DataLoad\Domain\Version\Entity\Delta;
+use App\DataLoad\Domain\Version\Entity\Full;
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\DataLoad\Domain\Version\Service\VersionDecoderInterface;
 use DateTimeImmutable;
@@ -41,8 +43,8 @@ class VersionDecoder implements VersionDecoderInterface
                     $versionId,
                     $title,
                     $date,
-                    !empty($versionData['GarXMLFullURL']),
-                    !empty($versionData['GarXMLDeltaURL']),
+                    new Full(!empty($versionData['GarXMLFullURL'])),
+                    new Delta(!empty($versionData['GarXMLDeltaURL']))
                 );
             }
 

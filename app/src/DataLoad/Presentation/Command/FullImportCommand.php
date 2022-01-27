@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\DataLoad\Presentation\Command;
 
 use App\DataLoad\Application\UseCase\DownloadXmlFiles\Command as DownloadCommand;
+use App\DataLoad\Application\UseCase\GetVersion\Query as GetVersionQuery;
+use App\DataLoad\Application\UseCase\GetVersion\Response as GetVersionResponse;
 use App\DataLoad\Application\UseCase\ImportXmlFiles\Command as ImportCommand;
 use App\DataLoad\Application\UseCase\MarkLoaded\Command as MarkLoadedCommand;
 use App\DataLoad\Application\UseCase\NextVersion\Query as NextVersionQuery;
 use App\DataLoad\Application\UseCase\NextVersion\Response as NextVersionResponse;
+use App\DataLoad\Application\UseCase\RefreshVersion\Command as RefreshVersionCommand;
 use App\DataLoad\Domain\Import\Repository\ImportFetcherInterface;
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
@@ -98,14 +101,18 @@ final class FullImportCommand extends Command
 
     private function getVersionId(InputInterface $input): ?string
     {
+        $this->commandBus->dispatch(new RefreshVersionCommand());
+
         $versionId = $input->getArgument('version');
         if ($versionId === null) {
             /** @var NextVersionResponse $response */
             $response = $this->queryBus->ask(new NextVersionQuery(Version::TYPE_FULL));
-            $versionId = $response->answer();
+            return $response->answer();
         }
 
-        return $versionId;
+        /** @var GetVersionResponse $response */
+        $response = $this->queryBus->ask(new GetVersionQuery(Version::TYPE_FULL, $versionId));
+        return $response->answer()?->getId();
     }
 
     private function showStartMessage(OutputInterface $output, string $versionId): void

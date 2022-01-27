@@ -6,12 +6,12 @@ namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Domain\Version\ReadModel\VersionRow;
 use App\DataLoad\Domain\Version\Repository\VersionFetcherInterface;
-use App\DataLoad\Domain\Version\Service\DeltaVersionCovererInterface;
+use App\DataLoad\Domain\Version\Service\VersionCovererInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception as DBALException;
 use RuntimeException;
 
-class DeltaVersionCoverer implements DeltaVersionCovererInterface
+class VersionCoverer implements VersionCovererInterface
 {
     private VersionFetcherInterface $versionFetcher;
     private Connection $connection;
@@ -37,6 +37,7 @@ class DeltaVersionCoverer implements DeltaVersionCovererInterface
 
         $versionIds = array_map(static fn (VersionRow $versionRow) => $versionRow->id, $previousVersionRows);
         try {
+            /** @psalm-suppress InvalidArgument */
             $this->connection->executeStatement(
                 'UPDATE version SET covered=true WHERE id in (?)',
                 [$versionIds],
