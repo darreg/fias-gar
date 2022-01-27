@@ -5,47 +5,43 @@ declare(strict_types=1);
 namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Application\Exception\DownloadException;
-use App\DataLoad\Application\Service\XmlDownloaderInterface;
+use App\DataLoad\Application\Service\DataDownloaderInterface;
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\DataLoad\Domain\Version\Service\LoadTryIncrementorInterface;
 use App\DataLoad\Domain\XmlFile\Entity\XmlFile;
 use App\DataLoad\Domain\XmlFile\Exception\VersionNotRecognizedException;
-use App\DataLoad\Domain\XmlFile\Service\XmlFileCleanerInterface;
 use App\DataLoad\Domain\ZipFile\Exception\FileNotAvailableException;
-use App\DataLoad\Domain\ZipFile\Service\ZipFileExtractorInterface;
 use App\DataLoad\Domain\ZipFile\Service\ZipFileLoaderInterface;
+use App\DataLoad\Domain\ZipFile\Service\ZipFileNamerInterface;
 use App\DataLoad\Domain\ZipFile\Service\ZipFileRotatorInterface;
 use App\DataLoad\Infrastructure\Exception\ConfigParameterNotFoundException;
 use LogicException;
 use RuntimeException;
 
-class XmlDownloader implements XmlDownloaderInterface
+class DataDownloader implements DataDownloaderInterface
 {
     public const VERSION_PLACEHOLDER = '#version#';
 
+    private ZipFileNamerInterface $zipFileService;
     private ZipFileLoaderInterface $zipFileLoader;
-    private ZipFileExtractorInterface $zipFileExtractor;
     private ZipFileRotatorInterface $zipFileRotator;
-    private XmlFileCleanerInterface $xmlFileCleaner;
     private LoadTryIncrementorInterface $loadTryIncrementor;
     private string $versionFormat;
     private string $urlFullXml;
     private string $urlDeltaXml;
 
     public function __construct(
+        ZipFileNamerInterface $zipFileService,
         ZipFileLoaderInterface $zipFileLoader,
-        ZipFileExtractorInterface $zipFileExtractor,
         ZipFileRotatorInterface $zipFileRotator,
-        XmlFileCleanerInterface $xmlFileCleaner,
         LoadTryIncrementorInterface $loadTryIncrementor,
         string $versionFormat,
         string $urlFullXml,
         string $urlDeltaXml,
     ) {
+        $this->zipFileService = $zipFileService;
         $this->zipFileLoader = $zipFileLoader;
-        $this->zipFileExtractor = $zipFileExtractor;
         $this->zipFileRotator = $zipFileRotator;
-        $this->xmlFileCleaner = $xmlFileCleaner;
         $this->loadTryIncrementor = $loadTryIncrementor;
         $this->versionFormat = $versionFormat;
         $this->urlFullXml = $urlFullXml;
@@ -85,9 +81,8 @@ class XmlDownloader implements XmlDownloaderInterface
 
         try {
             $this->zipFileRotator->rotate();
-            $fileName = $this->zipFileLoader->load($this->buildUrl($urlTemplate, $versionId), $versionId);
-            $this->xmlFileCleaner->clean();
-            $this->zipFileExtractor->extract($versionId, $fileName);
+            $fileName = $this->zipFileService->getFileName($type, $versionId);
+            $this->zipFileLoader->load($this->buildUrl($urlTemplate, $versionId), $fileName);
         } catch (FileNotAvailableException $e) {
             $this->loadTryIncrementor->increment($type, $versionId);
             throw new RuntimeException($e->getMessage());

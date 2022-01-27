@@ -27,10 +27,8 @@ class ZipFileLoader implements ZipFileLoaderInterface
      * @throws FileNotAvailableException
      * @throws RuntimeException
      */
-    public function load(string $url, string $versionId): string
+    public function load(string $url, string $fileName): string
     {
-        $urlPath = parse_url($url, PHP_URL_PATH);
-        $fileName = $versionId . '_' . basename($urlPath);
         $filePath = $this->zipDirectory . '/' . $fileName;
 
         if (!$this->reloadIfExists && file_exists($filePath)) {
