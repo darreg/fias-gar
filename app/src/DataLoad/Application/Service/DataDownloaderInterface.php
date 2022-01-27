@@ -6,7 +6,7 @@ namespace App\DataLoad\Application\Service;
 
 use App\DataLoad\Domain\Version\Entity\Version;
 
-interface XmlDownloaderInterface
+interface DataDownloaderInterface
 {
     /**
      * @param Version::TYPE_* $type

@@ -6,5 +6,5 @@ namespace App\DataLoad\Domain\ZipFile\Service;
 
 interface ZipFileLoaderInterface
 {
-    public function load(string $url, string $versionId): string;
+    public function load(string $url, string $fileName): string;
 }

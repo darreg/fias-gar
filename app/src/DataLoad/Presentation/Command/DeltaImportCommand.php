@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Presentation\Command;
 
-use App\DataLoad\Application\UseCase\DownloadXmlFiles\Command as DownloadCommand;
+use App\DataLoad\Application\UseCase\Download\Command as DownloadCommand;
+use App\DataLoad\Application\UseCase\Extract\Command as ExtractCommand;
 use App\DataLoad\Application\UseCase\GetVersion\Query as GetVersionQuery;
 use App\DataLoad\Application\UseCase\GetVersion\Response as GetVersionResponse;
 use App\DataLoad\Application\UseCase\ImportXmlFiles\Command as ImportCommand;
@@ -78,9 +79,12 @@ final class DeltaImportCommand extends Command
 
         try {
             $output->writeln('- Downloading');
-            $this->commandBus->dispatch(new DownloadCommand($versionId, Version::TYPE_DELTA));
+            $this->commandBus->dispatch(new DownloadCommand(Version::TYPE_DELTA, $versionId));
 
-            $output->writeln('- Filling the xml import queue');
+            $output->writeln('- Extracting');
+            $this->commandBus->dispatch(new ExtractCommand(Version::TYPE_DELTA, $versionId));
+
+            $output->writeln('- Filling import queue');
             /** @psalm-suppress MixedArgumentTypeCoercion */
             $this->commandBus->dispatch(new ImportCommand(Version::TYPE_DELTA, $versionId, $this->importTokens));
 

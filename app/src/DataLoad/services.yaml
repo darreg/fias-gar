@@ -147,6 +147,8 @@ services:
             $xmlDirectory: '%fias_xml_directory%'
             $zipDirectory: '%fias_zip_directory%'
             $importTokens: '%fias_import_tokens%'
+            $fullFileName: '%fias_url_full_file%'
+            $deltaFileName: '%fias_url_delta_file%'
 
     App\DataLoad\:
         resource: '../../src/DataLoad/*'
@@ -155,17 +157,18 @@ services:
         resource: '../../src/DataLoad/Presentation/Controller'
         tags: ['controller.service_arguments']
 
-    App\DataLoad\Infrastructure\Service\XmlDownloader:
+    App\DataLoad\Infrastructure\Service\DataDownloader:
         arguments:
             $versionFormat: '%fias_url_version_format%'
             $urlFullXml: '%fias_url_full_xml%'
             $urlDeltaXml: '%fias_url_delta_xml%'
-    App\DataLoad\Application\Service\XmlDownloaderInterface: '@App\DataLoad\Infrastructure\Service\XmlDownloader'
+    App\DataLoad\Application\Service\DataDownloaderInterface: '@App\DataLoad\Infrastructure\Service\DataDownloader'
+
+    App\DataLoad\Infrastructure\Service\DataExtractor: ~
+    App\DataLoad\Application\Service\DataExtractorInterface: '@App\DataLoad\Infrastructure\Service\DataExtractor'
 
     App\DataLoad\Infrastructure\Service\ZipFileRotator:
         arguments:
-            $fullFileName: '%fias_url_full_file%'
-            $deltaFileName: '%fias_url_delta_file%'
             $maxFullFileNum: '%fias_zip_max_full_file%'
             $maxDeltaFileNum: '%fias_zip_max_delta_file%'
     App\DataLoad\Domain\ZipFile\Service\ZipFileRotatorInterface: '@App\DataLoad\Infrastructure\Service\ZipFileRotator'
@@ -229,8 +232,8 @@ services:
     App\DataLoad\Infrastructure\Service\NextVersionFinder: ~
     App\DataLoad\Domain\Version\Service\NextVersionFinderInterface: '@App\DataLoad\Infrastructure\Service\NextVersionFinder'
 
-    App\DataLoad\Infrastructure\Service\DeltaVersionCoverer: ~
-    App\DataLoad\Domain\Version\Service\DeltaVersionCovererInterface: '@App\DataLoad\Infrastructure\Service\DeltaVersionCoverer'
+    App\DataLoad\Infrastructure\Service\VersionCoverer: ~
+    App\DataLoad\Domain\Version\Service\VersionCovererInterface: '@App\DataLoad\Infrastructure\Service\VersionCoverer'
 
     App\DataLoad\Infrastructure\Repository\ImportRedisFetcher: ~
     App\DataLoad\Domain\Import\Repository\ImportFetcherInterface: '@App\DataLoad\Infrastructure\Repository\ImportRedisFetcher'
@@ -238,3 +241,5 @@ services:
     App\DataLoad\Infrastructure\Service\LoadTryIncrementor: ~
     App\DataLoad\Domain\Version\Service\LoadTryIncrementorInterface: '@App\DataLoad\Infrastructure\Service\LoadTryIncrementor'
 
+    App\DataLoad\Infrastructure\Service\ZipFileNamer: ~
+    App\DataLoad\Domain\ZipFile\Service\ZipFileNamerInterface: '@App\DataLoad\Infrastructure\Service\ZipFileNamer'
