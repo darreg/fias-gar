@@ -52,9 +52,10 @@ class CompletedImportSaver
                 $this->importRepository->persist(new Import(
                     $row->type,
                     $row->versionId,
-                    $row->taskNum,
+                    $row->parseTaskNum,
                     $row->parseErrorNum,
                     $row->parseSuccessNum,
+                    $row->saveTaskNum,
                     $row->saveErrorNum,
                     $row->saveSuccessNum,
                     $row->viewsRefreshed,

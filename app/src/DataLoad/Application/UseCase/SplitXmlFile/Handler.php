@@ -37,19 +37,17 @@ final class Handler implements CommandHandlerInterface
         $type = $command->getType();
         $versionId = $command->getVersionId();
         $fileToken = $command->getFileToken();
+        $filePath = $command->getFilePath();
+        $tagName = $command->getTagName();
 
         try {
-            $tagSources = $this->tagGenerator->generate($command->getFilePath(), $command->getTagName());
+            $tagSources = $this->tagGenerator->generate($filePath, $tagName);
             foreach ($tagSources as $tagSource) {
                 $this->commandBus->dispatch(new ParseCommand($type, $versionId, $fileToken, $tagSource));
-                $this->incrementor->inc($type, $versionId, Import::COUNTER_FIELD_TASK_NUM);
+                $this->incrementor->inc($type, $versionId, Import::COUNTER_FIELD_PARSE_TASK_NUM);
             }
         } catch (Exception $e) {
-            $this->splitErrorsLogger->info(
-                $command->getFilePath() . ' ; ' .
-                $command->getTagName() . ' ; ' .
-                $e->getMessage()
-            );
+            $this->splitErrorsLogger->info($filePath . ' ; ' . $tagName . ' ; ' . $e->getMessage());
         }
     }
 }

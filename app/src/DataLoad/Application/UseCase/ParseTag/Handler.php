@@ -10,6 +10,7 @@ use App\DataLoad\Domain\Import\Service\ImportCounterIncrementorInterface;
 use App\DataLoad\Domain\Tag\Service\TagParserInterface;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
+use DateTimeImmutable;
 use Exception;
 use Psr\Log\LoggerInterface;
 
@@ -34,35 +35,25 @@ final class Handler implements CommandHandlerInterface
 
     public function __invoke(Command $command): void
     {
-        try {
-            $data = $this->parser->parse($command->getTagSource());
-            $data[SaveCommand::FIELD_NAME_CHANGED_AT] = date('Y-m-d H:i:s');
+        $type = $command->getType();
+        $versionId = $command->getVersionId();
+        $tagSource = $command->getTagSource();
+        $fileToken = $command->getFileToken();
 
-            $this->commandBus->dispatch(
-                new SaveCommand(
-                    $command->getType(),
-                    $command->getVersionId(),
-                    $command->getFileToken(),
-                    $data
-                )
-            );
-            $this->incrementor->inc(
-                $command->getType(),
-                $command->getVersionId(),
-                Import::COUNTER_FIELD_PARSE_SUCCESS_NUM
-            );
+        try {
+            $data = $this->parser->parse($tagSource);
+
+            $data[SaveCommand::FIELD_NAME_CHANGED_AT] =
+                (new DateTimeImmutable())->format(SaveCommand::DATE_FORMAT);
+
+            $this->commandBus->dispatch(new SaveCommand($type, $versionId, $fileToken, $data));
+            $this->incrementor->inc($type, $versionId, Import::COUNTER_FIELD_PARSE_SUCCESS_NUM);
+            $this->incrementor->inc($type, $versionId, Import::COUNTER_FIELD_SAVE_TASK_NUM);
         } catch (Exception $e) {
             $this->parseErrorsLogger->info(
-                $command->getVersionId() . ';' .
-                $command->getFileToken() . ' ; ' .
-                $command->getTagSource() . ' ; ' .
-                $e->getMessage()
+                $versionId . ';' . $fileToken . ' ; ' . $tagSource . ' ; ' . $e->getMessage()
             );
-            $this->incrementor->inc(
-                $command->getType(),
-                $command->getVersionId(),
-                Import::COUNTER_FIELD_PARSE_ERROR_NUM
-            );
+            $this->incrementor->inc($type, $versionId, Import::COUNTER_FIELD_PARSE_ERROR_NUM);
         }
     }
 }
