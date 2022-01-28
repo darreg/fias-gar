@@ -22,9 +22,10 @@ class Import
     public const FIELD_UPDATED_AT = 'updated_at';
     public const FIELD_VIEWS_REFRESHED = 'views_refreshed';
 
-    public const COUNTER_FIELD_TASK_NUM = 'task_num';
+    public const COUNTER_FIELD_PARSE_TASK_NUM = 'parse_task_num';
     public const COUNTER_FIELD_PARSE_ERROR_NUM = 'parse_error_num';
     public const COUNTER_FIELD_PARSE_SUCCESS_NUM = 'parse_success_num';
+    public const COUNTER_FIELD_SAVE_TASK_NUM = 'save_task_num';
     public const COUNTER_FIELD_SAVE_ERROR_NUM = 'save_error_num';
     public const COUNTER_FIELD_SAVE_SUCCESS_NUM = 'save_success_num';
 
@@ -39,23 +40,27 @@ class Import
      */
     private string $versionId;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
-    private int $taskNum;
+    private int $parseTaskNum;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
     private int $parseErrorNum;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
     private int $parseSuccessNum;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private int $saveTaskNum;
+    /**
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
     private int $saveErrorNum;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
     private int $saveSuccessNum;
     /**
@@ -74,9 +79,10 @@ class Import
     public function __construct(
         string $type,
         string $versionId,
-        int $taskNum = 0,
+        int $parseTaskNum = 0,
         int $parseErrorNum = 0,
         int $parseSuccessNum = 0,
+        int $saveTaskNum = 0,
         int $saveErrorNum = 0,
         int $saveSuccessNum = 0,
         bool $viewsRefreshed = false,
@@ -85,9 +91,10 @@ class Import
     ) {
         $this->type = $type;
         $this->versionId = $versionId;
-        $this->taskNum = $taskNum;
+        $this->parseTaskNum = $parseTaskNum;
         $this->parseErrorNum = $parseErrorNum;
         $this->parseSuccessNum = $parseSuccessNum;
+        $this->saveTaskNum = $saveTaskNum;
         $this->saveErrorNum = $saveErrorNum;
         $this->saveSuccessNum = $saveSuccessNum;
         $this->viewsRefreshed = $viewsRefreshed;
@@ -105,9 +112,9 @@ class Import
         return $this->versionId;
     }
 
-    public function getTaskNum(): int
+    public function getParseTaskNum(): int
     {
-        return $this->taskNum;
+        return $this->parseTaskNum;
     }
 
     public function getParseErrorNum(): int
@@ -118,6 +125,11 @@ class Import
     public function getParseSuccessNum(): int
     {
         return $this->parseSuccessNum;
+    }
+
+    public function getSaveTaskNum(): int
+    {
+        return $this->saveTaskNum;
     }
 
     public function getSaveErrorNum(): int
@@ -155,9 +167,10 @@ class Import
         return [
             self::FIELD_TYPE => $this->type,
             self::FIELD_VERSION_ID => $this->versionId,
-            self::COUNTER_FIELD_TASK_NUM => $this->taskNum,
+            self::COUNTER_FIELD_PARSE_TASK_NUM => $this->parseTaskNum,
             self::COUNTER_FIELD_PARSE_ERROR_NUM => $this->parseErrorNum,
             self::COUNTER_FIELD_PARSE_SUCCESS_NUM => $this->parseSuccessNum,
+            self::COUNTER_FIELD_SAVE_TASK_NUM => $this->saveTaskNum,
             self::COUNTER_FIELD_SAVE_ERROR_NUM => $this->saveErrorNum,
             self::COUNTER_FIELD_SAVE_SUCCESS_NUM => $this->saveSuccessNum,
             self::FIELD_VIEWS_REFRESHED => $this->viewsRefreshed,
@@ -167,12 +180,12 @@ class Import
     }
 
     public static function isFinished(
-        int $taskNum,
+        int $parseTaskNum,
         int $saveSuccessNum,
         int $saveErrorNum,
         int $parseErrorNum
     ): bool {
-        return ($saveSuccessNum + $saveErrorNum + $parseErrorNum) >= $taskNum;
+        return ($saveSuccessNum + $saveErrorNum + $parseErrorNum) >= $parseTaskNum;
     }
 
     public static function buildKey(string $type, string $versionId): string

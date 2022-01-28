@@ -29,25 +29,18 @@ final class Handler implements CommandHandlerInterface
 
     public function __invoke(Command $command): void
     {
+        $type = $command->getType();
+        $versionId = $command->getVersionId();
+        $fileToken = $command->getFileToken();
+
         try {
-            $this->saver->upsert($command->getFileToken(), $command->getValues());
-            $this->incrementor->inc(
-                $command->getType(),
-                $command->getVersionId(),
-                Import::COUNTER_FIELD_SAVE_SUCCESS_NUM
-            );
+            $this->saver->upsert($fileToken, $command->getValues());
+            $this->incrementor->inc($type, $versionId, Import::COUNTER_FIELD_SAVE_SUCCESS_NUM);
         } catch (Exception $e) {
             $this->saveErrorsLogger->info(
-                $command->getVersionId() . ';' .
-                $command->getFileToken() . ' ; ' .
-                serialize($command->getValues()) . ' ; ' .
-                $e->getMessage()
+                $versionId . ';' . $fileToken . ' ; ' . serialize($command->getValues()) . ' ; ' . $e->getMessage()
             );
-            $this->incrementor->inc(
-                $command->getType(),
-                $command->getVersionId(),
-                Import::COUNTER_FIELD_SAVE_ERROR_NUM
-            );
+            $this->incrementor->inc($type, $versionId, Import::COUNTER_FIELD_SAVE_ERROR_NUM);
         }
     }
 }

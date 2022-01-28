@@ -15,9 +15,10 @@ class ImportRow implements ConstructFromArrayInterface
     public function __construct(
         public string $type,
         public string $versionId,
-        public int $taskNum,
+        public int $parseTaskNum,
         public int $parseErrorNum,
         public int $parseSuccessNum,
+        public int $saveTaskNum,
         public int $saveErrorNum,
         public int $saveSuccessNum,
         public bool $viewsRefreshed,
@@ -35,9 +36,10 @@ class ImportRow implements ConstructFromArrayInterface
             return new self(
                 (string)$data[Import::FIELD_TYPE],
                 (string)$data[Import::FIELD_VERSION_ID],
-                (int)$data[Import::COUNTER_FIELD_TASK_NUM],
+                (int)$data[Import::COUNTER_FIELD_PARSE_TASK_NUM],
                 (int)$data[Import::COUNTER_FIELD_PARSE_ERROR_NUM],
                 (int)$data[Import::COUNTER_FIELD_PARSE_SUCCESS_NUM],
+                (int)$data[Import::COUNTER_FIELD_SAVE_TASK_NUM],
                 (int)$data[Import::COUNTER_FIELD_SAVE_ERROR_NUM],
                 (int)$data[Import::COUNTER_FIELD_SAVE_SUCCESS_NUM],
                 (bool)$data[Import::FIELD_VIEWS_REFRESHED],

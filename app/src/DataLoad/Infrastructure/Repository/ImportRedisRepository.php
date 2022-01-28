@@ -30,7 +30,7 @@ class ImportRedisRepository implements ImportRepositoryInterface
     {
         $key = Import::buildKey($type, $versionId);
 
-        if ($this->redis->hExists($key, Import::COUNTER_FIELD_TASK_NUM) === false) {
+        if ($this->redis->hExists($key, Import::COUNTER_FIELD_PARSE_TASK_NUM) === false) {
             return null;
         }
 
@@ -40,9 +40,10 @@ class ImportRedisRepository implements ImportRepositoryInterface
         return new Import(
             $type,
             $versionId,
-            self::getInt($redisData, Import::COUNTER_FIELD_TASK_NUM),
+            self::getInt($redisData, Import::COUNTER_FIELD_PARSE_TASK_NUM),
             self::getInt($redisData, Import::COUNTER_FIELD_PARSE_ERROR_NUM),
             self::getInt($redisData, Import::COUNTER_FIELD_PARSE_SUCCESS_NUM),
+            self::getInt($redisData, Import::COUNTER_FIELD_SAVE_TASK_NUM),
             self::getInt($redisData, Import::COUNTER_FIELD_SAVE_ERROR_NUM),
             self::getInt($redisData, Import::COUNTER_FIELD_SAVE_SUCCESS_NUM),
             self::getBool($redisData, Import::FIELD_VIEWS_REFRESHED),
@@ -69,9 +70,10 @@ class ImportRedisRepository implements ImportRepositoryInterface
     {
         $key = $import->getKey();
         $this->redis->multi();
-        $this->redis->hSet($key, Import::COUNTER_FIELD_TASK_NUM, (string)$import->getTaskNum());
+        $this->redis->hSet($key, Import::COUNTER_FIELD_PARSE_TASK_NUM, (string)$import->getParseTaskNum());
         $this->redis->hSet($key, Import::COUNTER_FIELD_PARSE_ERROR_NUM, (string)$import->getParseErrorNum());
         $this->redis->hSet($key, Import::COUNTER_FIELD_PARSE_SUCCESS_NUM, (string)$import->getParseSuccessNum());
+        $this->redis->hSet($key, Import::COUNTER_FIELD_SAVE_TASK_NUM, (string)$import->getSaveTaskNum());
         $this->redis->hSet($key, Import::COUNTER_FIELD_SAVE_ERROR_NUM, (string)$import->getSaveErrorNum());
         $this->redis->hSet($key, Import::COUNTER_FIELD_SAVE_SUCCESS_NUM, (string)$import->getSaveSuccessNum());
         $this->redis->hSet($key, Import::FIELD_CREATED_AT, (string)$import->getCreatedAt()->getTimestamp());

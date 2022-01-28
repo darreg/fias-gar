@@ -8,6 +8,7 @@ use App\Shared\Domain\Bus\Command\CommandInterface;
 
 final class Command implements CommandInterface
 {
+    public const DATE_FORMAT = 'Y-m-d H:i:s';
     public const FIELD_NAME_CHANGED_AT = 'changed_at';
 
     private string $type;

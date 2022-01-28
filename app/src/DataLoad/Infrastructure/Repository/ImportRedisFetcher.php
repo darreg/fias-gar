@@ -48,7 +48,7 @@ class ImportRedisFetcher implements ImportFetcherInterface
         $imports = $this->findAll();
         foreach ($imports as $import) {
             if (Import::isFinished(
-                $import->taskNum,
+                $import->parseTaskNum,
                 $import->saveSuccessNum,
                 $import->saveErrorNum,
                 $import->parseErrorNum
@@ -75,7 +75,7 @@ class ImportRedisFetcher implements ImportFetcherInterface
         $imports = $this->findAll();
         foreach ($imports as $import) {
             if (!Import::isFinished(
-                $import->taskNum,
+                $import->parseTaskNum,
                 $import->saveSuccessNum,
                 $import->saveErrorNum,
                 $import->parseErrorNum
