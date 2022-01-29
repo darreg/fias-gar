@@ -162,6 +162,16 @@ class Import
         return $this->viewsRefreshed;
     }
 
+    public function getParseQueueLength(): int
+    {
+        return $this->parseTaskNum - $this->parseSuccessNum - $this->parseErrorNum;
+    }
+
+    public function getSaveQueueLength(): int
+    {
+        return $this->saveTaskNum - $this->saveSuccessNum - $this->saveErrorNum;
+    }
+
     public function toArray(): array
     {
         return [
