@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Application\UseCase\GetVersion;
+namespace App\DataLoad\Application\UseCase\ValidateVersion;
 
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Query\QueryInterface;

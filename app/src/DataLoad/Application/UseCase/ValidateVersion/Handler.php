@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Application\UseCase\GetVersion;
+namespace App\DataLoad\Application\UseCase\ValidateVersion;
 
-use App\DataLoad\Domain\Version\Entity\Version;
 use App\DataLoad\Domain\Version\Exception\IncorrectVersionException;
 use App\DataLoad\Domain\Version\Repository\VersionRepositoryInterface;
 use App\Shared\Domain\Bus\Query\QueryHandlerInterface;
@@ -31,16 +30,20 @@ class Handler implements QueryHandlerInterface
     public function __invoke(Query $query): ResponseInterface
     {
         try {
-            $version = $this->getRelevantVersion($query);
+            $this->getRelevantVersion($query);
         } catch (IncorrectVersionException|EntityNotFoundException $e) {
             $this->logger->critical($e->getMessage());
-            return new Response(null);
+            return new Response(false);
         }
 
-        return new Response($version);
+        return new Response(true);
     }
 
-    private function getRelevantVersion(Query $query): Version
+    /**
+     * @throws EntityNotFoundException
+     * @throws IncorrectVersionException
+     */
+    private function getRelevantVersion(Query $query): void
     {
         $type = $query->getType();
         $versionId = $query->getVersionId();
@@ -65,7 +68,5 @@ class Handler implements QueryHandlerInterface
         if ($versionType->isBrokenUrl()) {
             throw new IncorrectVersionException("Version '{$versionId}' has a broken {$type} url");
         }
-
-        return $version;
     }
 }
