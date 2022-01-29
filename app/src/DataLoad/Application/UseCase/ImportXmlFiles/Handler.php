@@ -8,6 +8,7 @@ use App\DataLoad\Application\UseCase\FindXmlFile\Query as FindFileQuery;
 use App\DataLoad\Application\UseCase\FindXmlFile\Response as FindFileResponse;
 use App\DataLoad\Application\UseCase\SplitXmlFile\Command as SplitFileCommand;
 use App\DataLoad\Domain\Import\Repository\ImportRepositoryInterface;
+use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use App\Shared\Domain\Bus\Query\QueryBusInterface;
@@ -30,6 +31,7 @@ class Handler implements CommandHandlerInterface
 
     public function __invoke(Command $command)
     {
+        /** @var Version::TYPE_* $type */
         $type = $command->getType();
         $versionId = $command->getVersionId();
         $tokens = $command->getTokens();

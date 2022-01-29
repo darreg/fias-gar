@@ -1,4 +1,8 @@
 parameters:
+    queue_parse_max_length: 100000
+    queue_save_max_length: 100000
+    queue_length_limit_sleep_time: 30
+
     fias_version_list_url: 'https://fias.nalog.ru/WebServices/Public/GetAllDownloadFileInfo'
 
     fias_url_version_format: 'Y.m.d'
@@ -243,3 +247,10 @@ services:
 
     App\DataLoad\Infrastructure\Service\ZipFileNamer: ~
     App\DataLoad\Domain\ZipFile\Service\ZipFileNamerInterface: '@App\DataLoad\Infrastructure\Service\ZipFileNamer'
+
+    App\DataLoad\Infrastructure\Service\QueueLimiter:
+        arguments:
+            $queueParseMaxLength: '%queue_parse_max_length%'
+            $queueSaveMaxLength: '%queue_save_max_length%'
+            $queueLengthLimitSleepTime: '%queue_length_limit_sleep_time%'
+    App\DataLoad\Application\Service\QueueLimiterInterface: '@App\DataLoad\Infrastructure\Service\QueueLimiter'

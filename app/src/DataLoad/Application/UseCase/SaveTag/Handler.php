@@ -7,6 +7,7 @@ namespace App\DataLoad\Application\UseCase\SaveTag;
 use App\DataLoad\Domain\Import\Entity\Import;
 use App\DataLoad\Domain\Import\Service\ImportCounterIncrementorInterface;
 use App\DataLoad\Domain\Tag\Service\TagSaverInterface;
+use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -29,6 +30,7 @@ final class Handler implements CommandHandlerInterface
 
     public function __invoke(Command $command): void
     {
+        /** @var Version::TYPE_* $type */
         $type = $command->getType();
         $versionId = $command->getVersionId();
         $fileToken = $command->getFileToken();

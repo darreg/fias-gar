@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\ImportXmlFiles;
 
+use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Command\CommandInterface;
 
 class Command implements CommandInterface
@@ -16,6 +17,7 @@ class Command implements CommandInterface
     private array $tokens;
 
     /**
+     * @param Version::TYPE_* $type
      * @param list<string> $tokens
      */
     public function __construct(string $type, string $versionId, array $tokens)

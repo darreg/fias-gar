@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\SaveTag;
 
+use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Command\CommandInterface;
 
 final class Command implements CommandInterface
@@ -20,6 +21,7 @@ final class Command implements CommandInterface
     private array $values;
 
     /**
+     * @param Version::TYPE_* $type
      * @param array<string, string> $values
      */
     public function __construct(

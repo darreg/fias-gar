@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Application\UseCase\SplitXmlFile;
 
+use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Command\CommandInterface;
 
 final class Command implements CommandInterface
@@ -14,6 +15,9 @@ final class Command implements CommandInterface
     private string $fileToken;
     private string $tagName;
 
+    /**
+     * @param Version::TYPE_* $type
+     */
     public function __construct(
         string $type,
         string $versionId,
