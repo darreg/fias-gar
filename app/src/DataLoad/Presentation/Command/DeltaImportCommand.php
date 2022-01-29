@@ -4,19 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataLoad\Presentation\Command;
 
-use App\DataLoad\Application\UseCase\Download\Command as DownloadCommand;
-use App\DataLoad\Application\UseCase\Extract\Command as ExtractCommand;
-use App\DataLoad\Application\UseCase\GetVersion\Query as GetVersionQuery;
-use App\DataLoad\Application\UseCase\GetVersion\Response as GetVersionResponse;
-use App\DataLoad\Application\UseCase\ImportXmlFiles\Command as ImportCommand;
-use App\DataLoad\Application\UseCase\MarkLoaded\Command as MarkLoadedCommand;
-use App\DataLoad\Application\UseCase\NextVersion\Query as NextVersionQuery;
-use App\DataLoad\Application\UseCase\NextVersion\Response as NextVersionResponse;
-use App\DataLoad\Application\UseCase\RefreshVersion\Command as RefreshVersionCommand;
-use App\DataLoad\Domain\Import\Repository\ImportFetcherInterface;
 use App\DataLoad\Domain\Version\Entity\Version;
-use App\Shared\Domain\Bus\Command\CommandBusInterface;
-use App\Shared\Domain\Bus\Query\QueryBusInterface;
+use App\DataLoad\Infrastructure\Service\ImportCommandService;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -26,31 +15,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class DeltaImportCommand extends Command
 {
-    private CommandBusInterface $commandBus;
-    private QueryBusInterface $queryBus;
-    private ImportFetcherInterface $importFetcher;
+    private ImportCommandService $importCommandService;
     private LoggerInterface $logger;
-    /**
-     * @param list<string> $importTokens
-     */
-    private array $importTokens;
 
-    /**
-     * @param list<string> $importTokens
-     */
     public function __construct(
-        CommandBusInterface $commandBus,
-        QueryBusInterface $queryBus,
-        ImportFetcherInterface $importFetcher,
-        LoggerInterface $deltaImportLogger,
-        array $importTokens
+        ImportCommandService $importCommandService,
+        LoggerInterface $deltaImportLogger
     ) {
         parent::__construct();
-        $this->commandBus = $commandBus;
-        $this->queryBus = $queryBus;
+        $this->importCommandService = $importCommandService;
         $this->logger = $deltaImportLogger;
-        $this->importTokens = $importTokens;
-        $this->importFetcher = $importFetcher;
     }
 
     protected function configure(): void
@@ -58,20 +32,30 @@ final class DeltaImportCommand extends Command
         $this
             ->setName('fias:import:delta')
             ->setDescription('Download and import FIAS delta database')
-            ->setHelp('fias:import:delta VERSION')
-            ->addArgument('version', InputArgument::OPTIONAL);
+            ->setHelp('fias:import:delta VERSION_ID')
+            ->addArgument('versionId', InputArgument::OPTIONAL);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $versionId = $this->getVersionId($input);
+        if ($this->importCommandService->importIsNotPossible()) {
+            $output->writeln('<fg=red>There are incomplete imports. Wait for them to complete</>');
+            return Command::FAILURE;
+        }
+
+        $this->importCommandService->refreshVersionList();
+
+        $versionId =
+            $input->getArgument('versionId') ??
+            $this->importCommandService->getNextVersionId(Version::TYPE_DELTA);
+
         if ($versionId === null) {
             $output->writeln('There is no relevant version to download');
             return Command::FAILURE;
         }
 
-        if ($this->importFetcher->isUncompletedExists()) {
-            $output->writeln('<fg=red>There are incomplete imports. Wait for them to complete</>');
+        if (!$this->importCommandService->isValidVersion($versionId)) {
+            $output->writeln('This version is invalid');
             return Command::FAILURE;
         }
 
@@ -79,17 +63,16 @@ final class DeltaImportCommand extends Command
 
         try {
             $output->writeln('- Downloading');
-            $this->commandBus->dispatch(new DownloadCommand(Version::TYPE_DELTA, $versionId));
+            $this->importCommandService->download(Version::TYPE_DELTA, $versionId);
 
             $output->writeln('- Extracting');
-            $this->commandBus->dispatch(new ExtractCommand(Version::TYPE_DELTA, $versionId));
+            $this->importCommandService->extract(Version::TYPE_DELTA, $versionId);
 
             $output->writeln('- Filling import queue');
-            /** @psalm-suppress MixedArgumentTypeCoercion */
-            $this->commandBus->dispatch(new ImportCommand(Version::TYPE_DELTA, $versionId, $this->importTokens));
+            $this->importCommandService->fillImportQueue(Version::TYPE_DELTA, $versionId);
 
             $output->writeln('- Mark this version as loaded');
-            $this->commandBus->dispatch(new MarkLoadedCommand(Version::TYPE_DELTA, $versionId));
+            $this->importCommandService->markAsLoaded(Version::TYPE_DELTA, $versionId);
         } catch (Exception $e) {
             $this->logger->error(
                 $versionId . ' ; ' . $e->getMessage() . ' ; ' . $e->getFile() . ' ; ' . $e->getLine(),
@@ -101,22 +84,6 @@ final class DeltaImportCommand extends Command
         $this->showFinishMessage($output);
 
         return Command::SUCCESS;
-    }
-
-    private function getVersionId(InputInterface $input): ?string
-    {
-        $this->commandBus->dispatch(new RefreshVersionCommand());
-
-        $versionId = $input->getArgument('version');
-        if ($versionId === null) {
-            /** @var NextVersionResponse $response */
-            $response = $this->queryBus->ask(new NextVersionQuery(Version::TYPE_DELTA));
-            return $response->answer();
-        }
-
-        /** @var GetVersionResponse $response */
-        $response = $this->queryBus->ask(new GetVersionQuery(Version::TYPE_DELTA, $versionId));
-        return $response->answer()?->getId();
     }
 
     private function showStartMessage(OutputInterface $output, string $versionId): void
