@@ -9,4 +9,4 @@ providers:
     editable: true
     allowUiUpdates: true
     options:
-      path: ./app/docker/development/grafana/dashboards
+      path: /etc/grafana/provisioning/dashboards

@@ -76,10 +76,7 @@
       "pluginVersion": "8.3.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "P5v_yebnk"
-          },
+          "datasource": "Prometheus",
           "exemplar": true,
           "expr": "fias_gar_parse_task_num{type=\"delta\"} ",
           "hide": false,
@@ -137,10 +134,7 @@
       "pluginVersion": "8.3.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "P5v_yebnk"
-          },
+          "datasource": "Prometheus",
           "exemplar": true,
           "expr": "fias_gar_parse_error_num{type=\"delta\"}",
           "format": "time_series",
@@ -200,10 +194,7 @@
       "pluginVersion": "8.3.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "P5v_yebnk"
-          },
+          "datasource": "Prometheus",
           "exemplar": true,
           "expr": "fias_gar_parse_error_num{type=\"delta\"}",
           "format": "time_series",
@@ -276,10 +267,7 @@
       "pluginVersion": "8.3.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "P5v_yebnk"
-          },
+          "datasource": "Prometheus",
           "exemplar": true,
           "expr": "fias_gar_parse_task_num{type=\"full\"} ",
           "hide": false,
@@ -337,10 +325,7 @@
       "pluginVersion": "8.3.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "P5v_yebnk"
-          },
+          "datasource": "Prometheus",
           "exemplar": true,
           "expr": "fias_gar_save_error_num{type=\"full\"}",
           "format": "time_series",
@@ -399,10 +384,7 @@
       "pluginVersion": "8.3.4",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "P5v_yebnk"
-          },
+          "datasource": "Prometheus",
           "exemplar": true,
           "expr": "fias_gar_parse_error_num{type=\"full\"}",
           "format": "time_series",
