@@ -224,6 +224,9 @@
             "tests/bootstrap.php"
         ]
     },
+    "promphp/prometheus_client_php": {
+        "version": "v2.4.0"
+    },
     "psalm/plugin-phpunit": {
         "version": "0.16.1"
     },

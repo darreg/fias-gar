@@ -1,0 +1,3 @@
+controllers:
+  resource: '../../src/Shared/Presentation/Controller/'
+  type: annotation

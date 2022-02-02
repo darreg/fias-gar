@@ -57,6 +57,12 @@ RUN apk add --update --virtual .build-deps \
     && apk del .build-deps \
     && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
 
+RUN apk add --update --no-cache --virtual .build-dependencies $PHPIZE_DEPS \
+        && pecl install apcu \
+        && docker-php-ext-enable apcu \
+        && pecl clear-cache \
+        && apk del .build-dependencies
+
 RUN echo "alias ll='ls -alF'" >> /home/www-data/.bashrc
 
 RUN usermod -u ${USER_ID} www-data && groupmod -g ${GROUP_ID} www-data

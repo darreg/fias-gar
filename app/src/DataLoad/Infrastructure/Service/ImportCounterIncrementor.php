@@ -6,15 +6,20 @@ namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Domain\Import\Entity\Import;
 use App\DataLoad\Domain\Import\Service\ImportCounterIncrementorInterface;
+use App\Shared\Domain\Monitoring\MonitorInterface;
 use Redis;
 
 class ImportCounterIncrementor implements ImportCounterIncrementorInterface
 {
     private Redis $redis;
+    private MonitorInterface $monitor;
 
-    public function __construct(Redis $redis)
-    {
+    public function __construct(
+        MonitorInterface $monitor,
+        Redis $redis
+    ) {
         $this->redis = $redis;
+        $this->monitor = $monitor;
     }
 
     /**
@@ -22,16 +27,48 @@ class ImportCounterIncrementor implements ImportCounterIncrementorInterface
      */
     public function inc(string $type, string $versionId, string $fieldName): void
     {
+        $timestamp = time();
         $key = Import::buildKey($type, $versionId);
+        $counterExists = $this->redis->hExists($key, Import::FIELD_CREATED_AT);
 
-        $createdAt = $this->redis->hGet($key, Import::FIELD_CREATED_AT);
+        $this->incCounter($key, $fieldName, $timestamp, $counterExists);
+        $this->incMonitoring($type, $versionId, $fieldName, $timestamp, $counterExists);
+    }
 
+    private function incCounter(
+        string $key,
+        string $fieldName,
+        int $timestamp,
+        bool $counterExists
+    ): void {
         $this->redis->multi();
-        if (!$createdAt) {
-            $this->redis->hSet($key, Import::FIELD_CREATED_AT, (string)time());
+        if (!$counterExists) {
+            $this->redis->hSet($key, Import::FIELD_CREATED_AT, (string)$timestamp);
         }
         $this->redis->hIncrBy($key, $fieldName, 1);
-        $this->redis->hSet($key, Import::FIELD_UPDATED_AT, (string)time());
+        $this->redis->hSet($key, Import::FIELD_UPDATED_AT, (string)$timestamp);
         $this->redis->exec();
+    }
+
+    private function incMonitoring(
+        string $type,
+        string $versionId,
+        string $fieldName,
+        int $timestamp,
+        bool $counterExists
+    ): void {
+        if (!$counterExists) {
+            $this->monitor
+                ->getGauge(Import::FIELD_CREATED_AT, 'Created at datetime', ['type', 'version'])
+                ->set($timestamp, [$type, $versionId]);
+        }
+
+        $this->monitor
+            ->getGauge(Import::FIELD_UPDATED_AT, 'Updated at datetime', ['type', 'version'])
+            ->set($timestamp, [$type, $versionId]);
+
+        $this->monitor
+            ->getCounter($fieldName, $fieldName . ' counter', ['type', 'version'])
+            ->inc([$type, $versionId]);
     }
 }

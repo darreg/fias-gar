@@ -30,3 +30,12 @@ services:
     App\Shared\Infrastructure\Bus\Event\EventBus: ~
     App\Shared\Domain\Bus\Event\EventBusInterface: '@App\Shared\Infrastructure\Bus\Event\EventBus'
 
+    Prometheus\Storage\Redis:
+        factory: ['Prometheus\Storage\Redis', 'fromExistingConnection']
+        arguments: ['@Redis']
+    App\Shared\Infrastructure\Monitoring\PrometheusMonitor:
+        arguments:
+            $adapter: '@Prometheus\Storage\Redis'
+            $namespace: '%env(PROJECT_NAME)%'
+    App\Shared\Domain\Monitoring\MonitorInterface: '@App\Shared\Infrastructure\Monitoring\PrometheusMonitor'
+
