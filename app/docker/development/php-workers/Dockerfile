@@ -63,6 +63,12 @@ RUN apk add --update --virtual .build-deps \
     && mkdir -p /var/log/supervisor/ \
     && chmod 777 /var/log/supervisor
 
+RUN apk add --update --no-cache --virtual .build-dependencies $PHPIZE_DEPS \
+        && pecl install apcu \
+        && docker-php-ext-enable apcu \
+        && pecl clear-cache \
+        && apk del .build-dependencies
+
 RUN echo "alias ll='ls -alF'" >> /home/www-data/.bashrc
 
 RUN usermod -u ${USER_ID} www-data && groupmod -g ${GROUP_ID} www-data

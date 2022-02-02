@@ -9,14 +9,15 @@ services:
       - ./app/docker/development/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./app/docker/development/nginx/certs:/etc/nginx/certs
       - ./app:/app
-    restart: always
+    restart: unless-stopped
     depends_on:
       - php-fpm
     ports:
       - "${NGINX_HTTP_PORT}:80"
       - "${NGINX_HTTPS_PORT}:443"
     networks:
-      internal:
+      internal: ~
+      external:
         ipv4_address: ${PROJECT_IP}
         aliases:
           - ${PROJECT_NAME}.local
@@ -34,7 +35,7 @@ services:
       - ./app/docker/development/php-fpm/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-dev.ini
       - ./app/docker/development/php-fpm/php.ini:/usr/local/etc/php/conf.d/40-custom.ini
       - ./app:/app
-    restart: always
+    restart: unless-stopped
     env_file:
       - .env
     environment:
@@ -61,7 +62,7 @@ services:
     ports:
       - "9111:9111"
     command: ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
-    restart: always
+    restart: unless-stopped
     depends_on:
       - postgres
       - rabbit
@@ -85,7 +86,7 @@ services:
     volumes:
       - ./app/docker/development/php-cli/php.ini:/usr/local/etc/php/conf.d/40-custom.ini
       - ./app:/app
-    restart: always
+    restart: unless-stopped
     env_file:
       - .env
     environment:
@@ -101,7 +102,7 @@ services:
     volumes:
       - ./app/docker/development/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./volumes/postgres/data:/var/lib/postgresql/data
-    restart: always
+    restart: unless-stopped
     ports:
       - "${POSTGRES_PORT}:5432"
     env_file:
@@ -115,6 +116,7 @@ services:
     image: rabbitmq:3.9-management
     volumes:
       - ./volumes/rabbit/data:/var/lib/rabbitmq/mnesia/
+    restart: unless-stopped
     ports:
       - "${RABBIT_PORT}:5672"
       - "${RABBIT_MANAGER_PORT}:15672"
@@ -134,7 +136,7 @@ services:
   redis:
     container_name: ${PROJECT_NAME}-redis
     image: redis:latest
-    restart: always
+    restart: unless-stopped
     ports:
       - "${REDIS_PORT}:6379"
     volumes:
@@ -149,6 +151,44 @@ services:
     networks:
       - internal
 
+  prometheus:
+    container_name: ${PROJECT_NAME}-prometheus
+    image: prom/prometheus:latest
+    user: root
+    volumes:
+      - ./app/docker/development/prometheus:/etc/prometheus
+      - ./volumes/prometheus/data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=10d'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    ports:
+      - "${PROMETHEUS_PORT}:9090"
+    networks:
+      - internal
+
+  grafana:
+    container_name: ${PROJECT_NAME}-grafana
+    image: grafana/grafana:latest
+    user: root
+    volumes:
+      - ./volumes/grafana/data:/var/lib/grafana
+      - ./app/docker/development/grafana/datasources:/etc/grafana/datasources
+      - ./app/docker/development/grafana/dashboards:/etc/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    ports:
+      - "${GRAFANA_PORT}:3000"
+    networks:
+      - internal
+
   mailer:
     image: mailhog/mailhog
     container_name: ${PROJECT_NAME}-mailhog
@@ -159,9 +199,13 @@ services:
       - internal
 
 networks:
-  internal:
+  external:
     driver: bridge
     ipam:
       driver: default
       config:
         - subnet: ${PROJECT_SUBNET}
+  internal:
+    driver: bridge
+#    internal: true
+
