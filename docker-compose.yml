@@ -177,8 +177,8 @@ services:
     user: root
     volumes:
       - ./volumes/grafana/data:/var/lib/grafana
-      - ./app/docker/development/grafana/datasources:/etc/grafana/datasources
-      - ./app/docker/development/grafana/dashboards:/etc/grafana/dashboards
+      - ./app/docker/development/grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./app/docker/development/grafana/dashboards:/etc/grafana/provisioning/dashboards
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
