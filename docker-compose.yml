@@ -113,13 +113,15 @@ services:
   rabbit:
     container_name: ${PROJECT_NAME}-rabbit
     hostname: rabbit
-    image: rabbitmq:3.9-management
+    build:
+      context: ./app/docker/development/rabbit
     volumes:
       - ./volumes/rabbit/data:/var/lib/rabbitmq/mnesia/
     restart: unless-stopped
     ports:
       - "${RABBIT_PORT}:5672"
       - "${RABBIT_MANAGER_PORT}:15672"
+      - "${RABBIT_METRIC_PORT}:15692"
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
@@ -196,6 +198,7 @@ services:
       - "${MAILHOG_PORT}:1025"
       - "${MAILHOG_MANAGER_PORT}:8025"
     networks:
+      - external
       - internal
 
 networks:
