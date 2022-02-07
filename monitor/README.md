@@ -14,3 +14,6 @@ make caddy-password password=YOUR_PASSWORD
 Пароль для получения алертов на почту
 
 https://support.google.com/accounts/answer/185833?hl=en
+
+### To push data to pushgateway
+echo "some_metric 3.14" | curl --data-binary @- http://user:password@localhost:9091/metrics/job/some_job
