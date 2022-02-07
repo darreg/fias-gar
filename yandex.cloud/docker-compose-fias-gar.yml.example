@@ -20,6 +20,8 @@ services:
 
   rabbit:
     image: cr.yandex/<YOUR REGISTRY CODE>/fias-gar-rabbit:1.0.0
+    volumes:
+      - fias-gar-rabbit:/var/lib/rabbitmq/mnesia
     restart: always
     ports:
       - "5672:5672"

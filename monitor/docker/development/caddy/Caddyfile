@@ -4,7 +4,12 @@
     }
     reverse_proxy prometheus:9090
 }
-
+:9091 {
+    basicauth / {
+        {$CADDY_ADMIN_USER} {$CADDY_ADMIN_PASSWORD}
+    }
+    reverse_proxy pushgateway:9091
+}
 :9093 {
     basicauth / {
         {$CADDY_ADMIN_USER} {$CADDY_ADMIN_PASSWORD}

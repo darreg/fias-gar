@@ -1,0 +1,27 @@
+global:
+  resolve_timeout: 1m
+
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 10m
+  repeat_interval: 60m
+  receiver: 'alertmanager-bot'
+
+#  receiver: 'gmail-notifications'
+
+receivers:
+  - name: 'alertmanager-bot'
+    webhook_configs:
+      - send_resolved: true
+        url: 'http://alertmanager-bot:8080'
+
+#  - name: 'gmail-notifications'
+#    email_configs:
+#      - to: mail@mail.com
+#        from: mail@mail.com
+#        smarthost: smtp.gmail.com:587
+#        auth_username: mail@mail.com
+#        auth_identity: mail@mail.com
+#        auth_password: GOOGLE_ACCOUNT_APP_PASSWORD
+#        send_resolved: true

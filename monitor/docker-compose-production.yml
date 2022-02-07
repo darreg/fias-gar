@@ -2,14 +2,11 @@ version: '3'
 
 services:
   caddy:
-    container_name: monitor-caddy
-    image: caddy:2.4.6-alpine
+    image: ${REGISTRY_ADDRESS}/${PROJECT_NAME}-caddy:${CADDY_IMAGE_TAG}
     ports:
       - '${PROMETHEUS_PORT}:9090'
       - '${PUSHGATEWAY_PORT}:9091'
       - '${ALERTMANAGER_PORT}:9093'
-    volumes:
-      - ./docker/development/caddy:/etc/caddy
     environment:
       - CADDY_ADMIN_USER=${CADDY_ADMIN_USER}
       - CADDY_ADMIN_PASSWORD=${CADDY_ADMIN_PASSWORD}
@@ -18,13 +15,9 @@ services:
       - monitor-net
 
   prometheus:
-    container_name: monitor-prometheus
-    image: prom/prometheus:v2.33.1
+    image: ${REGISTRY_ADDRESS}/${PROJECT_NAME}-prometheus:${PROMETHEUS_IMAGE_TAG}
     user: root
     volumes:
-      - ./docker/development/prometheus:/etc/prometheus
-      - ./config/prometheus/alerts:/prometheus_alerts
-      - ./config/prometheus/targets:/prometheus_sd_files
       - ./volumes/prometheus/data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -51,10 +44,7 @@ services:
       - monitor-net
 
   alertmanager:
-    container_name: monitor-alertmanager
-    image: prom/alertmanager:v0.23.0
-    volumes:
-      - ./docker/development/alertmanager:/etc/alertmanager
+    image: ${REGISTRY_ADDRESS}/${PROJECT_NAME}-alertmanager:${ALERTMANAGER_IMAGE_TAG}
     command:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
@@ -84,14 +74,10 @@ services:
       - monitor-net
 
   grafana:
-    container_name: monitor-grafana
-    image: grafana/grafana:8.3.3
+    image: ${REGISTRY_ADDRESS}/${PROJECT_NAME}-grafana:${GRAFANA_IMAGE_TAG}
     user: root
     volumes:
       - ./volumes/grafana/data:/var/lib/grafana
-      - ./docker/development/grafana/dashboards:/etc/grafana/provisioning/dashboards
-      - ./config/grafana/dashboards:/etc/grafana/provisioning/dashboardjsons
-      - ./config/grafana/datasources:/etc/grafana/provisioning/datasources
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
