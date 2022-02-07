@@ -16,8 +16,7 @@ services:
       - "${NGINX_HTTP_PORT}:80"
       - "${NGINX_HTTPS_PORT}:443"
     networks:
-      internal: ~
-      external:
+      net:
         ipv4_address: ${PROJECT_IP}
         aliases:
           - ${PROJECT_NAME}.local
@@ -43,7 +42,7 @@ services:
       XDEBUG_CONFIG: client_host=${XDEBUG_CLIENT_HOST} client_port=${XDEBUG_CLIENT_PORT}
       PHP_IDE_CONFIG: serverName=${XDEBUG_IDE_SERVER_NAME}
     networks:
-      - internal
+      - net
 
   php-workers:
     container_name: ${PROJECT_NAME}-php-workers
@@ -73,7 +72,7 @@ services:
       XDEBUG_CONFIG: client_host=${XDEBUG_CLIENT_HOST} client_port=${XDEBUG_CLIENT_PORT}
       PHP_IDE_CONFIG: serverName=${XDEBUG_IDE_SERVER_NAME}
     networks:
-      - internal
+      - net
 
   php-cli:
     container_name: ${PROJECT_NAME}-php-cli
@@ -92,7 +91,7 @@ services:
     environment:
       COMPOSER_MEMORY_LIMIT: -1
     networks:
-      - internal
+      - net
 
   postgres:
     container_name: ${PROJECT_NAME}-postgres
@@ -108,7 +107,7 @@ services:
     env_file:
       - .env
     networks:
-      - internal
+      - net
 
   rabbit:
     container_name: ${PROJECT_NAME}-rabbit
@@ -133,7 +132,7 @@ services:
         RABBITMQ_DEFAULT_USER: ${RABBIT_USER}
         RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD}
     networks:
-      - internal
+      - net
 
   redis:
     container_name: ${PROJECT_NAME}-redis
@@ -151,45 +150,7 @@ services:
       - '--save 60 10000'
       - '--requirepass ${REDIS_PASSWORD}'
     networks:
-      - internal
-
-  prometheus:
-    container_name: ${PROJECT_NAME}-prometheus
-    image: prom/prometheus:latest
-    user: root
-    volumes:
-      - ./app/docker/development/prometheus:/etc/prometheus
-      - ./volumes/prometheus/data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--storage.tsdb.retention.time=10d'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'
-      - '--web.console.templates=/etc/prometheus/consoles'
-      - '--web.enable-lifecycle'
-    restart: unless-stopped
-    ports:
-      - "${PROMETHEUS_PORT}:9090"
-    networks:
-      - internal
-
-  grafana:
-    container_name: ${PROJECT_NAME}-grafana
-    image: grafana/grafana:latest
-    user: root
-    volumes:
-      - ./volumes/grafana/data:/var/lib/grafana
-      - ./app/docker/development/grafana/datasources:/etc/grafana/provisioning/datasources
-      - ./app/docker/development/grafana/dashboards:/etc/grafana/provisioning/dashboards
-    environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
-      - GF_USERS_ALLOW_SIGN_UP=false
-    restart: unless-stopped
-    ports:
-      - "${GRAFANA_PORT}:3000"
-    networks:
-      - internal
+      - net
 
   mailer:
     image: mailhog/mailhog
@@ -198,17 +159,14 @@ services:
       - "${MAILHOG_PORT}:1025"
       - "${MAILHOG_MANAGER_PORT}:8025"
     networks:
-      - external
-      - internal
+      - net
 
 networks:
-  external:
+  net:
     driver: bridge
     ipam:
       driver: default
       config:
         - subnet: ${PROJECT_SUBNET}
-  internal:
-    driver: bridge
-#    internal: true
+
 

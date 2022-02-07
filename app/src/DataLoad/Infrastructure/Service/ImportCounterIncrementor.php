@@ -32,7 +32,7 @@ class ImportCounterIncrementor implements ImportCounterIncrementorInterface
         $counterExists = $this->redis->hExists($key, Import::FIELD_CREATED_AT);
 
         $this->incCounter($key, $fieldName, $timestamp, $counterExists);
-        $this->incMonitoring($type, $versionId, $fieldName, $timestamp, $counterExists);
+        $this->incMonitoring($type, $versionId, $fieldName);
     }
 
     private function incCounter(
@@ -53,20 +53,8 @@ class ImportCounterIncrementor implements ImportCounterIncrementorInterface
     private function incMonitoring(
         string $type,
         string $versionId,
-        string $fieldName,
-        int $timestamp,
-        bool $counterExists
+        string $fieldName
     ): void {
-        if (!$counterExists) {
-            $this->monitor
-                ->getGauge(Import::FIELD_CREATED_AT, 'Created at datetime', ['type', 'version'])
-                ->set($timestamp, [$type, $versionId]);
-        }
-
-        $this->monitor
-            ->getGauge(Import::FIELD_UPDATED_AT, 'Updated at datetime', ['type', 'version'])
-            ->set($timestamp, [$type, $versionId]);
-
         $this->monitor
             ->getCounter($fieldName, $fieldName . ' counter', ['type', 'version'])
             ->inc([$type, $versionId]);
