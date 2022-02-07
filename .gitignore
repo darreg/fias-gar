@@ -8,5 +8,5 @@ volumes/
 scratches/
 yandex.cloud/*.yaml
 yandex.cloud/*.yml
-monitor/
+
 

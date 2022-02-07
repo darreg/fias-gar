@@ -1,0 +1,4 @@
+.env
+volumes/*
+yandex.cloud/*.yaml
+yandex.cloud/*.yml

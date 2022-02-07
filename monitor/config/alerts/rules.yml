@@ -1,0 +1,28 @@
+groups:
+- name: 'app'
+  rules:
+  - alert: app_service_down
+    expr: up{service="app"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Monitor service non-operational"
+      description: "Service {{ $labels.service }} is down."
+  - alert: rabbit_service_down
+    expr: up{service="rabbit"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Monitor service non-operational"
+      description: "Service {{ $labels.service }} is down."
+  - alert: import
+    expr: sum(increase(fias_gar_parse_task_num{type="delta"}[5m]))>10000
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Big import"
+      description: "Version {{ $labels.version }} is big"
+
