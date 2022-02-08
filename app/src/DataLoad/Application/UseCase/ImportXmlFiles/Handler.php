@@ -7,6 +7,7 @@ namespace App\DataLoad\Application\UseCase\ImportXmlFiles;
 use App\DataLoad\Application\UseCase\FindXmlFile\Query as FindFileQuery;
 use App\DataLoad\Application\UseCase\FindXmlFile\Response as FindFileResponse;
 use App\DataLoad\Application\UseCase\SplitXmlFile\Command as SplitFileCommand;
+use App\DataLoad\Domain\Import\Entity\Import;
 use App\DataLoad\Domain\Import\Repository\ImportRepositoryInterface;
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
@@ -55,5 +56,6 @@ class Handler implements CommandHandlerInterface
         if ($import !== null) {
             $this->importRepository->remove($import);
         }
+        $this->importRepository->persist(new Import($type, $versionId));
     }
 }

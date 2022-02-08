@@ -59,6 +59,8 @@ final class FullImportCommand extends Command
             return Command::FAILURE;
         }
 
+        $this->importCommandService->initMonitoring(Version::TYPE_FULL, $versionId);
+
         $this->showStartMessage($output, $versionId);
 
         try {

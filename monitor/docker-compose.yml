@@ -23,8 +23,8 @@ services:
     user: root
     volumes:
       - ./docker/development/prometheus:/etc/prometheus
-      - ./config/prometheus/alerts:/prometheus_alerts
-      - ./config/prometheus/targets:/prometheus_sd_files
+      - ./docker/common/prometheus_alerts:/prometheus_alerts
+      - ./docker/common/prometheus_targets:/prometheus_sd_files
       - ./volumes/prometheus/data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -90,8 +90,8 @@ services:
     volumes:
       - ./volumes/grafana/data:/var/lib/grafana
       - ./docker/development/grafana/dashboards:/etc/grafana/provisioning/dashboards
-      - ./config/grafana/dashboards:/etc/grafana/provisioning/dashboardjsons
-      - ./config/grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./docker/common/grafana_dashboards:/etc/grafana/provisioning/dashboard_jsons
+      - ./docker/common/grafana_datasources:/etc/grafana/provisioning/datasources
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}

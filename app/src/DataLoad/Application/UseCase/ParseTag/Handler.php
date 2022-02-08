@@ -50,7 +50,6 @@ final class Handler implements CommandHandlerInterface
 
         try {
             $data = $this->parser->parse($tagSource);
-
             $data[SaveCommand::FIELD_NAME_CHANGED_AT] =
                 (new DateTimeImmutable())->format(SaveCommand::DATE_FORMAT);
 

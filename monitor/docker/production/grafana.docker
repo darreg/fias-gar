@@ -1,5 +1,5 @@
 FROM grafana/grafana:8.3.3
 
 COPY ./production/grafana/dashboards /etc/grafana/provisioning/dashboards
-COPY ./config/grafana/dashboards /etc/grafana/provisioning/dashboardjsons
-COPY ./config/grafana/datasources /etc/grafana/provisioning/datasources
+COPY ./common/grafana_dashboards /etc/grafana/provisioning/dashboard_jsons
+COPY ./common/grafana_datasources /etc/grafana/provisioning/datasources

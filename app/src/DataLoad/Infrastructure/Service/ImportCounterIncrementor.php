@@ -56,7 +56,7 @@ class ImportCounterIncrementor implements ImportCounterIncrementorInterface
         string $fieldName
     ): void {
         $this->monitor
-            ->getCounter($fieldName, $fieldName . ' counter', ['type', 'version'])
+            ->getCounter($fieldName, '', ['type', 'version'])
             ->inc([$type, $versionId]);
     }
 }
