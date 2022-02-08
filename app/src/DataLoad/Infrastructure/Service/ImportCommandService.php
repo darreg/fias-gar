@@ -13,16 +13,21 @@ use App\DataLoad\Application\UseCase\NextVersion\Response as NextVersionResponse
 use App\DataLoad\Application\UseCase\RefreshVersion\Command as RefreshVersionCommand;
 use App\DataLoad\Application\UseCase\ValidateVersion\Query as ValidateVersionQuery;
 use App\DataLoad\Application\UseCase\ValidateVersion\Response as ValidateVersionResponse;
+use App\DataLoad\Domain\Import\Entity\Import;
 use App\DataLoad\Domain\Import\Repository\ImportFetcherInterface;
 use App\DataLoad\Domain\Version\Entity\Version;
 use App\Shared\Domain\Bus\Command\CommandBusInterface;
 use App\Shared\Domain\Bus\Query\QueryBusInterface;
+use App\Shared\Domain\Monitoring\MonitorInterface;
 
 class ImportCommandService
 {
+    public const LOAD_VERSION_GAUGE_NAME = 'load_version';
+
     private CommandBusInterface $commandBus;
     private QueryBusInterface $queryBus;
     private ImportFetcherInterface $importFetcher;
+    private MonitorInterface $monitor;
     /**
      * @param list<string> $importTokens
      */
@@ -35,12 +40,14 @@ class ImportCommandService
         CommandBusInterface $commandBus,
         QueryBusInterface $queryBus,
         ImportFetcherInterface $importFetcher,
+        MonitorInterface $monitor,
         array $importTokens
     ) {
         $this->commandBus = $commandBus;
         $this->queryBus = $queryBus;
-        $this->importTokens = $importTokens;
         $this->importFetcher = $importFetcher;
+        $this->monitor = $monitor;
+        $this->importTokens = $importTokens;
     }
 
     public function importIsNotPossible(): bool
@@ -101,5 +108,20 @@ class ImportCommandService
         /** @var ValidateVersionResponse $response */
         $response = $this->queryBus->ask(new ValidateVersionQuery(Version::TYPE_DELTA, $versionId));
         return $response->answer();
+    }
+
+    /**
+     * @param Version::TYPE_* $type
+     */
+    public function initMonitoring(string $type, string $versionId): void
+    {
+        $this->monitor
+            ->getGauge(self::LOAD_VERSION_GAUGE_NAME, '', ['type'])->set((int)$versionId, [$type]);
+        $this->monitor
+            ->getCounter(Import::COUNTER_FIELD_PARSE_ERROR_NUM, '', ['type', 'version'])
+            ->incBy(0, [$type, $versionId]);
+        $this->monitor
+            ->getCounter(Import::COUNTER_FIELD_SAVE_ERROR_NUM, '', ['type', 'version'])
+            ->incBy(0, [$type, $versionId]);
     }
 }

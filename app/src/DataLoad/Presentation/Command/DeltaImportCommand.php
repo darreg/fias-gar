@@ -59,6 +59,8 @@ final class DeltaImportCommand extends Command
             return Command::FAILURE;
         }
 
+        $this->importCommandService->initMonitoring(Version::TYPE_DELTA, $versionId);
+
         $this->showStartMessage($output, $versionId);
 
         try {

@@ -13,8 +13,10 @@ caddy-password:
 	docker run --rm caddy caddy hash-password --plaintext $(password)
 
 check-alert-rules:
-	docker exec -it monitor-prometheus promtool check rules /etc/prometheus/alerts/rules.yml
+	docker exec -it monitor-prometheus promtool check rules /prometheus_alerts/rules.yml
 
+prometheus-reload:
+	docker exec -it monitor-prometheus killall -HUP prometheus
 
 build-prod-caddy:
 	docker build -f=docker/production/caddy.docker -t $(REGISTRY_ADDRESS)/$(PROJECT_NAME)-caddy:$(CADDY_IMAGE_TAG) docker

@@ -1,0 +1,36 @@
+groups:
+- name: 'app'
+  rules:
+  - alert: app_service_down
+    expr: up{service="app"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Main service non-operational"
+      description: "Service {{ $labels.service }} is down."
+  - alert: rabbit_service_down
+    expr: up{service="rabbit"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Rabbit service non-operational"
+      description: "Service {{ $labels.service }} is down."
+
+  - alert: delta_import_error
+    expr: (fias_gar_parse_error_num{type="delta"} + fias_gar_save_error_num{type="delta"})>0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Delta import has errors"
+      description: "Delta import {{ $labels.version }} has errors"
+  - alert: full_import_error
+    expr: (fias_gar_parse_error_num{type="full"} + fias_gar_save_error_num{type="full"})>0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Full import has errors"
+      description: "Full import {{ $labels.version }} has errors"
