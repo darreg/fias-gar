@@ -255,7 +255,7 @@ final class Version20220122115317 extends AbstractMigration
                    pao.typename                                  AS parentshortname,
                    lower(patp.name::text)                        AS parentsocrname,
                    pao.level::integer                            AS parentaolevel,
-                   greatest(ao.changed_at, hr.changed_at, pao.changed_at, atp.changed_at, patp.changed_at) AS changed_at
+                   greatest(ao.changed_at, hr.changed_at, pao.changed_at) AS changed_at
             FROM fias_gar_addrobj ao
                      JOIN (SELECT mhr.objectid,
                                   max(mhr.parentobjid) AS parentobjid,
@@ -293,7 +293,7 @@ final class Version20220122115317 extends AbstractMigration
                    pao.typename                                  AS parentshortname,
                    lower(patp.name::text)                        AS parentsocrname,
                    pao.level::integer                            AS parentaolevel,
-                   greatest(ao.changed_at, hr.changed_at, pao.changed_at, atp.changed_at, patp.changed_at) AS changed_at
+                   greatest(ao.changed_at, hr.changed_at, pao.changed_at) AS changed_at
             FROM fias_gar_addrobj ao
                      JOIN (SELECT ahr.objectid,
                                   max(ahr.parentobjid) AS parentobjid,
@@ -313,9 +313,6 @@ final class Version20220122115317 extends AbstractMigration
         $this->addSql('create index v_addrobj_adm__aolevel_formalname_objectid__ind on v_addrobj_adm (aolevel, formalname, objectid)');
         $this->addSql('create index v_addrobj_adm__objectid__ind on v_addrobj_adm (objectid)');
         $this->addSql('create index v_addrobj_adm__aoguid__ind on v_addrobj_adm (aoguid)');
-
-
-
     }
 
     public function down(Schema $schema): void

@@ -46,7 +46,7 @@ final class Version20220122142625 extends AbstractMigration
                             ap.level7,
                             ap.level8,
                             h.objectguid,
-                            greatest(h.changed_at, hr.changed_at, ahtp1.changed_at, ahtp2.changed_at, htp.changed_at, ap.changed_at) AS changed_at
+                            greatest(h.changed_at, hr.changed_at, ap.changed_at) AS changed_at
             FROM fias_gar_houses h
                      JOIN fias_gar_admhierarchy hr ON hr.isactive = 1 AND hr.objectid = h.objectid
                      LEFT JOIN fias_gar_addhousetypes ahtp1 ON ahtp1.id = h.addtype1::numeric
@@ -81,7 +81,7 @@ final class Version20220122142625 extends AbstractMigration
                             ap.level7,
                             ap.level8,
                             h.objectguid,
-                            greatest(h.changed_at, hr.changed_at, ahtp1.changed_at, ahtp2.changed_at, htp.changed_at, ap.changed_at) AS changed_at
+                            greatest(h.changed_at, hr.changed_at, ap.changed_at) AS changed_at
             FROM fias_gar_houses h
                      JOIN fias_gar_munhierarchy hr ON hr.isactive = 1 AND hr.objectid = h.objectid
                      LEFT JOIN fias_gar_addhousetypes ahtp1 ON ahtp1.id = h.addtype1::numeric
@@ -92,6 +92,8 @@ final class Version20220122142625 extends AbstractMigration
               AND h.isactual = 1
             WITH NO DATA
         SQL);
+        $this->addSql('create index v_search_houses__objectid_ind on v_search_houses (objectid)');
+        $this->addSql('create index v_search_houses__changed_at_ind on v_search_houses (changed_at)');
 
         $this->addSql(<<<SQL
             create materialized view v_search_addrobjects as
@@ -188,11 +190,20 @@ final class Version20220122142625 extends AbstractMigration
                      LEFT JOIN v_addrobj_plain_mun vp ON vp.objectid = va.objectid
             WITH NO DATA
         SQL);
+        $this->addSql('create index v_search_addrobjects__aolevel_ind on v_search_addrobjects (aolevel)');
+        $this->addSql('create index v_search_addrobjects__objectid_ind on v_search_addrobjects (objectid)');
+        $this->addSql('create index v_search_addrobjects__changed_at_ind on v_search_addrobjects (changed_at)');
     }
 
     public function down(Schema $schema): void
     {
+        $this->addSql('drop index v_search_addrobjects__aolevel_ind');
+        $this->addSql('drop index v_search_addrobjects__objectid_ind');
+        $this->addSql('drop index v_search_addrobjects__changed_at_ind');
         $this->addSql('drop materialized view v_search_addrobjects');
+
+        $this->addSql('drop index v_search_houses__objectid_ind');
+        $this->addSql('drop index v_search_houses__changed_at_ind');
         $this->addSql('drop materialized view v_search_houses');
     }
 }
