@@ -77,7 +77,8 @@ final class Version20220122134308 extends AbstractMigration
             FROM v_addrobj_mun va
             WITH NO DATA
         SQL);
-
+        $this->addSql('create index v_addrobj_names__objectid__ind on v_addrobj_names (objectid)');
+        $this->addSql('create index v_addrobj_names__changed_at_ind on v_addrobj_names (changed_at)');
 
         $this->addSql(<<<SQL
             create materialized view v_addrobj_plain_adm as
@@ -175,6 +176,7 @@ final class Version20220122134308 extends AbstractMigration
             WITH NO DATA            
         SQL);
         $this->addSql('create index v_addrobj_plain_adm__objectid__ind on v_addrobj_plain_adm (objectid)');
+        $this->addSql('create index v_addrobj_plain_adm__changed_at_ind on v_addrobj_plain_adm (changed_at)');
 
         $this->addSql(<<<SQL
             create materialized view v_addrobj_plain_mun as
@@ -272,7 +274,7 @@ final class Version20220122134308 extends AbstractMigration
             WITH NO DATA            
         SQL);
         $this->addSql('create index v_addrobj_plain_mun__objectid__ind on v_addrobj_plain_mun (objectid)');
-
+        $this->addSql('create index v_addrobj_plain_mun__changed_at_ind on v_addrobj_plain_mun (changed_at)');
 
         $this->addSql(<<<SQL
             create materialized view v_addrobj_address_strings as
@@ -291,18 +293,28 @@ final class Version20220122134308 extends AbstractMigration
             FROM v_addrobj_mun va
             WITH NO DATA
         SQL);
+        $this->addSql('create index v_addrobj_address_strings__objectid__ind on v_addrobj_address_strings (objectid)');
+        $this->addSql('create index v_addrobj_address_strings__changed_at_ind on v_addrobj_address_strings (changed_at)');
     }
 
     public function down(Schema $schema): void
     {
+        $this->addSql('drop index v_addrobj_names__objectid__ind');
+        $this->addSql('drop index v_addrobj_names__changed_at_ind');
         $this->addSql('drop materialized view v_addrobj_names');
+
+        $this->addSql('drop index v_addrobj_address_strings__objectid__ind');
+        $this->addSql('drop index v_addrobj_address_strings__changed_at_ind');
         $this->addSql('drop materialized view v_addrobj_address_strings');
+
         $this->addSql('drop materialized view v_search_types');
 
         $this->addSql('drop index v_addrobj_plain_mun__objectid__ind');
+        $this->addSql('drop index v_addrobj_plain_mun__changed_at_ind');
         $this->addSql('drop materialized view v_addrobj_plain_mun');
 
         $this->addSql('drop index v_addrobj_plain_adm__objectid__ind');
+        $this->addSql('drop index v_addrobj_plain_adm__changed_at_ind');
         $this->addSql('drop materialized view v_addrobj_plain_adm');
     }
 }

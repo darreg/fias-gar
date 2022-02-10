@@ -1,3 +1,5 @@
+#cat /var/spool/cron/crontabs/dev
+
 15 06 * * *    sudo docker exec -t $(sudo docker ps -qf "name=coi-php-fpm-1") bin/console fias:import:delta > /dev/null 2>&1
 15 02 30 * *    sudo docker exec -t $(sudo docker ps -qf "name=coi-php-fpm-1") bin/console fias:import:full > /dev/null 2>&1
 15 18 * * *    sudo docker exec -t $(sudo docker ps -qf "name=coi-php-fpm-1") bin/console fias:refresh-views > /dev/null 2>&1
