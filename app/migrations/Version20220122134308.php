@@ -65,16 +65,18 @@ final class Version20220122134308 extends AbstractMigration
                    va.socrname   AS typename,
                    va.shortname  AS stypename,
                    va.aoguid     AS guid,
-                   va.changed_at
+                   greatest(va.changed_at,vm.changed_at) as changed_at
             FROM v_addrobj_adm va
+                      LEFT JOIN v_addrobj_mun vm ON vm.objectid = va.objectid AND vm.formalname=va.formalname AND vm.socrname=va.socrname
             UNION
             SELECT va.objectid,
                    va.formalname AS name,
                    va.socrname   AS typename,
                    va.shortname  AS stypename,
                    va.aoguid     AS guid,
-                   va.changed_at
+                   greatest(va.changed_at,vm.changed_at) as changed_at
             FROM v_addrobj_mun va
+                     LEFT JOIN v_addrobj_adm vm ON vm.objectid = va.objectid AND vm.formalname=va.formalname AND vm.socrname=va.socrname
             WITH NO DATA
         SQL);
         $this->addSql('create index v_addrobj_names__objectid__ind on v_addrobj_names (objectid)');
