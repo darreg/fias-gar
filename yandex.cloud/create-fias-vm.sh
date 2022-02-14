@@ -7,6 +7,7 @@ yc compute instance create-with-container fias-gar \
     --metadata-from-file user-data=metadata.yaml \
     --network-interface subnet-name=default-ru-central1-b,nat-ip-version=ipv4 \
     --service-account-name $SERVICE_ACCOUNT_NAME \
+    --hostname fias-gar \
     --platform standard-v2 \
     --memory 24GB \
     --cores 6 \

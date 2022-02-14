@@ -24,8 +24,8 @@ scrape_configs:
 
   - job_name: 'rabbit'
     static_configs:
-      - targets: ['host.docker.internal:15692']
+      - targets: ['fias-gar.ru-central1.internal:15692']
 
   - job_name: 'app'
     static_configs:
-      - targets: ['host.docker.internal:80']
+      - targets: ['fias-gar.ru-central1.internal:80']

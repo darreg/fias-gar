@@ -34,6 +34,7 @@ services:
     ports:
       - "${RABBIT_PORT}:5672"
       - "${RABBIT_MANAGER_PORT}:15672"
+      - "${RABBIT_METRIC_PORT}:15692"
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBIT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD}
