@@ -1,0 +1,100 @@
+version: '3'
+
+services:
+  caddy:
+    image: cr.yandex/<YOUR REGISTRY CODE>/monitor-caddy:1.0.0
+    ports:
+      - '9090:9090'
+      - '9091:9091'
+      - '9093:9093'
+    environment:
+      - CADDY_ADMIN_USER=<YOUR CADDY USER>
+      - CADDY_ADMIN_PASSWORD=<YOUR CADDY PASSWORD (BASE64)>
+    restart: unless-stopped
+    networks:
+      - monitor-net
+
+  prometheus:
+    image: cr.yandex/<YOUR REGISTRY CODE>/monitor-prometheus:1.0.1
+    user: root
+    volumes:
+      - prometheus:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=10d'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    expose:
+      - '9090'
+    networks:
+      - monitor-net
+
+  pushgateway:
+    container_name: monitor-pushgateway
+    image: prom/pushgateway:v1.4.2
+    restart: unless-stopped
+    expose:
+      - '9091'
+    networks:
+      - monitor-net
+
+  alertmanager:
+    image: cr.yandex/<YOUR REGISTRY CODE>/monitor-alertmanager:1.0.0
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+    restart: unless-stopped
+    expose:
+      - '9093'
+    networks:
+      - monitor-net
+
+  alertmanager-bot:
+    container_name: monitor-alertmanager-bot
+    image: metalmatze/alertmanager-bot:0.4.3
+    command:
+      - '--alertmanager.url=http://alertmanager:9093'
+      - '--log.level=info'
+      - '--store=bolt'
+      - '--bolt.path=/data/bot.db'
+    restart: unless-stopped
+    environment:
+      TELEGRAM_ADMIN: <YOUR TELEGRAM BOT CHAT ID>
+      TELEGRAM_TOKEN: <YOUR TELEGRAM BOT TOKEN>
+    ports:
+      - '8080:8080'
+    volumes:
+      - alertmanager-bot:/data
+    networks:
+      - monitor-net
+
+  grafana:
+    image: cr.yandex/<YOUR REGISTRY CODE>/monitor-grafana:1.0.1
+    user: root
+    volumes:
+      - grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=<YOUR GRAFANA USER>
+      - GF_SECURITY_ADMIN_PASSWORD=<YOUR GRAFANA PASSWORD>
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    ports:
+      - '3000:3000'
+    networks:
+      - monitor-net
+
+networks:
+  monitor-net:
+    driver: bridge
+
+volumes:
+  prometheus:
+  grafana:
+  alertmanager-bot:
