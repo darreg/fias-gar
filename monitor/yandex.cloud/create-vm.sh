@@ -11,6 +11,6 @@ yc compute instance create-with-container fias-gar \
     --memory 4GB \
     --cores 2 \
     --create-boot-disk type=network-ssh,size=20GB \
-    --docker-compose-file ../docker-compose.yml \
+    --docker-compose-file docker-compose.yml \
     --cloud-id $CLOUD_ID \
     --folder-id $FOLDER_ID

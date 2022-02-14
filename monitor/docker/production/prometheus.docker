@@ -1,8 +1,7 @@
 FROM prom/prometheus:v2.33.1
 
-RUN mkdir /etc/prometheus/prometheus_alerts && mkdir /etc/prometheus/prometheus_sd_files
+RUN mkdir /etc/prometheus/prometheus_alerts
 
 COPY ./production/prometheus/prometheus.yml /etc/prometheus/prometheus.yml
-COPY ./common/prometheus_alerts /etc/prometheus/prometheus_alerts
-COPY ./common/prometheus_targets /etc/prometheus/prometheus_sd_files
+COPY ./common/alerts /etc/prometheus/prometheus_alerts
 

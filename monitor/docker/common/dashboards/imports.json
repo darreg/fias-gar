@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 9,
-  "iteration": 1644336791446,
+  "iteration": 1644831932548,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -1214,13 +1214,13 @@
       {
         "current": {
           "selected": false,
-          "text": "20211210",
-          "value": "20211210"
+          "text": "20211228",
+          "value": "20211228"
         },
         "definition": "query_result(fias_gar_load_version{type=\"delta\"})",
-        "hide": 1,
+        "hide": 0,
         "includeAll": false,
-        "label": "",
+        "label": "Delta version",
         "multi": false,
         "name": "load_delta_version",
         "options": [],
@@ -1242,8 +1242,9 @@
           "value": ""
         },
         "definition": "query_result(fias_gar_load_version{type=\"full\"})",
-        "hide": 1,
+        "hide": 0,
         "includeAll": false,
+        "label": "Full version",
         "multi": false,
         "name": "load_full_version",
         "options": [],
@@ -1267,6 +1268,6 @@
   "timezone": "",
   "title": "FIAS Database Import",
   "uid": "Y7QGgR-nz",
-  "version": 15,
+  "version": 20,
   "weekStart": ""
 }
