@@ -1,4 +1,0 @@
-- targets:
-    - 'host.docker.internal:15692'
-  labels:
-    service: 'rabbit'

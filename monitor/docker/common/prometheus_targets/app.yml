@@ -1,4 +1,0 @@
-- targets:
-    - 'host.docker.internal:80'
-  labels:
-    service: 'app'
