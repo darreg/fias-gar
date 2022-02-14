@@ -26,6 +26,7 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+      - "15692:15692"
     environment:
       RABBITMQ_DEFAULT_USER: <YOUR RABBITMQ USER>
       RABBITMQ_DEFAULT_PASS: <YOUR RABBITMQ PASSWORD>
