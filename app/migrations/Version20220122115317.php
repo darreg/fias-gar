@@ -125,7 +125,7 @@ final class Version20220122115317 extends AbstractMigration
                 ret text;
             BEGIN
                 str = regexp_replace(str, '\s+', ' ', 'gi');
-                str = regexp_replace(str, '(\d)\s*-\s*(я|й|ый|ая|ой|ей|го|ое)', '\1-\2', 'gi');
+                str = regexp_replace(str, '(\d)\s*-\s*(я|й|ый|ая|ой|ей|го|ое)', '\\1-\\2', 'gi');
             
                 IF aolevel = 3 THEN
                     FOREACH municipal_fix IN ARRAY municipal_fixes
@@ -143,14 +143,14 @@ final class Version20220122115317 extends AbstractMigration
                 END IF;
             
                 IF str ~* '\d-' THEN
-                    str_ = regexp_replace(str, '(\d)-я|-й|-ый|-ая|-ой|-ей|-го|-ое', '\1', 'gi');
+                    str_ = regexp_replace(str, '(\d)-я|-й|-ый|-ая|-ой|-ей|-го|-ое', '\\1', 'gi');
                     strs_ = strs_ || trim(str_);
                     IF array_length(string_to_array(str_, ' '), 1) > 1 THEN
                         strs = strs || prepare(str_);
                         strs = strs || reshuffle(prepare(str_));
                     END IF;
             
-                    str_ = regexp_replace(str, '(\d)-', '\1', 'gi');
+                    str_ = regexp_replace(str, '(\d)-', '\\1', 'gi');
                     strs_ = strs_ || trim(str_);
                     IF array_length(string_to_array(str_, ' '), 1) > 1 THEN
                         strs = strs || prepare(str_);
