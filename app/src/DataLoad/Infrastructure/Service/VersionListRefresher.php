@@ -6,6 +6,7 @@ namespace App\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Application\Exception\DownloadException;
 use App\DataLoad\Application\Service\VersionListRefresherInterface;
+use App\DataLoad\Domain\Version\Entity\Version;
 use App\DataLoad\Domain\Version\ReadModel\VersionRow;
 use App\DataLoad\Domain\Version\Repository\VersionFetcherInterface;
 use App\DataLoad\Domain\Version\Repository\VersionRepositoryInterface;
@@ -41,11 +42,17 @@ class VersionListRefresher implements VersionListRefresherInterface
         try {
             $existsVersionRows = $this->getExistsVersionRows();
             $versionsString = $this->versionLoader->load();
-            $versions = $this->versionDecoder->decode($versionsString);
-            foreach ($versions as $version) {
-                if (!\array_key_exists($version->getId(), $existsVersionRows)) {
-                    $this->versionRepository->persist($version);
+            $decodedVersions = $this->versionDecoder->decode($versionsString);
+            foreach ($decodedVersions as $decodedVersion) {
+                if (!\array_key_exists($decodedVersion->getId(), $existsVersionRows)) {
+                    $this->versionRepository->persist($decodedVersion);
+                    continue;
                 }
+
+                $this->updateXmlLinkStatus(
+                    $existsVersionRows[$decodedVersion->getId()],
+                    $decodedVersion
+                );
             }
             $this->flusher->flush();
         } catch (LogicException $e) {
@@ -65,5 +72,35 @@ class VersionListRefresher implements VersionListRefresherInterface
         }
 
         return $result;
+    }
+
+    private function updateXmlLinkStatus(VersionRow $versionRow, Version $decodedVersion): void
+    {
+        $fullNeedToUpdate = self::needToUpdateFullXmlLinkStatus($versionRow, $decodedVersion);
+        $deltaNeedToUpdate = self::needToUpdateDeltaXmlLinkStatus($versionRow, $decodedVersion);
+
+        if (!$fullNeedToUpdate && !$deltaNeedToUpdate) {
+            return;
+        }
+
+        $version = $this->versionRepository->findOrFail($decodedVersion->getId());
+
+        if ($fullNeedToUpdate) {
+            $version->getFull()->setHasXml(true);
+        }
+
+        if ($deltaNeedToUpdate) {
+            $version->getDelta()->setHasXml(true);
+        }
+    }
+
+    private static function needToUpdateDeltaXmlLinkStatus(VersionRow $versionRow, Version $decodedVersion): bool
+    {
+        return !$versionRow->deltaHasXml && $decodedVersion->getDelta()->isHasXml();
+    }
+
+    private static function needToUpdateFullXmlLinkStatus(VersionRow $versionRow, Version $decodedVersion): bool
+    {
+        return !$versionRow->fullHasXml && $decodedVersion->getFull()->isHasXml();
     }
 }
