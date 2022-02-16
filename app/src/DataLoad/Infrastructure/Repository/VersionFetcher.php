@@ -26,7 +26,7 @@ class VersionFetcher implements VersionFetcherInterface
     public function findAll(): array
     {
         $queryBuilder = $this->connection->createQueryBuilder()
-            ->select('id')
+            ->select('id, full_has_xml, delta_has_xml')
             ->from('version')
             ->orderBy('date', 'ASC')
             ->executeQuery();
@@ -40,7 +40,11 @@ class VersionFetcher implements VersionFetcherInterface
         $rows = [];
         /** @var array $result */
         foreach ($results as $result) {
-            $rows[] = new VersionRow((string)$result['id']);
+            $rows[] = new VersionRow(
+                (string)$result['id'],
+                (bool)$result['full_has_xml'],
+                (bool)$result['delta_has_xml']
+            );
         }
 
         return $rows;
@@ -52,7 +56,7 @@ class VersionFetcher implements VersionFetcherInterface
     public function findOldestUncoveredDeltaVersion(): ?VersionRow
     {
         $queryBuilder = $this->connection->createQueryBuilder()
-            ->select('id')
+            ->select('id, full_has_xml, delta_has_xml')
             ->from('version')
             ->andWhere('delta_has_xml = true')
             ->andWhere('covered = false AND delta_broken_url = false')
@@ -67,7 +71,11 @@ class VersionFetcher implements VersionFetcherInterface
             return null;
         }
 
-        return new VersionRow((string)$result['id']);
+        return new VersionRow(
+            (string)$result['id'],
+            (bool)$result['full_has_xml'],
+            (bool)$result['delta_has_xml']
+        );
     }
 
     /**
@@ -76,7 +84,7 @@ class VersionFetcher implements VersionFetcherInterface
     public function findNewestUnloadedFullVersion(): ?VersionRow
     {
         $queryBuilder = $this->connection->createQueryBuilder()
-            ->select('id')
+            ->select('id, full_has_xml, delta_has_xml')
             ->from('version')
             ->andWhere('full_has_xml = true')
             ->andWhere('covered = false AND full_broken_url = false')
@@ -91,7 +99,11 @@ class VersionFetcher implements VersionFetcherInterface
             return null;
         }
 
-        return new VersionRow((string)$result['id']);
+        return new VersionRow(
+            (string)$result['id'],
+            (bool)$result['full_has_xml'],
+            (bool)$result['delta_has_xml']
+        );
     }
 
     /**
@@ -105,7 +117,7 @@ class VersionFetcher implements VersionFetcherInterface
         }
 
         $queryBuilder = $this->connection->createQueryBuilder()
-            ->select('id')
+            ->select('id, full_has_xml, delta_has_xml')
             ->from('version')
             ->andWhere('covered = false')
             ->andWhere('id <= :id')
@@ -114,7 +126,11 @@ class VersionFetcher implements VersionFetcherInterface
 
         $versionRow = [];
         foreach ($queryBuilder->fetchAllAssociative() as $row) {
-            $versionRow[] = new VersionRow((string)$row['id']);
+            $versionRow[] = new VersionRow(
+                (string)$row['id'],
+                (bool)$row['full_has_xml'],
+                (bool)$row['delta_has_xml']
+            );
         }
 
         return $versionRow;

@@ -46,6 +46,12 @@ class Delta implements VersionTypeInterface
         return $this->hasXml;
     }
 
+    public function setHasXml(bool $hasXml): self
+    {
+        $this->hasXml = $hasXml;
+        return $this;
+    }
+
     public function getLoadTryNum(): int
     {
         return $this->loadTryNum;
