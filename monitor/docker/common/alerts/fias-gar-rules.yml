@@ -1,24 +1,24 @@
 groups:
-- name: 'app'
+- name: 'fias_gar_app'
   rules:
-  - alert: app_service_down
-    expr: up{service="app"} == 0
+  - alert: fias_gar_app_service_down
+    expr: up{job="fias-gar-app"} == 0
     for: 1m
     labels:
       severity: critical
     annotations:
       summary: "Main service non-operational"
-      description: "Service {{ $labels.service }} is down."
-  - alert: rabbit_service_down
-    expr: up{service="rabbit"} == 0
+      description: "Service {{ $labels.job }} is down."
+  - alert: fias_gar_rabbit_service_down
+    expr: up{job="fias-gar-rabbit"} == 0
     for: 1m
     labels:
       severity: critical
     annotations:
       summary: "Rabbit service non-operational"
-      description: "Service {{ $labels.service }} is down."
+      description: "Service {{ $labels.job }} is down."
 
-  - alert: delta_import_error
+  - alert: fias_gar_delta_import_error
     expr: (fias_gar_parse_error_num{type="delta"} + fias_gar_save_error_num{type="delta"})>0
     for: 1m
     labels:
@@ -26,7 +26,7 @@ groups:
     annotations:
       summary: "Delta import has errors"
       description: "Delta import {{ $labels.version }} has errors"
-  - alert: full_import_error
+  - alert: fias_gar_full_import_error
     expr: (fias_gar_parse_error_num{type="full"} + fias_gar_save_error_num{type="full"})>0
     for: 1m
     labels:

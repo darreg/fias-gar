@@ -1,0 +1,19 @@
+groups:
+- name: 'geocoder_app'
+  rules:
+  - alert: geocoder_app_service_down
+    expr: up{job="geocoder-app"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Main service non-operational"
+      description: "Service {{ $labels.job }} is down."
+  - alert: geocoder_solr_service_down
+    expr: up{job="geocoder-solr"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Main service non-operational"
+      description: "Service {{ $labels.job }} is down."
