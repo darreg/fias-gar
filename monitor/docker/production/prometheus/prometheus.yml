@@ -36,4 +36,4 @@ scrape_configs:
 
   - job_name: 'geocoder-solr'
     static_configs:
-      - targets: ['solr-pg.ru-central1.internal:8983']
+      - targets: ['solr-pg.ru-central1.internal:9854']
