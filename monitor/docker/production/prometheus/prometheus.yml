@@ -22,10 +22,18 @@ scrape_configs:
     static_configs:
       - targets: ['pushgateway:9091']
 
-  - job_name: 'rabbit'
+  - job_name: 'fias-gar-rabbit'
     static_configs:
       - targets: ['fias-gar.ru-central1.internal:15692']
 
-  - job_name: 'app'
+  - job_name: 'fias-gar-app'
     static_configs:
       - targets: ['fias-gar.ru-central1.internal:80']
+
+  - job_name: 'geocoder-app'
+    static_configs:
+      - targets: ['geocoder.ru-central1.internal:80']
+
+  - job_name: 'geocoder-solr'
+    static_configs:
+      - targets: ['solr-pg.ru-central1.internal:8983']
