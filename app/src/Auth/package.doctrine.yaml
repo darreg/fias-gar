@@ -1,0 +1,14 @@
+doctrine:
+  dbal:
+    types:
+      auth_user_id: 'App\Auth\Domain\User\Entity\IdType'
+      auth_user_email: 'App\Auth\Domain\User\Entity\EmailType'
+      auth_user_status: 'App\Auth\Domain\User\Entity\StatusType'
+
+  orm:
+      mappings:
+         App\Auth\Domain\User\Entity:
+            is_bundle: false
+            type: annotation
+            dir: '%kernel.project_dir%/src/Auth/Domain/User/Entity'
+            prefix: 'App\Auth\Domain\User\Entity'

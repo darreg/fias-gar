@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Api\Presentation\Controller;
+namespace App\Api\BackOffice\Presentation\Controller;
 
 use App\Auth\Application\UseCase\UserCreate\Command;
 use App\Auth\Domain\User\Entity\Name;
@@ -10,6 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/admin")
+ */
 final class MainController extends AbstractController
 {
     private CommandBusInterface $commandBus;
@@ -24,7 +27,7 @@ final class MainController extends AbstractController
     }
 
     /**
-     * @Route("/", name="main")
+     * @Route("/", name="admin_main")
      */
     public function index(): Response
     {
@@ -34,6 +37,6 @@ final class MainController extends AbstractController
 //        $command = new Command('ivan@ivanov.ru', 'Иван', 'Иванов');
 //        $this->commandBus->dispatch($command);
 
-        return new Response('<html><body>Welcome!</body></html>');
+        return new Response('<html><body>Admin!</body></html>');
     }
 }

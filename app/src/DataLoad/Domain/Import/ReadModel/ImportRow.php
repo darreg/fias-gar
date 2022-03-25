@@ -6,11 +6,10 @@ namespace App\DataLoad\Domain\Import\ReadModel;
 
 use App\DataLoad\Domain\Import\Entity\Import;
 use App\Shared\Domain\Exception\ConstructFromArrayException;
-use App\Shared\Infrastructure\ConstructFromArrayInterface;
 use DateTimeImmutable;
 use Exception;
 
-class ImportRow implements ConstructFromArrayInterface
+class ImportRow
 {
     public function __construct(
         public string $type,
@@ -47,11 +46,7 @@ class ImportRow implements ConstructFromArrayInterface
                 new DateTimeImmutable((string)$data[Import::FIELD_UPDATED_AT])
             );
         } catch (Exception $e) {
-            throw new ConstructFromArrayException(
-                'It is not possible to convert an array of data into a model ' . self::class,
-                0,
-                $e
-            );
+            throw new ConstructFromArrayException(self::class, 0, $e);
         }
     }
 }

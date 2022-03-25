@@ -1,0 +1,23 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  App\Auth\:
+    resource: '../../src/Auth/*'
+
+  App\Auth\Presentation\Controller\:
+    resource: '../../src/Auth/Presentation/Controller'
+    tags: ['controller.service_arguments']
+
+  App\Auth\Infrastructure\Repository\UserFetcher: ~
+  App\Auth\Domain\User\Repository\UserFetcherInterface: '@App\Auth\Infrastructure\Repository\UserFetcher'
+
+  App\Auth\Infrastructure\Repository\UserRepository: ~
+  App\Auth\Domain\User\Repository\UserRepositoryInterface: '@App\Auth\Infrastructure\Repository\UserRepository'
+
+  App\Auth\Infrastructure\Service\PasswordHasher: ~
+  App\Auth\Domain\Shared\Service\PasswordHasherInterface: '@App\Auth\Infrastructure\Service\PasswordHasher'
+
+  App\Auth\Infrastructure\Service\PasswordGenerator: ~
+  App\Auth\Domain\Shared\Service\PasswordGeneratorInterface: '@App\Auth\Infrastructure\Service\PasswordGenerator'
