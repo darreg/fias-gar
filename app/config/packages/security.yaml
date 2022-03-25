@@ -1,28 +1,33 @@
-#security:
-#    encoders:
-#        App\Entity\User:
-#            algorithm: auto
-#        App\Entity\Admin:
-#            algorithm: auto
-#
-#    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
-#    providers:
-#        admins_in_memory: { memory: null }
-#        users_in_memory: { memory: null }
-#        app_user_provider:
-#            entity:
-#                class: App\Entity\User
-#                property: email
+security:
+    enable_authenticator_manager: true
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    providers:
+        app_user_provider:
+            id: App\Auth\Infrastructure\Service\UserProvider
 #        app_admin_provider:
-#            entity:
-#                class: App\Entity\Admin
-#                property: email
-#
-#    firewalls:
-#        dev:
-#            pattern: ^/(_(profiler|wdt)|css|images|js)/
-#            security: false
-#
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        admin_secured_area:
+            pattern:   ^/admin
+            anonymous: false
+            lazy: true
+            provider: app_user_provider
+
+            form_login:
+                check_path: app_login
+                login_path: app_login
+                enable_csrf: true
+
+            logout:
+                path: app_logout
+                target: main
+
 #        admin_secured_area:
 #            pattern:   ^/admin
 #            anonymous: false
@@ -63,10 +68,8 @@
 #
 #    # Easy way to control access for large sections of your site
 #    # Note: Only the *first* access control that matches will be used
-#    access_control:
-#        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/admin, roles: ROLE_ADMIN }
-#
-#    role_hierarchy:
-#        ROLE_SUPER_ADMIN: ROLE_ADMIN, ROLE_EDITOR_USER, ROLE_EDITOR_APITOKEN, ROLE_EDITOR_EXTADDROBJ, ROLE_EDITOR_EXTHOUSE
-#
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER

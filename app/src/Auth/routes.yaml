@@ -1,0 +1,3 @@
+controllers:
+  resource: '../../src/Auth/Presentation/Controller/'
+  type: annotation
