@@ -10,6 +10,7 @@ final class Status
 {
     public const WAIT = 'wait';
     public const ACTIVE = 'active';
+    public const BLOCKED = 'blocked';
 
     private string $name;
 
@@ -18,6 +19,7 @@ final class Status
         Assert::oneOf($name, [
             self::WAIT,
             self::ACTIVE,
+            self::BLOCKED,
         ]);
         $this->name = $name;
     }
@@ -32,6 +34,11 @@ final class Status
         return new self(self::ACTIVE);
     }
 
+    public static function blocked(): self
+    {
+        return new self(self::BLOCKED);
+    }
+
     public function isWait(): bool
     {
         return $this->name === self::WAIT;
@@ -40,6 +47,11 @@ final class Status
     public function isActive(): bool
     {
         return $this->name === self::ACTIVE;
+    }
+
+    public function isBlocked(): bool
+    {
+        return $this->name === self::BLOCKED;
     }
 
     public function getName(): string

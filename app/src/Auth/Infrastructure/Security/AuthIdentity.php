@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Infrastructure\Service;
+namespace App\Auth\Infrastructure\Security;
 
-use App\Auth\Domain\Shared\ReadModel\AuthModel;
 use App\Auth\Domain\User\Entity\Status;
+use App\Auth\Domain\User\ReadModel\AuthModel;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -36,6 +36,16 @@ class AuthIdentity implements UserInterface, EquatableInterface, PasswordAuthent
         $this->password = $password;
         $this->roles = $roles;
         $this->status = $status;
+    }
+
+    public static function blank(): self
+    {
+        return new self('', '', '', [], '');
+    }
+
+    public static function blankWithPassword(string $password): self
+    {
+        return new self('', '', $password, [], '');
     }
 
     public static function fromAuthModel(AuthModel $user): self
@@ -97,10 +107,6 @@ class AuthIdentity implements UserInterface, EquatableInterface, PasswordAuthent
 
     public function getSalt(): ?string
     {
-        // We're using bcrypt in security.yaml to encode the password, so
-        // the salt value is built-in and you don't have to generate one
-        // See https://en.wikipedia.org/wiki/Bcrypt
-
         return null;
     }
 }

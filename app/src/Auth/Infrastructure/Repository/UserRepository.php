@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Auth\Infrastructure\Repository;
 
+use App\Auth\Domain\User\Entity\Email;
+use App\Auth\Domain\User\Entity\Id;
 use App\Auth\Domain\User\Entity\User;
 use App\Auth\Domain\User\Repository\UserRepositoryInterface;
 use App\Shared\Domain\Exception\EntityNotFoundException;
@@ -18,6 +20,7 @@ class UserRepository implements UserRepositoryInterface
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
+        /** @psalm-suppress InvalidPropertyAssignmentValue */
         $this->repo = $em->getRepository(User::class);
     }
 
@@ -25,12 +28,15 @@ class UserRepository implements UserRepositoryInterface
      * @psalm-suppress MixedReturnStatement
      * @psalm-suppress MixedInferredReturnType
      */
-    public function find(string $id): ?User
+    public function find(Id $id): ?User
     {
-        return $this->repo->find($id);
+        return $this->repo->find($id->getValue());
     }
 
-    public function findOrFail(string $id): User
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function findOrFail(Id $id): User
     {
         $user = $this->find($id);
         if ($user === null) {
@@ -38,6 +44,64 @@ class UserRepository implements UserRepositoryInterface
         }
 
         return $user;
+    }
+
+    /**
+     * @psalm-suppress MixedReturnStatement
+     * @psalm-suppress MixedInferredReturnType
+     */
+    public function findByEmail(Email $email): ?User
+    {
+        return $this->repo->findOneBy(['email' => $email->getValue()]);
+    }
+
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function findByEmailOrFail(Email $email): User
+    {
+        $user = $this->findByEmail($email);
+        if ($user === null) {
+            throw new EntityNotFoundException('User is not found.');
+        }
+
+        return $user;
+    }
+
+    /**
+     * @psalm-suppress MixedReturnStatement
+     * @psalm-suppress MixedInferredReturnType
+     */
+    public function findByJoinConfirmToken(string $token): ?User
+    {
+        return $this->repo->findOneBy(['joinConfirmToken.value' => $token]);
+    }
+
+    /**
+     * @psalm-suppress MixedReturnStatement
+     * @psalm-suppress MixedInferredReturnType
+     */
+    public function findByPasswordResetToken(string $token): ?User
+    {
+        return $this->repo->findOneBy(['passwordResetToken.value' => $token]);
+    }
+
+    /**
+     * @psalm-suppress MixedReturnStatement
+     * @psalm-suppress MixedInferredReturnType
+     */
+    public function findByNewEmailToken(string $token): ?User
+    {
+        return $this->repo->findOneBy(['newEmailToken.value' => $token]);
+    }
+
+    public function hasByEmail(Email $email): bool
+    {
+        return $this->repo->createQueryBuilder('users')
+            ->select('COUNT(id)')
+            ->andWhere('email = :email')
+            ->setParameter('email', $email->getValue())
+            ->getQuery()->getSingleScalarResult() > 0;
     }
 
     public function persist(User $user): void
