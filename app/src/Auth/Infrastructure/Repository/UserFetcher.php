@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Auth\Infrastructure\Repository;
 
-use App\Auth\Domain\Shared\ReadModel\AuthModel;
-use App\Auth\Domain\User\Entity\Email;
+use App\Auth\Domain\User\ReadModel\AuthModel;
 use App\Auth\Domain\User\Repository\UserFetcherInterface;
 use App\Auth\Infrastructure\Exception\UserNameNotFoundException;
 use Doctrine\DBAL\Connection;
@@ -35,6 +34,7 @@ class UserFetcher implements UserFetcherInterface
                 'email',
                 'password_hash',
                 'status',
+                'main_role',
                 'roles'
             )
             ->from('users')
@@ -48,31 +48,24 @@ class UserFetcher implements UserFetcherInterface
             throw new UserNameNotFoundException($email);
         }
 
-        $result['roles'] = self::decodeRoles((string)$result['roles']);
+        $result['roles'] = self::decodeRoles((string)$result['main_role'], (string)$result['roles']);
 
         return AuthModel::fromArray($result);
     }
 
     /**
-     * @throws DBALException
+     * @psalm-suppress MixedReturnStatement
+     * @psalm-suppress MixedInferredReturnType
+     * @throws LogicException
+     * @return string[]
      */
-    public function hasByEmail(Email $email): bool
-    {
-        return $this->connection->createQueryBuilder()
-            ->select('COUNT(id)')
-            ->from('users')
-            ->andWhere('email = :email')
-            ->setParameter('email', $email->getValue())
-            ->executeQuery()
-            ->fetchOne() > 0;
-    }
-
-    /** @throws LogicException */
-    private static function decodeRoles(string $roles): array
+    private static function decodeRoles(string $mainRole, string $roleJson): array
     {
         try {
-            /** @var array $result */
-            return json_decode($roles, true, 512, JSON_THROW_ON_ERROR);
+            /** @var string[] $roles */
+            $roles = json_decode($roleJson, true, 512, JSON_THROW_ON_ERROR);
+            $roles[] = $mainRole;
+            return array_unique($roles);
         } catch (JsonException $e) {
             throw new LogicException('Invalid roles json: ' . $e->getMessage());
         }

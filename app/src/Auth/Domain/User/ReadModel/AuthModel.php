@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Domain\Shared\ReadModel;
+namespace App\Auth\Domain\User\ReadModel;
 
 use App\Shared\Infrastructure\ConstructableFromArrayTrait;
 use App\Shared\Infrastructure\ConstructFromArrayInterface;

@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
 /**
  * @ORM\Embeddable
  */
-class Name
+final class Name
 {
     /**
      * @ORM\Column(type="string")

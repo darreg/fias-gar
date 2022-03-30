@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Application\UseCase\UserCreate;
+namespace App\Auth\Application\UseCase\JoinByEmail\Request;
 
 use App\Shared\Domain\Bus\Command\CommandInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class Command implements CommandInterface
+final class Command implements CommandInterface
 {
     /**
      * @Assert\NotBlank()
@@ -22,12 +22,18 @@ class Command implements CommandInterface
      * @Assert\NotBlank()
      */
     private string $lastName;
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(min=6)
+     */
+    private string $password;
 
-    public function __construct(string $email, string $firstName, string $lastName)
+    public function __construct(string $email, string $firstName, string $lastName, string $password)
     {
         $this->email = $email;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+        $this->password = $password;
     }
 
     public function getEmail(): string
@@ -43,5 +49,10 @@ class Command implements CommandInterface
     public function getLastName(): string
     {
         return $this->lastName;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 }

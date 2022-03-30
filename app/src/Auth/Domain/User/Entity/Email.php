@@ -7,7 +7,7 @@ namespace App\Auth\Domain\User\Entity;
 use InvalidArgumentException;
 use Webmozart\Assert\Assert;
 
-class Email
+final class Email
 {
     private string $value;
 
@@ -25,7 +25,7 @@ class Email
         return $this->value;
     }
 
-    public function isEqual(self $other): bool
+    public function isEqualTo(self $other): bool
     {
         return $this->getValue() === $other->getValue();
     }
