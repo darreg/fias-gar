@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Application\UseCase\JoinByEmail\Confirm;
+namespace App\Auth\Application\UseCase\Join\Confirm;
 
 use App\Shared\Domain\Bus\Command\CommandInterface;
 use Symfony\Component\Validator\Constraints as Assert;

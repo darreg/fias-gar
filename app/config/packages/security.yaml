@@ -5,7 +5,7 @@ security:
 
     providers:
         app_user_provider:
-            id: App\Auth\Infrastructure\Service\UserProvider
+            id: App\Auth\Infrastructure\Security\AuthIdentityProvider
 #        app_admin_provider:
 
     firewalls:
@@ -15,7 +15,8 @@ security:
 
         admin_secured_area:
             pattern:   ^/admin
-            anonymous: false
+#            anonymous: false
+            user_checker: App\Auth\Infrastructure\Security\AuthIdentityChecker
             lazy: true
             provider: app_user_provider
 
@@ -27,6 +28,15 @@ security:
             logout:
                 path: app_logout
                 target: main
+
+        main:
+            lazy: true
+            provider: app_user_provider
+
+            form_login:
+                check_path: app_login
+                login_path: app_login
+                enable_csrf: true
 
 #        admin_secured_area:
 #            pattern:   ^/admin
@@ -69,6 +79,7 @@ security:
 #    # Easy way to control access for large sections of your site
 #    # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
 
     role_hierarchy:

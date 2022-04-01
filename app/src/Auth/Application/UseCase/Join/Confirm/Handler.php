@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Application\UseCase\JoinByEmail\Confirm;
+namespace App\Auth\Application\UseCase\Join\Confirm;
 
 use App\Auth\Domain\Exception\InvalidTokenException;
 use App\Auth\Domain\User\Repository\UserRepositoryInterface;
@@ -23,7 +23,7 @@ final class Handler implements CommandHandlerInterface
         $this->flusher = $flusher;
     }
 
-    public function __invoke(Command $command)
+    public function __invoke(Command $command): void
     {
         if (!$user = $this->userRepository->findByJoinConfirmToken($command->getToken())) {
             throw new InvalidTokenException('Token is invalid');

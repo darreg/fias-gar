@@ -17,15 +17,13 @@ final class Name
      */
     private string $first;
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
-    private string $last;
+    private ?string $last;
 
-    public function __construct(string $first, string $last)
+    public function __construct(string $first, ?string $last)
     {
         Assert::notEmpty($first);
-        Assert::notEmpty($last);
-
         $this->first = $first;
         $this->last = $last;
     }
@@ -35,13 +33,13 @@ final class Name
         return $this->first;
     }
 
-    public function getLast(): string
+    public function getLast(): ?string
     {
         return $this->last;
     }
 
     public function getFull(): string
     {
-        return $this->first . ' ' . $this->last;
+        return trim($this->first . ' ' . ($this->last ?? ''));
     }
 }

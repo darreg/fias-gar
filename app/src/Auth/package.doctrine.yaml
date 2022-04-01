@@ -4,6 +4,7 @@ doctrine:
       auth_user_id: 'App\Auth\Domain\User\Entity\IdType'
       auth_user_email: 'App\Auth\Domain\User\Entity\EmailType'
       auth_user_status: 'App\Auth\Domain\User\Entity\StatusType'
+      auth_user_main_role: 'App\Auth\Domain\User\Entity\MainRoleType'
 
   orm:
       mappings:

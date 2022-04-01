@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait CreatedAtTrait
 {
     /**
-     * @ORM\Column(name="created_at", type="datetime")
+     * @ORM\Column(name="created_at", type="datetime_immutable")
      * @psalm-suppress PropertyNotSetInConstructor
      */
     private DateTimeImmutable $createdAt;

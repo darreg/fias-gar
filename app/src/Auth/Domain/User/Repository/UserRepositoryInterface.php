@@ -29,7 +29,7 @@ interface UserRepositoryInterface
 
     public function findByPasswordResetToken(string $token): ?User;
 
-    public function findByNewEmailToken(string $token): ?User;
+    public function findByEmailChangeToken(string $token): ?User;
 
     public function hasByEmail(Email $email): bool;
 

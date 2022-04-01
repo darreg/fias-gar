@@ -17,7 +17,12 @@ services:
   App\Auth\Domain\User\Repository\UserRepositoryInterface: '@App\Auth\Infrastructure\Repository\UserRepository'
 
   App\Auth\Infrastructure\Service\PasswordHasher: ~
-  App\Auth\Domain\Shared\Service\PasswordHasherInterface: '@App\Auth\Infrastructure\Service\PasswordHasher'
+  App\Auth\Domain\User\Service\PasswordHasherInterface: '@App\Auth\Infrastructure\Service\PasswordHasher'
 
   App\Auth\Infrastructure\Service\PasswordGenerator: ~
-  App\Auth\Domain\Shared\Service\PasswordGeneratorInterface: '@App\Auth\Infrastructure\Service\PasswordGenerator'
+  App\Auth\Domain\User\Service\PasswordGeneratorInterface: '@App\Auth\Infrastructure\Service\PasswordGenerator'
+
+  App\Auth\Infrastructure\Service\Tokenizer:
+    factory: ['App\Auth\Infrastructure\Service\TokenizerFactory', 'create']
+    arguments: ['PT1H']
+  App\Auth\Domain\User\Service\TokenizerInterface: '@App\Auth\Infrastructure\Service\Tokenizer'

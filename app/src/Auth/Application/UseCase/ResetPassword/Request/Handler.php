@@ -27,7 +27,7 @@ final class Handler implements CommandHandlerInterface
         $this->flusher = $flusher;
     }
 
-    public function handle(Command $command): void
+    public function __invoke(Command $command): void
     {
         $email = new Email($command->getEmail());
 
