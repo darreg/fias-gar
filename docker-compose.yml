@@ -161,6 +161,14 @@ services:
     networks:
       - net
 
+  node:
+    image: node:17-alpine
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    networks:
+      - net
+
 networks:
   net:
     driver: bridge

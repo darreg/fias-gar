@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Application\UseCase\JoinByEmail\Request;
+namespace App\Auth\Application\UseCase\Join\Request;
 
 use App\Auth\Domain\Exception\UserExistsException;
 use App\Auth\Domain\User\Entity\Email;
@@ -35,9 +35,9 @@ final class Handler implements CommandHandlerInterface
         $this->tokenizer = $tokenizer;
     }
 
-    public function __invoke(Command $command)
+    public function __invoke(Command $command): void
     {
-        $email = new Email($command->getEmail());
+        $email = new Email($command->email);
 
         if ($this->userRepository->hasByEmail($email)) {
             throw new UserExistsException('User with this email already exists.');
@@ -47,11 +47,11 @@ final class Handler implements CommandHandlerInterface
             User::joinByEmail(
                 Id::next(),
                 new Name(
-                    $command->getFirstName(),
-                    $command->getLastName()
+                    $command->firstName,
+                    $command->lastName
                 ),
                 $email,
-                $this->passwordHasher->hashPassword($command->getPassword()),
+                $this->passwordHasher->hashPassword($command->password),
                 $this->tokenizer->generate(new DateTimeImmutable())
             )
         );

@@ -23,9 +23,9 @@ final class Handler implements CommandHandlerInterface
         $this->flusher = $flusher;
     }
 
-    public function handle(Command $command): void
+    public function __invoke(Command $command): void
     {
-        if (!$user = $this->userRepository->findByNewEmailToken($command->getToken())) {
+        if (!$user = $this->userRepository->findByEmailChangeToken($command->getToken())) {
             throw new ChangeEmailException('Incorrect token.');
         }
 

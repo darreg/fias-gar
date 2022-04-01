@@ -21,7 +21,7 @@ final class Handler
         $this->flusher = $flusher;
     }
 
-    public function handle(Command $command): void
+    public function __invoke(Command $command): void
     {
         $user = $this->userRepository->findOrFail(new Id($command->getId()));
 

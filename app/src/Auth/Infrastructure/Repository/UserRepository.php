@@ -90,16 +90,16 @@ class UserRepository implements UserRepositoryInterface
      * @psalm-suppress MixedReturnStatement
      * @psalm-suppress MixedInferredReturnType
      */
-    public function findByNewEmailToken(string $token): ?User
+    public function findByEmailChangeToken(string $token): ?User
     {
-        return $this->repo->findOneBy(['newEmailToken.value' => $token]);
+        return $this->repo->findOneBy(['emailChangeToken.value' => $token]);
     }
 
     public function hasByEmail(Email $email): bool
     {
-        return $this->repo->createQueryBuilder('users')
-            ->select('COUNT(id)')
-            ->andWhere('email = :email')
+        return $this->repo->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->andWhere('u.email = :email')
             ->setParameter('email', $email->getValue())
             ->getQuery()->getSingleScalarResult() > 0;
     }

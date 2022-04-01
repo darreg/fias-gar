@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Auth\Infrastructure\Security;
 
 use App\Auth\Domain\User\Repository\UserFetcherInterface;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
+class AuthIdentityProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
     private UserFetcherInterface $userFetcher;
 
@@ -18,8 +19,14 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
         $this->userFetcher = $userFetcher;
     }
 
-    public function refreshUser(UserInterface $user): void
+    public function refreshUser(UserInterface $user): UserInterface
     {
+        if (!$user instanceof AuthIdentity) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_debug_type($user)));
+        }
+
+        $authModel = $this->userFetcher->findForAuthByEmail($user->getUserIdentifier());
+        return AuthIdentity::fromAuthModel($authModel);
     }
 
     /**
