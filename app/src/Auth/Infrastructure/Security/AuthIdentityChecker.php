@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class AuthIdentityChecker implements UserCheckerInterface
+final class AuthIdentityChecker implements UserCheckerInterface
 {
     public function checkPreAuth(UserInterface $user): void
     {

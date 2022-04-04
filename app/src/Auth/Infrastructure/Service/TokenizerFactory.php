@@ -6,7 +6,7 @@ namespace App\Auth\Infrastructure\Service;
 
 use DateInterval;
 
-class TokenizerFactory
+final class TokenizerFactory
 {
     public static function create(string $interval): Tokenizer
     {

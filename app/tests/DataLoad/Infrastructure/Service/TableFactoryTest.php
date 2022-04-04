@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Test\Infrastructure\Service;
+namespace App\Tests\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Infrastructure\Service\TableFactory;
 use LogicException;

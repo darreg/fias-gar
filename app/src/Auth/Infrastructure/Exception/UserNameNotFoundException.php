@@ -6,7 +6,7 @@ namespace App\Auth\Infrastructure\Exception;
 
 use RuntimeException;
 
-class UserNameNotFoundException extends RuntimeException
+final class UserNameNotFoundException extends RuntimeException
 {
     public function __construct(string $email)
     {

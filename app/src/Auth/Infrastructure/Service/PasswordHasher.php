@@ -8,7 +8,7 @@ use App\Auth\Domain\User\Service\PasswordHasherInterface;
 use App\Auth\Infrastructure\Security\AuthIdentity;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class PasswordHasher implements PasswordHasherInterface
+final class PasswordHasher implements PasswordHasherInterface
 {
     private UserPasswordHasherInterface $passwordHasher;
 

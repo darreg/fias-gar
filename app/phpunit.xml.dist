@@ -17,11 +17,12 @@
 
     <testsuites>
         <testsuite name="unit">
+            <directory>src/Auth/Test</directory>
             <directory>src/Shared/Test</directory>
             <directory>src/DataLoad/Test</directory>
         </testsuite>
         <testsuite name="functional">
-            <directory>tests/Functional</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 

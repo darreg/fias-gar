@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class AuthIdentityProvider implements UserProviderInterface, PasswordUpgraderInterface
+final class AuthIdentityProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
     private UserFetcherInterface $userFetcher;
 

@@ -8,8 +8,10 @@ use Webmozart\Assert\Assert;
 
 final class MainRole
 {
-    public const USER = 'ROLE_USER';
-    public const ADMIN = 'ROLE_ADMIN';
+    public const PREFIX = 'MAIN_';
+
+    public const USER = self::PREFIX . 'ROLE_USER';
+    public const ADMIN = self::PREFIX . 'MAIN_ROLE_ADMIN';
 
     private string $name;
 
