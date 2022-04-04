@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataLoad\Test\Infrastructure\Service;
+namespace App\Tests\DataLoad\Infrastructure\Service;
 
 use App\DataLoad\Infrastructure\Service\ParameterStorage;
 use LogicException;
@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 final class ParameterStorageTest extends KernelTestCase
 {
-    protected ParameterStorage $parameterStorage;
+    private ParameterStorage $parameterStorage;
 
     /**
      * @psalm-suppress  ServiceNotFound

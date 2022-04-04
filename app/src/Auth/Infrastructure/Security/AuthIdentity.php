@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class AuthIdentity implements UserInterface, EquatableInterface, PasswordAuthenticatedUserInterface
+final class AuthIdentity implements UserInterface, EquatableInterface, PasswordAuthenticatedUserInterface
 {
     private string $id;
     private string $email;

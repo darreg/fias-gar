@@ -12,7 +12,7 @@ use App\Shared\Domain\Exception\EntityNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
-class UserRepository implements UserRepositoryInterface
+final class UserRepository implements UserRepositoryInterface
 {
     private EntityManagerInterface $em;
     private EntityRepository $repo;

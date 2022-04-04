@@ -12,7 +12,7 @@ use Doctrine\DBAL\Exception as DBALException;
 use JsonException;
 use LogicException;
 
-class UserFetcher implements UserFetcherInterface
+final class UserFetcher implements UserFetcherInterface
 {
     private Connection $connection;
 

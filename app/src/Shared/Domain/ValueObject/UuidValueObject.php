@@ -20,7 +20,7 @@ abstract class UuidValueObject implements Stringable
             );
         }
 
-        $this->value = $value;
+        $this->value = mb_strtolower($value);
     }
 
     public function __toString(): string

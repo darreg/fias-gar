@@ -218,7 +218,9 @@ final class User
 
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles = array_filter($this->roles, static function (string $role) {
+            return !str_starts_with($role, MainRole::PREFIX);
+        });
         $roles[] = $this->mainRole->getName();
         return array_unique($roles);
     }

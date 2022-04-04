@@ -7,7 +7,7 @@ namespace App\Auth\Infrastructure\Exception;
 use App\Auth\Domain\User\Entity\Email;
 use RuntimeException;
 
-class InvalidAuthCredentialException extends RuntimeException
+final class InvalidAuthCredentialException extends RuntimeException
 {
     public function __construct(Email $email)
     {

@@ -7,7 +7,7 @@ namespace App\Auth\Infrastructure\Service;
 use App\Auth\Domain\User\Service\PasswordGeneratorInterface;
 use App\Shared\Domain\Internal\Uuid;
 
-class PasswordGenerator implements PasswordGeneratorInterface
+final class PasswordGenerator implements PasswordGeneratorInterface
 {
     public function generate(): string
     {
